@@ -8,17 +8,26 @@ import {
   ListView, Navigator, TouchableHighlight
 } from 'react-native';
 
+import {
+  StackNavigator
+} from 'react-navigation';
+
+// const App = StackNavigator({
+//   Main: {screen: MainFeed},
+//   Profile: {screen: Profile},
+// });
 
 const FBSDK = require('react-native-fbsdk');
 const {
   LoginButton,
 } = FBSDK;
+
 var Login = React.createClass({
   render: function() {
     return (
       <View>
         <LoginButton
-          publishPermissions={["publish_actions"]}
+          publishPermissions={["public_profile"]}
           onLoginFinished={
             (error, result) => {
               if (error) {
