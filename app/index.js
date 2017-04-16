@@ -23,6 +23,13 @@ const {
 } = FBSDK;
 
 var Login = React.createClass({
+  getInitialState: function() {
+    return {
+      token: null,
+      user: null,
+      badLogin: null
+    };
+  },
   render: function() {
     return (
       <View>
@@ -84,13 +91,7 @@ export default class SharedEntry extends Component {
     this.state = {};
   }
   render() {
-    const routes = [
-    {title: 'First Scene', index: 0},
-    {title: 'Second Scene', index: 1},
-    ];
-
     return(
-
       <Login />
     )
   }
