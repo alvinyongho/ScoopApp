@@ -9,6 +9,32 @@ import {
 } from 'react-native';
 
 
+const FBSDK = require('react-native-fbsdk');
+const {
+  LoginButton,
+} = FBSDK;
+var Login = React.createClass({
+  render: function() {
+    return (
+      <View>
+        <LoginButton
+          publishPermissions={["publish_actions"]}
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                alert("Login failed with error: " + result.error);
+              } else if (result.isCancelled) {
+                alert("Login was cancelled");
+              } else {
+                alert("Login was successful with permissions: " + result.grantedPermissions)
+              }
+            }
+          }
+          onLogoutFinished={() => alert("User logged out")}/>
+      </View>
+    );
+  }
+});
 
 
 class FeedList extends Component {
@@ -56,38 +82,7 @@ export default class SharedEntry extends Component {
 
     return(
 
-      <Navigator
-        initialRoute={routes[0]}
-        initialRouteStack={routes}
-        renderScene={(route, navigator) =>
-          <TouchableHighlight onPress={() => {
-            if (route.index === 0) {
-              navigator.push(routes[1]);
-            } else {
-              navigator.pop();
-            }
-          }}>
-          <Text>Hello {route.title}!</Text>
-          </TouchableHighlight>
-        }
-
-        navigationBar={
-          <Navigator.NavigationBar
-           routeMapper={{
-             LeftButton: (route, navigator, index, navState) =>
-              { return (<Text>Cancel</Text>); },
-             RightButton: (route, navigator, index, navState) =>
-               { return (<Text>Done</Text>); },
-             Title: (route, navigator, index, navState) =>
-               { return (<Text style={{fontSize:24}}>Scoop</Text>);
-               },
-           }}
-           style={{backgroundColor: 'gray'}}
-          />
-        }
-
-        style={{padding: 100}}
-      />
+      <Login />
     )
   }
 }
