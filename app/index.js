@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  ListView
+  Image,
+  ListView, Navigator, TouchableHighlight
 } from 'react-native';
 
 
@@ -48,10 +49,45 @@ export default class SharedEntry extends Component {
     this.state = {};
   }
   render() {
+    const routes = [
+    {title: 'First Scene', index: 0},
+    {title: 'Second Scene', index: 1},
+    ];
+
     return(
-      <View style={styles.container}>
-        <FeedList />
-      </View>
+
+      <Navigator
+        initialRoute={routes[0]}
+        initialRouteStack={routes}
+        renderScene={(route, navigator) =>
+          <TouchableHighlight onPress={() => {
+            if (route.index === 0) {
+              navigator.push(routes[1]);
+            } else {
+              navigator.pop();
+            }
+          }}>
+          <Text>Hello {route.title}!</Text>
+          </TouchableHighlight>
+        }
+
+        navigationBar={
+          <Navigator.NavigationBar
+           routeMapper={{
+             LeftButton: (route, navigator, index, navState) =>
+              { return (<Text>Cancel</Text>); },
+             RightButton: (route, navigator, index, navState) =>
+               { return (<Text>Done</Text>); },
+             Title: (route, navigator, index, navState) =>
+               { return (<Text style={{fontSize:24}}>Scoop</Text>);
+               },
+           }}
+           style={{backgroundColor: 'gray'}}
+          />
+        }
+
+        style={{padding: 100}}
+      />
     )
   }
 }
@@ -60,6 +96,6 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
     // justifyContent: 'center',
-    // alignItems: 'center'
+    alignItems: 'center'
   }
 });
