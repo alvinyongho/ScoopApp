@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import SharedEntry from './app/index.js'
+import { ScoopAppNavigator } from './app/index.js'
 
 
-AppRegistry.registerComponent('ScoopApp', () => SharedEntry);
+AppRegistry.registerComponent('ScoopApp', () => ScoopAppNavigator);

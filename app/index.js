@@ -5,102 +5,41 @@ import {
   Text,
   View,
   Image,
-  ListView, Navigator, TouchableHighlight
+  Navigator, TouchableHighlight,
+  Button,
 } from 'react-native';
 
-import {
-  StackNavigator
-} from 'react-navigation';
-
-// const App = StackNavigator({
-//   Main: {screen: MainFeed},
-//   Profile: {screen: Profile},
-// });
-
-const FBSDK = require('react-native-fbsdk');
-const {
-  LoginButton,
-} = FBSDK;
-
-var Login = React.createClass({
-  getInitialState: function() {
-    return {
-      token: null,
-      user: null,
-      badLogin: null
-    };
-  },
-  render: function() {
-    return (
-      <View>
-        <LoginButton
-          publishPermissions={["public_profile"]}
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                alert("Login failed with error: " + result.error);
-              } else if (result.isCancelled) {
-                alert("Login was cancelled");
-              } else {
-                alert("Login was successful with permissions: " + result.grantedPermissions)
-              }
-            }
-          }
-          onLogoutFinished={() => alert("User logged out")}/>
-      </View>
-    );
-  }
-});
+import { StackNavigator } from 'react-navigation';
+import Login from './components/Login/index.js'
+import FeedList from './components/FeedList/index.js'
 
 
-class FeedList extends Component {
-  constructor(props) {
-    super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      dataSource: ds.cloneWithRows([
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin'
-      ])
-    };
-  }
-  render() {
-    return(
-      <View style={{paddingTop: 22}}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData}</Text>}
-        />
-      </View>
-    );
-  }
-}
-
-
-var PERSONS = [
-  {name: 'Justin Warmkessel', description: 'Tech lead'},
-  {name: 'Bob', description: 'Placeholder description'},
-  {name: 'Susan', description: 'Foo Bar'}
-]
-
-
-
-export default class SharedEntry extends Component {
+export default class AppEntry extends Component {
+  static navigationOptions = {
+    title: 'Welcome',
+  };
   constructor(props) {
     super (props);
 
     this.state = {};
   }
   render() {
+    const { navigate } = this.props.navigation;
     return(
-      <Login />
+      <View>
+        <Login />
+        <Button
+          onPress={() => navigate('Feed')}
+          title="Go to HomeFeed: FeedList"
+        />
+      </View>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  container:{
-    flex: 1,
-    // justifyContent: 'center',
-    alignItems: 'center'
-  }
+
+export const ScoopAppNavigator = StackNavigator({
+  AppEntry: {screen: AppEntry},
+  Login: {screen: Login},
+  Feed: {screen: FeedList},
 });
