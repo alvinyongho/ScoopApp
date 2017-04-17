@@ -14,7 +14,7 @@ const {
   AccessToken
 } = FBSDK;
 
-import TabNavigator from '../TabNavigator/index.js'
+import ScoopRoot from '../ScoopRoot/index.js'
 
 
 export default class Login extends Component {
@@ -47,7 +47,7 @@ export default class Login extends Component {
 
     if(this.state.loggedIn === true){
       return (
-        <TabNavigator />
+        <ScoopRoot />
       )
     }
     else {

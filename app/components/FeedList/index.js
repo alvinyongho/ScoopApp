@@ -13,17 +13,21 @@ export default class FeedList extends Component {
     this.state = {
       dataSource: ds.cloneWithRows([
         'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin'
-      ])
+      ]),
+
     };
   }
   render() {
-    return(
-      <View style={{paddingTop: 22}}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData}</Text>}
-        />
-      </View>
-    );
+
+      return(
+        <View style={{paddingTop: 22}}>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={(rowData) => <Text>{rowData}</Text>}
+          />
+          
+        </View>
+      );
+
   }
 }
