@@ -4,7 +4,8 @@ import {
   View,
   Text,
   Navigator,
-  TouchableHighlight
+  TouchableHighlight,
+  AsyncStorage
 } from 'react-native';
 
 const FBSDK = require('react-native-fbsdk');
@@ -13,7 +14,7 @@ const {
   AccessToken
 } = FBSDK;
 
-import {ScoopStackNavigator} from '../TabNavigator/index.js'
+import TabNavigator from '../TabNavigator/index.js'
 
 
 export default class Login extends Component {
@@ -24,17 +25,29 @@ export default class Login extends Component {
     };
   }
 
-  componentWillMount() {
+
+  setTokenStorage(){
     AccessToken.getCurrentAccessToken().then(
       (data) => {
-          this.setState({loggedIn: true})
+          if (data){
+            this.setState({loggedIn: true})
+          }
+          else if (!data){
+            this.setState({loggedIn: false})
+          }
+
     })
+  }
+
+  componentWillMount() {
+    // Verifies access token
+    this.setTokenStorage();
   }
   render() {
 
     if(this.state.loggedIn === true){
       return (
-        <ScoopStackNavigator />
+        <TabNavigator />
       )
     }
     else {
@@ -46,24 +59,17 @@ export default class Login extends Component {
               let isAuthenticated;
               if (error) {
                 alert("Login failed with error: " + result.error);
-                isAuthenticated: false
               } else if (result.isCancelled) {
                 alert("Login was cancelled");
-                isAuthenticated: false
               } else {
                 alert("Login was successful with permissions: " + result.grantedPermissions)
-                isAuthenticated: true
               }
-              this.setState({
-                loggedIn: isAuthenticated,
-              });
+              this.setTokenStorage();
             }
           }
           onLogoutFinished={() => {
-            alert("User logged out");
-            isAuthenticated: false;
             this.setState({
-              loggedIn: isAuthenticated,
+              loggedIn: false,
             });
           }}/>
       );
