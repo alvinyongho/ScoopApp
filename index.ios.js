@@ -12,7 +12,9 @@ import {
   View
 } from 'react-native';
 
-import { ScoopAppNavigator } from './app/index.js'
+
+import AppEntry from './app/index.js'
+// import { ScoopAppNavigator } from './app/index.js'
 
 
-AppRegistry.registerComponent('ScoopApp', () => ScoopAppNavigator);
+AppRegistry.registerComponent('ScoopApp', () => AppEntry);
