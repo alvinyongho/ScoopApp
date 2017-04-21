@@ -1,5 +1,5 @@
 import * as FeedlistActions from './feedlist';
 
-export const ActionCreators = Objects.assign({},
+export const ActionCreators = Object.assign({},
   FeedlistActions
 );

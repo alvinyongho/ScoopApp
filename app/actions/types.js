@@ -1,1 +1,2 @@
 export const SET_SEARCHED_SCOOPS = 'SET_SEARCHED_SCOOPS';
+export const ADD_MATCH = 'ADD_MATCH';

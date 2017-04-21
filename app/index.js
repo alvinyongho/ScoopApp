@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {createLogger} from 'redux-logger';
-
 import reducer from './reducers'
+import AppContainer from './containers/AppContainer';
+
 // middleware that logs actions
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
 
@@ -27,21 +21,8 @@ function configureStore(initialState) {
 
 const store = configureStore({})
 
-class AppEntry extends Component {
-  render() {
-    return(
-      <View>
-        <Text>
-        </Text>
-      </View>
-    )
-  }
-}
-
 export const App = () => (
   <Provider store={store}>
-    <AppEntry />
+    <AppContainer />
   </Provider>
 );
-
-// AddTodo = connect()(AddTodo)
