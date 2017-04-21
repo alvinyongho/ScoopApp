@@ -1,9 +1,9 @@
 import  {combineReducers} from 'redux';
-import authReducer from './auth';
+// import authReducer from './auth';
+import * as feedlistReducer from './feedlist';
 
-const scoopAppReducer = combineReducers({
-  auth: authReducer,
-})
-
-
-export default scoopAppReducer;
+// manage states using different reducers
+export default combineReducers(Object.assign(
+  // auth: authReducer,
+  feedlistReducer,
+));

@@ -4,36 +4,32 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  Navigator, TouchableHighlight,
-  Button,
 } from 'react-native';
 
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import {createLogger} from 'redux-logger';
 
-import { Provider, connect } from 'react-redux'
-
-import { StackNavigator } from 'react-navigation';
-// import Login from './components/Login/index.js'
-import FeedList from './components/FeedList/index.js'
-import reducers from './reducers';
-import store from './store';
+const loggerMiddleware = createLogger({predicate: (getState, action) => __DEV__ });
 
 
-import {facebookLogin} from './actions/auth.js'
-import LoginUser from './containers/LoginUser.js'
+function configureStore(initialState) {
+  const enhancer = compose(
+    applyMiddleware(
+      thunkMiddleware,      // API requests/requests with promises
+      loggerMiddleware,
+    ),
+  );
+  return create(reducer, initialState, enhancer)  // enhancer: configuration of store
+}
 
 export default class AppEntry extends Component {
-  constructor(props) {
-    super (props);
-    this.state = {
-    };
-  }
-
   render() {
     return(
-      <Provider store={store}>
-        <LoginUser />
-      </Provider>
+      <View>
+        <Text>Testing123</Text>
+      </View>
     )
   }
 }
