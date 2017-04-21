@@ -4,6 +4,5 @@ import * as feedlistReducer from './feedlist';
 
 // manage states using different reducers
 export default combineReducers(Object.assign(
-  // auth: authReducer,
   feedlistReducer,
 ));
