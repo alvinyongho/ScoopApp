@@ -7,7 +7,7 @@ import {
 import { connect } from 'react-redux';        // handles state and actions
 import { ActionCreators } from '../actions'   // Retrieves all the action creators
 import { bindActionCreators } from 'redux'
-
+import Home from './Home'
 
 class AppContainer extends Component {
   constructor(props) {
@@ -21,24 +21,18 @@ class AppContainer extends Component {
 
   render() {
     return(
-    <View>
-      <Text style={{marginTop: 20}}> Match count: {this.props.matchCount} </Text>
-      <TouchableHighlight onPress={ () => { this.addMatch() }}>
-        <Text>Add Match</Text>
-      </TouchableHighlight>
-    </View>
+      <Home {...this.props}/>
   );
   }
 };
 
 
 // maps action creator calls to a dispatch to update the state
+// Bind actions (dispatcher) to props
 function mapDispatchToProps(dispatch) {
     return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect((state) => {
-  return {
-    matchCount: state.matchCount
-  }
-}, mapDispatchToProps)(AppContainer);
+// maps the state properties to this.props.____
+// which is defined from the return value of the function in connect
+export default connect((state) => { return {} }, mapDispatchToProps)(AppContainer);
