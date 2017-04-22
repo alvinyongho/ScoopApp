@@ -8,9 +8,9 @@ export function fetchMatches(match_attributes){
     console.log(getState());
 
     // Placeholder response object
-    let response = ([{'name': 'Han Solo', 'description': 'Star Wars'},
-                     {'name': 'Forrest Gump', 'description': 'Tom Hanks'},
-                     {'name': 'James Bond', 'description': 'Secret Service Agent'}
+    let response = ([{id: 0, 'name': 'Han Solo', 'description': 'Star Wars'},
+                     {id: 1, 'name': 'Forrest Gump', 'description': 'Tom Hanks'},
+                     {id: 2, 'name': 'James Bond', 'description': 'Secret Service Agent'}
                    ]);
 
     // then
