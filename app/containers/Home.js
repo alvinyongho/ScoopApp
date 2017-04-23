@@ -30,9 +30,12 @@ class Home extends Component{
     // }
   }
 
+  componentWillMount(){
+    this.searchMatches();
+  }
 
   render(){
-    console.log(this.matches())
+    // console.log(this.matches())
     return (
       <View style={{margin: 20}}>
         <View>
@@ -41,7 +44,14 @@ class Home extends Component{
           </TouchableHighlight>
         </View>
         <ScrollView>
-
+          {this.matches().map(match => {
+            // console.log(match.name)
+            return(
+              <View>
+                <Text>{match.name}</Text>
+              </View>
+            );
+            })}
         </ScrollView>
       </View>
 
