@@ -31,7 +31,7 @@ class Home extends Component{
   }
 
   componentWillMount(){
-    this.searchMatches();
+    // this.searchMatches();
   }
 
   render(){

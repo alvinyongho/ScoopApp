@@ -10,6 +10,8 @@
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.3",
     "react-native-fbsdk": "^0.5.0",
+    "react-native-pages": "^0.3.0",
+    "react-native-swiper": "^1.5.4",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.4",
     "react-router-native": "^4.1.1",
