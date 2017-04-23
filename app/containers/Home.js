@@ -47,7 +47,7 @@ class Home extends Component{
           {this.matches().map(match => {
             // console.log(match.name)
             return(
-              <View>
+              <View key={match.id}>
                 <Text>{match.name}</Text>
               </View>
             );

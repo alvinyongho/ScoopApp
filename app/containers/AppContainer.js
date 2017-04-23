@@ -9,19 +9,36 @@ import { ActionCreators } from '../actions'   // Retrieves all the action creato
 import { bindActionCreators } from 'redux'
 import Home from './Home'
 
+import { NativeRouter, Route, Link } from 'react-router-native'
+
+//
+// class HomeWrapper extends Component {
+//   render(){
+//     return(
+//       <Home {...this.props}/>
+//     );
+//   }
+// }
+
 class AppContainer extends Component {
   constructor(props) {
     super(props);
   }
 
-
-  addMatch(){
-    this.props.addMatch(); //action creators and connect method are being pulled into the appcontainer component
-  }
-
   render() {
     return(
-      <Home {...this.props}/>
+      <NativeRouter>
+        <View style={{margin: 20}}>
+        <Link
+            to="/home"
+            >
+              <Text>Home</Text>
+        </Link>
+
+        <Route exact path="/home"  component={() => (<Home {...this.props}/>)}/>
+        </View>
+
+      </NativeRouter>
   );
   }
 };
