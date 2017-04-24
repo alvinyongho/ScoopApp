@@ -22,7 +22,7 @@ import Auth from './Auth'
 class Login extends Component {
   render(){
     return(
-      <Auth />
+      <Auth {...this.props}/>
     );
   }
 }

@@ -22,6 +22,14 @@ export function facebookLogin() {
   };
 }
 
+export function facebookLogout() {
+  return (dispatch) => {
+    dispatch(logout());
+    
+  }
+}
+
+
 // Delay login request to test
 export function loginRequest(){
   return {

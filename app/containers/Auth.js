@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import ReactNative from 'react-native';
 import { bindActionCreators } from 'redux';
-import { facebookLogin } from '../actions/auth';
 import { connect } from 'react-redux';
 import {
   ScrollView,
@@ -23,7 +22,7 @@ const {
 class Auth extends Component{
   onLoginPressed(){
     console.log('logging in with facebook???')
-    this.props.actions.facebookLogin();
+    this.props.facebookLogin();
   }
   componentWillMount(){
   }
@@ -31,7 +30,7 @@ class Auth extends Component{
   render(){
     return(
       <View>
-        <Button title="Login with Facebook" onPress={this.onLoginPressed.bind(this)} />
+        <Button title="Login with Facebook" onPress={() => this.onLoginPressed()} />
       </View>
     );
   }
@@ -40,17 +39,21 @@ class Auth extends Component{
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    facebookLogin: state.facebookLogin
+    loginStatusMessage: state.loginStatusMessage,
+    facebookToken: state.loginStatusMessage,
+    facebookProfile: state.facebookProfile,
+    message: state.message,
+    logoutMessage: state.logoutMessage,
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({ facebookLogin }, dispatch),
-  };
-}
-
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     actions: bindActionCreators({ facebookLogin }, dispatch),
+//   };
+// }
+//
 
 // Connects the state variables to the property variables within
 // the home class
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps)(Auth);

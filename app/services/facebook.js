@@ -29,6 +29,12 @@ export function facebookLoginAPI(){
   });
 }
 
+export function facebookLogoutAPI(){
+  if(AccessToken.getCurrentAccessToken() != null){
+    LoginManager.logOut();
+  }
+}
+
 export function getFacebookInfoAPI() {
   return new Promise((resolve, reject) => {
     const profileInfoCallback = (error, profileInfo) => {
