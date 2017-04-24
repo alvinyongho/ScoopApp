@@ -3,6 +3,7 @@ const images = {
 	welcome2: require('./img/WelcomePages/welcome-2.png'),
 	welcome3: require('./img/WelcomePages/welcome-3.png'),
   welcome4: require('./img/WelcomePages/welcome-4.png'),
+	signInButton: require('./img/Auth/Facebook-sign-in.png'),
 };
 
 export default images;
