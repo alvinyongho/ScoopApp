@@ -15,19 +15,14 @@ import { NativeRouter, Route, Link, Redirect } from 'react-router-native'
 import Home from './Home'
 import WelcomePages from '../components/WelcomePages'
 
+//Login Container
+import Auth from './Auth'
+
 
 class Login extends Component {
   render(){
     return(
-      <View>
-        <Text> Successfully logged in message </Text>
-        <Link
-            to="/home"
-            style={{margin: 20}}
-            >
-              <Text>Go to home</Text>
-        </Link>
-      </View>
+      <Auth />
     );
   }
 }
