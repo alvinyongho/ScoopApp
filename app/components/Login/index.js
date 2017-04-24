@@ -76,31 +76,3 @@ export default class Login extends Component {
     }
   }
 }
-
-
-//
-// navigatorRenderScene(route, navigator) {
-//     _navigator = navigator;
-//     switch (route.id) {
-//       case 'loginElements':
-//         return (
-//           <LoginButton
-//             publishPermissions={["publish_actions"]}
-//             onLoginFinished={
-//               (error, result) => {
-//                 if (error) {
-//                   alert("Login failed with error: " + result.error);
-//                 } else if (result.isCancelled) {
-//                   alert("Login was cancelled");
-//                 } else {
-//                   alert("Login was successful with permissions: " + result.grantedPermissions)
-//                   navigate('ScoopAppNavigator');
-//                 }
-//               }
-//             }
-//             onLogoutFinished={() => alert("User logged out")}/>
-//         );
-//       case 'second':
-//         return (<Text>TODO: SCOOP NAVIGATOR</Text>);
-//     }
-//   }
