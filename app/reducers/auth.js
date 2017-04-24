@@ -1,34 +1,29 @@
 import { combineReducers } from 'redux'
+import * as types from '../actions/types';
 
-import {
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-  LOGOUT
-} from '../actions/auth';
 
-function authReducer(state= [], action){
+function authReducer(state = [], action){
   switch(action.type) {
-    case LOGIN_REQUEST:
+    case types.LOGIN_REQUEST:
       return [
         ...state,
         {
           loginStatusMessage: 'Logging in...',
         }
       ]
-    case LOGIN_SUCCESS:
+    case types.LOGIN_SUCCESS:
       return Object.assign({}, state, {
         facebookToken: action.facebookToken,
         facebookProfile: action.facebookProfile,
       });
-    case LOGIN_FAILURE:
+    case types.LOGIN_FAILURE:
     return [
       ...state,
       {
         message: action.loginError.message,
       }
     ]
-    case LOGOUT:
+    case types.LOGOUT:
     return [
       ...state,
       {

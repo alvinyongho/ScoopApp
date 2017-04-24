@@ -25,7 +25,7 @@ export function facebookLogin() {
 // Delay login request to test
 export function loginRequest(){
   return {
-      type: LOGIN_REQUEST,
+      type: types.LOGIN_REQUEST,
       isFetching: true,
       isAuthenticated: false,
   }
@@ -33,7 +33,7 @@ export function loginRequest(){
 
 export function loginSuccess(facebookToken, facebookProfile){
   return {
-    type: LOGIN_SUCCESS,
+    type: types.LOGIN_SUCCESS,
     isFetching: false,
     isAuthenticated: true,
     facebookToken,
@@ -43,7 +43,7 @@ export function loginSuccess(facebookToken, facebookProfile){
 
 export function loginError(message){
   return {
-    type: LOGIN_FAILURE,
+    type: types.LOGIN_FAILURE,
     isFetching: false,
     isAuthenticated: false,
     message
@@ -52,7 +52,7 @@ export function loginError(message){
 
 export function logout(){
   return {
-    type: LOGOUT,
+    type: types.LOGOUT,
     isAuthenticated: false
   }
 }

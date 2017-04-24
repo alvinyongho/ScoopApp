@@ -17,8 +17,4 @@ export const matchCount = createReducer(0, {
   [types.SET_FOUND_MATCHES](state, action){
     return action.matches_found.length;
   },
-
-  [types.ADD_MATCH](state, action){
-    return state+1;
-  }
 });
