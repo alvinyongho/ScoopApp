@@ -7,6 +7,7 @@ const images = {
 	signInButton: require('./img/Auth/Facebook-sign-in.png'),
 	splashImg: require('./img/Splash/splash-img.png'),
 	scoopLogo: require('./img/Logo/scoop-icon.png'),
+	scoopLogoBlue: require('./img/Logo/scoop-icon-blue.png'),
 };
 
 export default images;
