@@ -21,8 +21,10 @@ const {
 
 class Auth extends Component{
   onLoginPressed(){
-    console.log('logging in with facebook???')
     this.props.facebookLogin();
+  }
+  onLogoutPressed(){
+    this.props.facebookLogout();
   }
   componentWillMount(){
   }
@@ -31,6 +33,7 @@ class Auth extends Component{
     return(
       <View>
         <Button title="Login with Facebook" onPress={() => this.onLoginPressed()} />
+        <Button title="Logout of Facebook" onPress={() => this.onLogoutPressed()} />
       </View>
     );
   }
