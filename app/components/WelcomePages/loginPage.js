@@ -9,6 +9,7 @@ import {
 import Swiper from 'react-native-swiper';
 import { Link } from 'react-router-native';
 import images from '@assets/images';
+import Auth from '../../containers/Auth';
 
 
 export default class LoginPage extends Component {
@@ -36,40 +37,10 @@ export default class LoginPage extends Component {
                 By logging in, you agree to our <B>terms of use</B> and <B>private policy</B>.
               </Text>
             </View>
-            <View style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
 
-              <Link to="/login">
-                <View style={{
-                  width: 55,
-                  height: 40,
-                  justifyContent: 'center', alignItems: 'center',
-                  backgroundColor:'#2db0d3',
-                  borderRadius:3,
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0}}>
-                  <Image source={images.facebookWhiteCircularLogo} style={{width:25, height:25}} />
-                </View>
-              </Link>
+            {/* Login Button */}
+            <Auth />
 
-              <Link to="/login">
-                <View style={{
-                  padding: 10,
-                  width: 180,
-                  height: 40,
-                  backgroundColor:'#3cc8ee',
-                  borderRadius:3,
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                  borderWidth: 0}}>
-                  <Text style={{fontSize:16, textAlign:'center', color:'white', fontFamily:'Avenir-Light'}}>Sign in to Facebook</Text>
-                </View>
-              </Link>
-            </View>
             <View style={{flex: 1}}>
               <Text style={{margin:10, fontSize:11, textAlign:'center', fontFamily:'Avenir-Light'}}>
                 Scoops will never post to your Facebook Account without your

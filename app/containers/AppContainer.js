@@ -34,7 +34,7 @@ class AppContainer extends Component {
   }
 
   render() {
-    const Public = () => (<WelcomePages/>)
+    const Public = () => (<WelcomePages {...this.props}/>)
     const Private = () => (<Home {...this.props}/>)
     // Set the route depending on login state
     const ResultRoute = this.props.isAuthenticated ? (Private) : Public;

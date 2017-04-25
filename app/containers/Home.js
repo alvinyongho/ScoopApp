@@ -8,6 +8,7 @@ import {
   Image,
   TouchableHighlight,
   StyleSheet,
+  Button,
 } from 'react-native';
 
 class Home extends Component{
@@ -21,6 +22,10 @@ class Home extends Component{
           'atrribute2': 'criteria2',
         }
     )
+  }
+
+  onLogoutPressed(){
+    this.props.facebookLogout();
   }
 
   matches(){
@@ -53,6 +58,8 @@ class Home extends Component{
             );
             })}
         </ScrollView>
+        <Button title="Logout of Facebook" onPress={() => this.onLogoutPressed()} />
+
       </View>
 
     );
