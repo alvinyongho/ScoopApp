@@ -9,15 +9,9 @@ import {
   TouchableHighlight,
   StyleSheet,
   Button,
-  Navigator,
 } from 'react-native';
 
-import { Link } from 'react-router-native'
-
-
-import MatchFeed from './MatchFeed'
-
-class Home extends Component{
+class MatchFeed extends Component{
   searchMatches() {
     // due to destruct in app container <Home {...this.props} all the actions
     // from the AppContainer get passed into the Home container
@@ -45,14 +39,23 @@ class Home extends Component{
 
   render(){
     return (
-      <View style={{margin: 20}}>
-        <Link to="/filter">
-          <Text> to filter</Text>
-        </Link>
-
-        <MatchFeed {...this.props}/>
-        <Button title="Logout of Facebook" onPress={() => this.onLogoutPressed()} />
+      <View>
+        <View>
+          <TouchableHighlight onPress={() => this.searchMatches() }>
+            <Text>Fetch Matches</Text>
+          </TouchableHighlight>
+        </View>
+        <ScrollView>
+          {this.matches().map(match => {
+            return(
+              <View key={match.id}>
+                <Text>{match.name}</Text>
+              </View>
+            );
+            })}
+        </ScrollView>
       </View>
+
     );
   }
 }
@@ -67,4 +70,4 @@ function mapStateToProps(state){
 
 // Connects the state variables to the property variables within
 // the home class
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(MatchFeed);

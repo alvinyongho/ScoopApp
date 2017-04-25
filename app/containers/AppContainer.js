@@ -7,25 +7,18 @@ import {
   StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';        // handles state and actions
-import { ActionCreators } from '../actions'   // Retrieves all the action creators
-import { bindActionCreators } from 'redux'
-import { NativeRouter, Route, Link, Redirect } from 'react-router-native'
+import { ActionCreators } from '../actions';   // Retrieves all the action creators
+import { bindActionCreators } from 'redux';
+import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
 
 // Views
-import Home from './Home'
-import WelcomePages from '../components/WelcomePages'
+import Home from './Home';
+import Login from './Login';
+import WelcomePages from '../components/WelcomePages';
+import Filter from './Filter';
 
-//Login Container
-import Auth from './Auth'
 
 
-class Login extends Component {
-  render(){
-    return(
-      <Auth {...this.props}/>
-    );
-  }
-}
 
 
 class AppContainer extends Component {
@@ -42,9 +35,10 @@ class AppContainer extends Component {
     return(
       <NativeRouter>
         <View>
-          <Route exact path="/" component={ResultRoute}/>
-          <Route path="/login" component={() => (<Login {...this.props}/>)}/>
-          <Route path="/home"  component={() => (<Home {...this.props}/>)}/>
+          <Route exact path="/" component={ ResultRoute }/>
+          <Route path="/login"  component={() => (<Login  {...this.props} />)}/>
+          <Route path="/home"   component={() => (<Home   {...this.props} />)}/>
+          <Route path="/filter" component={() => (<Filter {...this.props} />)}/>
         </View>
       </NativeRouter>
 
