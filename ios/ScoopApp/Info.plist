@@ -20,8 +20,28 @@
     <string>1.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>fb1444194795882017</string>
+        </array>
+      </dict>
+    </array>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>FacebookAppID</key>
+    <string>1444194795882017</string>
+    <key>FacebookDisplayName</key>
+    <string>ScoopApp</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSAppTransportSecurity</key>
@@ -51,25 +71,26 @@
     </array>
     <key>UIViewControllerBasedStatusBarAppearance</key>
     <false/>
-    <key>CFBundleURLTypes</key>
+    <key>UIAppFonts</key>
     <array>
-      <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>fb1444194795882017</string>
-        </array>
-      </dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>1444194795882017</string>
-    <key>FacebookDisplayName</key>
-    <string>ScoopApp</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>fbapi</string>
-      <string>fb-messenger-api</string>
-      <string>fbauth2</string>
-      <string>fbshareextension</string>
+      <string>Montserrat-Black.ttf</string>
+      <string>Montserrat-BlackItalic.ttf</string>
+      <string>Montserrat-Bold.ttf</string>
+      <string>Montserrat-BoldItalic.ttf</string>
+      <string>Montserrat-ExtraBold.ttf</string>
+      <string>Montserrat-ExtraBoldItalic.ttf</string>
+      <string>Montserrat-ExtraLight.ttf</string>
+      <string>Montserrat-ExtraLightItalic.ttf</string>
+      <string>Montserrat-Italic.ttf</string>
+      <string>Montserrat-Light.ttf</string>
+      <string>Montserrat-LightItalic.ttf</string>
+      <string>Montserrat-Medium.ttf</string>
+      <string>Montserrat-MediumItalic.ttf</string>
+      <string>Montserrat-Regular.ttf</string>
+      <string>Montserrat-SemiBold.ttf</string>
+      <string>Montserrat-SemiBoldItalic.ttf</string>
+      <string>Montserrat-Thin.ttf</string>
+      <string>Montserrat-ThinItalic.ttf</string>
     </array>
   </dict>
 </plist>

@@ -19,6 +19,7 @@ import java.util.List;
 public class MainApplication extends Application implements ReactApplication {
 
   private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+
   protected static CallbackManager getCallbackManager() {
     return mCallbackManager;
   }
@@ -33,8 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-              new FBSDKPackage(mCallbackManager)
-
+            new FBSDKPackage(mCallbackManager)
       );
     }
   };

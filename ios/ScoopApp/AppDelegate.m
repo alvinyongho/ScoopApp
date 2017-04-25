@@ -11,10 +11,14 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
+
 @implementation AppDelegate
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+  [FBSDKAppEvents activateApp];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -34,17 +38,13 @@
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
+  
+  //Facebook login delegate
   [[FBSDKApplicationDelegate sharedInstance] application:application
                            didFinishLaunchingWithOptions:launchOptions];
+  
   return YES;
 }
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-  [FBSDKAppEvents activateApp];
-}
-
-
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
