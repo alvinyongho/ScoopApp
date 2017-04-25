@@ -34,10 +34,15 @@ class AppContainer extends Component {
   }
 
   render() {
+    const Public = () => (<WelcomePages/>)
+    const Private = () => (<Home {...this.props}/>)
+    // Set the route depending on login state
+    const ResultRoute = this.props.isAuthenticated ? (Private) : Public;
+
     return(
       <NativeRouter>
         <View>
-          <Route exact path="/" component={() => (<WelcomePages/>)}/>
+          <Route exact path="/" component={ResultRoute}/>
           <Route path="/login" component={() => (<Login {...this.props}/>)}/>
           <Route path="/home"  component={() => (<Home {...this.props}/>)}/>
         </View>
@@ -56,4 +61,4 @@ function mapDispatchToProps(dispatch) {
 
 // maps the state properties to this.props.____
 // which is defined from the return value of the function in connect
-export default connect((state) => { return {} }, mapDispatchToProps)(AppContainer);
+export default connect((state) => { return {isAuthenticated: state.isAuthenticated} }, mapDispatchToProps)(AppContainer);
