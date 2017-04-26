@@ -19,8 +19,6 @@ import Filter from './Filter';
 
 
 
-
-
 class AppContainer extends Component {
   constructor(props) {
     super(props);

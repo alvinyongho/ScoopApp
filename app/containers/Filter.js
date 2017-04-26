@@ -6,27 +6,151 @@ import {
   TouchableHighlight,
   StyleSheet,
   ScrollView,
-  Slider
+  Slider,
+  Platform
 } from 'react-native';
 
 import Dimensions from 'Dimensions';
+import MultiSlider from '../components/MultiSlider/MultiSlider'
+import images from '@assets/images';
 
 // var Slider = require('react-native-slider');
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 
-class FilterLabel extends Component {
-  render(){
-    return(
-      <View >
-        <Text style={styles.attributeTitle} >
-          Search Radius
-        </Text>
-        <Text style={styles.statusText} >
-          200 miles
-        </Text>
+const ATTR_TITLE_HEIGHT = 35
+const LEFT_RIGHT_PADDING = 20
+const SLIDER_LENGTH = screenWidth - (2*LEFT_RIGHT_PADDING)
+const SLIDER_HEIGHT = 30
+
+
+class FilterItem extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      leftValue: 0,
+      rightValue: 1,
+      defaultValue: null,   // Default type of slider
+      stepValue: null,
+    };
+  }
+
+  updateState(value){
+    switch(this.props.sliderType){
+      case 'step':
+        console.log('step')
+        console.log(value.newValue)
+        break;
+      case 'multi':
+        console.log('multi')
+        console.log(value.left)
+        console.log(value.right)
+
+        this.setState({
+                        leftValue: value.left,
+                        rightValue: value.right
+                     })
+        break;
+      default:
+        console.log('default')
+        console.log(value.newValue)
+    }
+  }
+
+  render() {
+    const {
+      attributeText,
+      statusText,
+      attrLeftText,
+      attrRightText,
+      attrMidText,
+      sliderType,
+      disabled,
+      stepAmount,
+      trueMin,
+      trueMax,
+      ...other,
+    } = this.props;
+
+
+    let slider = null;
+    if (sliderType === 'multi'){
+      slider =
+      <View style={styles.sliderContainer}>
+              <MultiSlider
+                 trackWidth = {SLIDER_LENGTH}
+                 defaultTrackColor = {'#EFDAC6'}
+                 leftThumbColor = {'#ECA45C'}
+                 rightThumbColor = {'#ECA45C'}
+                 rangeColor = {'#ECA45C'}
+                 leftValue = {this.state.leftValue}
+                 rightValue = {this.state.rightValue}
+
+                 onLeftValueChange = {(leftValue) =>
+                   this.updateState({left: leftValue,
+                                     right: this.state.rightValue})}
+                 onRightValueChange = {(rightValue) =>
+                   this.updateState({left: this.state.leftValue,
+                                     right: rightValue})}
+               />
+
       </View>
+    }
+    if (sliderType === 'step') {
+      slider = <Slider step={this.props.stepAmount}
+                  trackImage={images.sliderSnapTrack}
+                  thumbImage={images.sliderThumb}
+                  thumbTintColor={'#ECA45C'}
+                  onValueChange = {(newValue) => this.updateState({newValue})}
+                  style={{marginLeft:20, marginRight:20}} />
+    } if(sliderType === 'default' ){
+      slider = <Slider
+                  trackImage={images.sliderTrack}
+                  thumbImage={images.sliderThumb}
+                  thumbTintColor={'#ECA45C'}
+                  onValueChange = {(newValue) => this.updateState({newValue})}
+                  style={{marginLeft:20, marginRight:20}} />
+    }
+
+
+    return(
+      <View style={{flexDirection: 'column', paddingTop:15, backgroundColor:'white'}}>
+        <View style={{width: screenWidth, height: ATTR_TITLE_HEIGHT}}>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={[styles.attrTitleContainer, styles.hasLeftPadding]}>
+              <Text style={[{textAlign:'left'}, styles.attrTitleText]}>{this.props.attributeText}</Text>
+            </View>
+            <View style={[styles.attrTitleContainer, styles.hasRightPadding]}>
+              <Text style={[{textAlign:'right'}, styles.attrTitleText, styles.grayText]}>{this.props.statusText}</Text>
+            </View>
+          </View>
+        </View>
+
+        {slider}
+
+        <View style={{width: screenWidth, height: 30}}>
+          <View style={styles.attrValBottomBorder}>
+            {attrLeftText &&
+              <View style={styles.attrValueContainer}>
+                <Text style={[styles.attrValueText, styles.hasLeftPadding, {textAlign:'left'}, ]}>{this.props.attrLeftText}</Text>
+              </View>
+            }
+            {attrMidText &&
+              <View style={styles.attrValueContainer}>
+                <Text style={[styles.attrValueText, {textAlign:'center'}]}>{this.props.attrMidText}</Text>
+              </View>
+            }
+            {attrRightText &&
+              <View style={styles.attrValueContainer}>
+                <Text style={[styles.attrValueText, styles.hasRightPadding, {textAlign:'right'}]}>{this.props.attrRightText}</Text>
+              </View>
+            }
+          </View>
+        </View>
+
+      </View>
+
     );
   }
 }
@@ -35,65 +159,95 @@ class FilterLabel extends Component {
 export default class Filter extends Component {
   render() {
     return(
-      <View style={{flex: 1, flexDirection: 'column'}}>
+      <View>
+      <FilterItem
+        attributeText='Search Radius'
+        statusText='200 miles'
+        sliderType='default'
+      />
+      <FilterItem
+        attributeText='Age Range'
+        statusText='18 - 99 years'
+        trueMin={18}
+        trueMax={99}
+        sliderType='multi'
+      />
+      <FilterItem
+        attributeText='Height'
+        statusText='30 - 80'
+        sliderType='multi'
+      />
+      <FilterItem
+        attributeText='I Am Looking For'
+        showAttrLeft='true'
+        sliderType='multi'
 
-        <View style={{width: screenWidth, height: 30}}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 1, width: 50, height: 30, backgroundColor: 'powderblue', padding: 5, paddingLeft:25}}>
-              <Text style={{textAlign:'left'}}>attributeTitle</Text>
-            </View>
-            <View style={{flex: 1, width: 50, height: 30, backgroundColor: 'skyblue', padding: 5, paddingRight:25}}>
-              <Text style={{textAlign:'right'}}>statusText</Text>
-            </View>
-          </View>
-        </View>
+        attrLeftText='Relationship'
+        attrRightText='Friendship'
+      />
+      <FilterItem
+        attributeText='I Am Interested In'
+        statusText='200 miles'
+        attrLeftText='Men'
+        attrMidText='Both'
+        attrRightText='Women'
 
+        sliderType='step'
+        stepAmount={.5}
 
-        <View style={{width: screenWidth, height: 30, backgroundColor: 'steelblue', justifyContent: 'center', padding: 10}}>
-          <Slider style={styles.slider} />
-        </View>
-
-        <View style={{width: screenWidth, height: 30}}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 1, width: 50, height: 30, backgroundColor: 'powderblue', padding: 5, paddingLeft:25}}>
-              <Text style={{textAlign:'left'}}>Left</Text>
-            </View>
-            <View style={{flex: 1, width: 50, height: 30, backgroundColor: 'steelblue', padding: 5,}}>
-              <Text style={{textAlign:'center'}}>Middle</Text>
-            </View>
-            <View style={{flex: 1, width: 50, height: 30, backgroundColor: 'skyblue', padding: 5, paddingRight:25}}>
-              <Text style={{textAlign:'right'}}>Right</Text>
-            </View>
-          </View>
-        </View>
-
+      />
       </View>
-
     );
   }
 }
 
 
 var styles = StyleSheet.create({
-  slider: {
-    margin: 0,
-    backgroundColor: 'skyblue',
+  attrTitleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    height: ATTR_TITLE_HEIGHT
   },
-  statusText: {
-    fontSize: 14,
-    textAlign: 'right',
-    fontWeight: '100',
-    margin: 10,
-    height:50,
-    backgroundColor: 'powderblue'
-  },
-  attributeTitle: {
-    fontSize: 14,
-    textAlign: 'left',
-    fontWeight: '500',
-    margin: 10,
-    height:50,
-    backgroundColor: 'powderblue'
 
+  hasLeftPadding:{
+    paddingLeft:LEFT_RIGHT_PADDING
   },
+
+  hasRightPadding:{
+    paddingRight:LEFT_RIGHT_PADDING
+  },
+
+  attrTitleText: {
+    fontSize: 18,
+    fontFamily: 'Avenir-Light'
+  },
+
+  attrValueContainer:{
+    flex: 1,
+    height: 30,
+  },
+
+  attrValBottomBorder:{
+    flex: 1,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#D1D1D1'
+  },
+
+  attrValueText:{
+    fontSize:14,
+    fontFamily: 'Avenir-Light',
+    color: '#474747',
+  },
+
+  grayText: {
+    color: '#474747',
+  },
+
+  sliderContainer: {
+    width: screenWidth,
+    height: SLIDER_HEIGHT,
+    alignItems:'center',
+    justifyContent: 'center'
+  }
 });

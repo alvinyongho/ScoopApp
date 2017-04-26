@@ -8,6 +8,9 @@ const images = {
 	splashImg: require('./img/Splash/splash-img.png'),
 	scoopLogo: require('./img/Logo/scoop-icon.png'),
 	scoopLogoBlue: require('./img/Logo/scoop-icon-blue.png'),
+	sliderThumb: require('./img/Slider/ThumbImage.png'),
+	sliderTrack: require('./img/Slider/Track.png'),
+	sliderSnapTrack: require('./img/Slider/TrackSnapBg.png'),
 };
 
 export default images;
