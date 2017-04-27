@@ -160,46 +160,57 @@ class FilterItem extends Component{
 
 
 export default class Filter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {filterSettings: []};
+  }
+
+  updateFilterSetting(filter) {
+    var filters = this.state.filterSettings;
+    contacts.push(filter);
+    this.setState({filterSettings: filters});
+  }
+
   render() {
     return(
-      <View>
-      <NavigationBar leftNavButtonText="Cancel" rightNavButtonText="Save"/>
-      <ScrollView>
-        <FilterItem
-          attributeText='Search Radius'
-          statusText='200 miles'
-          sliderType='default'
-        />
-        <FilterItem
-          attributeText='Age Range'
-          statusText='18 - 99 years'
-          trueMin={18}
-          trueMax={99}
-          sliderType='multi'
-        />
-        <FilterItem
-          attributeText='Height'
-          statusText='30 - 80'
-          sliderType='multi'
-        />
-        <FilterItem
-          attributeText='I Am Looking For'
-          showAttrLeft='true'
-          sliderType='multi'
+      <View style={{backgroundColor:'#E6E6E6'}}>
+        <NavigationBar leftNavButtonText="Cancel" rightNavButtonText="Save"/>
+        <ScrollView style={{height:screenHeight}}>
+          <FilterItem
+            attributeText='Search Radius'
+            statusText='200 miles'
+            sliderType='default'
+          />
+          <FilterItem
+            attributeText='Age Range'
+            statusText='18 - 99 years'
+            trueMin={18}
+            trueMax={99}
+            sliderType='multi'
+          />
+          <FilterItem
+            attributeText='Height'
+            statusText='3&#39;0&#34; - 8&#39;0&#34;'
+            sliderType='multi'
+          />
+          <FilterItem
+            attributeText='I Am Looking For'
+            showAttrLeft='true'
+            sliderType='multi'
 
-          attrLeftText='Relationship'
-          attrRightText='Friendship'
-        />
-        <FilterItem
-          attributeText='I Am Interested In'
-          statusText='200 miles'
-          attrLeftText='Men'
-          attrMidText='Both'
-          attrRightText='Women'
-          sliderType='step'
-          stepAmount={.5}
-        />
-      </ScrollView>
+            attrLeftText='Relationship'
+            attrRightText='Friendship'
+          />
+          <FilterItem
+            attributeText='I Am Interested In'
+            statusText='200 miles'
+            attrLeftText='Men'
+            attrMidText='Both'
+            attrRightText='Women'
+            sliderType='step'
+            stepAmount={.5}
+          />
+        </ScrollView>
       </View>
     );
   }
