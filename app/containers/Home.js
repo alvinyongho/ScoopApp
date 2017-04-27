@@ -13,8 +13,6 @@ import {
 } from 'react-native';
 
 import { Link } from 'react-router-native'
-
-
 import MatchFeed from './MatchFeed'
 
 class Home extends Component{

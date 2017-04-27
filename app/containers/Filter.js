@@ -7,12 +7,15 @@ import {
   StyleSheet,
   ScrollView,
   Slider,
-  Platform
+  Platform,
+  Image
 } from 'react-native';
 
 import Dimensions from 'Dimensions';
 import MultiSlider from '../components/MultiSlider/MultiSlider'
 import images from '@assets/images';
+import NavigationBar from '../components/NavigationBar';
+
 
 // var Slider = require('react-native-slider');
 const screenWidth = Dimensions.get('window').width;
@@ -160,42 +163,43 @@ export default class Filter extends Component {
   render() {
     return(
       <View>
-      <FilterItem
-        attributeText='Search Radius'
-        statusText='200 miles'
-        sliderType='default'
-      />
-      <FilterItem
-        attributeText='Age Range'
-        statusText='18 - 99 years'
-        trueMin={18}
-        trueMax={99}
-        sliderType='multi'
-      />
-      <FilterItem
-        attributeText='Height'
-        statusText='30 - 80'
-        sliderType='multi'
-      />
-      <FilterItem
-        attributeText='I Am Looking For'
-        showAttrLeft='true'
-        sliderType='multi'
+      <NavigationBar leftNavButtonText="Cancel" rightNavButtonText="Save"/>
+      <ScrollView>
+        <FilterItem
+          attributeText='Search Radius'
+          statusText='200 miles'
+          sliderType='default'
+        />
+        <FilterItem
+          attributeText='Age Range'
+          statusText='18 - 99 years'
+          trueMin={18}
+          trueMax={99}
+          sliderType='multi'
+        />
+        <FilterItem
+          attributeText='Height'
+          statusText='30 - 80'
+          sliderType='multi'
+        />
+        <FilterItem
+          attributeText='I Am Looking For'
+          showAttrLeft='true'
+          sliderType='multi'
 
-        attrLeftText='Relationship'
-        attrRightText='Friendship'
-      />
-      <FilterItem
-        attributeText='I Am Interested In'
-        statusText='200 miles'
-        attrLeftText='Men'
-        attrMidText='Both'
-        attrRightText='Women'
-
-        sliderType='step'
-        stepAmount={.5}
-
-      />
+          attrLeftText='Relationship'
+          attrRightText='Friendship'
+        />
+        <FilterItem
+          attributeText='I Am Interested In'
+          statusText='200 miles'
+          attrLeftText='Men'
+          attrMidText='Both'
+          attrRightText='Women'
+          sliderType='step'
+          stepAmount={.5}
+        />
+      </ScrollView>
       </View>
     );
   }
