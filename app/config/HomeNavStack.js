@@ -5,7 +5,6 @@ import {
   View,
   Image,
   Button,
-  StatusBar,
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
