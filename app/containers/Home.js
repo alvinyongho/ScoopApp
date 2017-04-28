@@ -50,6 +50,10 @@ class Home extends Component{
 
         <MatchFeed {...this.props}/>
         <Button title="Logout of Facebook" onPress={() => this.onLogoutPressed()} />
+
+        <Link to="/test">
+          <Text> TEst</Text>
+        </Link>
       </View>
     );
   }

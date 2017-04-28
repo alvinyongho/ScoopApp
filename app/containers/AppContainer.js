@@ -13,11 +13,11 @@ import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
 
 // Views
 import Home from './Home';
-import Login from './Login';
 import WelcomePages from '../components/WelcomePages';
 import Filter from './Filter';
 
-
+import {TabStack} from '../config/TabStack';
+import {HomeNavStack} from '../config/HomeNavStack';
 
 class AppContainer extends Component {
   constructor(props) {
@@ -32,15 +32,14 @@ class AppContainer extends Component {
 
     return(
       <NativeRouter>
-        <View>
-          <Route exact path="/" component={ ResultRoute }/>
-          <Route path="/login"  component={() => (<Login  {...this.props} />)}/>
-          <Route path="/home"   component={() => (<Home   {...this.props} />)}/>
+        <View style={{flex:1}}>
+          <Route path="/" component={TabStack}/>
+
+          {/*<Route exact path="/" component={ ResultRoute }/> */}
           <Route path="/filter" component={() => (<Filter {...this.props} />)}/>
         </View>
       </NativeRouter>
-
-  );
+    );
   }
 };
 

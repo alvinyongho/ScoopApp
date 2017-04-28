@@ -3,12 +3,13 @@ import {
   AppRegistry,
   Text,
   View,
+  Image,
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
-class HomeScreen extends React.Component {
+export class MainScreen extends React.Component {
   static navigationOptions = {
-    title: 'Welcome',
+    title: 'ScoopLogoHere',
   };
   constructor(props) {
     super (props);
@@ -18,12 +19,12 @@ class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return(
       <View>
-        <Text> Test </Text>
+        <Text> Profile MainScreen here </Text>
       </View>
     )
   }
 }
 
-export const HomeNavigator = StackNavigator({
-  Home: { screen: HomeScreen },
+export const ProfileNavStack = StackNavigator({
+  Main: { screen: MainScreen },
 });
