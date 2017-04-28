@@ -5,6 +5,7 @@ import {
   Button,
   TouchableHighlight,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';        // handles state and actions
 import { ActionCreators } from '../actions';   // Retrieves all the action creators
@@ -33,6 +34,10 @@ class AppContainer extends Component {
     return(
       <NativeRouter>
         <View style={{flex:1}}>
+          <StatusBar
+           backgroundColor="blue"
+           barStyle="light-content"
+          />
           <Route exact path="/" component={ ResultRoute }/>
           <Route path="/filter" component={() => (<Filter {...this.props} />)}/>
         </View>

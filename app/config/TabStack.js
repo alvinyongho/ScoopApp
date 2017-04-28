@@ -4,6 +4,7 @@ import {
   View,
   Image,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import { HomeNavStack } from './HomeNavStack';

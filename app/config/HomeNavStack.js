@@ -5,6 +5,7 @@ import {
   View,
   Image,
   Button,
+  StatusBar,
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
@@ -14,6 +15,8 @@ export class MainScreen extends React.Component {
     headerRight: <Button title="Filters"
                        onPress={() => navigation.navigate('Filters')}
                  />,
+    headerStyle: {backgroundColor: '#54C9EC',},
+    headerTitleStyle: {color:'white'}
   });
   constructor(props) {
     super (props);
@@ -30,13 +33,16 @@ export class MainScreen extends React.Component {
 }
 
 
-
 export class FiltersScreen extends React.Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'ScoopLogoHere',
-    headerLeft: <Button title="Cancel" />,
-    headerRight: <Button title="Save" />,
-  };
+    headerLeft: <Button title="Cancel"
+                        onPress={() => navigation.goBack()}
+                />,
+    headerRight: <Button title="Save"
+                        onPress={() => navigation.goBack()}
+                />,
+  });
   constructor(props) {
     super (props);
     this.state = {};
