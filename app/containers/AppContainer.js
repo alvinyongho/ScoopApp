@@ -26,16 +26,14 @@ class AppContainer extends Component {
 
   render() {
     const Public = () => (<WelcomePages {...this.props}/>)
-    const Private = () => (<Home {...this.props}/>)
+    const Private = () => (<TabStack {...this.props}/>)
     // Set the route depending on login state
     const ResultRoute = this.props.isAuthenticated ? (Private) : Public;
 
     return(
       <NativeRouter>
         <View style={{flex:1}}>
-          <Route path="/" component={TabStack}/>
-
-          {/*<Route exact path="/" component={ ResultRoute }/> */}
+          <Route exact path="/" component={ ResultRoute }/>
           <Route path="/filter" component={() => (<Filter {...this.props} />)}/>
         </View>
       </NativeRouter>

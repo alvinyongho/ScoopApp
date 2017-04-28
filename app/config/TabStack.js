@@ -13,6 +13,7 @@ import { MessageNavStack } from './MessageNavStack';
 class HomeTabNavigator extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Home',
+    tabBarPosition: 'bottom',
   };
 
   render() {

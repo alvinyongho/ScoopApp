@@ -14,7 +14,7 @@ import {
 import Dimensions from 'Dimensions';
 import MultiSlider from '../components/MultiSlider/MultiSlider'
 import images from '@assets/images';
-import NavigationBar from '../components/NavigationBar';
+// import NavigationBar from '../components/NavigationBar';
 
 
 // var Slider = require('react-native-slider');
@@ -174,7 +174,6 @@ export default class Filter extends Component {
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
-        <NavigationBar leftNavButtonText="Cancel" rightNavButtonText="Save"/>
         <ScrollView style={{height:screenHeight}}>
           <FilterItem
             attributeText='Search Radius'
