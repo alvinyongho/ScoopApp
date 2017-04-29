@@ -13,14 +13,10 @@ const onBoardingState = { tutorialEnabled: true };
 export function homeNav(state = initialNavState, action){
   switch (action.type) {
     case NavigationActions.BACK:
-      console.log('going back')
       return HomeNavigator.router.getStateForAction(NavigationActions.back(), state);
-
     case 'Profile':
       return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Profile' }), state);
-      
     default:
-
       return HomeNavigator.router.getStateForAction(action, state);
   }
 }
