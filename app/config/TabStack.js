@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 import { HomeNavStack } from './HomeNavStack';
-import { ProfileNavStack } from './ProfileNavStack';
+import { MyProfileNavStack } from './MyProfileNavStack';
 import { MessageNavStack } from './MessageNavStack';
 
 class HomeTabNavigator extends React.Component {
@@ -37,14 +37,14 @@ class MessageTabNavigator extends React.Component {
 }
 
 
-class ProfileTabNavigator extends React.Component {
+class MyProfileTabNavigator extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Profile',
   };
 
   render() {
     return (
-      <ProfileNavStack />
+      <MyProfileNavStack />
     );
   }
 }
@@ -65,8 +65,8 @@ export const TabStack = TabNavigator({
   Message: {
     screen: MessageTabNavigator,
   },
-  Profile: {
-    screen: ProfileTabNavigator,
+  MyProfile: {
+    screen: MyProfileTabNavigator,
   },
 }, {
   tabBarOptions: {

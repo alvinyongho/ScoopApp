@@ -12,7 +12,6 @@ import {
   Button,
 } from 'react-native';
 
-import Swipeout from 'react-native-swipeout'
 import Swiper from 'react-native-page-swiper';
 
 
@@ -72,6 +71,10 @@ class MatchFeed extends Component{
     this.searchMatches();
   }
 
+  _onPressProfile(){
+    console.log('pressed a profile')
+  }
+
   render(){
     return (
       <View style={{marginTop: 0, marginBottom: 45}}>
@@ -105,10 +108,13 @@ class MatchFeed extends Component{
                 </View>
 
                 <View style={styles.profileSlide}>
-                  <View style={{flex:1, margin: 15, backgroundColor: 'white', borderRadius: 5}}>
-                    <View style={{flex:1, margin: 15, backgroundColor: 'gray', justifyContent:'flex-end'}}>
-                      <Text style={styles.text}>{match.name}</Text>
-                    </View>
+                  <View style={{flex:1, marginTop: 15, marginLeft:15, marginRight:15,  backgroundColor: 'white', borderRadius: 5}}>
+                    <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
+                      <View>
+                      <Text style={styles.profileName}>{match.name}</Text>
+                      <Text style={styles.profileDescription}>{match.description}</Text>
+                      </View>
+                    </TouchableHighlight>
                   </View>
                 </View>
 
@@ -117,12 +123,9 @@ class MatchFeed extends Component{
                 </View>
               </Swiper>
 
-
               </View>
             );
             })}
-
-
 
         </ScrollView>
       </View>
@@ -132,22 +135,24 @@ class MatchFeed extends Component{
 }
 
 
+const CELL_SIZE = 268
+
 var styles = StyleSheet.create({
   wrapper: {
 
   },
   interestedSlide: {
-    height: 275,
+    height: CELL_SIZE,
     justifyContent: 'center',
     alignItems: 'flex-end',
     backgroundColor: '#9DD6EB',
   },
   profileSlide: {
-    height: 275,
+    height: CELL_SIZE,
     flex:1
   },
   notInterestedSlide: {
-    height: 275,
+    height: CELL_SIZE,
 
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -155,9 +160,20 @@ var styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '100',
   },
+  profileName: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  profileDescription: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '200',
+  }
+
 })
 
 // Match state to props which allows us to access actions

@@ -11,6 +11,7 @@ import Button from 'react-native-button';
 // Containers
 import Home from '../containers/Home';
 import Filter from '../containers/Filter';
+import ProfileDetail from '../containers/ProfileDetail'
 
 // Logo
 import images from '@assets/images';
@@ -32,15 +33,14 @@ class MainScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return(
-      <Home/>
+      <Home />
     )
   }
 }
 
-
-export class FiltersScreen extends React.Component {
+export class ProfileDetailScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'ScoopLogoHere',
+    title: 'Scoop',
     headerLeft: <Button onPress={() => navigation.goBack()}
                            style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}
                          >
@@ -50,9 +50,38 @@ export class FiltersScreen extends React.Component {
                            Cancel
                          </Text>
                 </Button>,
+    headerStyle: {backgroundColor: '#54C9EC',},
+    headerTitleStyle: {color:'white', alignSelf: 'center'},
+  });
+
+  constructor(props) {
+    super (props);
+    this.state = {};
+  }
+  render() {
+    const { navigate } = this.props.navigation;
+    return(
+      <View>
+        <ProfileDetail />
+      </View>
+    )
+  }
+}
+
+
+export class FiltersScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: 'ScoopLogoHere',
+    headerLeft: <Button onPress={() => navigation.goBack()}
+                           style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}>
+                         <Text style={{marginLeft: 20,
+                           fontFamily:'Avenir-Light',
+                           fontSize: 18, color:'white'}}>
+                           Cancel
+                         </Text>
+                </Button>,
     headerRight: <Button onPress={() => navigation.goBack()}
-                           style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}
-                         >
+                           style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}>
                          <Text style={{marginRight: 20,
                            fontFamily:'Avenir-Light',
                            fontSize: 18, color:'white'}}>
@@ -77,7 +106,11 @@ export class FiltersScreen extends React.Component {
   }
 }
 
+
+
+
 export const HomeNavStack = StackNavigator({
   Main: { screen: MainScreen },
   Filters: {screen: FiltersScreen},
+  ProfileDetail: {screen: ProfileDetailScreen},
 });
