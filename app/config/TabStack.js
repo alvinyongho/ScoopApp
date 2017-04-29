@@ -73,4 +73,5 @@ export const TabStack = TabNavigator({
     activeTintColor: '#e91e63',
   },
   tabBarPosition: 'bottom',
+  swipeEnabled: false,
 });

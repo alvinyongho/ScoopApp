@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import Swipeout from 'react-native-swipeout'
-import Swiper from 'react-native-swiper';
+import Swiper from 'react-native-page-swiper';
 
 
 var rightBtns = [
@@ -63,13 +63,18 @@ class MatchFeed extends Component{
       .map( key => this.props.foundMatches[key])
   }
 
+  componentDidMount(){
+    // setTimeout(()=>this.forceUpdate(), 1000);
+    // this.forceUpdate();
+  }
+
   componentWillMount(){
     this.searchMatches();
   }
 
   render(){
     return (
-      <View>
+      <View style={{marginTop: 0, marginBottom: 45}}>
         {/*
         <View>
           <TouchableHighlight onPress={() => this.searchMatches() }>
@@ -92,17 +97,23 @@ class MatchFeed extends Component{
         }>
           {this.matches().map(match => {
             return(
-              <View key={match.id} style={{margin: 0, marginBottom:0}}>
+              <View key={match.id}>
 
-              <Swiper height={300}>
-                <View>
-                  <Text>Hello Swiper!</Text>
+              <Swiper style={styles.wrapper} index={1} pager={false}>
+                <View style={styles.interestedSlide}>
+                  <Text style={styles.text}>Interested</Text>
                 </View>
-                <View>
-                  <Text>Beautiful!</Text>
+
+                <View style={styles.profileSlide}>
+                  <View style={{flex:1, margin: 15, backgroundColor: 'white', borderRadius: 5}}>
+                    <View style={{flex:1, margin: 15, backgroundColor: 'gray', justifyContent:'flex-end'}}>
+                      <Text style={styles.text}>{match.name}</Text>
+                    </View>
+                  </View>
                 </View>
-                <View>
-                  <Text>And simple</Text>
+
+                <View style={styles.notInterestedSlide}>
+                  <Text style={styles.text}>Not Interested</Text>
                 </View>
               </Swiper>
 
@@ -119,6 +130,35 @@ class MatchFeed extends Component{
     );
   }
 }
+
+
+var styles = StyleSheet.create({
+  wrapper: {
+
+  },
+  interestedSlide: {
+    height: 275,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    backgroundColor: '#9DD6EB',
+  },
+  profileSlide: {
+    height: 275,
+    flex:1
+  },
+  notInterestedSlide: {
+    height: 275,
+
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    backgroundColor: '#92BBD9',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 28,
+    fontWeight: '100',
+  },
+})
 
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
