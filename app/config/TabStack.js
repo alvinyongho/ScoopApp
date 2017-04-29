@@ -10,6 +10,9 @@ import { HomeNavStack } from './HomeNavStack';
 import { MyProfileNavStack } from './MyProfileNavStack';
 import { MessageNavStack } from './MessageNavStack';
 
+
+import HomeWithNavigationState from '../navigators/HomeNavigator';
+
 class HomeTabNavigator extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Home',
@@ -17,7 +20,7 @@ class HomeTabNavigator extends React.Component {
 
   render() {
     return (
-      <HomeNavStack />
+      <HomeWithNavigationState />
     );
   }
 }
