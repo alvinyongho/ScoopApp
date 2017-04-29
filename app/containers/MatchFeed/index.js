@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import Swipeout from 'react-native-swipeout'
+import Swiper from 'react-native-swiper';
 
 
 var rightBtns = [
@@ -93,14 +94,17 @@ class MatchFeed extends Component{
             return(
               <View key={match.id} style={{margin: 0, marginBottom:0}}>
 
-                <Swipeout right={rightBtns} left={leftBtns} style={{backgroundColor:'transparent'}}>
-                  <View style={{margin: 15, padding: 10, borderRadius:5, backgroundColor: 'white'}}>
-                    <View style={{flex:1, alignItems:'flex-start',
-        justifyContent:'flex-end', height:200, margin:2, backgroundColor: 'gray'}}>
-                      <Text style={{color:'white', margin:10}}>{match.name}</Text>
-                    </View>
-                  </View>
-                </Swipeout>
+                <Swiper height={250} horizontal={true}>
+                        <View>
+                          <Text>Hello Swiper</Text>
+                        </View>
+                        <View>
+                          <Text>Beautiful</Text>
+                        </View>
+                        <View>
+                          <Text>And simple</Text>
+                        </View>
+                </Swiper>
 
 
               </View>
