@@ -94,17 +94,17 @@ class MatchFeed extends Component{
             return(
               <View key={match.id} style={{margin: 0, marginBottom:0}}>
 
-                <Swiper height={250} horizontal={true}>
-                        <View>
-                          <Text>Hello Swiper</Text>
-                        </View>
-                        <View>
-                          <Text>Beautiful</Text>
-                        </View>
-                        <View>
-                          <Text>And simple</Text>
-                        </View>
-                </Swiper>
+              <Swiper height={300}>
+                <View>
+                  <Text>Hello Swiper!</Text>
+                </View>
+                <View>
+                  <Text>Beautiful!</Text>
+                </View>
+                <View>
+                  <Text>And simple</Text>
+                </View>
+              </Swiper>
 
 
               </View>
