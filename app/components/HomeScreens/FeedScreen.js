@@ -1,8 +1,17 @@
-import React, { PropTypes } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import React, { PropTypes, Component } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+
+import Button from 'react-native-button';
+import images from '@assets/images';
+
+import Home from '../../containers/Home';
+
+import { bindActionCreators } from 'redux';
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -13,28 +22,39 @@ const styles = StyleSheet.create({
   },
 });
 
-const FeedScreen = ({ dispatch }) => (
-  <View style={styles.container}>
-    <Text> Home Feed Would be here </Text>
 
-    <Button
-        onPress={() => dispatch(NavigationActions.navigate({ routeName: 'Profile' }))}
-        title="Profile"
-      />
-  </View>
-);
+class FeedScreen extends Component{
+  static navigationOptions = ({navigation}) => ({
+    title: 'Scoop',
+    headerRight: <Button onPress={() => navigation.navigate('Filter')}>
+                         <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
+                </Button>,
+    headerStyle: {backgroundColor: '#54C9EC',},
+    headerTitleStyle: {color: 'white', alignSelf:'center'}
+  });
 
-FeedScreen.navigationOptions = {
-  title: 'Scoop Feed Screen',
-};
+  render() {
+    return(
+      <Home />
+    )
+  }
+}
 
+// TODO: Remove this reference:
+// <View>
+//   <Button onPress={() => this.props.filter()}>
+//     <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
+//   </Button>
+// </View>
 
-
-FeedScreen.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
 
 const mapStateToProps = state => ({
+
 });
 
-export default connect(mapStateToProps)(FeedScreen);
+const mapDispatchToProps = dispatch => ({
+  filter: () => dispatch(NavigationActions.navigate({ routeName: 'Filter' })),
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedScreen);

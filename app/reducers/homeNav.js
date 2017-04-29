@@ -16,6 +16,10 @@ export function homeNav(state = initialNavState, action){
       return HomeNavigator.router.getStateForAction(NavigationActions.back(), state);
     case 'Profile':
       return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Profile' }), state);
+    case 'Filter':
+      return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Filter' }), state);
+    case 'Feed':
+      return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Feed' }), state);
     default:
       return HomeNavigator.router.getStateForAction(action, state);
   }

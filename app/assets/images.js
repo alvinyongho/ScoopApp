@@ -11,6 +11,7 @@ const images = {
 	sliderThumb: require('./img/Slider/ThumbImage.png'),
 	sliderTrack: require('./img/Slider/Track.png'),
 	sliderSnapTrack: require('./img/Slider/TrackSnapBg.png'),
+	sampleIU: require('./img/HomeFeed/iu.jpg'),
 };
 
 export default images;
