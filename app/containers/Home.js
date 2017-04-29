@@ -48,7 +48,7 @@ class Home extends Component{
 
   render(){
     return (
-      <View style={{margin: 20}}>
+      <View>
 
         <MatchFeed {...this.props}/>
         <Button title="Logout of Facebook" onPress={() => this.onLogoutPressed()} />

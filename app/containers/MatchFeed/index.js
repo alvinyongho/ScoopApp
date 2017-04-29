@@ -7,11 +7,44 @@ import {
   View,
   Image,
   TouchableHighlight,
+  RefreshControl,
   StyleSheet,
   Button,
 } from 'react-native';
 
+import Swipeout from 'react-native-swipeout'
+
+
+var rightBtns = [
+  {
+    text: 'Button'
+  }
+]
+var leftBtns = [
+  {
+    text: 'Button'
+  }
+]
+
+
 class MatchFeed extends Component{
+
+  state = {
+    isRefreshing: false,
+  };
+
+  _onRefresh = () => {
+    this.setState({isRefreshing: true});
+    setTimeout(() => {
+      // prepend 10 items
+      this.searchMatches();
+
+      this.setState({
+        isRefreshing: false,
+      });
+    }, 3000);
+  };
+
   searchMatches() {
     // due to destruct in app container <Home {...this.props} all the actions
     // from the AppContainer get passed into the Home container
@@ -22,10 +55,6 @@ class MatchFeed extends Component{
           'atrribute2': 'criteria2',
         }
     )
-  }
-
-  onLogoutPressed(){
-    this.props.facebookLogout();
   }
 
   matches(){
@@ -40,19 +69,46 @@ class MatchFeed extends Component{
   render(){
     return (
       <View>
+        {/*
         <View>
           <TouchableHighlight onPress={() => this.searchMatches() }>
             <Text>Fetch Matches</Text>
           </TouchableHighlight>
+
         </View>
-        <ScrollView>
+        */}
+        <ScrollView
+          refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this._onRefresh}
+            tintColor='#D1D1D1'
+            title='loading...'
+            titleColor="#D1D1D1"
+            colors={['#ff0000', '#00ff00', '#0000ff']}
+            progressBackgroundColor="#ffff00"
+          />
+        }>
           {this.matches().map(match => {
             return(
-              <View key={match.id}>
-                <Text>{match.name}</Text>
+              <View key={match.id} style={{margin: 0, marginBottom:0}}>
+
+                <Swipeout right={rightBtns} left={leftBtns} style={{backgroundColor:'transparent'}}>
+                  <View style={{margin: 15, padding: 10, borderRadius:5, backgroundColor: 'white'}}>
+                    <View style={{flex:1, alignItems:'flex-start',
+        justifyContent:'flex-end', height:200, margin:2, backgroundColor: 'gray'}}>
+                      <Text style={{color:'white', margin:10}}>{match.name}</Text>
+                    </View>
+                  </View>
+                </Swipeout>
+
+
               </View>
             );
             })}
+
+
+
         </ScrollView>
       </View>
 
