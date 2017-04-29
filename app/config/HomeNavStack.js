@@ -4,18 +4,26 @@ import {
   Text,
   View,
   Image,
-  Button,
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import Button from 'react-native-button';
 
-export class MainScreen extends React.Component {
+// Containers
+import Home from '../containers/Home';
+import Filter from '../containers/Filter';
+
+// Logo
+import images from '@assets/images';
+
+
+class MainScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'ScoopLogoHere',
-    headerRight: <Button title="Filters"
-                       onPress={() => navigation.navigate('Filters')}
-                 />,
+    title: 'Scoop',
+    headerRight: <Button onPress={() => navigation.navigate('Filters')}>
+                         <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
+                </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
-    headerTitleStyle: {color:'white'}
+    headerTitleStyle: {color: 'white', alignSelf:'center'}
   });
   constructor(props) {
     super (props);
@@ -24,9 +32,7 @@ export class MainScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return(
-      <View>
-        <Text> MainScreen Here </Text>
-      </View>
+      <Home/>
     )
   }
 }
@@ -35,13 +41,28 @@ export class MainScreen extends React.Component {
 export class FiltersScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'ScoopLogoHere',
-    headerLeft: <Button title="Cancel"
-                        onPress={() => navigation.goBack()}
-                />,
-    headerRight: <Button title="Save"
-                        onPress={() => navigation.goBack()}
-                />,
+    headerLeft: <Button onPress={() => navigation.goBack()}
+                           style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}
+                         >
+                         <Text style={{marginLeft: 20,
+                           fontFamily:'Avenir-Light',
+                           fontSize: 18, color:'white'}}>
+                           Cancel
+                         </Text>
+                </Button>,
+    headerRight: <Button onPress={() => navigation.goBack()}
+                           style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}
+                         >
+                         <Text style={{marginRight: 20,
+                           fontFamily:'Avenir-Light',
+                           fontSize: 18, color:'white'}}>
+                           Save
+                         </Text>
+                </Button>,
+    headerStyle: {backgroundColor: '#54C9EC',},
+    headerTitleStyle: {color:'white', alignSelf: 'center'},
   });
+
   constructor(props) {
     super (props);
     this.state = {};
@@ -50,13 +71,11 @@ export class FiltersScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return(
       <View>
-        <Text> Filters Here </Text>
+        <Filter />
       </View>
     )
   }
 }
-
-
 
 export const HomeNavStack = StackNavigator({
   Main: { screen: MainScreen },

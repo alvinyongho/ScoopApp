@@ -13,7 +13,6 @@ import { MessageNavStack } from './MessageNavStack';
 class HomeTabNavigator extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Home',
-    tabBarPosition: 'bottom',
   };
 
   render() {
@@ -69,10 +68,9 @@ export const TabStack = TabNavigator({
   Profile: {
     screen: ProfileTabNavigator,
   },
-
-
 }, {
   tabBarOptions: {
     activeTintColor: '#e91e63',
   },
+  tabBarPosition: 'bottom',
 });

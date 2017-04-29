@@ -174,7 +174,7 @@ export default class Filter extends Component {
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
-        <ScrollView style={{height:screenHeight}}>
+        <ScrollView style={{height:screenHeight-110}}>
           <FilterItem
             attributeText='Search Radius'
             statusText='200 miles'

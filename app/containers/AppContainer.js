@@ -34,12 +34,12 @@ class AppContainer extends Component {
     return(
       <NativeRouter>
         <View style={{flex:1}}>
+          {/* Status bar initial customization */}
           <StatusBar
-           backgroundColor="blue"
-           barStyle="light-content"
-          />
+           backgroundColor="#54C9EC"
+           barStyle="light-content" />
+          {/* Routes for authenticated and non authenticated */}
           <Route exact path="/" component={ ResultRoute }/>
-          <Route path="/filter" component={() => (<Filter {...this.props} />)}/>
         </View>
       </NativeRouter>
     );
