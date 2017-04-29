@@ -5,6 +5,7 @@ import {
   Button,
   TouchableHighlight,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';        // handles state and actions
 import { ActionCreators } from '../actions';   // Retrieves all the action creators
@@ -13,13 +14,11 @@ import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
 
 // Views
 import Home from './Home';
-import Login from './Login';
 import WelcomePages from '../components/WelcomePages';
 import Filter from './Filter';
 
-
-
-
+import {TabStack} from '../config/TabStack';
+import {HomeNavStack} from '../config/HomeNavStack';
 
 class AppContainer extends Component {
   constructor(props) {
@@ -28,21 +27,22 @@ class AppContainer extends Component {
 
   render() {
     const Public = () => (<WelcomePages {...this.props}/>)
-    const Private = () => (<Home {...this.props}/>)
+    const Private = () => (<TabStack {...this.props}/>)
     // Set the route depending on login state
     const ResultRoute = this.props.isAuthenticated ? (Private) : Public;
 
     return(
       <NativeRouter>
-        <View>
+        <View style={{flex:1}}>
+          {/* Status bar initial customization */}
+          <StatusBar
+           backgroundColor="#54C9EC"
+           barStyle="light-content" />
+          {/* Routes for authenticated and non authenticated */}
           <Route exact path="/" component={ ResultRoute }/>
-          <Route path="/login"  component={() => (<Login  {...this.props} />)}/>
-          <Route path="/home"   component={() => (<Home   {...this.props} />)}/>
-          <Route path="/filter" component={() => (<Filter {...this.props} />)}/>
         </View>
       </NativeRouter>
-
-  );
+    );
   }
 };
 

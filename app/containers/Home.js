@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactNative from 'react-native';
-import { connect } from 'react-redux';
 import {
   ScrollView,
   Text,
@@ -12,10 +11,14 @@ import {
   Navigator,
 } from 'react-native';
 
-import { Link } from 'react-router-native'
-
+// To Pass dispatching actions to containers
+import { connect } from 'react-redux';        // handles state and actions
+import { ActionCreators } from '../actions';   // Retrieves all the action creators
+import { bindActionCreators } from 'redux';
 
 import MatchFeed from './MatchFeed'
+
+
 
 class Home extends Component{
   searchMatches() {
@@ -44,17 +47,22 @@ class Home extends Component{
   }
 
   render(){
+    // const { navigate } = this.props.navigation;
     return (
-      <View style={{margin: 20}}>
-        <Link to="/filter">
-          <Text> to filter</Text>
-        </Link>
+      <View>
 
         <MatchFeed {...this.props}/>
         <Button title="Logout of Facebook" onPress={() => this.onLogoutPressed()} />
+
       </View>
     );
   }
+}
+
+// maps action creator calls to a dispatch to update the state
+// Bind actions (dispatcher) to props
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
 }
 
 // Match state to props which allows us to access actions
@@ -64,7 +72,6 @@ function mapStateToProps(state){
   }
 }
 
-
 // Connects the state variables to the property variables within
 // the home class
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

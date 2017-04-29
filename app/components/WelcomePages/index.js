@@ -16,8 +16,6 @@ export default class WelcomePages extends Component {
   render(){
     return(
       <Swiper style={styles.wrapper} showsButtons={false} loop={false}>
-
-
         <View>
           <Image source={images.welcome2} style={styles.pageImage}/>
         </View>
@@ -28,7 +26,6 @@ export default class WelcomePages extends Component {
           <Image source={images.welcome4} style={styles.pageImage}/>
         </View>
         <LoginPage />
-
       </Swiper>
     )
   }

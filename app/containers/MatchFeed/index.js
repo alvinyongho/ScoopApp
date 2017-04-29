@@ -7,11 +7,44 @@ import {
   View,
   Image,
   TouchableHighlight,
+  RefreshControl,
   StyleSheet,
   Button,
 } from 'react-native';
 
+import Swiper from 'react-native-page-swiper';
+
+
+var rightBtns = [
+  {
+    text: 'Button'
+  }
+]
+var leftBtns = [
+  {
+    text: 'Button'
+  }
+]
+
+
 class MatchFeed extends Component{
+
+  state = {
+    isRefreshing: false,
+  };
+
+  _onRefresh = () => {
+    this.setState({isRefreshing: true});
+    setTimeout(() => {
+      // prepend 10 items
+      this.searchMatches();
+
+      this.setState({
+        isRefreshing: false,
+      });
+    }, 3000);
+  };
+
   searchMatches() {
     // due to destruct in app container <Home {...this.props} all the actions
     // from the AppContainer get passed into the Home container
@@ -24,41 +57,124 @@ class MatchFeed extends Component{
     )
   }
 
-  onLogoutPressed(){
-    this.props.facebookLogout();
-  }
-
   matches(){
     return Object.keys(this.props.foundMatches)
       .map( key => this.props.foundMatches[key])
+  }
+
+  componentDidMount(){
+    // setTimeout(()=>this.forceUpdate(), 1000);
+    // this.forceUpdate();
   }
 
   componentWillMount(){
     this.searchMatches();
   }
 
+  _onPressProfile(){
+    console.log('pressed a profile')
+  }
+
   render(){
     return (
-      <View>
+      <View style={{marginTop: 0, marginBottom: 45}}>
+        {/*
         <View>
           <TouchableHighlight onPress={() => this.searchMatches() }>
             <Text>Fetch Matches</Text>
           </TouchableHighlight>
+
         </View>
-        <ScrollView>
+        */}
+        <ScrollView
+          refreshControl={
+          <RefreshControl
+            refreshing={this.state.isRefreshing}
+            onRefresh={this._onRefresh}
+            tintColor='#D1D1D1'
+            title='loading...'
+            titleColor="#D1D1D1"
+            colors={['#ff0000', '#00ff00', '#0000ff']}
+            progressBackgroundColor="#ffff00"
+          />
+        }>
           {this.matches().map(match => {
             return(
               <View key={match.id}>
-                <Text>{match.name}</Text>
+
+              <Swiper style={styles.wrapper} index={1} pager={false}>
+                <View style={styles.interestedSlide}>
+                  <Text style={styles.text}>Interested</Text>
+                </View>
+
+                <View style={styles.profileSlide}>
+                  <View style={{flex:1, marginTop: 15, marginLeft:15, marginRight:15,  backgroundColor: 'white', borderRadius: 5}}>
+                    <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
+                      <View>
+                      <Text style={styles.profileName}>{match.name}</Text>
+                      <Text style={styles.profileDescription}>{match.description}</Text>
+                      </View>
+                    </TouchableHighlight>
+                  </View>
+                </View>
+
+                <View style={styles.notInterestedSlide}>
+                  <Text style={styles.text}>Not Interested</Text>
+                </View>
+              </Swiper>
+
               </View>
             );
             })}
+
         </ScrollView>
       </View>
 
     );
   }
 }
+
+
+const CELL_SIZE = 268
+
+var styles = StyleSheet.create({
+  wrapper: {
+
+  },
+  interestedSlide: {
+    height: CELL_SIZE,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    backgroundColor: '#9DD6EB',
+  },
+  profileSlide: {
+    height: CELL_SIZE,
+    flex:1
+  },
+  notInterestedSlide: {
+    height: CELL_SIZE,
+
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    backgroundColor: '#92BBD9',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 26,
+    fontWeight: '100',
+  },
+  profileName: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  profileDescription: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '200',
+  }
+
+})
 
 // Match state to props which allows us to access actions
 function mapStateToProps(state){

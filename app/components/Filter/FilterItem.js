@@ -12,9 +12,8 @@ import {
 } from 'react-native';
 
 import Dimensions from 'Dimensions';
-import MultiSlider from '../components/MultiSlider/MultiSlider'
+import MultiSlider from '../MultiSlider/MultiSlider'
 import images from '@assets/images';
-// import NavigationBar from '../components/NavigationBar';
 
 
 // var Slider = require('react-native-slider');
@@ -28,7 +27,7 @@ const SLIDER_LENGTH = screenWidth - (2*LEFT_RIGHT_PADDING)
 const SLIDER_HEIGHT = 30
 
 
-class FilterItem extends Component{
+export default class FilterItem extends Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -154,63 +153,6 @@ class FilterItem extends Component{
 
       </View>
 
-    );
-  }
-}
-
-
-export default class Filter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {filterSettings: []};
-  }
-
-  updateFilterSetting(filter) {
-    var filters = this.state.filterSettings;
-    contacts.push(filter);
-    this.setState({filterSettings: filters});
-  }
-
-  render() {
-    return(
-      <View style={{backgroundColor:'#E6E6E6'}}>
-        <ScrollView style={{height:screenHeight-110}}>
-          <FilterItem
-            attributeText='Search Radius'
-            statusText='200 miles'
-            sliderType='default'
-          />
-          <FilterItem
-            attributeText='Age Range'
-            statusText='18 - 99 years'
-            trueMin={18}
-            trueMax={99}
-            sliderType='multi'
-          />
-          <FilterItem
-            attributeText='Height'
-            statusText='3&#39;0&#34; - 8&#39;0&#34;'
-            sliderType='multi'
-          />
-          <FilterItem
-            attributeText='I Am Looking For'
-            showAttrLeft='true'
-            sliderType='multi'
-
-            attrLeftText='Relationship'
-            attrRightText='Friendship'
-          />
-          <FilterItem
-            attributeText='I Am Interested In'
-            statusText='200 miles'
-            attrLeftText='Men'
-            attrMidText='Both'
-            attrRightText='Women'
-            sliderType='step'
-            stepAmount={.5}
-          />
-        </ScrollView>
-      </View>
     );
   }
 }
