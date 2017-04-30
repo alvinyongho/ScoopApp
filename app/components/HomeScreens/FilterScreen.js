@@ -1,12 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-
 import Button from 'react-native-button';
 import images from '@assets/images';
-
 import Filter from '../../containers/Filter';
 
 import { bindActionCreators } from 'redux';

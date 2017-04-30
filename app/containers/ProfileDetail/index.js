@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  ScrollView
 } from 'react-native';
 
-
+import ProfileAlbum from '../../components/Profile/ProfileAlbum'
+import ProfileBasicInfo from '../../components/Profile/ProfileBasicInfo'
+import SendMessageButton from '../../components/Profile/SendMessageButton'
 
 export default class ProfileDetail extends Component {
   constructor(props) {
@@ -17,7 +20,10 @@ export default class ProfileDetail extends Component {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView>
-          <Text> Profile Detail </Text>
+          <ProfileAlbum />
+          <ProfileBasicInfo />
+          <SendMessageButton />
+
         </ScrollView>
       </View>
     );

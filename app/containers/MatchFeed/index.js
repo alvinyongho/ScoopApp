@@ -66,8 +66,7 @@ class MatchFeed extends Component{
   }
 
   componentDidMount(){
-    // setTimeout(()=>this.forceUpdate(), 1000);
-    // this.forceUpdate();
+
   }
 
   componentWillMount(){
