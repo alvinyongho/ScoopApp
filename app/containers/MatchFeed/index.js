@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import ReactNative from 'react-native';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+import { bindActionCreators } from 'redux';
+
 import {
   ScrollView,
   Text,
@@ -71,9 +74,7 @@ class MatchFeed extends Component{
     this.searchMatches();
   }
 
-  _onPressProfile(){
-    console.log('pressed a profile')
-  }
+  _onPressProfile = () => (this.props.profile());
 
   render(){
     return (
@@ -180,6 +181,11 @@ function mapStateToProps(state){
 }
 
 
+const mapDispatchToProps = dispatch => ({
+  profile: () => dispatch(NavigationActions.navigate({ routeName: 'Profile' })),
+});
+
+
 // Connects the state variables to the property variables within
 // the home class
-export default connect(mapStateToProps)(MatchFeed);
+export default connect(mapStateToProps, mapDispatchToProps)(MatchFeed);
