@@ -77,15 +77,7 @@ class MatchFeed extends Component{
 
   render(){
     return (
-      <View style={{marginTop: 0, marginBottom: 45}}>
-        {/*
-        <View>
-          <TouchableHighlight onPress={() => this.searchMatches() }>
-            <Text>Fetch Matches</Text>
-          </TouchableHighlight>
-
-        </View>
-        */}
+      <View>
         <ScrollView
           refreshControl={
           <RefreshControl
@@ -98,6 +90,9 @@ class MatchFeed extends Component{
             progressBackgroundColor="#ffff00"
           />
         }>
+          {/* Header */}
+          <View style={{height: 7}} />
+
           {this.matches().map(match => {
             return(
               <View key={match.id}>
@@ -108,7 +103,7 @@ class MatchFeed extends Component{
                 </View>
 
                 <View style={styles.profileSlide}>
-                  <View style={{flex:1, marginTop: 15, marginLeft:15, marginRight:15,  backgroundColor: 'white', borderRadius: 5}}>
+                  <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
                     <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
                       <View>
                       <Text style={styles.profileName}>{match.name}</Text>
@@ -117,7 +112,6 @@ class MatchFeed extends Component{
                     </TouchableHighlight>
                   </View>
                 </View>
-
                 <View style={styles.notInterestedSlide}>
                   <Text style={styles.text}>Not Interested</Text>
                 </View>
@@ -127,6 +121,9 @@ class MatchFeed extends Component{
             );
             })}
 
+            {/* Footer */}
+            <View style={{height: 7}} />
+
         </ScrollView>
       </View>
 
@@ -135,11 +132,10 @@ class MatchFeed extends Component{
 }
 
 
-const CELL_SIZE = 268
+const CELL_SIZE = 270
 
 var styles = StyleSheet.create({
   wrapper: {
-
   },
   interestedSlide: {
     height: CELL_SIZE,
