@@ -18,7 +18,6 @@ import WelcomePages from '../components/WelcomePages';
 import Filter from './Filter';
 
 import {TabStack} from '../config/TabStack';
-import {HomeNavStack} from '../config/HomeNavStack';
 
 class AppContainer extends Component {
   constructor(props) {

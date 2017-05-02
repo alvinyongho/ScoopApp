@@ -6,12 +6,17 @@ import {
   StyleSheet,
 } from 'react-native';
 import { TabNavigator } from 'react-navigation';
-import { HomeNavStack } from './HomeNavStack';
+// import { HomeNavStack } from './HomeNavStack';
 import { MyProfileNavStack } from './MyProfileNavStack';
 import { MessageNavStack } from './MessageNavStack';
 
 
 import HomeWithNavigationState from '../navigators/HomeNavigator';
+import MyProfileWithNavigationState from '../navigators/MyProfileNavigator';
+import {MyProfileNavigator} from '../navigators/MyProfileNavigator';
+
+
+// import EditScreen from '../components/MyProfileScreens/EditScreen';
 
 class HomeTabNavigator extends React.Component {
   static navigationOptions = {
@@ -47,7 +52,7 @@ class MyProfileTabNavigator extends React.Component {
 
   render() {
     return (
-      <MyProfileNavStack />
+      <MyProfileWithNavigationState />
     );
   }
 }
