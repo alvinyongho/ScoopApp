@@ -16,11 +16,11 @@ import PanningRectExample from './PanningRectExample'
 export default class EditProfileScrollView extends React.Component {
   render(){
     return (
-      <ScrollView>
+      <View>
         {/* <EditPhotoAlbum /> */}
         <PanningRectExample />
 
-      </ScrollView>
+      </View>
     )
   }
 

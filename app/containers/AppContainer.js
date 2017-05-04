@@ -25,10 +25,10 @@ class AppContainer extends Component {
   }
 
   render() {
-    const Public = () => (<WelcomePages {...this.props}/>)
-    const Private = () => (<TabStack {...this.props}/>)
+    const welcomePagesRoute = () => (<WelcomePages {...this.props}/>)
+    const authenticatedRoute = () => (<TabStack {...this.props}/>)
     // Set the route depending on login state
-    const ResultRoute = this.props.isAuthenticated ? (Private) : Public;
+    const ResultRoute = this.props.isAuthenticated ? (authenticatedRoute) : welcomePagesRoute;
 
     return(
       <NativeRouter>
