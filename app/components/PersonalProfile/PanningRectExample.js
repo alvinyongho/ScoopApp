@@ -21,21 +21,28 @@ var ALBUM_HEIGHT = 60;
 var MARGIN = 20;
 
 
-boxHeight = screenWidth/3 - 35
-boxWidth = screenWidth/3 - 15
+largeBoxHeight = (screenWidth/3)*2
+largeBoxWidth = (screenWidth)
+
+smallBoxHeight = screenWidth/3 - 20
+smallBoxWidth = screenWidth/3
 
 
 export default class PanningRectExample extends React.Component {
 
   constructor(props) {
     super(props);
-    this._width = boxWidth;
-    this._height = boxHeight
+    this._smallBoxWidth = smallBoxWidth;
+    this._smallBoxHeight = smallBoxHeight;
 
 
     // the last item set as selected
     this.state = {
         selected: 5,
+        mainPicture: {
+          key: 'mainPicture',
+          backgroundColor: 'skyblue'
+        },
         albumPictures: [
           {
             key: 0,
@@ -76,22 +83,37 @@ export default class PanningRectExample extends React.Component {
 
   render(){
 
-    const picturesBoxes = this.state.albumPictures.map((elem, index) => {
-      let top = Math.floor(index/3) * this._height;
-      let left = (index % 3) * this._width;
+    const smallPicturesBoxes = this.state.albumPictures.map((elem, index) => {
+      let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
+      let left = (index % 3) * this._smallBoxWidth;
       return (
-        <View ref={"pictureBox" + index} key={elem.key} style={[styles.pictureBox, {top, left}]} >
-          <View style={[styles.pictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
+        <View ref={"smallPictureBox" + index} key={elem.key} style={[styles.smallPictureBox, {top, left}]} >
+          <View style={[styles.smallPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
             {/* TODO: add image here */}
-            <Text> Content Here </Text>
+            <Text> PICTURE </Text>
           </View>
         </View>
       );
     })
+
+
+    const mainPictureBox =
+      <View ref={"mainPictureBox"} key={this.state.mainPicture.key} style={[styles.mainPictureBox, {top:0, left:0}]} >
+        <View style={[styles.mainPictureBoxContainer, {backgroundColor:this.state.mainPicture.backgroundColor}]}>
+          <Text> PICTURE </Text>
+        </View>
+      </View>
+
+
     return (
-      <View
-        style={styles.smallAlbumsContainer}>
-          {picturesBoxes}
+      <View>
+        <View style={styles.mainPictureContainer}>
+          {mainPictureBox}
+        </View>
+
+        <View style={styles.smallPicturesContainer}>
+            {smallPicturesBoxes}
+        </View>
       </View>
     );
   }
@@ -105,27 +127,38 @@ export default class PanningRectExample extends React.Component {
 
 
 var styles = StyleSheet.create({
-  smallAlbumsContainer:{
+  smallPicturesContainer:{    // OVERALL CONTAINER
     width: screenWidth,
-    backgroundColor: 'skyblue',
-    margin: MARGIN
   },
 
-  pictureBoxContainer:{
+  smallPictureBoxContainer:{  // INDIVIDUAL CONTAINER
     alignItems:"center",
     justifyContent:"center",
-    width: screenWidth/3 - 15,
-    height:screenWidth/3 - 35,
+    width: smallBoxWidth,
+    height:smallBoxHeight,
+  },
+
+  smallPictureBox:{           // WRAPPER
+    backgroundColor:"#fff",
+    position:"absolute",
+
   },
 
 
-  pictureBox:{
-    width: screenWidth/3 - 15,
-    height: screenWidth/3 - 35,
-    backgroundColor:"#fff",
-    position:"absolute",
-    left:0,
-    top:0,
+
+  mainPictureContainer: {
+    width: largeBoxWidth,
+  },
+  mainPictureBoxContainer:{
+    alignItems:"center",
+    justifyContent:"center",
+    width: largeBoxWidth,
+    height: largeBoxHeight,
+
+  },
+  mainPictureBox: {           // WRAPPER
+    backgroundColor: "#fff",
+    position: "absolute",
   },
 
 });
