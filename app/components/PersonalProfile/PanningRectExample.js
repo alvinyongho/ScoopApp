@@ -75,6 +75,13 @@ export default class PanningRectExample extends React.Component {
   componentWillMount(){
     // Handle the pannign responders
     this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => {
+        // Should start if somethings selected
+        console.log('something is selected!')
+        return gestureState.dx!==0 || gestureState.dy !==0;
+      }
+
+
     });
   }
 
@@ -97,6 +104,12 @@ export default class PanningRectExample extends React.Component {
     })
 
 
+    // Move the selected picture to the end of the array.
+    let selectedPicture = smallPicturesBoxes[this.state.selected];
+    smallPicturesBoxes.splice(this.state.selected, 1);    //Remove selected picture DOM
+    smallPicturesBoxes.push(selectedPicture);    // Move it to the end
+
+
     const mainPictureBox =
       <View ref={"mainPictureBox"} key={this.state.mainPicture.key} style={[styles.mainPictureBox, {top:0, left:0}]} >
         <View style={[styles.mainPictureBoxContainer, {backgroundColor:this.state.mainPicture.backgroundColor}]}>
@@ -106,7 +119,7 @@ export default class PanningRectExample extends React.Component {
 
 
     return (
-      <View>
+      <View {...this._panResponder.panHandlers}>
         <View style={styles.mainPictureContainer}>
           {mainPictureBox}
         </View>
