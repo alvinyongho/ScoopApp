@@ -28,6 +28,11 @@ smallBoxHeight = screenWidth/3 - 20
 smallBoxWidth = screenWidth/3
 
 
+HEADER_SIZE = 64    // IOS
+
+
+
+
 export default class PanningRectExample extends React.Component {
 
   constructor(props) {
@@ -68,7 +73,9 @@ export default class PanningRectExample extends React.Component {
             key: 5,
             backgroundColor: 'purple'
           }
-        ]
+        ],
+
+
     }
   }
 
@@ -77,13 +84,45 @@ export default class PanningRectExample extends React.Component {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => {
         // Should start pan responder if something in view selected
-        console.log('starting pan responder')
+
         return gestureState.dx!==0 || gestureState.dy !==0;
       },
+
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+        const {pageX, pageY, target, locationX, locationY} = evt.nativeEvent;
+
+        // console.log('locationY' + locationY)
+
+        // console.log(pageY-HEADER_SIZE)
+        // console.log(largeBoxHeight)
+
+        offsetPageY = pageY-HEADER_SIZE
+
+
+        typeOfBoxSelected = offsetPageY < largeBoxHeight ? 'LARGE': 'SMALL'
+        // console.log(typeOfBoxSelected)
+
+        if(typeOfBoxSelected === 'SMALL'){
+          // Determine the index of the small box selected
+          smallBoxTopIndex =  Math.floor((offsetPageY - largeBoxHeight) / smallBoxHeight);
+          console.log(smallBoxTopIndex)
+          smallBoxLeftIndex = Math.floor(pageX / smallBoxWidth)
+          console.log(smallBoxLeftIndex)
+
+        }
+
+
+
+
+
+        return true
+      },
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+
       onPanResponderGrant: (evt, gestureState) => {
-        const {pageX, pageY} = evt.nativeEvent;
-        console.log('pageX:' + pageX);
+        // const {pageX, pageY} = evt.nativeEvent;
+        // console.log('pageX:' + pageX);
 
       }
 
@@ -112,10 +151,10 @@ export default class PanningRectExample extends React.Component {
     })
 
 
-    // Move the selected picture to the end of the array.
-    let selectedPicture = smallPicturesBoxes[this.state.selected];
-    smallPicturesBoxes.splice(this.state.selected, 1);    //Remove selected picture DOM
-    smallPicturesBoxes.push(selectedPicture);    // Move it to the end
+    // // Move the selected picture to the end of the array.
+    // let selectedPicture = smallPicturesBoxes[this.state.selected];
+    // smallPicturesBoxes.splice(this.state.selected, 1);    //Remove selected picture DOM
+    // smallPicturesBoxes.push(selectedPicture);    // Move it to the end
 
 
     const mainPictureBox =
