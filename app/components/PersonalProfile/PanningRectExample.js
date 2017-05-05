@@ -76,10 +76,18 @@ export default class PanningRectExample extends React.Component {
     // Handle the pannign responders
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => {
-        // Should start if somethings selected
-        console.log('something is selected!')
+        // Should start pan responder if something in view selected
+        console.log('starting pan responder')
         return gestureState.dx!==0 || gestureState.dy !==0;
+      },
+      onMoveShouldSetPanResponder: (evt, gestureState) => true,
+      onPanResponderGrant: (evt, gestureState) => {
+        const {pageX, pageY} = evt.nativeEvent;
+        console.log('pageX:' + pageX);
+
       }
+
+
 
 
     });
