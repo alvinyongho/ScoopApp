@@ -41,9 +41,22 @@ export default class PanningRectExample extends React.Component {
     this._smallBoxHeight = smallBoxHeight;
 
 
+
+    this.keySelected = 0;
+    this.typeOfBoxSelected = undefined;
+
+
+
+    this.left = 0;
+    this.top = 0;
+    this.prev_left = 0;
+    this.prev_top = 0;
+
+
+
     // the last item set as selected
     this.state = {
-        selected: 5,
+        selected: null,
         mainPicture: {
           key: 'mainPicture',
           backgroundColor: 'skyblue'
@@ -84,36 +97,32 @@ export default class PanningRectExample extends React.Component {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => {
         // Should start pan responder if something in view selected
-
         return gestureState.dx!==0 || gestureState.dy !==0;
       },
 
       onStartShouldSetPanResponderCapture: (evt, gestureState) => {
         const {pageX, pageY, target, locationX, locationY} = evt.nativeEvent;
 
-        // console.log('locationY' + locationY)
-
-        // console.log(pageY-HEADER_SIZE)
-        // console.log(largeBoxHeight)
-
         offsetPageY = pageY-HEADER_SIZE
+        this.typeOfBoxSelected = offsetPageY < largeBoxHeight ? 'LARGE': 'SMALL'
 
-
-        typeOfBoxSelected = offsetPageY < largeBoxHeight ? 'LARGE': 'SMALL'
-        // console.log(typeOfBoxSelected)
-
-        if(typeOfBoxSelected === 'SMALL'){
+        if(this.typeOfBoxSelected === 'SMALL'){
           // Determine the index of the small box selected
           smallBoxTopIndex =  Math.floor((offsetPageY - largeBoxHeight) / smallBoxHeight);
-          console.log(smallBoxTopIndex)
           smallBoxLeftIndex = Math.floor(pageX / smallBoxWidth)
-          console.log(smallBoxLeftIndex)
+          this.keySelected = smallBoxTopIndex*3 + smallBoxLeftIndex
 
+          // console.log(smallBoxWidth*smallBoxLeftIndex)
+          this.prev_left = smallBoxWidth * smallBoxLeftIndex;
+          this.prev_top = smallBoxHeight * smallBoxTopIndex + largeBoxHeight;
+          console.log(this.prev_top)
+
+
+        } else {
+          this.keySelected = 'mainPicture'
+          this.prev_left = 0;
+          this.prev_top = 0;
         }
-
-
-
-
 
         return true
       },
@@ -121,13 +130,71 @@ export default class PanningRectExample extends React.Component {
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
       onPanResponderGrant: (evt, gestureState) => {
-        // const {pageX, pageY} = evt.nativeEvent;
-        // console.log('pageX:' + pageX);
+        this.setState({
+          selected: this.keySelected,
+        });
 
-      }
+        if(this.typeOfBoxSelected === 'LARGE'){
+          console.log('handle large drag')
+
+          let box = this.refs["mainPictureBox"];
+          box.setNativeProps({
+            style: { opacity:0.7, }
+          })
+        }
+        else if(this.typeOfBoxSelected === 'SMALL') {
+          console.log('handle small drag')
+          let box = this.refs["smallPictureBox" + this.keySelected];
+          box.setNativeProps({
+            style: {
+              opacity:0.7,
+              }
+          })
+        }
+      },
+
+      onPanResponderMove: (evt, gestureState) => {
+        this.left = this.prev_left + gestureState.dx;
+        this.top =  this.prev_top + gestureState.dy;
 
 
+        if(this.typeOfBoxSelected === 'LARGE'){
+          let box = this.refs["mainPictureBox"];
+          box.setNativeProps({
+            style: {top:this.top, left:this.left},
+          });
+        }
 
+        if(this.typeOfBoxSelected === 'SMALL') {
+          let box = this.refs["smallPictureBox" + this.keySelected];
+          console.log(this.left)
+          box.setNativeProps({
+            style: {top:this.top, left:this.left},
+          })
+        }
+
+
+      },
+
+      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderRelease: (evt, gestureState) => {
+        if(this.typeOfBoxSelected === 'LARGE'){
+          let box = this.refs["mainPictureBox"];
+          box.setNativeProps({
+            style: {opacity:1,}
+          });
+        }
+
+        if(this.typeOfBoxSelected === 'SMALL') {
+          let box = this.refs["smallPictureBox" + this.keySelected];
+          box.setNativeProps({
+            style: {opacity:1,}
+          })
+        }
+        this.typeOfBoxSelected = undefined;
+      },
+      onPanResponderTerminate: (evt, gestureState) => this._release(evt, gestureState),
+      onShouldBlockNativeResponder: (event, gestureState) => true,
 
     });
   }

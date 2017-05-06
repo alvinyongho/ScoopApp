@@ -11,6 +11,7 @@ import {
 
 import EditPhotoAlbum from './EditPhotoAlbum'
 import PanningRectExample from './PanningRectExample'
+import SortableAlbum from './SortableAlbum'
 
 
 export default class EditProfileScrollView extends React.Component {
