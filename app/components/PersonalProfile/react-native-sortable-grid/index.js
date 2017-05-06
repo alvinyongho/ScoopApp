@@ -57,9 +57,7 @@ class SortableGrid extends Component {
         style={ this._getGridStyle() }
         onLayout={ this.assessGridSize }
       >
-        <View style={{width:MAINBLOCKWIDTH, height: MAINBLOCKHEIGHT, backgroundColor: 'blue'}}>
-        </View>
-
+        
         { this.state.gridLayout &&
           this.items.map( (item, key) =>
             <Block
@@ -114,7 +112,7 @@ class SortableGrid extends Component {
       startDragWiggle: new Animated.Value(0),
       activeBlock: null,
       blockWidth: null,
-      blockHeight: 125,
+      blockHeight: 100,
       gridHeight: new Animated.Value(0),
       blockPositionsSetCount: 0,
       deleteModeOn: false,
@@ -167,7 +165,7 @@ class SortableGrid extends Component {
       let yMinChokeAmount = Math.min(0, this.activeBlockOffset.y + moveY)
       let xMinChokeAmount = Math.min(0, this.activeBlockOffset.x + moveX)
 
-      let dragPosition = { x: moveX - xChokeAmount - xMinChokeAmount, y: moveY - yChokeAmount - yMinChokeAmount}
+      let dragPosition = { x: moveX - xChokeAmount - xMinChokeAmount, y: moveY - yChokeAmount - yMinChokeAmount }
       this.dragPosition = dragPosition
       let originalPosition = this._getActiveBlock().origin
       let distanceToOrigin = this._getDistanceTo(originalPosition)
