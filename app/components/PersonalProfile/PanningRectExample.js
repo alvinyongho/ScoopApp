@@ -11,6 +11,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   TouchableHighlight,
+  LayoutAnimation
 
 } from 'react-native';
 
@@ -50,8 +51,18 @@ export default class PanningRectExample extends React.Component {
     this.prev_left = 0;
     this.prev_top = 0;
 
+    this.pictures = []
 
-
+    this.animations = {
+      duration: 200,
+      create: {
+        type: LayoutAnimation.Types.linear,
+      },
+      update: {
+        type: LayoutAnimation.Types.linear,
+        springDamping: 0.7,
+      },
+    };
 
 
 
@@ -71,6 +82,7 @@ export default class PanningRectExample extends React.Component {
           {
             key: 0,
             backgroundColor: 'red'
+
           },
           {
             key: 1,
@@ -105,8 +117,19 @@ export default class PanningRectExample extends React.Component {
   componentWillMount(){
     // Handle the pannign responders
     this._panResponder = PanResponder.create({
-      onPanResponderTerminate:             (evt, gestureState) => {},
+      onPanResponderTerminate:             (evt, gestureState) => {console.log('should term')},
       onStartShouldSetPanResponder:        (evt, gestureState) => {
+
+        return gestureState.dx!==0 || gestureState.dx!==0;
+
+      },
+      onMoveShouldSetPanResponder:         (evt, gestureState) => true,
+
+      onShouldBlockNativeResponder:        (evt, gestureState) => true,
+      onPanResponderTerminationRequest:    (evt, gestureState) => true,
+
+      onPanResponderGrant:                  (evt, gestureState)=> {
+
         const {pageX, pageY, target, locationX, locationY} = evt.nativeEvent;
 
         offsetPageY = pageY-HEADER_SIZE
@@ -127,17 +150,6 @@ export default class PanningRectExample extends React.Component {
           this.prev_top = 0;
         }
 
-        return true
-      },
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-
-      onMoveShouldSetPanResponder:         (evt, gestureState) => this.panCapture,
-      onMoveShouldSetPanResponderCapture:  (evt, gestureState) => this.panCapture,
-
-      onShouldBlockNativeResponder:        (evt, gestureState) => false,
-      onPanResponderTerminationRequest:    (evt, gestureState) => false,
-
-      onPanResponderGrant:                  (evt, gestureState)=> {
         this.setState({
           selected: this.keySelected,
         });
@@ -198,6 +210,9 @@ export default class PanningRectExample extends React.Component {
           })
         }
         this.typeOfBoxSelected = undefined;
+
+        console.log('should term')
+
       },
     });
   }
@@ -214,14 +229,40 @@ export default class PanningRectExample extends React.Component {
       if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
         draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
 
+        // console.log('keyselected:   ' + this.keySelected)
         let albumPictures = this.state.albumPictures;
-        let selectedItem = albumPictures[this.keySelected];
+        let movedBox = albumPictures[this.keySelected];
 
+        // console.log('dragging over:    ' + draggedOverIndex)
+        albumPictures.splice(this.keySelected, 1);
+        albumPictures.splice(draggedOverIndex, 0, movedBox);
+
+        this.setState({
+          albumPictures
+        })
+
+
+        if (draggedOverIndex !== this.keySelected) {
+          this.keySelected = draggedOverIndex
+          this.setState({
+            selected: draggedOverIndex,
+          });
+
+
+          console.log("updated the selected state to " + draggedOverIndex)
+        }
 
 
         // console.log(selectedItem.key)
-
+      } else {
+        let box = this.refs["smallPictureBox" + this.keySelected];
+        let top = this.topIndex*this._smallBoxHeight;
+        let left = this.leftIndex*this._smallBoxWidth;
+        LayoutAnimation.configureNext(this.animations);
       }
+
+    LayoutAnimation.configureNext(this.animations);
+
     } else {
       const {pageY, pageX} = evt.nativeEvent
 
@@ -255,25 +296,6 @@ export default class PanningRectExample extends React.Component {
       }
 
 
-      // topIndexDraggedOver = Math.floor((this.top-largeBoxHeight) / this._smallBoxHeight + 0.5);
-      // leftIndexDraggedOver = Math.floor(this.left/this._smallBoxWidth + 0.5);
-      //
-      // console.log(topIndexDraggedOver)
-      // console.log(leftIndexDraggedOver)
-      //
-      // if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
-      //   draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
-      //
-      //   let albumPictures = this.state.albumPictures;
-      //   let selectedItem = albumPictures[this.keySelected];
-      //
-      //
-      //
-      //   console.log(draggedOverIndex)
-      //
-      // }
-
-
     }
 
 
@@ -291,7 +313,7 @@ export default class PanningRectExample extends React.Component {
 
   render(){
 
-    const pictures = this.state.albumPictures.map((elem, index) => {
+    this.pictures = this.state.albumPictures.map((elem, index) => {
 
       if(elem.key !== 6){
         let top = Math.floor(elem.key/3) * this._smallBoxHeight + largeBoxHeight;
@@ -323,27 +345,18 @@ export default class PanningRectExample extends React.Component {
 
     })
 
-    let selectedItem = pictures[this.state.selected];
-    pictures.splice(this.state.selected, 1);
-    pictures.push(selectedItem);
+    let selectedItem = this.pictures[this.state.selected];
+    this.pictures.splice(this.state.selected, 1);
+    this.pictures.push(selectedItem);
 
+    console.log(this.state.albumPictures)
     return (
       <View {...this._panResponder.panHandlers}>
-        {pictures}
+        {this.pictures}
       </View>
     );
   }
 
-
-
-  activateDrag = (key) => () => {
-    // this.panCapture = true
-    // this.onDragStart( this.itemOrder[key] )
-    // this.setState({ activeBlock: key })
-    // this._defaultDragActivationWiggle()
-    console.log('actiating drag')
-
-  }
 
 
 }
