@@ -223,6 +223,9 @@ export default class PanningRectExample extends React.Component {
 
       if((0 > topIndexDraggedOver)){
         console.log('swapping with big')
+
+
+        // TODO: CHECK IF PICTURE EXISTS if not customize behavior (?)
         draggedOverIndex = 6
         let albumPictures = this.state.albumPictures;
         let movedBox = albumPictures[this.keySelected];
@@ -247,6 +250,8 @@ export default class PanningRectExample extends React.Component {
 
       if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
         draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+
+        // TODO: CHECK IF PICTURE EXISTS if not customize behavior (?)
 
         // console.log('keyselected:   ' + this.keySelected)
         let albumPictures = this.state.albumPictures;
