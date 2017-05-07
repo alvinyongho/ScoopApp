@@ -38,8 +38,8 @@ HEADER_SIZE = 64    // IOS
 
 export default class PanningRectExample extends React.Component {
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this._smallBoxWidth = smallBoxWidth;
     this._smallBoxHeight = smallBoxHeight;
 
@@ -63,10 +63,6 @@ export default class PanningRectExample extends React.Component {
         springDamping: 0.7,
       },
     };
-
-
-
-    this.panCapture = false;
 
 
     // the last item set as selected
@@ -130,7 +126,7 @@ export default class PanningRectExample extends React.Component {
 
       onPanResponderGrant:                  (evt, gestureState)=> {
 
-        const {pageX, pageY, target, locationX, locationY} = evt.nativeEvent;
+        const {pageX, pageY} = evt.nativeEvent;
 
         offsetPageY = pageY-HEADER_SIZE
         this.typeOfBoxSelected = offsetPageY < largeBoxHeight ? 'LARGE': 'SMALL'
@@ -157,14 +153,14 @@ export default class PanningRectExample extends React.Component {
         if(this.typeOfBoxSelected === 'LARGE'){
           console.log('handle large drag')
 
-          let box = this.refs["mainPictureBox"];
+          let box = this.refs["pictureBox" + 6];
           box.setNativeProps({
             style: { opacity:0.7, }
           })
         }
         else if(this.typeOfBoxSelected === 'SMALL') {
           console.log('handle small drag')
-          let box = this.refs["smallPictureBox" + this.keySelected];
+          let box = this.refs["pictureBox" + this.keySelected];
           box.setNativeProps({
             style: {
               opacity:0.7,
@@ -178,14 +174,14 @@ export default class PanningRectExample extends React.Component {
 
 
         if(this.typeOfBoxSelected === 'LARGE'){
-          let box = this.refs["mainPictureBox"];
+          let box = this.refs["pictureBox" + 6];
           box.setNativeProps({
             style: {top:this.top, left:this.left},
           });
         }
 
         if(this.typeOfBoxSelected === 'SMALL') {
-          let box = this.refs["smallPictureBox" + this.keySelected];
+          let box = this.refs["pictureBox" + this.keySelected];
           // console.log(this.left)
           box.setNativeProps({
             style: {top:this.top, left:this.left},
@@ -197,14 +193,14 @@ export default class PanningRectExample extends React.Component {
       },
       onPanResponderRelease: (evt, gestureState) =>{
         if(this.typeOfBoxSelected === 'LARGE'){
-          let box = this.refs["mainPictureBox"];
+          let box = this.refs["pictureBox"+6];
           box.setNativeProps({
             style: {opacity:1,}
           });
         }
 
         if(this.typeOfBoxSelected === 'SMALL') {
-          let box = this.refs["smallPictureBox" + this.keySelected];
+          let box = this.refs["pictureBox" + this.keySelected];
           box.setNativeProps({
             style: {opacity:1,}
           })
@@ -224,6 +220,29 @@ export default class PanningRectExample extends React.Component {
       topIndexDraggedOver = Math.floor((this.top-largeBoxHeight) / this._smallBoxHeight + 0.5);
       leftIndexDraggedOver = Math.floor(this.left/this._smallBoxWidth + 0.5);
 
+
+      if((0 > topIndexDraggedOver)){
+        console.log('swapping with big')
+        draggedOverIndex = 6
+        let albumPictures = this.state.albumPictures;
+        let movedBox = albumPictures[this.keySelected];
+
+        // console.log('dragging over:    ' + draggedOverIndex)
+        albumPictures.splice(this.keySelected, 1);
+        albumPictures.splice(draggedOverIndex, 0, movedBox);
+
+        this.setState({
+          albumPictures
+        })
+
+        if (draggedOverIndex !== this.keySelected) {
+          this.keySelected = draggedOverIndex
+          this.setState({
+            selected: draggedOverIndex,
+          });
+        }
+
+      }
       // console.log(topIndexDraggedOver)
 
       if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
@@ -241,19 +260,13 @@ export default class PanningRectExample extends React.Component {
           albumPictures
         })
 
-
         if (draggedOverIndex !== this.keySelected) {
           this.keySelected = draggedOverIndex
           this.setState({
             selected: draggedOverIndex,
           });
-
-
-          console.log("updated the selected state to " + draggedOverIndex)
         }
 
-
-        // console.log(selectedItem.key)
       } else {
         let box = this.refs["smallPictureBox" + this.keySelected];
         let top = this.topIndex*this._smallBoxHeight;
@@ -293,6 +306,28 @@ export default class PanningRectExample extends React.Component {
       {
         draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
         console.log(draggedOverIndex)
+
+        //
+        // let albumPictures = this.state.albumPictures;
+        // let movedBox = albumPictures[this.keySelected];
+        //
+        // // console.log('dragging over:    ' + draggedOverIndex)
+        // albumPictures.splice(this.keySelected, 1);
+        // albumPictures.splice(draggedOverIndex, 0, movedBox);
+        //
+        // this.setState({
+        //   albumPictures
+        // })
+        //
+        // if (draggedOverIndex !== this.keySelected) {
+        //   this.keySelected = draggedOverIndex
+        //   this.setState({
+        //     selected: draggedOverIndex,
+        //   });
+        // }
+
+
+
       }
 
 
@@ -315,16 +350,16 @@ export default class PanningRectExample extends React.Component {
 
     this.pictures = this.state.albumPictures.map((elem, index) => {
 
-      if(elem.key !== 6){
-        let top = Math.floor(elem.key/3) * this._smallBoxHeight + largeBoxHeight;
-        let left = (elem.key % 3) * this._smallBoxWidth;
+      if(index !== 6){
+        let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
+        let left = (index % 3) * this._smallBoxWidth;
+
         return (
-            <View ref={'smallPictureBox'+elem.key}
+            <View ref={'pictureBox'+index}
                   key={elem.key}
                   style={[styles.smallPictureBox, {top, left}]} >
 
               <View style={[styles.smallPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-                {/* TODO: add image here */}
                 <Text> PICTURE </Text>
               </View>
             </View>
@@ -332,7 +367,7 @@ export default class PanningRectExample extends React.Component {
       }
 
       return(
-          <View ref={'mainPictureBox'}
+          <View ref={'pictureBox'+6}
                 key={elem.key}
                 style={[styles.mainPictureBox, {top:0, left:0}]} >
 
@@ -352,7 +387,9 @@ export default class PanningRectExample extends React.Component {
     console.log(this.state.albumPictures)
     return (
       <View {...this._panResponder.panHandlers}>
+        <View style={styles.smallPicturesContainer}>
         {this.pictures}
+        </View>
       </View>
     );
   }
