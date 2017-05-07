@@ -118,11 +118,8 @@ export default class PanningRectExample extends React.Component {
           smallBoxLeftIndex = Math.floor(pageX / smallBoxWidth)
           this.keySelected = smallBoxTopIndex*3 + smallBoxLeftIndex
 
-          // console.log(smallBoxWidth*smallBoxLeftIndex)
           this.prev_left = smallBoxWidth * smallBoxLeftIndex;
           this.prev_top = smallBoxHeight * smallBoxTopIndex + largeBoxHeight;
-          console.log(this.prev_top)
-
 
         } else {
           this.keySelected = 6
@@ -177,7 +174,7 @@ export default class PanningRectExample extends React.Component {
 
         if(this.typeOfBoxSelected === 'SMALL') {
           let box = this.refs["smallPictureBox" + this.keySelected];
-          console.log(this.left)
+          // console.log(this.left)
           box.setNativeProps({
             style: {top:this.top, left:this.left},
           })
@@ -208,10 +205,80 @@ export default class PanningRectExample extends React.Component {
 
   _endMove(evt, gestureState) {
 
-    finalTopIndex = Math.floor((this.top-largeBoxHeight) / this._smallBoxHeight + 0.5);
-    finalLeftIndex = Math.floor(this.left/this._smallBoxWidth + 0.5);
-    console.log(finalTopIndex)
-    console.log(finalLeftIndex)
+    if(this.keySelected !== 6){
+      topIndexDraggedOver = Math.floor((this.top-largeBoxHeight) / this._smallBoxHeight + 0.5);
+      leftIndexDraggedOver = Math.floor(this.left/this._smallBoxWidth + 0.5);
+
+      // console.log(topIndexDraggedOver)
+
+      if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
+        draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+
+        let albumPictures = this.state.albumPictures;
+        let selectedItem = albumPictures[this.keySelected];
+
+
+
+        // console.log(selectedItem.key)
+
+      }
+    } else {
+      const {pageY, pageX} = evt.nativeEvent
+
+      leftIndexDraggedOver = -1
+      topIndexDraggedOver = -1
+
+      if(pageY > largeBoxHeight+HEADER_SIZE && pageY < largeBoxHeight+HEADER_SIZE+smallBoxHeight*2){
+        if(pageY > largeBoxHeight+HEADER_SIZE && pageY < largeBoxHeight+HEADER_SIZE+smallBoxHeight)
+          topIndexDraggedOver = 0
+        else topIndexDraggedOver = 1
+
+        if(pageX < smallBoxWidth && pageX > 0)
+          leftIndexDraggedOver = 0
+        else if (pageX < smallBoxWidth*2 && pageX > smallBoxWidth)
+          leftIndexDraggedOver = 1
+        else if (pageX < smallBoxWidth*3 && pageX > smallBoxWidth*2)
+          leftIndexDraggedOver = 2
+        else
+          leftIndexDraggedOver = -1
+
+      } else {
+        // selectedItem = -1
+        leftIndexDraggedOver = -1
+        topIndexDraggedOver = -1
+      }
+
+      if(leftIndexDraggedOver !== -1 && topIndexDraggedOver !== -1)
+      {
+        draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+        console.log(draggedOverIndex)
+      }
+
+
+      // topIndexDraggedOver = Math.floor((this.top-largeBoxHeight) / this._smallBoxHeight + 0.5);
+      // leftIndexDraggedOver = Math.floor(this.left/this._smallBoxWidth + 0.5);
+      //
+      // console.log(topIndexDraggedOver)
+      // console.log(leftIndexDraggedOver)
+      //
+      // if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
+      //   draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+      //
+      //   let albumPictures = this.state.albumPictures;
+      //   let selectedItem = albumPictures[this.keySelected];
+      //
+      //
+      //
+      //   console.log(draggedOverIndex)
+      //
+      // }
+
+
+    }
+
+
+
+
   }
 
   //
