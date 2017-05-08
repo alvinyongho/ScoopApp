@@ -146,7 +146,8 @@ export default class PanningRectExample extends React.Component {
       console.log(fixed_top)
       console.log(fixed_left)
       box.setNativeProps({
-        style: {top:fixed_top, left:fixed_left},
+        style: {top:fixed_top, left:fixed_left, opacity:1},
+
       });
 
       console.log('setting prop location for pictureBox ' + i )
@@ -476,12 +477,37 @@ export default class PanningRectExample extends React.Component {
     this.pictures.splice(this.state.selected, 1);
     this.pictures.push(selectedItem);
 
+
+    const deleteButtons = this.state.albumPictures.map((elem, index) => {
+      DELETE_BUTTON_WIDTH = 30
+      if(index !== this.state.numEnabled){
+        let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
+        let left = (index % 3) * this._smallBoxWidth + this._smallBoxWidth - (DELETE_BUTTON_WIDTH);
+        return(
+          // <TouchableHighlight key={'touchableDelete'+elem.key} onPress={console.log('clicked on' + index)}>
+          <View ref={'deleteRef'+elem.key} key={'deleteKey' + elem.key} style={{position:'absolute', top, left, height: DELETE_BUTTON_WIDTH, width: DELETE_BUTTON_WIDTH, backgroundColor: 'blue', borderRadius:DELETE_BUTTON_WIDTH/2}}>
+          </View>
+          // </TouchableHighlight>
+        );
+      }
+      // return();
+    })
+
+
     console.log(this.state.albumPictures)
     return (
-      <View {...this._panResponder.panHandlers}>
-        <View style={styles.smallPicturesContainer}>
-        {this.pictures}
+      <View>
+        <View {...this._panResponder.panHandlers}>
+          <View style={styles.smallPicturesContainer}>
+          {this.pictures}
+          </View>
         </View>
+
+        {/* DELETE BUTTONS */}
+        <View style={{position:'absolute'}}>
+          {deleteButtons}
+        </View>
+
       </View>
     );
   }
