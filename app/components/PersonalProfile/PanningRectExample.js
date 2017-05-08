@@ -10,9 +10,13 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   TouchableHighlight,
-  LayoutAnimation
-
+  LayoutAnimation,
+  Image,
 } from 'react-native';
+
+import images from '@assets/images';
+
+
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -35,9 +39,6 @@ export default class PanningRectExample extends React.Component {
   constructor() {
     super();
 
-
-    // this.initialLocationOfTouchX = 0;
-    // this.initialLocationOfTouchY = 0;
     // Used to handle case where touch but drag finger out of the frame
     this.initialMoveOutOfFrameX = 0;
     this.initialMoveOutOfFrameY = 0;
@@ -78,33 +79,38 @@ export default class PanningRectExample extends React.Component {
         albumPictures: [
           {
             key: 0,
-            backgroundColor: 'red'
-
+            backgroundColor: 'red',
+            imagesrc: images.placeholder_album1
           },
           {
             key: 1,
-            backgroundColor: 'orange'
+            backgroundColor: 'orange',
+            imagesrc: images.placeholder_album2
           },
           {
             key: 2,
-            backgroundColor: 'yellow'
+            backgroundColor: 'yellow',
+            imagesrc: images.placeholder_album3
           },
           {
             key: 3,
-            backgroundColor: 'green'
+            backgroundColor: 'green',
+            imagesrc: images.placeholder_album4
           },
           {
             key: 4,
-            backgroundColor: 'blue'
+            backgroundColor: 'blue',
+            imagesrc: images.placeholder_album5
           },
           {
             key: 5,
             backgroundColor: 'purple',
-
+            imagesrc: images.placeholder_album6
           },
           {
             key: 6,
-            backgroundColor: 'skyblue'
+            backgroundColor: 'skyblue',
+            imagesrc: images.placeholder_mainalbum
           },
         ],
     }
@@ -114,16 +120,6 @@ export default class PanningRectExample extends React.Component {
   handlePressIn() {
     // this.doubleTapWait = true
     this.tapTimer = setTimeout( () => {
-      // set indicated selected
-      console.log('this key selected' + this.keySelected)
-      console.log('the initial was ' + this.initialKeySelected)
-
-      // console.log(this.initialLocationOfTouchX)
-      // console.log(this.initialLocationOfTouchY)
-      console.log(this.initialMoveOutOfFrameX)
-      console.log(this.initialMoveOutOfFrameY)
-
-
       if(this.initialKeySelected === this.keySelected && this.initialMoveOutOfFrameX === 0 && this.initialMoveOutOfFrameY === 0){
         this.pressEnabled = true
 
@@ -137,8 +133,33 @@ export default class PanningRectExample extends React.Component {
 
     }, 600)
   }
+
+  resetGrid(){
+    console.log('resetting the grid')
+
+    // reset small boxes
+    for(i=0; i<this.state.numEnabled; i++){
+      fixed_top = Math.floor(i/3)*this._smallBoxHeight + largeBoxHeight;
+      fixed_left = (i%3)*this._smallBoxWidth;
+
+      let box = this.refs["pictureBox" + i];
+      console.log(fixed_top)
+      console.log(fixed_left)
+      box.setNativeProps({
+        style: {top:fixed_top, left:fixed_left},
+      });
+
+      console.log('setting prop location for pictureBox ' + i )
+    }
+
+
+  }
   handlePressOut() {
     this.pressEnabled = false
+
+    // Snap to grid
+    this.resetGrid()
+
 
   }
 
@@ -147,7 +168,6 @@ export default class PanningRectExample extends React.Component {
   }
 
   componentWillUnmount = () => { if (this.tapTimer) clearTimeout(this.tapTimer) }
-
 
   componentWillMount(){
     // Handle the pannign responders
@@ -160,11 +180,6 @@ export default class PanningRectExample extends React.Component {
         this.handlePressIn()
 
         const {pageX, pageY} = evt.nativeEvent;
-
-        // // for handling touch and then drag out of frame case
-        // this.initialLocationOfTouchX = pageX;
-        // this.initialLocationOfTouchY = pageY;
-
 
         offsetPageY = pageY-HEADER_SIZE
         this.typeOfBoxSelected = offsetPageY < largeBoxHeight ? 'LARGE': 'SMALL'
@@ -186,12 +201,9 @@ export default class PanningRectExample extends React.Component {
         });
         this.initialKeySelected = this.keySelected;
 
-
-
         return gestureState.dx!==0 || gestureState.dx!==0;
       },
       onMoveShouldSetPanResponder:         (evt, gestureState) => {
-        console.log('UPDAT@@@')
         const {pageX, pageY} = evt.nativeEvent;
 
         // for handling touch and then drag out of frame case
@@ -439,7 +451,10 @@ export default class PanningRectExample extends React.Component {
                   key={elem.key}
                   style={[styles.smallPictureBox, {top, left}]} >
               <View style={[styles.smallPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-                <Text> PICTURE </Text>
+
+                <Image source={elem.imagesrc} style={styles.smallPictureBoxContainer}/>
+
+
               </View>
             </Animated.View>
         );
@@ -450,7 +465,8 @@ export default class PanningRectExample extends React.Component {
                 key={elem.key}
                 style={[styles.mainPictureBox, {top:0, left:0}]} >
               <View style={[styles.mainPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-                <Text> PICTURE </Text>
+                <Image source={elem.imagesrc} style={styles.mainPictureBoxContainer}/>
+
               </View>
           </Animated.View>
         );
