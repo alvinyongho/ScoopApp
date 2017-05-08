@@ -21,7 +21,6 @@ var ALBUM_WIDTH = 80;
 var ALBUM_HEIGHT = 60;
 var MARGIN = 20;
 
-
 largeBoxHeight = (screenWidth/3)*2
 largeBoxWidth = (screenWidth)
 smallBoxHeight = screenWidth/3 - 20
@@ -36,22 +35,14 @@ export default class PanningRectExample extends React.Component {
     super();
     this._smallBoxWidth = smallBoxWidth;
     this._smallBoxHeight = smallBoxHeight;
-
     this.keySelected = 0;
     this.typeOfBoxSelected = undefined;
-
     this.left = 0;
     this.top = 0;
     this.prev_left = 0;
     this.prev_top = 0;
-
     this.pictures = []
-
-
     this.initialKeySelected = 0;
-
-
-
     this.animations = {
       duration: 200,
       create: {
