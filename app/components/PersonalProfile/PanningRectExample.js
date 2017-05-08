@@ -16,7 +16,7 @@ import {
 
 import images from '@assets/images';
 
-
+import Button from 'react-native-button'
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -42,6 +42,7 @@ export default class PanningRectExample extends React.Component {
     // Used to handle case where touch but drag finger out of the frame
     this.initialMoveOutOfFrameX = 0;
     this.initialMoveOutOfFrameY = 0;
+
 
     this.tapTimer          = null
     this.tapIgnore         = false
@@ -125,7 +126,8 @@ export default class PanningRectExample extends React.Component {
 
         let box = this.refs["pictureBox" + this.keySelected];
         box.setNativeProps({
-          style: { opacity:0.7, }
+          style: { opacity:0.7, transform:[{scale:1.1}]},
+
         })
       } else {
         this.pressEnabled = false
@@ -146,7 +148,7 @@ export default class PanningRectExample extends React.Component {
       console.log(fixed_top)
       console.log(fixed_left)
       box.setNativeProps({
-        style: {top:fixed_top, left:fixed_left, opacity:1},
+        style: {top:fixed_top, left:fixed_left, opacity:1, transform:[{scale:1.0}]},
 
       });
 
@@ -157,7 +159,6 @@ export default class PanningRectExample extends React.Component {
   }
   handlePressOut() {
     this.pressEnabled = false
-
     // Snap to grid
     this.resetGrid()
 
@@ -441,6 +442,13 @@ export default class PanningRectExample extends React.Component {
     }
   }
 
+  deleteAlbumAtIndex(index){
+    console.log('delete album at index' + index)
+    // update dictionary
+
+  }
+
+
   render(){
     this.pictures = this.state.albumPictures.map((elem, index) => {
       if(index !== this.state.numEnabled){
@@ -452,9 +460,7 @@ export default class PanningRectExample extends React.Component {
                   key={elem.key}
                   style={[styles.smallPictureBox, {top, left}]} >
               <View style={[styles.smallPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-
                 <Image source={elem.imagesrc} style={styles.smallPictureBoxContainer}/>
-
 
               </View>
             </Animated.View>
@@ -484,10 +490,16 @@ export default class PanningRectExample extends React.Component {
         let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
         let left = (index % 3) * this._smallBoxWidth + this._smallBoxWidth - (DELETE_BUTTON_WIDTH);
         return(
-          // <TouchableHighlight key={'touchableDelete'+elem.key} onPress={console.log('clicked on' + index)}>
-          <View ref={'deleteRef'+elem.key} key={'deleteKey' + elem.key} style={{position:'absolute', top, left, height: DELETE_BUTTON_WIDTH, width: DELETE_BUTTON_WIDTH, backgroundColor: 'blue', borderRadius:DELETE_BUTTON_WIDTH/2}}>
+          <Button key={'deleteButton' + elem.key} onPress={()=> this.deleteAlbumAtIndex(index)}>
+          <View ref={'deleteRef'+elem.key} key={'deleteKey' + elem.key}
+              style={{position:'absolute',
+                      top, left,
+                      height: DELETE_BUTTON_WIDTH,
+                      width: DELETE_BUTTON_WIDTH,
+                      backgroundColor: 'blue',
+                      borderRadius:DELETE_BUTTON_WIDTH/2}}>
           </View>
-          // </TouchableHighlight>
+          </Button>
         );
       }
       // return();
