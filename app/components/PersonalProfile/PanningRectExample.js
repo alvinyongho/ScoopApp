@@ -72,6 +72,7 @@ export default class PanningRectExample extends React.Component {
 
     // the last item set as selected
     this.state = {
+        numEnabled: 6,
 
         activeBlock: null,
         selected: 6,
@@ -103,7 +104,8 @@ export default class PanningRectExample extends React.Component {
           },
           {
             key: 5,
-            backgroundColor: 'purple'
+            backgroundColor: 'purple',
+
           },
           {
             key: 6,
@@ -146,7 +148,7 @@ export default class PanningRectExample extends React.Component {
           this.prev_top = smallBoxHeight * smallBoxTopIndex + largeBoxHeight;
 
         } else {
-          this.keySelected = 6
+          this.keySelected = this.state.numEnabled;
           this.prev_left = 0;
           this.prev_top = 0;
         }
@@ -158,7 +160,7 @@ export default class PanningRectExample extends React.Component {
         if(this.typeOfBoxSelected === 'LARGE'){
           console.log('handle large drag')
 
-          let box = this.refs["pictureBox" + 6];
+          let box = this.refs["pictureBox" + this.state.numEnabled];
           box.setNativeProps({
             style: { opacity:0.7, }
           })
@@ -182,15 +184,15 @@ export default class PanningRectExample extends React.Component {
         this.left = this.prev_left + gestureState.dx;
         this.top =  this.prev_top + gestureState.dy;
 
-        if(this.initialKeySelected !== 6){
+        if(this.initialKeySelected !== this.state.numEnabled){
           if(this.typeOfBoxSelected === 'LARGE'){
-            let box = this.refs["pictureBox" + 6];
+            let box = this.refs["pictureBox" + this.state.numEnabled];
             box.setNativeProps({
               style: {top:this.top, left:this.left},
             });
           }
         } else {
-          let box = this.refs["pictureBox" + 6];
+          let box = this.refs["pictureBox" + this.state.numEnabled];
           box.setNativeProps({
             style: {top:0, left:0},
           });
@@ -209,7 +211,7 @@ export default class PanningRectExample extends React.Component {
       },
       onPanResponderRelease: (evt, gestureState) =>{
         if(this.typeOfBoxSelected === 'LARGE'){
-          let box = this.refs["pictureBox"+6];
+          let box = this.refs["pictureBox"+this.state.numEnabled];
           box.setNativeProps({
             style: {opacity:1,}
           });
@@ -234,7 +236,7 @@ export default class PanningRectExample extends React.Component {
 
   _endMove(evt, gestureState) {
     console.log('initial key selected:   ' + this.initialKeySelected)
-    if(this.keySelected !== 6 && this.initialKeySelected !== 6){
+    if(this.keySelected !== this.state.numEnabled && this.initialKeySelected !== this.state.numEnabled){
       topIndexDraggedOver = Math.floor((this.top-largeBoxHeight) / this._smallBoxHeight + 0.5);
       leftIndexDraggedOver = Math.floor(this.left/this._smallBoxWidth + 0.5);
 
@@ -243,10 +245,10 @@ export default class PanningRectExample extends React.Component {
 
         // TODO: CHECK IF PICTURE EXISTS if not customize behavior (?)
 
-        draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+        draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver);
 
         if (draggedOverIndex < 0){
-          draggedOverIndex = 6
+          draggedOverIndex = this.state.numEnabled
         }
 
         let albumPictures = this.state.albumPictures;
@@ -265,8 +267,6 @@ export default class PanningRectExample extends React.Component {
             selected: draggedOverIndex,
           });
         }
-
-
       }
 
       if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
@@ -289,11 +289,13 @@ export default class PanningRectExample extends React.Component {
           });
         }
 
+
       } else {
         let box = this.refs["pictureBox" + this.keySelected];
         let top = this.topIndex*this._smallBoxHeight;
         let left = this.leftIndex*this._smallBoxWidth;
         LayoutAnimation.configureNext(this.animations);
+
       }
       LayoutAnimation.configureNext(this.animations);
 
@@ -321,7 +323,20 @@ export default class PanningRectExample extends React.Component {
       }
 
 
-      if (this.initialKeySelected !== 6){
+
+
+
+      if (this.initialKeySelected !== this.state.numEnabled){
+
+        console.log('@@@@')
+        let box = this.refs["pictureBox" + this.state.numEnabled];
+        box.setNativeProps({
+          style: {top:0, left:0},
+        });
+
+
+
+
         if(leftIndexDraggedOver > -1 && topIndexDraggedOver > -1)
         {
           draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
@@ -349,7 +364,7 @@ export default class PanningRectExample extends React.Component {
         }
       }
 
-      if (this.initialKeySelected == 6){
+      if (this.initialKeySelected == this.state.numEnabled){
         if(leftIndexDraggedOver > -1 && topIndexDraggedOver > -1)
         {
           draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
@@ -379,14 +394,14 @@ export default class PanningRectExample extends React.Component {
       }
     }
 
-    if (this.initialKeySelected === 6){
+    if (this.initialKeySelected === this.state.numEnabled){
       const {pageY, pageX} = evt.nativeEvent
 
       if(pageY < largeBoxHeight+HEADER_SIZE){
         console.log("todo: perform undo")
         console.log(this.keySelected)
 
-        draggedOverIndex = 6
+        draggedOverIndex = this.state.numEnabled
         let albumPictures = this.state.albumPictures;
         let movedBox = albumPictures[this.keySelected];
 
@@ -413,7 +428,7 @@ export default class PanningRectExample extends React.Component {
 
     this.pictures = this.state.albumPictures.map((elem, index) => {
 
-      if(index !== 6){
+      if(index !== this.state.numEnabled){
         let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
         let left = (index % 3) * this._smallBoxWidth;
 
@@ -430,7 +445,7 @@ export default class PanningRectExample extends React.Component {
       }
 
       return(
-          <View ref={'pictureBox'+6}
+          <View ref={'pictureBox'+this.state.numEnabled}
                 key={elem.key}
                 style={[styles.mainPictureBox, {top:0, left:0}]} >
 
