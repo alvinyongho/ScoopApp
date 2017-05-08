@@ -27,12 +27,25 @@ smallBoxHeight = screenWidth/3 - 20
 smallBoxWidth = screenWidth/3
 
 HEADER_SIZE = 64    // IOS
+ACTION_TIMER = 4000
 
 
 export default class PanningRectExample extends React.Component {
 
   constructor() {
     super();
+
+
+    // this.initialLocationOfTouchX = 0;
+    // this.initialLocationOfTouchY = 0;
+    // Used to handle case where touch but drag finger out of the frame
+    this.initialMoveOutOfFrameX = 0;
+    this.initialMoveOutOfFrameY = 0;
+
+    this.tapTimer          = null
+    this.tapIgnore         = false
+
+    this.pressEnabled = false
     this._smallBoxWidth = smallBoxWidth;
     this._smallBoxHeight = smallBoxHeight;
     this.keySelected = 0;
@@ -97,19 +110,61 @@ export default class PanningRectExample extends React.Component {
     }
   }
 
+
+  handlePressIn() {
+    // this.doubleTapWait = true
+    this.tapTimer = setTimeout( () => {
+      // set indicated selected
+      console.log('this key selected' + this.keySelected)
+      console.log('the initial was ' + this.initialKeySelected)
+
+      // console.log(this.initialLocationOfTouchX)
+      // console.log(this.initialLocationOfTouchY)
+      console.log(this.initialMoveOutOfFrameX)
+      console.log(this.initialMoveOutOfFrameY)
+
+
+      if(this.initialKeySelected === this.keySelected && this.initialMoveOutOfFrameX === 0 && this.initialMoveOutOfFrameY === 0){
+        this.pressEnabled = true
+
+        let box = this.refs["pictureBox" + this.keySelected];
+        box.setNativeProps({
+          style: { opacity:0.7, }
+        })
+      } else {
+        this.pressEnabled = false
+      }
+
+    }, 600)
+  }
+  handlePressOut() {
+    this.pressEnabled = false
+
+  }
+
+  setPressEnabled(status){
+    this.pressEnabled = status;
+  }
+
+  componentWillUnmount = () => { if (this.tapTimer) clearTimeout(this.tapTimer) }
+
+
   componentWillMount(){
     // Handle the pannign responders
     this._panResponder = PanResponder.create({
-      onPanResponderTerminate:             (evt, gestureState) => {this.initialKeySelected = 0},
+      onPanResponderTerminate:             (evt, gestureState) => {this.handlePressOut()},
       onStartShouldSetPanResponder:        (evt, gestureState) => {
-        return gestureState.dx!==0 || gestureState.dx!==0;
-      },
-      onMoveShouldSetPanResponder:         (evt, gestureState) => true,
-      onShouldBlockNativeResponder:        (evt, gestureState) => true,
-      onPanResponderTerminationRequest:    (evt, gestureState) => true,
-      onPanResponderGrant:                  (evt, gestureState)=> {
+        console.log('starting signal')
+        this.initialMoveOutOfFrameX = 0
+        this.initialMoveOutOfFrameY = 0
+        this.handlePressIn()
 
         const {pageX, pageY} = evt.nativeEvent;
+
+        // // for handling touch and then drag out of frame case
+        // this.initialLocationOfTouchX = pageX;
+        // this.initialLocationOfTouchY = pageY;
+
 
         offsetPageY = pageY-HEADER_SIZE
         this.typeOfBoxSelected = offsetPageY < largeBoxHeight ? 'LARGE': 'SMALL'
@@ -129,23 +184,26 @@ export default class PanningRectExample extends React.Component {
         this.setState({
           selected: this.keySelected,
         });
-
-        if(this.typeOfBoxSelected === 'LARGE'){
-          let box = this.refs["pictureBox" + this.state.numEnabled];
-          box.setNativeProps({
-            style: { opacity:0.7, }
-          })
-        }
-        else if(this.typeOfBoxSelected === 'SMALL') {
-          console.log('handle small drag')
-          let box = this.refs["pictureBox" + this.keySelected];
-          box.setNativeProps({
-            style: {
-              opacity:0.7,
-              }
-          })
-        }
         this.initialKeySelected = this.keySelected;
+
+
+
+        return gestureState.dx!==0 || gestureState.dx!==0;
+      },
+      onMoveShouldSetPanResponder:         (evt, gestureState) => {
+        console.log('UPDAT@@@')
+        const {pageX, pageY} = evt.nativeEvent;
+
+        // for handling touch and then drag out of frame case
+        this.initialMoveOutOfFrameX = pageX;
+        this.initialMoveOutOfFrameY = pageY;
+
+
+        return this.pressEnabled
+      },
+      onShouldBlockNativeResponder:        (evt, gestureState) => true,
+      onPanResponderTerminationRequest:    (evt, gestureState) => true,
+      onPanResponderGrant:                  (evt, gestureState)=> {
 
       },
       onPanResponderMove:    (evt, gestureState) => {
@@ -195,6 +253,8 @@ export default class PanningRectExample extends React.Component {
         this.initialKeySelected = 0;
 
         // TODO: cleanup and fixes on release
+        this.handlePressOut();
+
 
       },
     });
@@ -375,24 +435,24 @@ export default class PanningRectExample extends React.Component {
         let left = (index % 3) * this._smallBoxWidth;
 
         return (
-            <View ref={'pictureBox'+index}
+            <Animated.View ref={'pictureBox'+index}
                   key={elem.key}
                   style={[styles.smallPictureBox, {top, left}]} >
               <View style={[styles.smallPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
                 <Text> PICTURE </Text>
               </View>
-            </View>
+            </Animated.View>
         );
       }
 
       return(
-          <View ref={'pictureBox'+this.state.numEnabled}
+          <Animated.View ref={'pictureBox'+this.state.numEnabled}
                 key={elem.key}
                 style={[styles.mainPictureBox, {top:0, left:0}]} >
               <View style={[styles.mainPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
                 <Text> PICTURE </Text>
               </View>
-          </View>
+          </Animated.View>
         );
     })
 
