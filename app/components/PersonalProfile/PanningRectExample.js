@@ -53,6 +53,11 @@ export default class PanningRectExample extends React.Component {
 
     this.pictures = []
 
+
+    this.initialKeySelected = 0;
+
+
+
     this.animations = {
       duration: 200,
       create: {
@@ -113,7 +118,7 @@ export default class PanningRectExample extends React.Component {
   componentWillMount(){
     // Handle the pannign responders
     this._panResponder = PanResponder.create({
-      onPanResponderTerminate:             (evt, gestureState) => {console.log('should term')},
+      onPanResponderTerminate:             (evt, gestureState) => {this.initialKeySelected = 0},
       onStartShouldSetPanResponder:        (evt, gestureState) => {
 
         return gestureState.dx!==0 || gestureState.dx!==0;
@@ -167,16 +172,27 @@ export default class PanningRectExample extends React.Component {
               }
           })
         }
+
+
+
+        this.initialKeySelected = this.keySelected;
+
       },
       onPanResponderMove:    (evt, gestureState) => {
         this.left = this.prev_left + gestureState.dx;
         this.top =  this.prev_top + gestureState.dy;
 
-
-        if(this.typeOfBoxSelected === 'LARGE'){
+        if(this.initialKeySelected !== 6){
+          if(this.typeOfBoxSelected === 'LARGE'){
+            let box = this.refs["pictureBox" + 6];
+            box.setNativeProps({
+              style: {top:this.top, left:this.left},
+            });
+          }
+        } else {
           let box = this.refs["pictureBox" + 6];
           box.setNativeProps({
-            style: {top:this.top, left:this.left},
+            style: {top:0, left:0},
           });
         }
 
@@ -209,28 +225,33 @@ export default class PanningRectExample extends React.Component {
 
         console.log('should term')
 
+        this.initialKeySelected = 0;
+
       },
     });
   }
 
 
   _endMove(evt, gestureState) {
-
-    if(this.keySelected !== 6){
+    console.log('initial key selected:   ' + this.initialKeySelected)
+    if(this.keySelected !== 6 && this.initialKeySelected !== 6){
       topIndexDraggedOver = Math.floor((this.top-largeBoxHeight) / this._smallBoxHeight + 0.5);
       leftIndexDraggedOver = Math.floor(this.left/this._smallBoxWidth + 0.5);
-
 
       if((0 > topIndexDraggedOver)){
         console.log('swapping with big')
 
-
         // TODO: CHECK IF PICTURE EXISTS if not customize behavior (?)
-        draggedOverIndex = 6
+
+        draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+
+        if (draggedOverIndex < 0){
+          draggedOverIndex = 6
+        }
+
         let albumPictures = this.state.albumPictures;
         let movedBox = albumPictures[this.keySelected];
 
-        // console.log('dragging over:    ' + draggedOverIndex)
         albumPictures.splice(this.keySelected, 1);
         albumPictures.splice(draggedOverIndex, 0, movedBox);
 
@@ -245,19 +266,15 @@ export default class PanningRectExample extends React.Component {
           });
         }
 
+
       }
-      // console.log(topIndexDraggedOver)
 
       if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
         draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
 
-        // TODO: CHECK IF PICTURE EXISTS if not customize behavior (?)
-
-        // console.log('keyselected:   ' + this.keySelected)
         let albumPictures = this.state.albumPictures;
         let movedBox = albumPictures[this.keySelected];
 
-        // console.log('dragging over:    ' + draggedOverIndex)
         albumPictures.splice(this.keySelected, 1);
         albumPictures.splice(draggedOverIndex, 0, movedBox);
 
@@ -273,13 +290,12 @@ export default class PanningRectExample extends React.Component {
         }
 
       } else {
-        let box = this.refs["smallPictureBox" + this.keySelected];
+        let box = this.refs["pictureBox" + this.keySelected];
         let top = this.topIndex*this._smallBoxHeight;
         let left = this.leftIndex*this._smallBoxWidth;
         LayoutAnimation.configureNext(this.animations);
       }
-
-    LayoutAnimation.configureNext(this.animations);
+      LayoutAnimation.configureNext(this.animations);
 
     } else {
       const {pageY, pageX} = evt.nativeEvent
@@ -298,58 +314,72 @@ export default class PanningRectExample extends React.Component {
           leftIndexDraggedOver = 1
         else if (pageX < smallBoxWidth*3 && pageX > smallBoxWidth*2)
           leftIndexDraggedOver = 2
-        else
-          leftIndexDraggedOver = -1
-
       } else {
-        // selectedItem = -1
         leftIndexDraggedOver = -1
         topIndexDraggedOver = -1
-      }
-
-      if(leftIndexDraggedOver !== -1 && topIndexDraggedOver !== -1)
-      {
-        draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
-        console.log(draggedOverIndex)
-
-        //
-        // let albumPictures = this.state.albumPictures;
-        // let movedBox = albumPictures[this.keySelected];
-        //
-        // // console.log('dragging over:    ' + draggedOverIndex)
-        // albumPictures.splice(this.keySelected, 1);
-        // albumPictures.splice(draggedOverIndex, 0, movedBox);
-        //
-        // this.setState({
-        //   albumPictures
-        // })
-        //
-        // if (draggedOverIndex !== this.keySelected) {
-        //   this.keySelected = draggedOverIndex
-        //   this.setState({
-        //     selected: draggedOverIndex,
-        //   });
-        // }
-
-
-
+        // console.log('outside')
       }
 
 
+      if (this.initialKeySelected !== 6){
+        if(leftIndexDraggedOver > -1 && topIndexDraggedOver > -1)
+        {
+          draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+          let albumPictures = this.state.albumPictures;
+          let movedBox = albumPictures[this.keySelected];
+
+          albumPictures.splice(this.keySelected, 1);
+          albumPictures.splice(draggedOverIndex, 0, movedBox);
+          this.setState({
+            albumPictures
+          })
+          if (draggedOverIndex !== this.keySelected) {
+
+            this.keySelected = draggedOverIndex
+            this.setState({
+              selected: draggedOverIndex,
+            });
+          }
+          LayoutAnimation.configureNext(this.animations);
+
+        } else {
+          let box = this.refs["pictureBox" + this.keySelected];
+          let top = this.topIndex*this._smallBoxHeight;
+          let left = this.leftIndex*this._smallBoxWidth;
+        }
+      }
+
+      if (this.initialKeySelected == 6){
+        if(leftIndexDraggedOver > -1 && topIndexDraggedOver > -1)
+        {
+          draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+          let albumPictures = this.state.albumPictures;
+          let movedBox = albumPictures[this.keySelected];
+          albumPictures.splice(this.keySelected, 1);
+          albumPictures.splice(draggedOverIndex, 0, movedBox);
+          this.setState({
+            albumPictures
+          })
+          //
+          if (draggedOverIndex !== this.keySelected) {
+            console.log('dragged over different index' + draggedOverIndex)
+
+            this.keySelected = draggedOverIndex
+            this.setState({
+              selected: draggedOverIndex,
+            });
+            LayoutAnimation.configureNext(this.animations);
+
+          }
+        } else {
+          let box = this.refs["pictureBox" + this.keySelected];
+          let top = this.topIndex*this._smallBoxHeight;
+          let left = this.leftIndex*this._smallBoxWidth;
+        }
+      }
     }
-
-
-
-
   }
 
-  //
-  // onActiveBlockIsSet = (fn) => (evt, gestureState) => {
-  //   if (this.state.activeBlock != null) fn(evt, gestureState)
-  // }
-
-  // When the layout of the view gets loaded we set an async function that will
-  // bind the DropZoneLayout after the styles all get loaded
 
   render(){
 
