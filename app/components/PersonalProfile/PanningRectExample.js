@@ -360,7 +360,7 @@ export default class PanningRectExample extends React.Component {
           this.setState({
             albumPictures
           })
-          //
+
           if (draggedOverIndex !== this.keySelected) {
             console.log('dragged over different index' + draggedOverIndex)
 
@@ -376,6 +376,34 @@ export default class PanningRectExample extends React.Component {
           let top = this.topIndex*this._smallBoxHeight;
           let left = this.leftIndex*this._smallBoxWidth;
         }
+      }
+    }
+
+    if (this.initialKeySelected === 6){
+      const {pageY, pageX} = evt.nativeEvent
+
+      if(pageY < largeBoxHeight+HEADER_SIZE){
+        console.log("todo: perform undo")
+        console.log(this.keySelected)
+
+        draggedOverIndex = 6
+        let albumPictures = this.state.albumPictures;
+        let movedBox = albumPictures[this.keySelected];
+
+        albumPictures.splice(this.keySelected, 1);
+        albumPictures.splice(draggedOverIndex, 0, movedBox);
+
+        this.setState({
+          albumPictures
+        })
+
+        if (draggedOverIndex !== this.keySelected) {
+          this.keySelected = draggedOverIndex
+          this.setState({
+            selected: draggedOverIndex,
+          });
+        }
+
       }
     }
   }
