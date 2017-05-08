@@ -73,13 +73,9 @@ export default class PanningRectExample extends React.Component {
     // the last item set as selected
     this.state = {
         numEnabled: 6,
-
         activeBlock: null,
         selected: 6,
-        // mainPicture: {
-        //   key: 'mainPicture',
-        //   backgroundColor: 'skyblue'
-        // },
+
         albumPictures: [
           {
             key: 0,
@@ -112,8 +108,6 @@ export default class PanningRectExample extends React.Component {
             backgroundColor: 'skyblue'
           },
         ],
-
-
     }
   }
 
@@ -174,9 +168,6 @@ export default class PanningRectExample extends React.Component {
               }
           })
         }
-
-
-
         this.initialKeySelected = this.keySelected;
 
       },
@@ -224,10 +215,9 @@ export default class PanningRectExample extends React.Component {
           })
         }
         this.typeOfBoxSelected = undefined;
-
-        console.log('should term')
-
         this.initialKeySelected = 0;
+
+        // TODO: cleanup and fixes on release
 
       },
     });
@@ -245,7 +235,7 @@ export default class PanningRectExample extends React.Component {
 
         // TODO: CHECK IF PICTURE EXISTS if not customize behavior (?)
 
-        draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver);
+        draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver)%this.state.numEnabled;
 
         if (draggedOverIndex < 0){
           draggedOverIndex = this.state.numEnabled
@@ -270,7 +260,7 @@ export default class PanningRectExample extends React.Component {
       }
 
       if ((-1 < topIndexDraggedOver) && (topIndexDraggedOver < 2) && (-1 < leftIndexDraggedOver) && (leftIndexDraggedOver < 3)){
-        draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+        draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver)%this.state.numEnabled;
 
         let albumPictures = this.state.albumPictures;
         let movedBox = albumPictures[this.keySelected];
@@ -339,7 +329,7 @@ export default class PanningRectExample extends React.Component {
 
         if(leftIndexDraggedOver > -1 && topIndexDraggedOver > -1)
         {
-          draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+          draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver)%this.state.numEnabled;
           let albumPictures = this.state.albumPictures;
           let movedBox = albumPictures[this.keySelected];
 
@@ -367,7 +357,7 @@ export default class PanningRectExample extends React.Component {
       if (this.initialKeySelected == this.state.numEnabled){
         if(leftIndexDraggedOver > -1 && topIndexDraggedOver > -1)
         {
-          draggedOverIndex = topIndexDraggedOver*3 + leftIndexDraggedOver;
+          draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver)%this.state.numEnabled;
           let albumPictures = this.state.albumPictures;
           let movedBox = albumPictures[this.keySelected];
           albumPictures.splice(this.keySelected, 1);
