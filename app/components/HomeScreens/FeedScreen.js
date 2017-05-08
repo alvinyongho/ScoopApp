@@ -28,7 +28,7 @@ class FeedScreen extends Component{
     title: 'Scoop',
     headerRight: <Button onPress={() => navigation.navigate('Filter')}>
                          <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
-                </Button>,
+                 </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color: 'white', alignSelf:'center'}
   });

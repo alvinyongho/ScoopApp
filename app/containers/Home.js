@@ -21,40 +21,13 @@ import MatchFeed from './MatchFeed'
 
 
 class Home extends Component{
-  searchMatches() {
-    // due to destruct in app container <Home {...this.props} all the actions
-    // from the AppContainer get passed into the Home container
-    this.props.fetchMatches(
-      match_attributes =
-        {
-          'attribute1': 'criteria1',
-          'atrribute2': 'criteria2',
-        }
-    )
-  }
-
   onLogoutPressed(){
     this.props.facebookLogout();
   }
 
-  matches(){
-    return Object.keys(this.props.foundMatches)
-      .map( key => this.props.foundMatches[key])
-  }
-
-  componentWillMount(){
-    this.searchMatches();
-  }
-
   render(){
-    // const { navigate } = this.props.navigation;
     return (
-      <View>
-
-        <MatchFeed {...this.props}/>
-        <Button title="Logout of Facebook" onPress={() => this.onLogoutPressed()} />
-
-      </View>
+      <MatchFeed {...this.props}/>
     );
   }
 }

@@ -5,11 +5,12 @@ import * as authReducer from './auth';
 
 // Navigation Reducers
 import * as homeNavReducer from './homeNav';
+import * as myProfileNavReducer from './myProfileNav';
 
 // manage states using different reducers
 export default combineReducers(Object.assign(
   feedlistReducer,
   authReducer,
   homeNavReducer,
-
+  myProfileNavReducer,
 ));
