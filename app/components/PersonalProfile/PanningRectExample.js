@@ -33,16 +33,15 @@ smallBoxWidth = screenWidth/3
 HEADER_SIZE = 64    // IOS
 ACTION_TIMER = 4000
 
-
 export default class PanningRectExample extends React.Component {
 
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     // Used to handle case where touch but drag finger out of the frame
     this.initialMoveOutOfFrameX = 0;
     this.initialMoveOutOfFrameY = 0;
 
+    this.finishedDeleting = true;
 
     this.tapTimer          = null
     this.tapIgnore         = false
@@ -71,7 +70,6 @@ export default class PanningRectExample extends React.Component {
       },
     };
 
-    // the last item set as selected
     this.state = {
         renderDelete: true,
         numEnabled: 6,
@@ -121,6 +119,11 @@ export default class PanningRectExample extends React.Component {
 
   handlePressIn() {
     // this.doubleTapWait = true
+
+    if(this.state.numEnabled <= 1){
+      this.pressEnabled = false
+    }
+
     this.tapTimer = setTimeout( () => {
       if(this.initialKeySelected === this.keySelected && this.initialMoveOutOfFrameX === 0 && this.initialMoveOutOfFrameY === 0){
         this.pressEnabled = true
@@ -131,6 +134,7 @@ export default class PanningRectExample extends React.Component {
 
         })
         this.setState({renderDelete: false});
+        this.props.scrollEnabled = false
 
       } else {
         this.pressEnabled = false
@@ -141,6 +145,13 @@ export default class PanningRectExample extends React.Component {
 
   resetGrid(){
     console.log('resetting the grid')
+
+    // reset big box
+    let box = this.refs["pictureBox" + this.state.numEnabled];
+    box.setNativeProps({
+      style: {top:0, left:0, opacity:1, transform:[{scale:1.0}]},
+    });
+
 
     // reset small boxes
     for(i=0; i<this.state.numEnabled; i++){
@@ -206,7 +217,6 @@ export default class PanningRectExample extends React.Component {
           selected: this.keySelected,
         });
         this.initialKeySelected = this.keySelected;
-
         return gestureState.dx!==0 || gestureState.dx!==0;
       },
       onMoveShouldSetPanResponder:         (evt, gestureState) => {
@@ -241,7 +251,6 @@ export default class PanningRectExample extends React.Component {
             style: {top:0, left:0},
           });
         }
-
         if(this.typeOfBoxSelected === 'SMALL') {
           let box = this.refs["pictureBox" + this.keySelected];
           // console.log(this.left)
@@ -447,38 +456,16 @@ export default class PanningRectExample extends React.Component {
   }
 
   deleteAlbumAtIndex(index){
-    console.log('delete album at index' + index)
     // update dictionary
-    this.setState({
-      numEnabled: this.state.numEnabled - 1
-    });
-    this.setState({
-      selected: this.state.selected - 1
-    });
-
+    console.log('deleting item at index' + index)
     let albumPictures = this.state.albumPictures;
-
+    // Delete count of 1 at index.
     albumPictures.splice(index, 1);
+    this.setState({
+      albumPictures
+    })
 
-    for(i=index; i< this.state.numEnabled - 1 + 1; i++ ){
-      albumPictures[i].key = i
-    }
-
-    console.log(albumPictures)
-    // albumPictures.splice(draggedOverIndex, 0, movedBox);
-    //
-    // this.setState({
-    //   albumPictures
-    // })
-    //
-    // if (draggedOverIndex !== this.keySelected) {
-    //   this.keySelected = draggedOverIndex
-    //   this.setState({
-    //     selected: draggedOverIndex,
-    //   });
-    // }
-
-
+    this.setState({numEnabled: this.state.numEnabled-1})
 
   }
 

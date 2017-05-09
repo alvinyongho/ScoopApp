@@ -15,6 +15,7 @@ import SortableAlbum from './SortableAlbum'
 
 
 export default class EditProfileScrollView extends React.Component {
+
   render(){
     return (
       <View>
