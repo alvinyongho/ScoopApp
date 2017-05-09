@@ -73,6 +73,7 @@ export default class PanningRectExample extends React.Component {
 
     // the last item set as selected
     this.state = {
+        renderDelete: true,
         numEnabled: 6,
         activeBlock: null,
         selected: 6,
@@ -80,32 +81,32 @@ export default class PanningRectExample extends React.Component {
         albumPictures: [
           {
             key: 0,
-            backgroundColor: 'red',
+            backgroundColor: 'white',
             imagesrc: images.placeholder_album1
           },
           {
             key: 1,
-            backgroundColor: 'orange',
+            backgroundColor: 'white',
             imagesrc: images.placeholder_album2
           },
           {
             key: 2,
-            backgroundColor: 'yellow',
+            backgroundColor: 'white',
             imagesrc: images.placeholder_album3
           },
           {
             key: 3,
-            backgroundColor: 'green',
+            backgroundColor: 'white',
             imagesrc: images.placeholder_album4
           },
           {
             key: 4,
-            backgroundColor: 'blue',
+            backgroundColor: 'white',
             imagesrc: images.placeholder_album5
           },
           {
             key: 5,
-            backgroundColor: 'purple',
+            backgroundColor: 'white',
             imagesrc: images.placeholder_album6
           },
           {
@@ -129,6 +130,8 @@ export default class PanningRectExample extends React.Component {
           style: { opacity:0.7, transform:[{scale:1.1}]},
 
         })
+        this.setState({renderDelete: false});
+
       } else {
         this.pressEnabled = false
       }
@@ -161,6 +164,7 @@ export default class PanningRectExample extends React.Component {
     this.pressEnabled = false
     // Snap to grid
     this.resetGrid()
+    this.setState({renderDelete: true});
 
 
   }
@@ -445,45 +449,40 @@ export default class PanningRectExample extends React.Component {
   deleteAlbumAtIndex(index){
     console.log('delete album at index' + index)
     // update dictionary
+    this.setState({
+      numEnabled: this.state.numEnabled - 1
+    });
+    this.setState({
+      selected: this.state.selected - 1
+    });
+
+    let albumPictures = this.state.albumPictures;
+
+    albumPictures.splice(index, 1);
+
+    for(i=index; i< this.state.numEnabled - 1 + 1; i++ ){
+      albumPictures[i].key = i
+    }
+
+    console.log(albumPictures)
+    // albumPictures.splice(draggedOverIndex, 0, movedBox);
+    //
+    // this.setState({
+    //   albumPictures
+    // })
+    //
+    // if (draggedOverIndex !== this.keySelected) {
+    //   this.keySelected = draggedOverIndex
+    //   this.setState({
+    //     selected: draggedOverIndex,
+    //   });
+    // }
+
+
 
   }
 
-
-  render(){
-    this.pictures = this.state.albumPictures.map((elem, index) => {
-      if(index !== this.state.numEnabled){
-        let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
-        let left = (index % 3) * this._smallBoxWidth;
-
-        return (
-            <Animated.View ref={'pictureBox'+index}
-                  key={elem.key}
-                  style={[styles.smallPictureBox, {top, left}]} >
-              <View style={[styles.smallPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-                <Image source={elem.imagesrc} style={styles.smallPictureBoxContainer}/>
-
-              </View>
-            </Animated.View>
-        );
-      }
-
-      return(
-          <Animated.View ref={'pictureBox'+this.state.numEnabled}
-                key={elem.key}
-                style={[styles.mainPictureBox, {top:0, left:0}]} >
-              <View style={[styles.mainPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-                <Image source={elem.imagesrc} style={styles.mainPictureBoxContainer}/>
-
-              </View>
-          </Animated.View>
-        );
-    })
-
-    let selectedItem = this.pictures[this.state.selected];
-    this.pictures.splice(this.state.selected, 1);
-    this.pictures.push(selectedItem);
-
-
+  _toRenderDelete(){
     const deleteButtons = this.state.albumPictures.map((elem, index) => {
       DELETE_BUTTON_WIDTH = 30
       if(index !== this.state.numEnabled){
@@ -505,6 +504,50 @@ export default class PanningRectExample extends React.Component {
       // return();
     })
 
+    if (this.state.renderDelete)
+      return deleteButtons
+    else
+      return
+  }
+
+
+  render(){
+    this.pictures = this.state.albumPictures.map((elem, index) => {
+      if(index !== this.state.numEnabled){
+        let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
+        let left = (index % 3) * this._smallBoxWidth;
+
+        return (
+            <Animated.View ref={'pictureBox'+index}
+                  key={elem.key}
+                  style={[styles.smallPictureBox, {top, left}]} >
+              <View style={[styles.smallPictureBoxContainer,]}>
+                <Image source={elem.imagesrc} style={styles.smallPictureBoxContainer}/>
+
+              </View>
+            </Animated.View>
+        );
+      }
+
+      return(
+          <Animated.View ref={'pictureBox'+this.state.numEnabled}
+                key={elem.key}
+                style={[styles.mainPictureBox, {top:0, left:0}]} >
+              <View style={[styles.mainPictureBoxContainer,]}>
+                <Image source={elem.imagesrc} style={styles.mainPictureBoxContainer}/>
+
+              </View>
+          </Animated.View>
+        );
+    })
+
+    let selectedItem = this.pictures[this.state.selected];
+    this.pictures.splice(this.state.selected, 1);
+    this.pictures.push(selectedItem);
+
+
+
+
 
     console.log(this.state.albumPictures)
     return (
@@ -517,7 +560,7 @@ export default class PanningRectExample extends React.Component {
 
         {/* DELETE BUTTONS */}
         <View style={{position:'absolute'}}>
-          {deleteButtons}
+          {this._toRenderDelete()}
         </View>
 
       </View>
