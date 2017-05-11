@@ -36,7 +36,7 @@ export default class PhotoAlbum extends React.Component {
     super(props);
     this.indexSelected = null
     this.panCapture = false     //initially capture touch event from TouchableWithoutFeedback
-
+    this.blockTouchRelease = false
 
     this.state = {
       pictures: [
@@ -75,7 +75,9 @@ export default class PhotoAlbum extends React.Component {
             imagesrc: images.placeholder_album6
           }]
         },
-      ]
+      ],
+      blockPositions: [],
+
     }
   }
 
@@ -96,8 +98,8 @@ export default class PhotoAlbum extends React.Component {
       onPanResponderTerminate: (evt, gestureState) => {},
       onPanResponderTerminationRequest: (evt, gestureState) => false,
 
-      onPanResponderGrant: (evt, gestureState) => {console.log('granted')},
-      onPanResponderMove: (evt, gestureState) => {console.log('moving')},
+      onPanResponderGrant: (evt, gestureState) => { this.handleGranted() },
+      onPanResponderMove: (evt, gestureState) => {this.handleMove()},
       onPanResponderRelease: (evt, gestureState) => { this.onDragRelease() },
     });
   }
@@ -107,28 +109,47 @@ export default class PhotoAlbum extends React.Component {
     console.log('activated drag')
   }
 
+  handleMove = () => {
+    // Block TouchableWithoutFeedback from releasing
+    console.log('handling move')
+  }
+
+  handleGranted = ()  => {
+    this.blockTouchRelease = true;
+  }
+
   // Handle case where touch down but don't move and just release
   handlePressOut = () => () => {
-    this.onDragRelease();
+
+    if (this.blockTouchRelease === false)
+      this.onDragRelease();
   }
 
   // Handle case where move and then release
   onDragRelease = () => {
     this.panCapture = false;
+    this.blockTouchRelease = false;
     console.log('released drag')
   }
 
+
+
   handleShortPress(){
     console.log('handle short press')
+
   }
 
   // Helper functions
-  getIndexSelected(pageX, pageY){
+  getKeySelected(pageX, pageY){
     console.log('get coordinate selected' + pageX + "  " + pageY)
   }
 
   resetIndexSelected(){
     this.indexSelected = null;
+  }
+
+  saveBlockPositions = (key) => ({nativeEvent}) => {
+    console.log('handling saving of key')
   }
 
   render(){
@@ -143,6 +164,7 @@ export default class PhotoAlbum extends React.Component {
             onLongPress = { this.activateDrag(0)           }
             onPressOut =  { this.handlePressOut()          }
             picture =     { elem.bigPicture }
+            onLayout=     { this.saveBlockPositions('largePicture'+ key) }
             style =       {[styles.pictureContainer, styles.largeBox]}
           />
         );
@@ -159,10 +181,11 @@ export default class PhotoAlbum extends React.Component {
               key = {'smallPicture'+ smallPicture_key}
               delayLongPress={400}
               panHandlers = { this._panResponder.panHandlers }
-              onPress =     { ()=>this.handleShortPress()    }
-              onLongPress = { this.activateDrag(0)           }
-              onPressOut =  { this.handlePressOut()          }
+              onPress =     { ()=>this.handleShortPress() }
+              onLongPress = { this.activateDrag(0) }
+              onPressOut =  { this.handlePressOut() }
               picture =     { smallPicture }
+              onLayout=     { this.saveBlockPositions('smallPicture'+ smallPicture_key) }
               style =       {[styles.pictureContainer, styles.smallPictureBoxContainer, {top, left, borderRadius: 5, marginLeft}]}
             />
           )
