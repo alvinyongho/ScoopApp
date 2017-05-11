@@ -134,9 +134,7 @@ export default class PhotoAlbum extends React.Component {
 
   render(){
     const pictures = this.state.pictures.map((elem, key) => {
-      console.log(elem)
       if (elem.type == 'largeImage'){
-        console.log('handle the big image here')
         return (
           <PictureBlock
             key = {'largePicture'+key}
