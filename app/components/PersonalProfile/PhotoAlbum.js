@@ -22,7 +22,6 @@ var ALBUM_WIDTH = 80;
 var ALBUM_HEIGHT = 60;
 var MARGIN = 15;
 var HEADER_SIZE = 64    // IOS
-
 var NUM_PER_ROW = 3
 
 var largeBoxHeight = (screenWidth/3)*2
@@ -149,7 +148,8 @@ export default class PhotoAlbum extends React.Component {
   }
 
   saveBlockPositions = (key) => ({nativeEvent}) => {
-    console.log('handling saving of key')
+    console.log('@@@handling saving of key')
+    console.log(this.state.blockPositions)
   }
 
   render(){
@@ -208,7 +208,10 @@ class PictureBlock extends Component {
   }
 
   render = () =>
-    <Animated.View {...this.props.panHandlers}>
+    <Animated.View
+      onLayout = { this.props.onLayout }
+      {...this.props.panHandlers}
+    >
       <TouchableWithoutFeedback
         delayLongPress={400}
         onPress=       {this.props.onPress}
