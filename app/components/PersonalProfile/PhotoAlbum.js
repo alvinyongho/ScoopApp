@@ -32,44 +32,15 @@ HEADER_SIZE = 64    // IOS
 
 export default class PhotoAlbum extends React.Component {
 
-  componentWillMount(){
+  constructor(props){
+    super(props);
+    this.indexSelected = null,
 
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+    //initially capture touch event from TouchableWithoutFeedback
+    this.panCapture        = false
 
-      onPanResponderGrant: (evt, gestureState) => {
-        // The guesture has started. Show visual feedback so the user knows
-        // what is happening!
-
-        // gestureState.d{x,y} will be set to zero now
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        // The most recent move distance is gestureState.move{X,Y}
-
-        // The accumulated gesture distance since becoming responder is
-        // gestureState.d{x,y}
-      },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
-      onPanResponderRelease: (evt, gestureState) => {
-        // The user has released all touches while this view is the
-        // responder. This typically means a gesture has succeeded
-      },
-      onPanResponderTerminate: (evt, gestureState) => {
-        // Another component has become the responder, so this gesture
-        // should be cancelled
-      },
-      onShouldBlockNativeResponder: (evt, gestureState) => {
-        // Returns whether this component should block native components from becoming the JS
-        // responder. Returns true by default. Is currently only supported on android.
-        return true;
-      },
-    });
 
     this.state = {
-      panEnabled: false,
       bigPicture: {
         backgroundColor: 'skyblue',
         imagesrc: images.placeholder_mainalbum
@@ -100,62 +71,102 @@ export default class PhotoAlbum extends React.Component {
           imagesrc: images.placeholder_album6
         },
       ],
-
     }
   }
 
-  handleLongPress(){
-    console.log('handle long press')
-    this.setState({panEnabled: true});
+  componentWillMount(){
+    this.createTouchHandlers();
   }
+
+  createTouchHandlers = () => {
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
+
+      onMoveShouldSetPanResponder: (evt, gestureState) => this.panCapture,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) => this.panCapture,
+
+      onShouldBlockNativeResponder: (evt, gestureState) => false,
+
+      onPanResponderTerminate: (evt, gestureState) => {},
+      onPanResponderTerminationRequest: (evt, gestureState) => false,
+
+      onPanResponderGrant: (evt, gestureState) => {console.log('granted')},
+      onPanResponderMove: (evt, gestureState) => {console.log('moving')},
+      onPanResponderRelease: (evt, gestureState) => { this.onDragRelease() },
+    });
+  }
+
+  activateDrag = (key) => () => {
+    this.panCapture = true;
+    console.log('activated drag')
+  }
+
+  // Handle case where touch down but don't move and just release
+  handlePressOut = () => () => {
+    this.onDragRelease();
+  }
+
+  // Handle case where move and then release
+  onDragRelease = () => {
+    this.panCapture = false;
+    console.log('released drag')
+  }
+
   handleShortPress(){
     console.log('handle short press')
   }
-  handlePressOut(){
-    console.log('handle press out')
-    this.setState({panEnabled: false});
+
+  // Helper functions
+  getIndexSelected(pageX, pageY){
+    console.log('get coordinate selected' + pageX + "  " + pageY)
   }
+
+  resetIndexSelected(){
+    this.indexSelected = null;
+  }
+
 
 
   render(){
-
-    this.smallPictures = this.state.smallPictures.map((elem, index) => {
-      let top = Math.floor(index/3) * smallBoxHeight + largeBoxHeight;
-      let left = (index % 3) * smallBoxWidth;
-      return (
-          <View ref={'smallPictureRef'+index}
-                key={'smallPictureKey'+index}
-                style={[styles.smallPictureBox, {top, left}]} >
-                  <View style={[styles.smallPictureBoxContainer,]}>
-                    <Image source={elem.imagesrc} style={styles.smallPictureBoxContainer}/>
-                  </View>
-          </View>
-      );
-    })
-
-
     return (
-      <View>
-        <TouchableWithoutFeedback
-          delayLongPress={400}
-          onPress={() => this.handleShortPress()}
-          onLongPress={() => this.handleLongPress()}
-          onPressOut={() => this.handlePressOut()}
-          pressRetentionOffset = {{top: 0, left: 0, bottom: screenHeight, right: screenWidth}}
-          >
+      <Animated.View>
+        <PictureBlock
+            style={{height:50, width: 50, backgroundColor: 'blue'}}
+            delayLongPress={400}
+            panHandlers = { this._panResponder.panHandlers }
+            onPress =     { ()=>this.handleShortPress()    }
+            onLongPress = { this.activateDrag(0)           }
+            onPressOut =  { this.handlePressOut()          }
+            />
 
-          <View {...this._panResponder.panHandlers}>
 
-            <View style={styles.smallPicturesContainer}>
-              {this.smallPictures}
-            </View>
-
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+      </Animated.View>
     );
   }
 
+}
+
+class PictureBlock extends Component {
+  constructor(props){
+    super(props)
+    console.log('initial props')
+    console.log(props)
+  }
+
+  render = () =>
+    <Animated.View {...this.props.panHandlers}>
+      <TouchableWithoutFeedback
+        delayLongPress={400}
+        onPress=       {this.props.onPress}
+        onLongPress=   {this.props.onLongPress}
+        onPressOut=    {this.props.onPressOut}
+        pressRetentionOffset = {{top: 0, left: 0, bottom: screenHeight, right: screenWidth}}
+        >
+          <View style={{height:50, width:50, backgroundColor:'blue'}}>
+          </View>
+      </TouchableWithoutFeedback>
+    </Animated.View>
 }
 
 
