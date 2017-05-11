@@ -39,16 +39,17 @@ export default class PhotoAlbum extends React.Component {
     //initially capture touch event from TouchableWithoutFeedback
     this.panCapture        = false
 
-
     this.state = {
       pictures: [
         {
+          type: 'largeImage',
           bigPicture: {
             backgroundColor: 'skyblue',
             imagesrc: images.placeholder_mainalbum
           }
         },
         {
+          type: 'smallImages',
           smallPictures: [
           {
             backgroundColor: 'red',
@@ -132,19 +133,49 @@ export default class PhotoAlbum extends React.Component {
   }
 
   render(){
-    return (
-      <Animated.View>
-        <PictureBlock
-            style={{height:50, width: 50, backgroundColor: 'blue'}}
+    const pictures = this.state.pictures.map((elem, key) => {
+      console.log(elem)
+      if (elem.type == 'largeImage'){
+        console.log('handle the big image here')
+        return (
+          <PictureBlock
+            key = {'largePicture'+key}
             delayLongPress={400}
             panHandlers = { this._panResponder.panHandlers }
             onPress =     { ()=>this.handleShortPress()    }
             onLongPress = { this.activateDrag(0)           }
             onPressOut =  { this.handlePressOut()          }
-            style =       {{height:50, width:50, backgroundColor: 'blue'}}
+            picture =     { elem.bigPicture }
+            style =       {[styles.pictureContainer, styles.largeBox]}
+          />
+        );
+      }
+      if (elem.type == 'smallImages'){
+        const small_pictures = elem.smallPictures.map((smallPicture, smallPicture_key) => {
+          let num_bigImages = 1
+          let top  = Math.floor((smallPicture_key)/3) * smallBoxHeight + largeBoxHeight;
+          let left = ((smallPicture_key) % 3) * smallBoxWidth;
+
+          return (
+            <PictureBlock
+              key = {'smallPicture'+ smallPicture_key}
+              delayLongPress={400}
+              panHandlers = { this._panResponder.panHandlers }
+              onPress =     { ()=>this.handleShortPress()    }
+              onLongPress = { this.activateDrag(0)           }
+              onPressOut =  { this.handlePressOut()          }
+              picture =     { smallPicture }
+              style =       {[styles.pictureContainer, styles.smallPictureBoxContainer, {top, left, borderRadius: 5}]}
             />
+          )
+        });
+        return small_pictures;
+      }
+    })
 
-
+    return (
+      <Animated.View>
+        {pictures}
       </Animated.View>
     );
   }
@@ -164,7 +195,8 @@ class PictureBlock extends Component {
         onPressOut=    {this.props.onPressOut}
         pressRetentionOffset = {{top: 0, left: 0, bottom: screenHeight, right: screenWidth}}
         >
-          <View style={this.props.style}>
+          <View style={{position:'absolute'}}>
+            <Image source={this.props.picture.imagesrc} style={this.props.style}/>
           </View>
       </TouchableWithoutFeedback>
     </Animated.View>
@@ -172,27 +204,21 @@ class PictureBlock extends Component {
 
 
 var styles = StyleSheet.create({
-  smallPicturesContainer:{    // OVERALL CONTAINER
-    width: screenWidth
+
+  pictureContainer:{
+    position: 'absolute',
   },
   smallPictureBoxContainer:{  // INDIVIDUAL CONTAINER
-    alignItems:"center",
-    justifyContent:"center",
     width: smallBoxWidth,
     height:smallBoxHeight,
   },
-  smallPictureBox:{           // WRAPPER
-    backgroundColor:"#fff",
-    position:"absolute",
+
+  largeBox:{
+    top: 0,
+    left: 0,
+    height:largeBoxHeight,
+    width:screenWidth,
+    backgroundColor: 'blue'
   },
-  mainPictureBoxContainer:{
-    alignItems:"center",
-    justifyContent:"center",
-    width: largeBoxWidth,
-    height: largeBoxHeight,
-  },
-  mainPictureBox: {           // WRAPPER
-    backgroundColor: "#fff",
-    position: "absolute",
-  },
+
 });
