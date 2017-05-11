@@ -262,7 +262,7 @@ var styles = StyleSheet.create({
 
     borderColor: 'white',
     borderWidth: MARGIN/3,
-    margin: 7.5
+    margin: MARGIN/2
 
 
   },
