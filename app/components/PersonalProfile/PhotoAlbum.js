@@ -41,36 +41,41 @@ export default class PhotoAlbum extends React.Component {
 
 
     this.state = {
-      bigPicture: {
-        backgroundColor: 'skyblue',
-        imagesrc: images.placeholder_mainalbum
-      },
-      smallPictures: [
+      pictures: [
         {
-          backgroundColor: 'red',
-          imagesrc: images.placeholder_album1
+          bigPicture: {
+            backgroundColor: 'skyblue',
+            imagesrc: images.placeholder_mainalbum
+          }
         },
         {
-          backgroundColor: 'orange',
-          imagesrc: images.placeholder_album2
+          smallPictures: [
+          {
+            backgroundColor: 'red',
+            imagesrc: images.placeholder_album1
+          },
+          {
+            backgroundColor: 'orange',
+            imagesrc: images.placeholder_album2
+          },
+          {
+            backgroundColor: 'yellow',
+            imagesrc: images.placeholder_album3
+          },
+          {
+            backgroundColor: 'green',
+            imagesrc: images.placeholder_album4
+          },
+          {
+            backgroundColor: 'blue',
+            imagesrc: images.placeholder_album5
+          },
+          {
+            backgroundColor: 'purple',
+            imagesrc: images.placeholder_album6
+          }]
         },
-        {
-          backgroundColor: 'yellow',
-          imagesrc: images.placeholder_album3
-        },
-        {
-          backgroundColor: 'green',
-          imagesrc: images.placeholder_album4
-        },
-        {
-          backgroundColor: 'blue',
-          imagesrc: images.placeholder_album5
-        },
-        {
-          backgroundColor: 'purple',
-          imagesrc: images.placeholder_album6
-        },
-      ],
+      ]
     }
   }
 
@@ -126,8 +131,6 @@ export default class PhotoAlbum extends React.Component {
     this.indexSelected = null;
   }
 
-
-
   render(){
     return (
       <Animated.View>
@@ -138,20 +141,18 @@ export default class PhotoAlbum extends React.Component {
             onPress =     { ()=>this.handleShortPress()    }
             onLongPress = { this.activateDrag(0)           }
             onPressOut =  { this.handlePressOut()          }
+            style =       {{height:50, width:50, backgroundColor: 'blue'}}
             />
 
 
       </Animated.View>
     );
   }
-
 }
 
 class PictureBlock extends Component {
   constructor(props){
     super(props)
-    console.log('initial props')
-    console.log(props)
   }
 
   render = () =>
@@ -163,7 +164,7 @@ class PictureBlock extends Component {
         onPressOut=    {this.props.onPressOut}
         pressRetentionOffset = {{top: 0, left: 0, bottom: screenHeight, right: screenWidth}}
         >
-          <View style={{height:50, width:50, backgroundColor:'blue'}}>
+          <View style={this.props.style}>
           </View>
       </TouchableWithoutFeedback>
     </Animated.View>

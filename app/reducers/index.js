@@ -6,6 +6,7 @@ import * as authReducer from './auth';
 // Navigation Reducers
 import * as homeNavReducer from './homeNav';
 import * as myProfileNavReducer from './myProfileNav';
+import * as tabNavReducer from './tabNav';
 
 // manage states using different reducers
 export default combineReducers(Object.assign(
@@ -13,4 +14,5 @@ export default combineReducers(Object.assign(
   authReducer,
   homeNavReducer,
   myProfileNavReducer,
+  tabNavReducer,
 ));
