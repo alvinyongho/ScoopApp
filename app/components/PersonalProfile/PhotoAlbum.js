@@ -76,7 +76,7 @@ export default class PhotoAlbum extends React.Component {
         },
       ],
       blockPositions: [],
-
+      blockPositionsSetCount: 0,
     }
   }
 
@@ -119,7 +119,6 @@ export default class PhotoAlbum extends React.Component {
 
   // Handle case where touch down but don't move and just release
   handlePressOut = () => () => {
-
     if (this.blockTouchRelease === false)
       this.onDragRelease();
   }
@@ -131,13 +130,10 @@ export default class PhotoAlbum extends React.Component {
     console.log('released drag')
   }
 
-
-
   handleShortPress(){
     console.log('handle short press')
 
   }
-
   // Helper functions
   getKeySelected(pageX, pageY){
     console.log('get coordinate selected' + pageX + "  " + pageY)
@@ -148,7 +144,27 @@ export default class PhotoAlbum extends React.Component {
   }
 
   saveBlockPositions = (key) => ({nativeEvent}) => {
-    console.log('@@@handling saving of key')
+    // console.log('@@@handling saving of key')
+    console.log(nativeEvent)
+    let blockPositions = this.state.blockPositions
+    // if blockPositions does not contain this key
+    if(!blockPositions[key]){
+      // increment the number of block positions
+      let blockPositionsSetCount = ++this.state.blockPositionsSetCount;
+      let thisPosition ={
+        x: nativeEvent.layout.x,
+        y: nativeEvent.layout.y,
+      }
+      blockPositions[key] = {
+        currentPosition: new Animated.ValueXY(thisPosition),
+        originalPosition: thisPosition
+      }
+
+      this.setState({blockPositions, blockPositionsSetCount});
+
+    }
+
+
     console.log(this.state.blockPositions)
   }
 
@@ -165,7 +181,7 @@ export default class PhotoAlbum extends React.Component {
             onPressOut =  { this.handlePressOut()          }
             picture =     { elem.bigPicture }
             onLayout=     { this.saveBlockPositions('largePicture'+ key) }
-            style =       {[styles.pictureContainer, styles.largeBox]}
+            style =       {[styles.largeBox,]}
           />
         );
       }
@@ -176,6 +192,7 @@ export default class PhotoAlbum extends React.Component {
           let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
           let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
 
+          //Picture Block is an Animated View
           return (
             <PictureBlock
               key = {'smallPicture'+ smallPicture_key}
@@ -186,7 +203,7 @@ export default class PhotoAlbum extends React.Component {
               onPressOut =  { this.handlePressOut() }
               picture =     { smallPicture }
               onLayout=     { this.saveBlockPositions('smallPicture'+ smallPicture_key) }
-              style =       {[styles.pictureContainer, styles.smallPictureBoxContainer, {top, left, borderRadius: 5, marginLeft}]}
+              style =       {[styles.smallPictureBoxContainer]}
             />
           )
         });
@@ -195,7 +212,8 @@ export default class PhotoAlbum extends React.Component {
     })
 
     return (
-      <Animated.View>
+      <Animated.View
+        style={styles.pictureContainer}>
         {pictures}
       </Animated.View>
     );
@@ -213,13 +231,14 @@ class PictureBlock extends Component {
       {...this.props.panHandlers}
     >
       <TouchableWithoutFeedback
+        style={{flex:1}}
         delayLongPress={400}
         onPress=       {this.props.onPress}
         onLongPress=   {this.props.onLongPress}
         onPressOut=    {this.props.onPressOut}
         pressRetentionOffset = {{top: 0, left: 0, bottom: screenHeight, right: screenWidth}}
         >
-          <View style={styles.pictureContainer}>
+          <View>
             <Image source={this.props.picture.imagesrc} style={this.props.style}/>
           </View>
       </TouchableWithoutFeedback>
@@ -230,27 +249,32 @@ class PictureBlock extends Component {
 var styles = StyleSheet.create({
 
   pictureContainer:{
-    position: 'absolute',
-
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
   },
+
+
   smallPictureBoxContainer:{  // INDIVIDUAL CONTAINER
     width:  smallBoxWidth,
     height: smallBoxHeight-MARGIN,
-    marginTop: MARGIN,
+    borderRadius: 5,
+
     borderColor: 'white',
     borderWidth: MARGIN/3,
+    margin: 7.5
+
 
   },
 
   largeBox:{
-    top: 0,
-    left: 0,
+    margin: MARGIN,
+    marginBottom: MARGIN/2,
     height:largeBoxHeight-MARGIN,
     width:screenWidth-MARGIN*2,
     backgroundColor: 'blue',
     borderRadius: 5,
-    margin: MARGIN,
-    marginBottom: 0,
+
     borderColor: 'white',
     borderWidth: MARGIN/3,
   },
