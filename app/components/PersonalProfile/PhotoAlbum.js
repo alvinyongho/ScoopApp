@@ -20,24 +20,23 @@ const screenHeight = Dimensions.get('window').height;
 
 var ALBUM_WIDTH = 80;
 var ALBUM_HEIGHT = 60;
-var MARGIN = 20;
+var MARGIN = 15;
+var HEADER_SIZE = 64    // IOS
 
-largeBoxHeight = (screenWidth/3)*2
-largeBoxWidth = (screenWidth)
-smallBoxHeight = screenWidth/3 - 20
-smallBoxWidth = screenWidth/3
+var NUM_PER_ROW = 3
 
-HEADER_SIZE = 64    // IOS
+var largeBoxHeight = (screenWidth/3)*2
+var largeBoxWidth = (screenWidth)
+var smallBoxHeight = screenWidth/3 - 20
+var smallBoxWidth = (screenWidth - ((NUM_PER_ROW+1)*MARGIN))/NUM_PER_ROW
 
 
 export default class PhotoAlbum extends React.Component {
-
   constructor(props){
     super(props);
-    this.indexSelected = null,
+    this.indexSelected = null
+    this.panCapture = false     //initially capture touch event from TouchableWithoutFeedback
 
-    //initially capture touch event from TouchableWithoutFeedback
-    this.panCapture        = false
 
     this.state = {
       pictures: [
@@ -151,8 +150,9 @@ export default class PhotoAlbum extends React.Component {
       if (elem.type == 'smallImages'){
         const small_pictures = elem.smallPictures.map((smallPicture, smallPicture_key) => {
           let num_bigImages = 1
-          let top  = Math.floor((smallPicture_key)/3) * smallBoxHeight + largeBoxHeight;
-          let left = ((smallPicture_key) % 3) * smallBoxWidth;
+          let top  = Math.floor((smallPicture_key)/NUM_PER_ROW) * smallBoxHeight + largeBoxHeight;
+          let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
+          let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
 
           return (
             <PictureBlock
@@ -163,7 +163,7 @@ export default class PhotoAlbum extends React.Component {
               onLongPress = { this.activateDrag(0)           }
               onPressOut =  { this.handlePressOut()          }
               picture =     { smallPicture }
-              style =       {[styles.pictureContainer, styles.smallPictureBoxContainer, {top, left, borderRadius: 5}]}
+              style =       {[styles.pictureContainer, styles.smallPictureBoxContainer, {top, left, borderRadius: 5, marginLeft}]}
             />
           )
         });
@@ -193,7 +193,7 @@ class PictureBlock extends Component {
         onPressOut=    {this.props.onPressOut}
         pressRetentionOffset = {{top: 0, left: 0, bottom: screenHeight, right: screenWidth}}
         >
-          <View style={{position:'absolute'}}>
+          <View style={styles.pictureContainer}>
             <Image source={this.props.picture.imagesrc} style={this.props.style}/>
           </View>
       </TouchableWithoutFeedback>
@@ -205,18 +205,28 @@ var styles = StyleSheet.create({
 
   pictureContainer:{
     position: 'absolute',
+
   },
   smallPictureBoxContainer:{  // INDIVIDUAL CONTAINER
-    width: smallBoxWidth,
-    height:smallBoxHeight,
+    width:  smallBoxWidth,
+    height: smallBoxHeight-MARGIN,
+    marginTop: MARGIN,
+    borderColor: 'white',
+    borderWidth: MARGIN/3,
+
   },
 
   largeBox:{
     top: 0,
     left: 0,
-    height:largeBoxHeight,
-    width:screenWidth,
-    backgroundColor: 'blue'
+    height:largeBoxHeight-MARGIN,
+    width:screenWidth-MARGIN*2,
+    backgroundColor: 'blue',
+    borderRadius: 5,
+    margin: MARGIN,
+    marginBottom: 0,
+    borderColor: 'white',
+    borderWidth: MARGIN/3,
   },
 
 });
