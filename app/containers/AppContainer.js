@@ -17,7 +17,6 @@ import Home from './Home';
 import WelcomePages from '../components/WelcomePages';
 import Filter from './Filter';
 
-import {TabStack} from '../config/TabStack';
 import ScoopTabs from '../navigators/ScoopTabsNavigator';
 
 
