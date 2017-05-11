@@ -11,7 +11,14 @@ const images = {
 	sliderThumb: require('./img/Slider/ThumbImage.png'),
 	sliderTrack: require('./img/Slider/Track.png'),
 	sliderSnapTrack: require('./img/Slider/TrackSnapBg.png'),
-	sampleIU: require('./img/HomeFeed/iu.jpg'),
+
+	placeholder_album1: require('./img/MyProfile/placeholders/album1.png'),
+	placeholder_album2: require('./img/MyProfile/placeholders/album2.png'),
+	placeholder_album3: require('./img/MyProfile/placeholders/album3.png'),
+	placeholder_album4: require('./img/MyProfile/placeholders/album4.png'),
+	placeholder_album5: require('./img/MyProfile/placeholders/album5.png'),
+	placeholder_album6: require('./img/MyProfile/placeholders/album6.png'),
+	placeholder_mainalbum: require('./img/MyProfile/placeholders/mainalbum.png'),
 };
 
 export default images;

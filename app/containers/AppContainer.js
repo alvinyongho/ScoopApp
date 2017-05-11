@@ -17,7 +17,8 @@ import Home from './Home';
 import WelcomePages from '../components/WelcomePages';
 import Filter from './Filter';
 
-import {TabStack} from '../config/TabStack';
+import ScoopTabs from '../navigators/ScoopTabsNavigator';
+
 
 class AppContainer extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class AppContainer extends Component {
 
   render() {
     const welcomePagesRoute = () => (<WelcomePages {...this.props}/>)
-    const authenticatedRoute = () => (<TabStack {...this.props}/>)
+    const authenticatedRoute = () => (<ScoopTabs {...this.props}/>)
     // Set the route depending on login state
     const ResultRoute = this.props.isAuthenticated ? (authenticatedRoute) : welcomePagesRoute;
 

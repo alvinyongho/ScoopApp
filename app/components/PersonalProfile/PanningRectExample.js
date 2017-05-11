@@ -10,9 +10,13 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   TouchableHighlight,
-  LayoutAnimation
-
+  LayoutAnimation,
+  Image,
 } from 'react-native';
+
+import images from '@assets/images';
+
+import Button from 'react-native-button'
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -27,15 +31,23 @@ smallBoxHeight = screenWidth/3 - 20
 smallBoxWidth = screenWidth/3
 
 HEADER_SIZE = 64    // IOS
-
+ACTION_TIMER = 4000
 
 export default class PanningRectExample extends React.Component {
 
-  constructor() {
-    super();
-    this._smallBoxWidth = smallBoxWidth;
-    this._smallBoxHeight = smallBoxHeight;
-    this.keySelected = 0;
+  constructor(props) {
+    super(props);
+    // Used to handle case where touch but drag finger out of the frame
+    this.initialMoveOutOfFrameX = 0;
+    this.initialMoveOutOfFrameY = 0;
+    this.allowSwap              = true;
+    this.finishedDeleting       = true;
+    this.tapTimer               = null
+    this.tapIgnore              = false
+    this.pressEnabled           = false
+    this._smallBoxWidth         = smallBoxWidth;
+    this._smallBoxHeight        = smallBoxHeight;
+    this.keySelected            = 0;
     this.typeOfBoxSelected = undefined;
     this.left = 0;
     this.top = 0;
@@ -47,65 +59,125 @@ export default class PanningRectExample extends React.Component {
       duration: 200,
       create: {
         type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity,
       },
       update: {
         type: LayoutAnimation.Types.linear,
+        property: LayoutAnimation.Properties.opacity,
         springDamping: 0.7,
       },
     };
 
-    // the last item set as selected
     this.state = {
-        numEnabled: 6,
-        activeBlock: null,
-        selected: 6,
-
-        albumPictures: [
-          {
-            key: 0,
-            backgroundColor: 'red'
-
-          },
-          {
-            key: 1,
-            backgroundColor: 'orange'
-          },
-          {
-            key: 2,
-            backgroundColor: 'yellow'
-          },
-          {
-            key: 3,
-            backgroundColor: 'green'
-          },
-          {
-            key: 4,
-            backgroundColor: 'blue'
-          },
-          {
-            key: 5,
-            backgroundColor: 'purple',
-
-          },
-          {
-            key: 6,
-            backgroundColor: 'skyblue'
-          },
-        ],
+      renderDelete: true,
+      numEnabled: 6,
+      activeBlock: null,
+      selected: 6,
+      albumPictures: [
+        {
+          key: 0,
+          backgroundColor: 'white',
+          imagesrc: images.placeholder_album1
+        },
+        {
+          key: 1,
+          backgroundColor: 'white',
+          imagesrc: images.placeholder_album2
+        },
+        {
+          key: 2,
+          backgroundColor: 'white',
+          imagesrc: images.placeholder_album3
+        },
+        {
+          key: 3,
+          backgroundColor: 'white',
+          imagesrc: images.placeholder_album4
+        },
+        {
+          key: 4,
+          backgroundColor: 'white',
+          imagesrc: images.placeholder_album5
+        },
+        {
+          key: 5,
+          backgroundColor: 'white',
+          imagesrc: images.placeholder_album6
+        },
+        {
+          key: 6,
+          backgroundColor: 'skyblue',
+          imagesrc: images.placeholder_mainalbum
+        },
+      ],
     }
   }
+
+  handlePressIn() {
+    if(this.state.numEnabled <= 1){
+      this.pressEnabled = false
+    }
+    // Need to change with an actual hold down
+    this.tapTimer = setTimeout( () => {
+      if(this.initialKeySelected === this.keySelected && this.initialMoveOutOfFrameX === 0 && this.initialMoveOutOfFrameY === 0 && this.allowSwap === true){
+        this.pressEnabled = true
+
+        let box = this.refs["pictureBox" + this.keySelected];
+        box.setNativeProps({
+          style: { opacity:0.7, transform:[{scale:1.1}]},
+        })
+        this.setState({renderDelete: false});
+
+      } else {
+        this.pressEnabled = false
+      }
+    }, 600)
+  }
+
+  resetGrid(){
+    // reset big box
+    let box = this.refs["pictureBox" + this.state.numEnabled];
+    box.setNativeProps({
+      style: {top:0, left:0, opacity:1, transform:[{scale:1.0}]},
+    });
+
+    // reset small boxes
+    for(i=0; i<this.state.numEnabled; i++){
+      fixed_top = Math.floor(i/3)*this._smallBoxHeight + largeBoxHeight;
+      fixed_left = (i%3)*this._smallBoxWidth;
+
+      let box = this.refs["pictureBox" + i];
+      box.setNativeProps({
+        style: {top:fixed_top, left:fixed_left, opacity:1, transform:[{scale:1.0}]},
+      });
+      console.log('setting prop location for pictureBox ' + i )
+    }
+
+
+  }
+
+  handlePressOut() {
+    this.pressEnabled = false
+    // Snap to grid
+    this.resetGrid()
+    this.setState({renderDelete: true});
+  }
+
+  setPressEnabled(status){
+    this.pressEnabled = status;
+  }
+
+  componentWillUnmount = () => { if (this.tapTimer) clearTimeout(this.tapTimer) }
 
   componentWillMount(){
     // Handle the pannign responders
     this._panResponder = PanResponder.create({
-      onPanResponderTerminate:             (evt, gestureState) => {this.initialKeySelected = 0},
+      onPanResponderTerminate:             (evt, gestureState) => {this.handlePressOut()},
       onStartShouldSetPanResponder:        (evt, gestureState) => {
-        return gestureState.dx!==0 || gestureState.dx!==0;
-      },
-      onMoveShouldSetPanResponder:         (evt, gestureState) => true,
-      onShouldBlockNativeResponder:        (evt, gestureState) => true,
-      onPanResponderTerminationRequest:    (evt, gestureState) => true,
-      onPanResponderGrant:                  (evt, gestureState)=> {
+        console.log('starting signal')
+        this.initialMoveOutOfFrameX = 0
+        this.initialMoveOutOfFrameY = 0
+        this.handlePressIn()
 
         const {pageX, pageY} = evt.nativeEvent;
 
@@ -127,26 +199,24 @@ export default class PanningRectExample extends React.Component {
         this.setState({
           selected: this.keySelected,
         });
-
-        if(this.typeOfBoxSelected === 'LARGE'){
-          let box = this.refs["pictureBox" + this.state.numEnabled];
-          box.setNativeProps({
-            style: { opacity:0.7, }
-          })
-        }
-        else if(this.typeOfBoxSelected === 'SMALL') {
-          console.log('handle small drag')
-          let box = this.refs["pictureBox" + this.keySelected];
-          box.setNativeProps({
-            style: {
-              opacity:0.7,
-              }
-          })
-        }
         this.initialKeySelected = this.keySelected;
+        return gestureState.dx!==0 || gestureState.dx!==0;
+      },
+      onMoveShouldSetPanResponder:         (evt, gestureState) => {
+        const {pageX, pageY} = evt.nativeEvent;
+
+        // for handling touch and then drag out of frame case
+        this.initialMoveOutOfFrameX = pageX;
+        this.initialMoveOutOfFrameY = pageY;
+
+        return this.pressEnabled
+      },
+      onShouldBlockNativeResponder:        (evt, gestureState) => true,
+      onPanResponderTerminationRequest:    (evt, gestureState) => true,
+      onPanResponderGrant:                  (evt, gestureState)=> {
 
       },
-      onPanResponderMove:    (evt, gestureState) => {
+      onPanResponderMove: (evt, gestureState) => {
         this.left = this.prev_left + gestureState.dx;
         this.top =  this.prev_top + gestureState.dy;
 
@@ -163,7 +233,6 @@ export default class PanningRectExample extends React.Component {
             style: {top:0, left:0},
           });
         }
-
         if(this.typeOfBoxSelected === 'SMALL') {
           let box = this.refs["pictureBox" + this.keySelected];
           // console.log(this.left)
@@ -193,11 +262,12 @@ export default class PanningRectExample extends React.Component {
         this.initialKeySelected = 0;
 
         // TODO: cleanup and fixes on release
+        this.handlePressOut();
+
 
       },
     });
   }
-
 
   _endMove(evt, gestureState) {
     console.log('initial key selected:   ' + this.initialKeySelected)
@@ -366,19 +436,62 @@ export default class PanningRectExample extends React.Component {
     }
   }
 
+  deleteAlbumAtIndex(index){
+    // update dictionary
+    console.log('deleting item at index' + index)
+    let albumPictures = this.state.albumPictures;
+    // Delete count of 1 at index.
+    albumPictures.splice(index, 1);
+    this.setState({
+      albumPictures
+    })
+
+    this.setState({numEnabled: this.state.numEnabled-1})
+    if(this.state.numEnabled < 2){
+      this.allowSwap = false;
+    }
+    console.log(this.allowSwap)
+  }
+
+  _toRenderDelete(){
+    const deleteButtons = this.state.albumPictures.map((elem, index) => {
+      DELETE_BUTTON_WIDTH = 30
+      if(index !== this.state.numEnabled){
+        let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
+        let left = (index % 3) * this._smallBoxWidth + this._smallBoxWidth - (DELETE_BUTTON_WIDTH);
+        return(
+          <Button key={'deleteButton' + elem.key} onPress={()=> this.deleteAlbumAtIndex(index)}>
+          <View ref={'deleteRef'+elem.key} key={'deleteKey' + elem.key}
+              style={{position:'absolute',
+                      top, left,
+                      height: DELETE_BUTTON_WIDTH,
+                      width: DELETE_BUTTON_WIDTH,
+                      backgroundColor: 'blue',
+                      borderRadius:DELETE_BUTTON_WIDTH/2}}>
+          </View>
+          </Button>
+        );
+      }
+    })
+
+    if (this.state.renderDelete)
+      return deleteButtons
+    else
+      return
+  }
+
   render(){
     this.pictures = this.state.albumPictures.map((elem, index) => {
       if(index !== this.state.numEnabled){
         let top = Math.floor(index/3) * this._smallBoxHeight + largeBoxHeight;
         let left = (index % 3) * this._smallBoxWidth;
-
         return (
             <View ref={'pictureBox'+index}
                   key={elem.key}
                   style={[styles.smallPictureBox, {top, left}]} >
-              <View style={[styles.smallPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-                <Text> PICTURE </Text>
-              </View>
+                    <View style={[styles.smallPictureBoxContainer,]}>
+                      <Image source={elem.imagesrc} style={styles.smallPictureBoxContainer}/>
+                    </View>
             </View>
         );
       }
@@ -387,8 +500,9 @@ export default class PanningRectExample extends React.Component {
           <View ref={'pictureBox'+this.state.numEnabled}
                 key={elem.key}
                 style={[styles.mainPictureBox, {top:0, left:0}]} >
-              <View style={[styles.mainPictureBoxContainer, {backgroundColor:elem.backgroundColor}]}>
-                <Text> PICTURE </Text>
+              <View style={[styles.mainPictureBoxContainer,]}>
+                <Image source={elem.imagesrc} style={styles.mainPictureBoxContainer}/>
+
               </View>
           </View>
         );
@@ -398,11 +512,16 @@ export default class PanningRectExample extends React.Component {
     this.pictures.splice(this.state.selected, 1);
     this.pictures.push(selectedItem);
 
-    console.log(this.state.albumPictures)
     return (
-      <View {...this._panResponder.panHandlers}>
-        <View style={styles.smallPicturesContainer}>
-        {this.pictures}
+      <View>
+        <View {...this._panResponder.panHandlers}>
+          <View style={styles.smallPicturesContainer}>
+          {this.pictures}
+          </View>
+        </View>
+        {/* DELETE BUTTONS */}
+        <View style={{position:'absolute'}}>
+          {this._toRenderDelete()}
         </View>
       </View>
     );
