@@ -77,6 +77,7 @@ export default class PhotoAlbum extends React.Component {
       ],
       blockPositions: [],
       blockPositionsSetCount: 0,
+      activeBlock: null,          // The block that is set from a long press select.
     }
   }
 
@@ -105,7 +106,7 @@ export default class PhotoAlbum extends React.Component {
 
   activateDrag = (key) => () => {
     this.panCapture = true;
-    console.log('activated drag')
+    console.log('activated drag on key:  ' + key)
   }
 
   handleMove = () => {
@@ -177,7 +178,7 @@ export default class PhotoAlbum extends React.Component {
             delayLongPress={400}
             panHandlers = { this._panResponder.panHandlers }
             onPress =     { ()=>this.handleShortPress()    }
-            onLongPress = { this.activateDrag(0)           }
+            onLongPress = { this.activateDrag('largePicture'+key)           }
             onPressOut =  { this.handlePressOut()          }
             picture =     { elem.bigPicture }
             onLayout=     { this.saveBlockPositions('largePicture'+ key) }
@@ -187,10 +188,10 @@ export default class PhotoAlbum extends React.Component {
       }
       if (elem.type == 'smallImages'){
         const small_pictures = elem.smallPictures.map((smallPicture, smallPicture_key) => {
-          let num_bigImages = 1
-          let top  = Math.floor((smallPicture_key)/NUM_PER_ROW) * smallBoxHeight + largeBoxHeight;
-          let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
-          let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
+          // let num_bigImages = 1
+          // let top  = Math.floor((smallPicture_key)/NUM_PER_ROW) * smallBoxHeight + largeBoxHeight;
+          // let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
+          // let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
 
           //Picture Block is an Animated View
           return (
@@ -199,7 +200,7 @@ export default class PhotoAlbum extends React.Component {
               delayLongPress={400}
               panHandlers = { this._panResponder.panHandlers }
               onPress =     { ()=>this.handleShortPress() }
-              onLongPress = { this.activateDrag(0) }
+              onLongPress = { this.activateDrag('smallPicture'+ smallPicture_key) }
               onPressOut =  { this.handlePressOut() }
               picture =     { smallPicture }
               onLayout=     { this.saveBlockPositions('smallPicture'+ smallPicture_key) }
@@ -263,7 +264,6 @@ var styles = StyleSheet.create({
     borderColor: 'white',
     borderWidth: MARGIN/3,
     margin: MARGIN/2
-
 
   },
 
