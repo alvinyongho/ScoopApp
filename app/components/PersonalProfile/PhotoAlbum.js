@@ -20,7 +20,7 @@ const screenHeight = Dimensions.get('window').height;
 
 var ALBUM_WIDTH = 80;
 var ALBUM_HEIGHT = 60;
-var MARGIN = 15;
+var MARGIN = 12;
 var HEADER_SIZE = 64    // IOS
 var NUM_PER_ROW = 3
 
@@ -98,10 +98,16 @@ export default class PhotoAlbum extends React.Component {
       onPanResponderTerminate: (evt, gestureState) => {},
       onPanResponderTerminationRequest: (evt, gestureState) => false,
 
-      onPanResponderGrant: (evt, gestureState) => { this.handleGranted() },
-      onPanResponderMove: (evt, gestureState) => {this.handleMove()},
+      onPanResponderGrant: this.onActiveBlockIsSet(this.handleGranted),
+      onPanResponderMove: this.onActiveBlockIsSet(this.handleMove),
       onPanResponderRelease: (evt, gestureState) => { this.onDragRelease() },
     });
+  }
+
+  // onActiveBlock takes in a function that takes in a function and returns another function that
+  // takes in the evt and gestureState parameter
+  onActiveBlockIsSet = (fn) => (evt, gestureState) => {
+    if (this.state.activeBlock != null) fn(evt, gestureState)
   }
 
   activateDrag = (key) => () => {
@@ -112,13 +118,51 @@ export default class PhotoAlbum extends React.Component {
     console.log(this.state.activeBlock)
   }
 
-  handleMove = () => {
+  handleMove = (evt, gestureState) => {
     // Block TouchableWithoutFeedback from releasing
     console.log('handling move')
+    const {moveX, moveY, dx, dy} = gestureState
+
+    let dragPosition = { x: moveX, y: moveY}
+
+    console.log('setting activeBlock position to ')
+    console.log(dragPosition)
+    this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
+
+
+    console.log("get animated value")
+    console.log(this._getActiveBlockPositions().currentPosition)
+
+    Animated.timing(
+      this._getActiveBlockPositions().currentPosition,
+      {
+        toValue: dragPosition,
+        duration: 300
+      }
+    ).start(() => console.log('done'));
+
+
+
   }
 
-  handleGranted = ()  => {
+  handleGranted = (evt, gestureState)  => {
     this.blockTouchRelease = true;
+    console.log('handle granted and start dragging')
+
+    if(this.state.activeBlock != null){
+      // get active Block position
+      console.log('@@@@get active block position')
+      let activeBlockOrigin = this._getActiveBlockPositions().originalPosition
+      let offsetX = activeBlockOrigin.x - gestureState.dx
+      let offsetY = activeBlockOrigin.y - gestureState.dy
+      console.log({offsetX, offsetY})
+      this._getActiveBlockPositions().currentPosition.setOffset({offsetX, offsetY})
+      console.log('moveX:   ' + gestureState.moveX)
+      console.log('moveY:   ' + gestureState.moveY)
+      this._getActiveBlockPositions().currentPosition.setValue({x: gestureState.moveX, y: gestureState.moveY})
+
+
+    }
   }
 
   // Handle case where touch down but don't move and just release
@@ -140,10 +184,9 @@ export default class PhotoAlbum extends React.Component {
 
   }
   // Helper functions
-
-
-  resetIndexSelected(){
-    this.indexSelected = null;
+  // Returns the active block Positions: current Position and original Position
+  _getActiveBlockPositions = () => {
+    return this.state.blockPositions[ this.state.activeBlock ];
   }
 
   saveBlockPositions = (key) => ({nativeEvent}) => {
@@ -167,8 +210,22 @@ export default class PhotoAlbum extends React.Component {
 
     }
 
-
+    console.log('block positions@@@')
     console.log(this.state.blockPositions)
+  }
+
+  _blockPositionsSet = () => this.state.blockPositionsSetCount > 0
+
+  // _getBlockStyle = (key) =>
+  //   this._blockPositionsSet() &&
+  //     { position: 'absolute',
+  //     top: this._getBlock(key).currentPosition.getLayout().top,
+  //     left: this._getBlock(key).currentPosition.getLayout().left
+  //     };
+
+
+  _getBlock = (key) => {
+    return this.state.blockPositions[ key ]
   }
 
   render(){
@@ -184,16 +241,16 @@ export default class PhotoAlbum extends React.Component {
             onPressOut =  { this.handlePressOut()          }
             picture =     { elem.bigPicture }
             onLayout=     { this.saveBlockPositions('largePicture'+ key) }
-            style =       {[styles.largeBlock,]}
+            style =       { [styles.largeBlock,] }
           />
         );
       }
       if (elem.type == 'smallImages'){
         const small_pictures = elem.smallPictures.map((smallPicture, smallPicture_key) => {
-          // let num_bigImages = 1
-          // let top  = Math.floor((smallPicture_key)/NUM_PER_ROW) * smallBoxHeight + largeBoxHeight;
-          // let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
-          // let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
+          let num_bigImages = 1
+          let top  = Math.floor((smallPicture_key)/NUM_PER_ROW) * smallBoxHeight + largeBoxHeight;
+          let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
+          let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
 
           //Picture Block is an Animated View
           return (
@@ -206,7 +263,7 @@ export default class PhotoAlbum extends React.Component {
               onPressOut =  { this.handlePressOut() }
               picture =     { smallPicture }
               onLayout=     { this.saveBlockPositions('smallPicture'+ smallPicture_key) }
-              style =       {[styles.smallBlock]}
+              style =       {[styles.smallBlock,]}
             />
           )
         });
