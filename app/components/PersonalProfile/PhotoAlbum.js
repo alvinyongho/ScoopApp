@@ -106,7 +106,10 @@ export default class PhotoAlbum extends React.Component {
 
   activateDrag = (key) => () => {
     this.panCapture = true;
-    console.log('activated drag on key:  ' + key)
+    // console.log('activated drag on key:  ' + key)
+    this.setState({activeBlock: key});
+    console.log('setting the active block:   ')
+    console.log(this.state.activeBlock)
   }
 
   handleMove = () => {
@@ -126,6 +129,7 @@ export default class PhotoAlbum extends React.Component {
 
   // Handle case where move and then release
   onDragRelease = () => {
+    this.setState({activeBlock: null});
     this.panCapture = false;
     this.blockTouchRelease = false;
     console.log('released drag')
@@ -136,9 +140,7 @@ export default class PhotoAlbum extends React.Component {
 
   }
   // Helper functions
-  getKeySelected(pageX, pageY){
-    console.log('get coordinate selected' + pageX + "  " + pageY)
-  }
+
 
   resetIndexSelected(){
     this.indexSelected = null;
@@ -182,7 +184,7 @@ export default class PhotoAlbum extends React.Component {
             onPressOut =  { this.handlePressOut()          }
             picture =     { elem.bigPicture }
             onLayout=     { this.saveBlockPositions('largePicture'+ key) }
-            style =       {[styles.largeBox,]}
+            style =       {[styles.largeBlock,]}
           />
         );
       }
@@ -204,7 +206,7 @@ export default class PhotoAlbum extends React.Component {
               onPressOut =  { this.handlePressOut() }
               picture =     { smallPicture }
               onLayout=     { this.saveBlockPositions('smallPicture'+ smallPicture_key) }
-              style =       {[styles.smallPictureBoxContainer]}
+              style =       {[styles.smallBlock]}
             />
           )
         });
@@ -255,8 +257,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
-
-  smallPictureBoxContainer:{  // INDIVIDUAL CONTAINER
+  smallBlock:{  // INDIVIDUAL CONTAINER
     width:  smallBoxWidth,
     height: smallBoxHeight-MARGIN,
     borderRadius: 5,
@@ -267,7 +268,7 @@ var styles = StyleSheet.create({
 
   },
 
-  largeBox:{
+  largeBlock:{
     margin: MARGIN,
     marginBottom: MARGIN/2,
     height:largeBoxHeight-MARGIN,
