@@ -130,6 +130,12 @@ export default class PhotoAlbum extends React.Component {
 
 
     let dragPosition = { x: moveX, y: moveY}
+
+
+    let blockPositions = this.state.blockPositions
+    this.setState({ blockPositions })
+
+    
     //
     // console.log('setting activeBlock position to ')
     // console.log(dragPosition)
@@ -222,20 +228,8 @@ export default class PhotoAlbum extends React.Component {
   _blockPositionsSet = () => this.state.blockPositionsSetCount === 7
 
   _getBlockStyle = (key, type) =>{
-    // console.log('getting the block style for key')
-    // console.log('@@@ get block style@@@ for:    ' + key+type)
-    // console.log((this.initialDragDone))
-    // console.log(this.state.blockPositions)
-    if(this._blockPositionsSet() && (this.initialDragDone) && key === 0){
-      console.log("@@@TOP@@@")
-      console.log(this._getBlock(type+key).currentPosition.getLayout().top._value)
-      console.log("@@@LEFT@@@")
-      console.log(this._getBlock(type+key).currentPosition.getLayout().left._value)
-    }
 
     if (type === "largePicture"){
-      // console.log('handle large picture')
-
       return (
         [{width: largeBoxWidth,
           height: largeBoxHeight, backgroundColor: 'skyblue',
@@ -245,8 +239,6 @@ export default class PhotoAlbum extends React.Component {
           top: this._getBlock(type+key).currentPosition.getLayout().top,
           left: this._getBlock(type+key).currentPosition.getLayout().left
         }]
-
-        // [{position: 'absolute', top:50, left:50}]
       );
     }
 
@@ -268,17 +260,22 @@ export default class PhotoAlbum extends React.Component {
     return this.state.blockPositions[ key ]
   }
 
+
   assessGridSize = ({nativeEvent}) => {
+    // this is called from the onlayout for the animated.view root view for the photoalbum
+    // this sets up the layout constraints including the height of the view and the width of the view
+
+    // originally this code also sets up the block width and the heights but we have defined
+    // that already at the top of this class using largeBoxHeight, largeBoxWidth, smallBoxWidth, smallBoxHeight
+
     // this.blockWidth = nativeEvent.layout.width / this.itemsPerRow
     // this.blockHeight = 100
     if (this.state.gridLayout != nativeEvent.layout) {
-      console.log("assessing the grid size")
       this.setState({
         gridLayout: nativeEvent.layout,
         // blockWidth: this.blockWidth,
         // blockHeight: this.blockHeight
       })
-      console.log(nativeEvent.layout)
     }
   }
 
@@ -369,17 +366,13 @@ class PictureBlock extends Component {
 
 
 var styles = StyleSheet.create({
-
   pictureContainer:{
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-
   itemImageContainer: {
     flex: 1,
     justifyContent: 'center'
   }
-
-
 
 });
