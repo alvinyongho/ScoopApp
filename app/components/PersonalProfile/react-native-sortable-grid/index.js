@@ -194,13 +194,14 @@ class SortableGrid extends Component {
         }
       })
       if (closest !== this.state.activeBlock) {
-        Animated.timing(
+        Animated.spring(
           this._getBlock(closest).currentPosition,
           {
             toValue: this._getActiveBlock().origin,
             duration: this.blockTransitionDuration
           }
         ).start()
+
         let blockPositions = this.state.blockPositions
         this._getActiveBlock().origin = blockPositions[closest].origin
         blockPositions[closest].origin = originalPosition

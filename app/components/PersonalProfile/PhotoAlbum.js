@@ -173,39 +173,55 @@ export default class PhotoAlbum extends React.Component {
 
   }
 
+
+  _getDistanceTo = (point) => {
+    let xDistance = this.dragPosition.x- point.x
+    let yDistance = this.dragPosition.y- point.y
+    return Math.sqrt( Math.pow(xDistance, 2) + Math.pow(yDistance, 2) )
+  }
+
+
   _endMove = (evt, gestureState) => {
     //
-    topIndexDraggedOver = Math.floor((this._getActiveBlockPositions().currentPosition.y._value -largeBoxHeight)/smallBoxHeight + 0.5);
-    leftIndexDraggedOver = Math.floor(this._getActiveBlockPositions().currentPosition.x._value/smallBoxWidth + 0.5);
-    draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver);
-    console.log(draggedOverIndex)
-
-    if(draggedOverIndex >= 0 && draggedOverIndex < 6){
-      // handle swap with small
-      if("smallPicture"+draggedOverIndex !== this.state.activeBlock){
-        // console.log("we can swap")
-        // console.log(this._getBlock("smallPicture"+draggedOverIndex).currentPosition)
-
-        // if(this.finishedAnimation){
-        //   this.finishedAnimation = false;
-
-        let closest = this._getBlock("smallPicture"+draggedOverIndex)
-        // console.log(closest.currentPosition)
-
-        let originalPosition = this._getActiveBlockPositions().originalPosition
-
-        Animated.timing(
-         this._getBlock("smallPicture"+draggedOverIndex).currentPosition,
-         {toValue: this._getActiveBlockPositions().originalPosition, duration: 200}
-       ).start();
 
 
-        let blockPositions = this.state.blockPositions
-        this._getActiveBlockPositions().originalPosition = closest.originalPosition
-        closest.originalPosition = originalPosition
-        this.setState({ blockPositions })
+    let originalPosition = this._getActiveBlockPositions().originalPosition
+    let distanceToOrigin = this._getDistanceTo(originalPosition)
+    let closest = this.state.activeBlock
+    let closestDistance = distanceToOrigin
+
+
+    for (var key in this.state.blockPositions) {
+      if(key !== this.state.activeBlock && this.state.blockPositions[key].originalPosition){
+        let blockPosition = this.state.blockPositions[key].originalPosition
+        let distance = this._getDistanceTo(blockPosition)
+        if (distance < closestDistance && distance < smallBoxWidth) {
+          closest = key
+          closestDistance = distance
+        }
       }
+
     }
+
+    if(closest !== this.state.activeBlock){
+      console.log(this._getActiveBlockPositions(closest).currentPosition)
+      console.log('to value')
+      console.log(this._getActiveBlockPositions().originalPosition)
+      Animated.timing(
+        this._getBlock(closest).currentPosition,
+        {
+          toValue: this._getActiveBlockPositions().originalPosition,
+          duration: 300
+        }
+      ).start()
+
+      let blockPositions = this.state.blockPositions
+
+      this._getActiveBlockPositions().originalPosition = blockPositions[closest].originalPosition
+      blockPositions[closest].originalPosition = originalPosition
+      this.setState({ blockPositions })
+    }
+
 
   }
 
