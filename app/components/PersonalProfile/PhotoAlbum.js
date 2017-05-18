@@ -27,7 +27,7 @@ var NUM_PER_ROW = 3
 var largeBoxHeight = (screenWidth/3)*2
 var largeBoxWidth = (screenWidth)
 var smallBoxHeight = screenWidth/3 - 20
-var smallBoxWidth = (screenWidth - ((NUM_PER_ROW+1)*MARGIN))/NUM_PER_ROW
+var smallBoxWidth = screenWidth/NUM_PER_ROW
 
 
 export default class PhotoAlbum extends React.Component {
@@ -37,7 +37,10 @@ export default class PhotoAlbum extends React.Component {
     this.panCapture = false     //initially capture touch event from TouchableWithoutFeedback
     this.blockTouchRelease = false
 
+    this.initialDragDone = false
+
     this.state = {
+      gridLayout: null,
       pictures: [
         {
           type: 'largeImage',
@@ -123,23 +126,26 @@ export default class PhotoAlbum extends React.Component {
     console.log('handling move')
     const {moveX, moveY, dx, dy} = gestureState
 
+    if (dx != 0 || dy != 0) this.initialDragDone = true
+
+
     let dragPosition = { x: moveX, y: moveY}
-
-    console.log('setting activeBlock position to ')
-    console.log(dragPosition)
-    this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
-
-
-    console.log("get animated value")
-    console.log(this._getActiveBlockPositions().currentPosition)
-
-    Animated.timing(
-      this._getActiveBlockPositions().currentPosition,
-      {
-        toValue: dragPosition,
-        duration: 300
-      }
-    ).start(() => console.log('done'));
+    //
+    // console.log('setting activeBlock position to ')
+    // console.log(dragPosition)
+    // this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
+    //
+    //
+    // console.log("get animated value")
+    // console.log(this._getActiveBlockPositions().currentPosition)
+    //
+    // Animated.timing(
+    //   this._getActiveBlockPositions().currentPosition,
+    //   {
+    //     toValue: dragPosition,
+    //     duration: 300
+    //   }
+    // ).start(() => console.log('done'));
 
 
 
@@ -209,23 +215,71 @@ export default class PhotoAlbum extends React.Component {
       this.setState({blockPositions, blockPositionsSetCount});
 
     }
-
-    console.log('block positions@@@')
-    console.log(this.state.blockPositions)
+    // console.log('block positions@@@')
+    // console.log(this.state.blockPositions)
   }
 
-  _blockPositionsSet = () => this.state.blockPositionsSetCount > 0
+  _blockPositionsSet = () => this.state.blockPositionsSetCount === 7
 
-  // _getBlockStyle = (key) =>
-  //   this._blockPositionsSet() &&
-  //     { position: 'absolute',
-  //     top: this._getBlock(key).currentPosition.getLayout().top,
-  //     left: this._getBlock(key).currentPosition.getLayout().left
-  //     };
+  _getBlockStyle = (key, type) =>{
+    // console.log('getting the block style for key')
+    // console.log('@@@ get block style@@@ for:    ' + key+type)
+    // console.log((this.initialDragDone))
+    // console.log(this.state.blockPositions)
+    if(this._blockPositionsSet() && (this.initialDragDone) && key === 0){
+      console.log("@@@TOP@@@")
+      console.log(this._getBlock(type+key).currentPosition.getLayout().top._value)
+      console.log("@@@LEFT@@@")
+      console.log(this._getBlock(type+key).currentPosition.getLayout().left._value)
+    }
+
+    if (type === "largePicture"){
+      // console.log('handle large picture')
+
+      return (
+        [{width: largeBoxWidth,
+          height: largeBoxHeight, backgroundColor: 'skyblue',
+          justifyContent: 'center' },
+        this._blockPositionsSet() && (this.initialDragDone) &&
+        { position: 'absolute',
+          top: this._getBlock(type+key).currentPosition.getLayout().top,
+          left: this._getBlock(type+key).currentPosition.getLayout().left
+        }]
+
+        // [{position: 'absolute', top:50, left:50}]
+      );
+    }
+
+    return (
+      [{width: smallBoxWidth,
+        height: smallBoxHeight, backgroundColor: 'green',
+        justifyContent: 'center' },
+      this._blockPositionsSet() && (this.initialDragDone) &&
+      { position: 'absolute',
+        top: this._getBlock(type+key).currentPosition.getLayout().top,
+        left: this._getBlock(type+key).currentPosition.getLayout().left
+      }]
+    );
+  }
+
 
 
   _getBlock = (key) => {
     return this.state.blockPositions[ key ]
+  }
+
+  assessGridSize = ({nativeEvent}) => {
+    // this.blockWidth = nativeEvent.layout.width / this.itemsPerRow
+    // this.blockHeight = 100
+    if (this.state.gridLayout != nativeEvent.layout) {
+      console.log("assessing the grid size")
+      this.setState({
+        gridLayout: nativeEvent.layout,
+        // blockWidth: this.blockWidth,
+        // blockHeight: this.blockHeight
+      })
+      console.log(nativeEvent.layout)
+    }
   }
 
   render(){
@@ -241,7 +295,8 @@ export default class PhotoAlbum extends React.Component {
             onPressOut =  { this.handlePressOut()          }
             picture =     { elem.bigPicture }
             onLayout=     { this.saveBlockPositions('largePicture'+ key) }
-            style =       { [styles.largeBlock,] }
+            style =       { this._getBlockStyle(key, 'largePicture') }
+            blockType =   {'largePicture'}
           />
         );
       }
@@ -251,7 +306,6 @@ export default class PhotoAlbum extends React.Component {
           let top  = Math.floor((smallPicture_key)/NUM_PER_ROW) * smallBoxHeight + largeBoxHeight;
           let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
           let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
-
           //Picture Block is an Animated View
           return (
             <PictureBlock
@@ -263,7 +317,8 @@ export default class PhotoAlbum extends React.Component {
               onPressOut =  { this.handlePressOut() }
               picture =     { smallPicture }
               onLayout=     { this.saveBlockPositions('smallPicture'+ smallPicture_key) }
-              style =       {[styles.smallBlock,]}
+              style =       { this._getBlockStyle(smallPicture_key, 'smallPicture') }
+              blockType =   { 'smallPicture' }
             />
           )
         });
@@ -273,7 +328,9 @@ export default class PhotoAlbum extends React.Component {
 
     return (
       <Animated.View
-        style={styles.pictureContainer}>
+        style={styles.pictureContainer}
+        onLayout= {this.assessGridSize}
+        >
         {pictures}
       </Animated.View>
     );
@@ -287,6 +344,7 @@ class PictureBlock extends Component {
 
   render = () =>
     <Animated.View
+      style={this.props.style}
       onLayout = { this.props.onLayout }
       {...this.props.panHandlers}
     >
@@ -296,10 +354,14 @@ class PictureBlock extends Component {
         onPress=       {this.props.onPress}
         onLongPress=   {this.props.onLongPress}
         onPressOut=    {this.props.onPressOut}
-        pressRetentionOffset = {{top: 0, left: 0, bottom: screenHeight, right: screenWidth}}
         >
-          <View>
-            <Image source={this.props.picture.imagesrc} style={this.props.style}/>
+          <View style = {styles.itemImageContainer}>
+            <View>
+            {this.props.blockType === 'smallPicture' ?
+              <Image source={this.props.picture.imagesrc} style={{width:smallBoxWidth, height: smallBoxHeight}} />
+            : <Image source={this.props.picture.imagesrc} style={{width:largeBoxWidth, height: largeBoxHeight}} />
+            }
+            </View>
           </View>
       </TouchableWithoutFeedback>
     </Animated.View>
@@ -311,30 +373,13 @@ var styles = StyleSheet.create({
   pictureContainer:{
     flexDirection: 'row',
     flexWrap: 'wrap',
+  },
+
+  itemImageContainer: {
+    flex: 1,
     justifyContent: 'center'
-  },
+  }
 
-  smallBlock:{  // INDIVIDUAL CONTAINER
-    width:  smallBoxWidth,
-    height: smallBoxHeight-MARGIN,
-    borderRadius: 5,
 
-    borderColor: 'white',
-    borderWidth: MARGIN/3,
-    margin: MARGIN/2
-
-  },
-
-  largeBlock:{
-    margin: MARGIN,
-    marginBottom: MARGIN/2,
-    height:largeBoxHeight-MARGIN,
-    width:screenWidth-MARGIN*2,
-    backgroundColor: 'blue',
-    borderRadius: 5,
-
-    borderColor: 'white',
-    borderWidth: MARGIN/3,
-  },
 
 });
