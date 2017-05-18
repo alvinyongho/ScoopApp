@@ -39,6 +39,12 @@ export default class PhotoAlbum extends React.Component {
     this.initialDragDone = false
     this.activeBlockOffset = null
 
+    this.finishedAnimation = true
+
+    this.currentActiveBlockPositionX = null;
+    this.currentActiveBlockPositionY =null;
+
+
     this.state = {
       gridLayout: null,
       pictures: [
@@ -125,6 +131,9 @@ export default class PhotoAlbum extends React.Component {
       let offsetX = activeBlockOrigin.x - gestureState.x0
       let offsetY = activeBlockOrigin.y - gestureState.y0
       this.activeBlockOffset = {x: offsetX, y: offsetY}
+
+      this.currentActiveBlockPositionX = this._getActiveBlockPositions().originalPosition.x
+      this.currentActiveBlockPositionY = this._getActiveBlockPositions().originalPosition.y
       //
       //
       // this._getActiveBlockPositions().currentPosition.setOffset({offsetX, offsetY})
@@ -140,34 +149,63 @@ export default class PhotoAlbum extends React.Component {
 
     if (dx != 0 || dy != 0) this.initialDragDone = true
     // let dragPosition = { x: moveX, y: moveY}
-    drag_pos_x = this._getActiveBlockPositions().originalPosition.x + dx
-    drag_pos_y = this._getActiveBlockPositions().originalPosition.y + dy
+    drag_pos_x = this.currentActiveBlockPositionX + dx
+    drag_pos_y = this.currentActiveBlockPositionY + dy
 
     let dragPosition = { x: drag_pos_x, y: drag_pos_y }
     this.dragPosition = dragPosition
 
+    let originalPosition = this._getActiveBlockPositions().originalPosition
 
     this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
+    this._endMove(evt, gestureState)
+
+
+
+
 
     let blockPositions = this.state.blockPositions
-    // console.log(blockPositions)
+    // // this._getActiveBlock().origin = blockPositions[closest].origin
+    // // blockPositions[closest].origin = originalPosition
     this.setState({ blockPositions })
 
 
-    this._endMove(evt, gestureState)
-    //
-    // // check if hovering over an index
-    // console.log(drag_pos_y)
-    // if(drag_pos_y < (250 - 20)){
-    //   console.log('over big')
-    // }
-    // else {
-    //   if(drag_pos_y)
-    // }
 
   }
 
   _endMove = (evt, gestureState) => {
+    //
+    topIndexDraggedOver = Math.floor((this._getActiveBlockPositions().currentPosition.y._value -largeBoxHeight)/smallBoxHeight + 0.5);
+    leftIndexDraggedOver = Math.floor(this._getActiveBlockPositions().currentPosition.x._value/smallBoxWidth + 0.5);
+    draggedOverIndex = (topIndexDraggedOver*3 + leftIndexDraggedOver);
+    console.log(draggedOverIndex)
+
+    if(draggedOverIndex >= 0 && draggedOverIndex < 6){
+      // handle swap with small
+      if("smallPicture"+draggedOverIndex !== this.state.activeBlock){
+        // console.log("we can swap")
+        // console.log(this._getBlock("smallPicture"+draggedOverIndex).currentPosition)
+
+        // if(this.finishedAnimation){
+        //   this.finishedAnimation = false;
+
+        let closest = this._getBlock("smallPicture"+draggedOverIndex)
+        // console.log(closest.currentPosition)
+
+        let originalPosition = this._getActiveBlockPositions().originalPosition
+
+        Animated.timing(
+         this._getBlock("smallPicture"+draggedOverIndex).currentPosition,
+         {toValue: this._getActiveBlockPositions().originalPosition, duration: 200}
+       ).start();
+
+
+        let blockPositions = this.state.blockPositions
+        this._getActiveBlockPositions().originalPosition = closest.originalPosition
+        closest.originalPosition = originalPosition
+        this.setState({ blockPositions })
+      }
+    }
 
   }
 
