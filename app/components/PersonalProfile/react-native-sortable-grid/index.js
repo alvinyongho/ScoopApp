@@ -57,7 +57,7 @@ class SortableGrid extends Component {
         style={ this._getGridStyle() }
         onLayout={ this.assessGridSize }
       >
-        
+
         { this.state.gridLayout &&
           this.items.map( (item, key) =>
             <Block
@@ -146,6 +146,7 @@ class SortableGrid extends Component {
   onStartDrag = (evt, gestureState) => {
     if (this.state.activeBlock != null) {
       let activeBlockPosition = this._getActiveBlock().origin
+      //x0, y0  :  the screen coordinates of the responder grant
       let x = activeBlockPosition.x - gestureState.x0
       let y = activeBlockPosition.y - gestureState.y0
       this.activeBlockOffset = { x, y }

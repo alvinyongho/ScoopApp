@@ -29,7 +29,6 @@ var largeBoxWidth = (screenWidth)
 var smallBoxHeight = screenWidth/3 - 20
 var smallBoxWidth = screenWidth/NUM_PER_ROW
 
-
 export default class PhotoAlbum extends React.Component {
   constructor(props){
     super(props);
@@ -38,6 +37,7 @@ export default class PhotoAlbum extends React.Component {
     this.blockTouchRelease = false
 
     this.initialDragDone = false
+    this.activeBlockOffset = null
 
     this.state = {
       gridLayout: null,
@@ -92,15 +92,11 @@ export default class PhotoAlbum extends React.Component {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-
       onMoveShouldSetPanResponder: (evt, gestureState) => this.panCapture,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => this.panCapture,
-
       onShouldBlockNativeResponder: (evt, gestureState) => false,
-
       onPanResponderTerminate: (evt, gestureState) => {},
       onPanResponderTerminationRequest: (evt, gestureState) => false,
-
       onPanResponderGrant: this.onActiveBlockIsSet(this.handleGranted),
       onPanResponderMove: this.onActiveBlockIsSet(this.handleMove),
       onPanResponderRelease: (evt, gestureState) => { this.onDragRelease() },
@@ -117,65 +113,65 @@ export default class PhotoAlbum extends React.Component {
     this.panCapture = true;
     // console.log('activated drag on key:  ' + key)
     this.setState({activeBlock: key});
-    console.log('setting the active block:   ')
-    console.log(this.state.activeBlock)
-  }
-
-  handleMove = (evt, gestureState) => {
-    // Block TouchableWithoutFeedback from releasing
-    console.log('handling move')
-    const {moveX, moveY, dx, dy} = gestureState
-
-    if (dx != 0 || dy != 0) this.initialDragDone = true
-
-
-    let dragPosition = { x: moveX, y: moveY}
-
-
-    let blockPositions = this.state.blockPositions
-    this.setState({ blockPositions })
-
-    
-    //
-    // console.log('setting activeBlock position to ')
-    // console.log(dragPosition)
-    // this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
-    //
-    //
-    // console.log("get animated value")
-    // console.log(this._getActiveBlockPositions().currentPosition)
-    //
-    // Animated.timing(
-    //   this._getActiveBlockPositions().currentPosition,
-    //   {
-    //     toValue: dragPosition,
-    //     duration: 300
-    //   }
-    // ).start(() => console.log('done'));
-
-
-
   }
 
   handleGranted = (evt, gestureState)  => {
+    // this gets called once when the drag event is activated and it set sht eoffsetX and offsetY position
+    // which is where the original block origin is at
     this.blockTouchRelease = true;
-    console.log('handle granted and start dragging')
-
     if(this.state.activeBlock != null){
-      // get active Block position
-      console.log('@@@@get active block position')
-      let activeBlockOrigin = this._getActiveBlockPositions().originalPosition
-      let offsetX = activeBlockOrigin.x - gestureState.dx
-      let offsetY = activeBlockOrigin.y - gestureState.dy
-      console.log({offsetX, offsetY})
-      this._getActiveBlockPositions().currentPosition.setOffset({offsetX, offsetY})
-      console.log('moveX:   ' + gestureState.moveX)
-      console.log('moveY:   ' + gestureState.moveY)
-      this._getActiveBlockPositions().currentPosition.setValue({x: gestureState.moveX, y: gestureState.moveY})
-
-
+      let activeBlockOrigin = this._getActiveBlockPositions().originalPosition  // get active block position
+      //x0, y0  :  the screen coordinates of the responder grant
+      let offsetX = activeBlockOrigin.x - gestureState.x0
+      let offsetY = activeBlockOrigin.y - gestureState.y0
+      this.activeBlockOffset = {x: offsetX, y: offsetY}
+      //
+      //
+      // this._getActiveBlockPositions().currentPosition.setOffset({offsetX, offsetY})
+      // this._getActiveBlockPositions().currentPosition.setValue({x: gestureState.moveX, y: gestureState.moveY})
     }
   }
+
+
+  handleMove = (evt, gestureState) => {
+    // Block TouchableWithoutFeedback from releasing
+
+    const {moveX, moveY, dx, dy} = gestureState
+
+    if (dx != 0 || dy != 0) this.initialDragDone = true
+    // let dragPosition = { x: moveX, y: moveY}
+    drag_pos_x = this._getActiveBlockPositions().originalPosition.x + dx
+    drag_pos_y = this._getActiveBlockPositions().originalPosition.y + dy
+
+    let dragPosition = { x: drag_pos_x, y: drag_pos_y }
+    this.dragPosition = dragPosition
+
+
+    this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
+
+    let blockPositions = this.state.blockPositions
+    // console.log(blockPositions)
+    this.setState({ blockPositions })
+
+
+    this._endMove(evt, gestureState)
+    //
+    // // check if hovering over an index
+    // console.log(drag_pos_y)
+    // if(drag_pos_y < (250 - 20)){
+    //   console.log('over big')
+    // }
+    // else {
+    //   if(drag_pos_y)
+    // }
+
+  }
+
+  _endMove = (evt, gestureState) => {
+
+  }
+
+
 
   // Handle case where touch down but don't move and just release
   handlePressOut = () => () => {
@@ -188,11 +184,11 @@ export default class PhotoAlbum extends React.Component {
     this.setState({activeBlock: null});
     this.panCapture = false;
     this.blockTouchRelease = false;
-    console.log('released drag')
+    // console.log('released drag')
   }
 
   handleShortPress(){
-    console.log('handle short press')
+    // console.log('handle short press')
 
   }
   // Helper functions
@@ -203,7 +199,7 @@ export default class PhotoAlbum extends React.Component {
 
   saveBlockPositions = (key) => ({nativeEvent}) => {
     // console.log('@@@handling saving of key')
-    console.log(nativeEvent)
+    // console.log(nativeEvent)
     let blockPositions = this.state.blockPositions
     // if blockPositions does not contain this key
     if(!blockPositions[key]){
@@ -229,6 +225,15 @@ export default class PhotoAlbum extends React.Component {
 
   _getBlockStyle = (key, type) =>{
 
+    // I want to get the top left position of the block styles
+    if(this._blockPositionsSet() && (this.initialDragDone) && type=== "smallPicture" && key==="0"){
+      console.log(this._getBlock(type+key).currentPosition.getLayout().top)
+      console.log(this._getBlock(type+key).currentPosition.getLayout().left)
+    }
+
+
+
+
     if (type === "largePicture"){
       return (
         [{width: largeBoxWidth,
@@ -236,8 +241,8 @@ export default class PhotoAlbum extends React.Component {
           justifyContent: 'center' },
         this._blockPositionsSet() && (this.initialDragDone) &&
         { position: 'absolute',
-          top: this._getBlock(type+key).currentPosition.getLayout().top,
-          left: this._getBlock(type+key).currentPosition.getLayout().left
+          top: this._getBlock(type+key).currentPosition.getLayout().top._value,
+          left: this._getBlock(type+key).currentPosition.getLayout().left._value
         }]
       );
     }
@@ -248,8 +253,8 @@ export default class PhotoAlbum extends React.Component {
         justifyContent: 'center' },
       this._blockPositionsSet() && (this.initialDragDone) &&
       { position: 'absolute',
-        top: this._getBlock(type+key).currentPosition.getLayout().top,
-        left: this._getBlock(type+key).currentPosition.getLayout().left
+        top: this._getBlock(type+key).currentPosition.getLayout().top._value,
+        left: this._getBlock(type+key).currentPosition.getLayout().left._value
       }]
     );
   }
@@ -328,7 +333,7 @@ export default class PhotoAlbum extends React.Component {
         style={styles.pictureContainer}
         onLayout= {this.assessGridSize}
         >
-        {pictures}
+        {this.state.gridLayout && pictures}
       </Animated.View>
     );
   }
@@ -352,11 +357,11 @@ class PictureBlock extends Component {
         onLongPress=   {this.props.onLongPress}
         onPressOut=    {this.props.onPressOut}
         >
-          <View style = {styles.itemImageContainer}>
-            <View>
+          <View style={styles.itemImageContainer}>
+            <View style={{flex:1}}>
             {this.props.blockType === 'smallPicture' ?
-              <Image source={this.props.picture.imagesrc} style={{width:smallBoxWidth, height: smallBoxHeight}} />
-            : <Image source={this.props.picture.imagesrc} style={{width:largeBoxWidth, height: largeBoxHeight}} />
+              <Image source={this.props.picture.imagesrc} style={{flex: 1, width:smallBoxWidth, height: smallBoxHeight}} />
+            : <Image source={this.props.picture.imagesrc} style={{flex: 1, width:largeBoxWidth, height: largeBoxHeight}} />
             }
             </View>
           </View>
