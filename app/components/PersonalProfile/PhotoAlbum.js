@@ -39,11 +39,10 @@ export default class PhotoAlbum extends React.Component {
     this.initialDragDone = false
     this.activeBlockOffset = null
 
-    this.finishedAnimation = true
-
     this.currentActiveBlockPositionX = null;
     this.currentActiveBlockPositionY =null;
-    this.isInsideLargeImage = false
+
+    this.initialWasBig = false
 
 
     this.state = {
@@ -51,37 +50,30 @@ export default class PhotoAlbum extends React.Component {
       gridLayout: null,
       pictures: [
           {
-            type: 'big',
             backgroundColor: 'skyblue',
             imagesrc: images.placeholder_mainalbum
           },
           {
-            type: 'small',
             backgroundColor: 'red',
             imagesrc: images.placeholder_album1
           },
           {
-            type: 'small',
             backgroundColor: 'orange',
             imagesrc: images.placeholder_album2
           },
           {
-            type: 'small',
             backgroundColor: 'yellow',
             imagesrc: images.placeholder_album3
           },
           {
-            type: 'small',
             backgroundColor: 'green',
             imagesrc: images.placeholder_album4
           },
           {
-            type: 'small',
             backgroundColor: 'blue',
             imagesrc: images.placeholder_album5
           },
           {
-            type: 'small',
             backgroundColor: 'purple',
             imagesrc: images.placeholder_album6
           }
@@ -130,6 +122,12 @@ export default class PhotoAlbum extends React.Component {
     this.panCapture = true;
     // console.log('activated drag on key:  ' + key)
     this.setState({activeBlock: key, activeBlockIndex: index});
+
+    // Set the initialWasBig. when we scale down we have to offset the x and y
+    if (this.state.activeBlock === this.state.currentBig) {
+      this.initialWasBig = true;
+    }
+
   }
 
   handleGranted = (evt, gestureState)  => {
@@ -145,6 +143,8 @@ export default class PhotoAlbum extends React.Component {
 
       this.currentActiveBlockPositionX = this._getActiveBlockPositions().originalPosition.x
       this.currentActiveBlockPositionY = this._getActiveBlockPositions().originalPosition.y
+      console.log(`active offsets`)
+      console.log(this.activeBlockOffset)
       //
       //
       // this._getActiveBlockPositions().currentPosition.setOffset({offsetX, offsetY})
@@ -169,9 +169,27 @@ export default class PhotoAlbum extends React.Component {
     let originalPosition = this._getActiveBlockPositions().originalPosition
 
     this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
+
+
+    // handle the case where the initial block selected was the big block
+    // and then drag into a smaller block, the position needs to be offset
+    if(this.initialWasBig && this.state.currentBig !== this.state.activeBlock){
+      // console.log('have to offset further')
+
+      dragPosition = { x:drag_pos_x - this.activeBlockOffset.x - smallBoxWidth/2, y:drag_pos_y - this.activeBlockOffset.y - smallBoxHeight}
+      this.dragPosition = dragPosition
+      // console.log(dragPosition)
+      console.log(`active offsets`)
+      console.log(dragPosition)
+      console.log(this.activeBlockOffset)
+
+      this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
+
+    }
+
+
+
     this._endMove(evt, gestureState)
-
-
 
 
 
@@ -202,10 +220,10 @@ export default class PhotoAlbum extends React.Component {
       if(key !== this.state.activeBlock && this.state.blockPositions[key].originalPosition){
         let blockPosition = this.state.blockPositions[key].originalPosition
         let distance = this._getDistanceTo(blockPosition)
+
           if (distance < closestDistance && distance < smallBoxWidth) {
               closest = key
               closestDistance = distance
-              this.isInsideLargeImage = false
           }
 
       }
@@ -226,7 +244,7 @@ export default class PhotoAlbum extends React.Component {
 
       // should we modify current big?
       if(this.state.currentBig === this.state.activeBlock){
-        console.log('initially dragged the big block')
+        // console.log('initially dragged the big block')
         this.setState({
           currentBig: closest
         })
@@ -234,22 +252,30 @@ export default class PhotoAlbum extends React.Component {
       }
 
       if(this.state.currentBig === closest){
-        console.log('dragged into the big block')
+        // console.log('dragged into the big block')
         // convert the closest to smallblock
-
         this.setState({
           currentBig: this.state.activeBlock
         })
 
-      }
+        // this._getBlock(closest).currentPosition.setValue({x: largeBoxWidth/3, y: largeBoxHeight/3})
 
+      }
+      Animated.timing(
+        this._getBlock(closest).currentPosition,
+        {
+          toValue: this._getActiveBlockPositions().originalPosition,
+          duration: 300,
+          // useNativeDriver: true,
+        }
+      ).start()
 
       let blockPositions = this.state.blockPositions
       this._getActiveBlockPositions().originalPosition = blockPositions[closest].originalPosition
       blockPositions[closest].originalPosition = originalPosition
       this.setState({ blockPositions })
-    }
 
+    }
 
   }
 
@@ -266,11 +292,12 @@ export default class PhotoAlbum extends React.Component {
     this.setState({activeBlock: null});
     this.panCapture = false;
     this.blockTouchRelease = false;
+    this.initialWasBig = false;
     // console.log('released drag')
   }
 
   handleShortPress(){
-    // console.log('handle short press')
+    console.log('handle short press')
 
   }
   // Helper functions
@@ -295,44 +322,20 @@ export default class PhotoAlbum extends React.Component {
         currentPosition: new Animated.ValueXY(thisPosition),
         originalPosition: thisPosition
       }
-
       this.setState({blockPositions, blockPositionsSetCount});
 
     }
-    // console.log('block positions@@@')
-    // console.log(this.state.blockPositions)
   }
 
   _blockPositionsSet = () => this.state.blockPositionsSetCount === 7
 
   _getBlockStyle = (index, name) =>{
-    // I want to get the top left position of the block styles
-    // if(this._blockPositionsSet() && (this.initialDragDone) && type=== "smallPicture" && key==="0"){
-    //   console.log(this._getBlock(type+key).currentPosition.getLayout().top)
-    //   console.log(this._getBlock(type+key).currentPosition.getLayout().left)
-    // }
-
-    // if (this._blockPositionsSet() && this.initialDragDone && this._getBlock(type+key).currentPosition.getLayout().top === 0 && this._getBlock(type+key).currentPosition.getLayout().left === 0){
-    //   return (
-    //     [{width: largeBoxWidth,
-    //       height: largeBoxHeight, backgroundColor: 'skyblue',
-    //       justifyContent: 'center' },
-    //     this._blockPositionsSet() && (this.initialDragDone) &&
-    //     { position: 'absolute',
-    //       top: this._getBlock(type+key).currentPosition.getLayout().top._value,
-    //       left: this._getBlock(type+key).currentPosition.getLayout().left._value
-    //     }]
-    //   );
-    // }
-    //
-
-
     if(name+index===this.state.currentBig){
       // console.log("handle large")
       return (
           [{width: largeBoxWidth,
             height: largeBoxHeight, backgroundColor: 'skyblue',
-            justifyContent: 'center' },
+            justifyContent: 'center', },
           this._blockPositionsSet() && (this.initialDragDone) &&
           { position: 'absolute',
             top: this._getBlock(name+index).currentPosition.getLayout().top._value,
@@ -340,8 +343,6 @@ export default class PhotoAlbum extends React.Component {
           }]
         );
     }
-
-
 
     return (
       [{width: smallBoxWidth,
@@ -369,13 +370,9 @@ export default class PhotoAlbum extends React.Component {
     // originally this code also sets up the block width and the heights but we have defined
     // that already at the top of this class using largeBoxHeight, largeBoxWidth, smallBoxWidth, smallBoxHeight
 
-    // this.blockWidth = nativeEvent.layout.width / this.itemsPerRow
-    // this.blockHeight = 100
     if (this.state.gridLayout != nativeEvent.layout) {
       this.setState({
         gridLayout: nativeEvent.layout,
-        // blockWidth: this.blockWidth,
-        // blockHeight: this.blockHeight
       })
     }
   }
