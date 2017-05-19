@@ -29,14 +29,26 @@ smallBoxWidth = screenWidth/3
 
 
 export default class EditProfileScrollView extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      isScrollEnabled: true
+    }
+  }
+
+  changeScrollState = (isEnabled) => {
+    this.setState({isScrollEnabled: isEnabled})
+  }
+
+
 
   render(){
     return (
-      <View>
+      <ScrollView scrollEnabled={this.state.isScrollEnabled}>
         {/* <EditPhotoAlbum /> */}
-        <PhotoAlbum largeBoxHeight={largeBoxHeight} />
+        <PhotoAlbum changeScrollState={this.changeScrollState}/>
 
-      </View>
+      </ScrollView>
     )
   }
 

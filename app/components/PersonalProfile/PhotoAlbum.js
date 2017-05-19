@@ -90,6 +90,10 @@ export default class PhotoAlbum extends React.Component {
     this.createTouchHandlers();
   }
 
+  componentDidMount(){
+
+  }
+
   createTouchHandlers = () => {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -121,6 +125,7 @@ export default class PhotoAlbum extends React.Component {
       this.initialWasBig = true;
     }
 
+    this.props.changeScrollState(false);
 
     this.releasedDrag = false
 
@@ -324,6 +329,8 @@ export default class PhotoAlbum extends React.Component {
     this.blockTouchRelease = false;
     this.initialWasBig = false;
     // console.log('released drag')
+
+    this.props.changeScrollState(true);
     this.releasedDrag = true;
 
 
