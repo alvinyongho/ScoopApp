@@ -292,12 +292,25 @@ export default class PhotoAlbum extends React.Component {
 
   // Handle case where move and then release
   onDragRelease = () => {
+    // reset the grid
+
+    for (var key in this.state.blockPositions) {
+      // if(key !== this.state.activeBlock && this.state.blockPositions[key].originalPosition){
+        this.state.blockPositions[key].currentPosition.setValue(this.state.blockPositions[key].originalPosition)
+    }
+
+
+
     this.setState({activeBlock: null});
     this.panCapture = false;
     this.blockTouchRelease = false;
     this.initialWasBig = false;
     // console.log('released drag')
     this.releasedDrag = true;
+
+
+
+
   }
 
   handleShortPress(){
