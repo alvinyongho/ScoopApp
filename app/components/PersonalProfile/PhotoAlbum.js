@@ -219,6 +219,8 @@ export default class PhotoAlbum extends React.Component {
 
         let distance = this._getDistanceTo(blockPosition)
           if(key === this.state.currentBig){
+            // check the distance to the second row of ghost boxes
+
             if (distance < closestDistance && distance < largeBoxWidth) {
                closest = key
                closestDistance = distance
@@ -255,6 +257,8 @@ export default class PhotoAlbum extends React.Component {
         this.setState({
           currentBig: this.state.activeBlock
         })
+
+        this._getBlock(closest).currentPosition.setValue({x: largeBoxWidth/3, y: largeBoxHeight/3})
       }
 
       this.handleAnimation(closest);
@@ -335,7 +339,7 @@ export default class PhotoAlbum extends React.Component {
     if(name+index!==this.state.currentBig){
       return (
         [{width: smallBoxWidth,
-          height: smallBoxHeight, backgroundColor: 'green',
+          height: smallBoxHeight,
           justifyContent: 'center' },
         this._blockPositionsSet() && (this.initialDragDone) &&
         { position: 'absolute',
@@ -357,7 +361,7 @@ export default class PhotoAlbum extends React.Component {
 
       return (
           [{width: smallBoxWidth,
-            height: smallBoxHeight, backgroundColor: 'skyblue',
+            height: smallBoxHeight,
             alignItems: 'center',
             justifyContent: 'center', },
           this._blockPositionsSet() && (this.initialDragDone) &&
@@ -373,7 +377,7 @@ export default class PhotoAlbum extends React.Component {
     // otherwise return a small block
     return (
       [{width: largeBoxWidth,
-        height: largeBoxHeight, backgroundColor: 'green',
+        height: largeBoxHeight,
         justifyContent: 'center' },
       this._blockPositionsSet() && (this.initialDragDone) &&
       { position: 'absolute',
@@ -488,13 +492,16 @@ class PictureBlock extends Component {
 
   // Handles how the imageview should look
   imageView = () => {
-
     // handle all blocks that are not big
     // if the imageview isnt the current big image the size constraints are the small box size
     if(this.props.identifier !== this.props.currentBig)
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, width:smallBoxWidth, height: smallBoxHeight}}
+                style={{flex: 1, marginLeft:10, marginRight:10, marginTop:10, width:smallBoxWidth-20,
+                  borderColor: 'white',
+                  borderWidth: MARGIN/3,
+                  borderRadius:5,
+                  height: smallBoxHeight}}
           />
       );
 
@@ -504,16 +511,30 @@ class PictureBlock extends Component {
       console.log('turning it medium')
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, margin:50, width:largeBoxWidth-10, height: largeBoxHeight-10}} />);
+                style={{flex: 1, margin:30, marginBottom: 10, width:largeBoxWidth-60, height: largeBoxHeight,
+
+                  borderColor: 'white',
+                  borderWidth: MARGIN/3,
+                  borderRadius:5,}} />);
     }
     // handle big block
     // dragging the big block (POSSIBLY) to the small block
     else if(!this.props.releasedDrag && this.props.activeBlock == this.props.currentBig){
-      return (<Image source={this.props.picture.imagesrc} style={{flex: 1, width:smallBoxWidth, height: smallBoxHeight}} />);
+      return (<Image source={this.props.picture.imagesrc}
+                style={{flex: 1, margin:5, width:smallBoxWidth-10, height: smallBoxHeight,
+
+                  borderColor: 'white',
+                  borderWidth: MARGIN/3,
+                  borderRadius:5,}} />);
     }
     // released press and not a big block
     else
-      return (<Image source={this.props.picture.imagesrc} style={{flex: 1, width:largeBoxWidth, height: largeBoxHeight}} />);
+      return (<Image source={this.props.picture.imagesrc}
+        style={{flex: 1, margin:10, marginBottom:0, width:largeBoxWidth-20, height: largeBoxHeight,
+
+          borderColor: 'white',
+          borderWidth: MARGIN/3,
+          borderRadius:5,}} />);
   }
 
   render = () =>
