@@ -234,11 +234,11 @@ export default class PhotoAlbum extends React.Component {
     }
 
     if(closest !== this.state.activeBlock){
-      Animated.timing(
+      Animated.spring(
         this._getBlock(closest).currentPosition,
         {
           toValue: this._getActiveBlockPositions().originalPosition,
-          duration: 300,
+          // duration: 300,
           // useNativeDriver: true,
         }
       ).start()
@@ -269,11 +269,11 @@ export default class PhotoAlbum extends React.Component {
   }
 
   handleAnimation = (closest) => {
-    Animated.timing(
+    Animated.spring(
       this._getBlock(closest).currentPosition,
       {
         toValue: this._getActiveBlockPositions().originalPosition,
-        duration: 100,
+        // duration: 100,
         // useNativeDriver: true,
       }
     ).start()
@@ -463,6 +463,13 @@ export default class PhotoAlbum extends React.Component {
       )
     })
 
+    if(this._blockPositionsSet() && (this.initialDragDone)){
+      let selectedItem = pictures[this.state.activeBlockIndex];
+      pictures.splice(this.state.activeBlockIndex, 1);
+      pictures.push(selectedItem);
+    }
+
+
     return (
       <Animated.View
         style={styles.pictureContainer}
@@ -497,7 +504,7 @@ class PictureBlock extends Component {
       console.log('turning it medium')
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, width:smallBoxWidth*2, height: smallBoxHeight*2}} />);
+                style={{flex: 1, margin:50, width:largeBoxWidth-10, height: largeBoxHeight-10}} />);
     }
     // handle big block
     // dragging the big block (POSSIBLY) to the small block
