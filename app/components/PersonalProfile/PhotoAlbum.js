@@ -10,9 +10,9 @@ import {
   Dimensions,
   PanResponder,
   Image,
-
 } from 'react-native';
 
+import Button from 'react-native-button'
 import images from '@assets/images';
 
 const screenWidth = Dimensions.get('window').width;
@@ -117,18 +117,15 @@ export default class PhotoAlbum extends React.Component {
 
   activateDrag = (key, index) => () => {
     this.panCapture = true;
-    // console.log('activated drag on key:  ' + key)
-    this.setState({activeBlock: key, activeBlockIndex: index});
-
     // Set the initialWasBig. when we scale down we have to offset the x and y
     if (this.state.activeBlock === this.state.currentBig) {
       this.initialWasBig = true;
     }
 
     this.props.changeScrollState(false);
-
     this.releasedDrag = false
 
+    this.setState({activeBlock: key, activeBlockIndex: index});
   }
 
   handleGranted = (evt, gestureState)  => {
@@ -144,12 +141,7 @@ export default class PhotoAlbum extends React.Component {
 
       this.currentActiveBlockPositionX = this._getActiveBlockPositions().originalPosition.x
       this.currentActiveBlockPositionY = this._getActiveBlockPositions().originalPosition.y
-      console.log(`active offsets`)
-      console.log(this.activeBlockOffset)
-      //
-      //
-      // this._getActiveBlockPositions().currentPosition.setOffset({offsetX, offsetY})
-      // this._getActiveBlockPositions().currentPosition.setValue({x: gestureState.moveX, y: gestureState.moveY})
+
     }
   }
 
@@ -191,10 +183,8 @@ export default class PhotoAlbum extends React.Component {
 
     // this does not handle the case where the currently being dragged is wider than the smallBoxWidth
     if(!this.initialWasBig && this.state.currentBig == this.state.activeBlock){
-      // console.log('have to offset further')
       dragPosition = { x:drag_pos_x , y:drag_pos_y}
       this.dragPosition = dragPosition
-      // console.log(dragPosition)
       this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
     }
 
@@ -259,20 +249,12 @@ export default class PhotoAlbum extends React.Component {
 
       // should we modify current big?
       if(this.state.currentBig === this.state.activeBlock){
-        console.log('handle big')
-
-
         curr = this._getBlock(closest).originalPosition
-
         this._getBlock(closest).currentPosition.setValue({x: 0, y: curr.y})
-
-
-
         this.setState({
           currentBig: closest
         })
       }
-
 
       if(this.state.currentBig === closest){
         // convert the closest to smallblock
@@ -285,7 +267,6 @@ export default class PhotoAlbum extends React.Component {
       }
 
       this.handleAnimation(closest);
-
       let blockPositions = this.state.blockPositions
       this._getActiveBlockPositions().originalPosition = blockPositions[closest].originalPosition
       blockPositions[closest].originalPosition = originalPosition
@@ -316,31 +297,19 @@ export default class PhotoAlbum extends React.Component {
   // Handle case where move and then release
   onDragRelease = () => {
     // reset the grid
-
     for (var key in this.state.blockPositions) {
-      // if(key !== this.state.activeBlock && this.state.blockPositions[key].originalPosition){
         this.state.blockPositions[key].currentPosition.setValue(this.state.blockPositions[key].originalPosition)
     }
-
-
-
     this.setState({activeBlock: null});
     this.panCapture = false;
     this.blockTouchRelease = false;
     this.initialWasBig = false;
-    // console.log('released drag')
-
     this.props.changeScrollState(true);
     this.releasedDrag = true;
-
-
-
-
   }
 
-  handleShortPress(){
+  handleShortPress(key){
     console.log('handle short press')
-
   }
   // Helper functions
   // Returns the active block Positions: current Position and original Position
@@ -389,13 +358,11 @@ export default class PhotoAlbum extends React.Component {
 
     // handle the medium block
     if(!this.releasedDrag && this.state.activeBlock !== this.state.currentBig){
-      console.log('handle medium block')
 
     }
 
     // handle big block
     if(!this.releasedDrag && this.state.activeBlock == this.state.currentBig){
-      console.log('handle small block')
 
       return (
           [{width: smallBoxWidth,
@@ -445,6 +412,13 @@ export default class PhotoAlbum extends React.Component {
     }
   }
 
+  removeBlock = (key) => {
+    console.log('removing' + key)
+    let pictures = this.state.pictures
+    pictures.splice(key, 1)
+    this.setState({pictures})
+  }
+
   render(){
     const pictures = this.state.pictures.map((elem, key) => {
           //Picture Block is an Animated View
@@ -453,7 +427,7 @@ export default class PhotoAlbum extends React.Component {
           key = {'picture'+ key}
           delayLongPress={50}
           panHandlers = { this._panResponder.panHandlers }
-          onPress =     { ()=>this.handleShortPress() }
+          onPress =     { ()=>this.handleShortPress(key) }
           onLongPress = { this.activateDrag('picture'+ key, key) }
           onPressOut =  { this.handlePressOut() }
           picture =     { elem }
@@ -463,6 +437,7 @@ export default class PhotoAlbum extends React.Component {
           identifier = {'picture' + key}
           releasedDrag = {this.releasedDrag}
           activeBlock  = {this.state.activeBlock}
+          removeBlock = { () => this.removeBlock(key)}
         />
       )
     })
@@ -485,15 +460,49 @@ export default class PhotoAlbum extends React.Component {
   }
 }
 
+DELETE_BUTTON_WIDTH = 30
 class PictureBlock extends Component {
   constructor(props){
     super(props)
   }
 
+
+  deleteButton = () => {
+    if(this.props.identifier !== this.props.currentBig){
+      return (
+        <Button onPress={this.props.removeBlock}>
+          <View
+              style={{position: 'absolute',
+                      top: -smallBoxHeight+7,
+                      left: smallBoxWidth-37,
+                      height: DELETE_BUTTON_WIDTH,
+                      width: DELETE_BUTTON_WIDTH,
+                      backgroundColor: 'white',
+                      borderWidth:1,
+                      borderColor: '#E6E6E6',
+                      borderRadius:DELETE_BUTTON_WIDTH/2}}>
+          </View>
+        </Button>
+      )
+    }
+  }
   // Handles how the imageview should look
   imageView = () => {
     // handle all blocks that are not big
     // if the imageview isnt the current big image the size constraints are the small box size
+    if(this.props.identifier === this.props.activeBlock && this.props.activeBlock !== this.props.currentBig){
+      return (
+          <Image source={this.props.picture.imagesrc}
+                style={{flex: 1, marginLeft:5, marginRight:5, marginTop:5, width:smallBoxWidth-10,
+                  borderColor: 'white',
+                  borderWidth: MARGIN/3,
+                  borderRadius:5,
+                  height: smallBoxHeight}}
+          />
+      );
+    }
+
+
     if(this.props.identifier !== this.props.currentBig)
       return (
           <Image source={this.props.picture.imagesrc}
@@ -508,7 +517,6 @@ class PictureBlock extends Component {
     // handle the (possibly) medium block
     // dragging the small block (POSSIBLY) to the big block
     if(!this.props.releasedDrag && this.props.activeBlock !== this.props.currentBig){
-      console.log('turning it medium')
       return (
           <Image source={this.props.picture.imagesrc}
                 style={{flex: 1, margin:30, marginBottom: 10, width:largeBoxWidth-60, height: largeBoxHeight,
@@ -553,6 +561,8 @@ class PictureBlock extends Component {
           <View style={styles.itemImageContainer}>
             <View style={{flex:1}}>
             {this.imageView()}
+
+            {this.props.releasedDrag && this.deleteButton()}
             </View>
           </View>
       </TouchableWithoutFeedback>
