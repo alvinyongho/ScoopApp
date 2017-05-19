@@ -34,7 +34,7 @@ export default class PhotoAlbum extends React.Component {
     super(props);
     this.indexSelected = null
     this.panCapture = false     //initially capture touch event from TouchableWithoutFeedback
-    this.blockTouchRelease = false
+    this.blockTouchRelease = false  // prevents the touchablewithoutfeedback from releasing the pan event
 
     this.initialDragDone = false
     this.activeBlockOffset = null
@@ -45,6 +45,7 @@ export default class PhotoAlbum extends React.Component {
     this.initialWasBig = false
     this.releasedDrag = true
 
+    this.itemOrder = []
 
     this.state = {
       currentBig: 'picture0',
