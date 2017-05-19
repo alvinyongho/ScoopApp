@@ -43,56 +43,67 @@ export default class PhotoAlbum extends React.Component {
 
     this.currentActiveBlockPositionX = null;
     this.currentActiveBlockPositionY =null;
+    this.isInsideLargeImage = false
 
 
     this.state = {
+      currentBig: 'picture0',
       gridLayout: null,
       pictures: [
-        {
-          type: 'largeImage',
-          bigPicture: {
+          {
+            type: 'big',
             backgroundColor: 'skyblue',
             imagesrc: images.placeholder_mainalbum
-          }
-        },
-        {
-          type: 'smallImages',
-          smallPictures: [
+          },
           {
+            type: 'small',
             backgroundColor: 'red',
             imagesrc: images.placeholder_album1
           },
           {
+            type: 'small',
             backgroundColor: 'orange',
             imagesrc: images.placeholder_album2
           },
           {
+            type: 'small',
             backgroundColor: 'yellow',
             imagesrc: images.placeholder_album3
           },
           {
+            type: 'small',
             backgroundColor: 'green',
             imagesrc: images.placeholder_album4
           },
           {
+            type: 'small',
             backgroundColor: 'blue',
             imagesrc: images.placeholder_album5
           },
           {
+            type: 'small',
             backgroundColor: 'purple',
             imagesrc: images.placeholder_album6
-          }]
-        },
+          }
       ],
       blockPositions: [],
       blockPositionsSetCount: 0,
       activeBlock: null,          // The block that is set from a long press select.
+      activeBlockIndex: null,
     }
   }
+
+  // componentDidMount = () => this.handleNewProps(this.props)
+  // componentWillReceiveProps = (properties) => this.handleNewProps(properties)
+  //
+  // handleNewProps = (properties) => {
+  //   console.log('setting new properties')
+  // }
 
   componentWillMount(){
     this.createTouchHandlers();
   }
+
 
   createTouchHandlers = () => {
     this._panResponder = PanResponder.create({
@@ -115,10 +126,10 @@ export default class PhotoAlbum extends React.Component {
     if (this.state.activeBlock != null) fn(evt, gestureState)
   }
 
-  activateDrag = (key) => () => {
+  activateDrag = (key, index) => () => {
     this.panCapture = true;
     // console.log('activated drag on key:  ' + key)
-    this.setState({activeBlock: key});
+    this.setState({activeBlock: key, activeBlockIndex: index});
   }
 
   handleGranted = (evt, gestureState)  => {
@@ -182,41 +193,58 @@ export default class PhotoAlbum extends React.Component {
 
 
   _endMove = (evt, gestureState) => {
-    //
-
-
     let originalPosition = this._getActiveBlockPositions().originalPosition
     let distanceToOrigin = this._getDistanceTo(originalPosition)
     let closest = this.state.activeBlock
     let closestDistance = distanceToOrigin
 
-
     for (var key in this.state.blockPositions) {
       if(key !== this.state.activeBlock && this.state.blockPositions[key].originalPosition){
         let blockPosition = this.state.blockPositions[key].originalPosition
         let distance = this._getDistanceTo(blockPosition)
-        if (distance < closestDistance && distance < smallBoxWidth) {
-          closest = key
-          closestDistance = distance
-        }
+          if (distance < closestDistance && distance < smallBoxWidth) {
+              closest = key
+              closestDistance = distance
+              this.isInsideLargeImage = false
+          }
+
       }
 
     }
 
     if(closest !== this.state.activeBlock){
-      console.log(this._getActiveBlockPositions(closest).currentPosition)
-      console.log('to value')
-      console.log(this._getActiveBlockPositions().originalPosition)
+
       Animated.timing(
         this._getBlock(closest).currentPosition,
         {
           toValue: this._getActiveBlockPositions().originalPosition,
-          duration: 300
+          duration: 300,
+          // useNativeDriver: true,
         }
       ).start()
 
-      let blockPositions = this.state.blockPositions
 
+      // should we modify current big?
+      if(this.state.currentBig === this.state.activeBlock){
+        console.log('initially dragged the big block')
+        this.setState({
+          currentBig: closest
+        })
+
+      }
+
+      if(this.state.currentBig === closest){
+        console.log('dragged into the big block')
+        // convert the closest to smallblock
+
+        this.setState({
+          currentBig: this.state.activeBlock
+        })
+
+      }
+
+
+      let blockPositions = this.state.blockPositions
       this._getActiveBlockPositions().originalPosition = blockPositions[closest].originalPosition
       blockPositions[closest].originalPosition = originalPosition
       this.setState({ blockPositions })
@@ -277,29 +305,43 @@ export default class PhotoAlbum extends React.Component {
 
   _blockPositionsSet = () => this.state.blockPositionsSetCount === 7
 
-  _getBlockStyle = (key, type) =>{
-
+  _getBlockStyle = (index, name) =>{
     // I want to get the top left position of the block styles
-    if(this._blockPositionsSet() && (this.initialDragDone) && type=== "smallPicture" && key==="0"){
-      console.log(this._getBlock(type+key).currentPosition.getLayout().top)
-      console.log(this._getBlock(type+key).currentPosition.getLayout().left)
-    }
+    // if(this._blockPositionsSet() && (this.initialDragDone) && type=== "smallPicture" && key==="0"){
+    //   console.log(this._getBlock(type+key).currentPosition.getLayout().top)
+    //   console.log(this._getBlock(type+key).currentPosition.getLayout().left)
+    // }
+
+    // if (this._blockPositionsSet() && this.initialDragDone && this._getBlock(type+key).currentPosition.getLayout().top === 0 && this._getBlock(type+key).currentPosition.getLayout().left === 0){
+    //   return (
+    //     [{width: largeBoxWidth,
+    //       height: largeBoxHeight, backgroundColor: 'skyblue',
+    //       justifyContent: 'center' },
+    //     this._blockPositionsSet() && (this.initialDragDone) &&
+    //     { position: 'absolute',
+    //       top: this._getBlock(type+key).currentPosition.getLayout().top._value,
+    //       left: this._getBlock(type+key).currentPosition.getLayout().left._value
+    //     }]
+    //   );
+    // }
+    //
 
 
-
-
-    if (type === "largePicture"){
+    if(name+index===this.state.currentBig){
+      // console.log("handle large")
       return (
-        [{width: largeBoxWidth,
-          height: largeBoxHeight, backgroundColor: 'skyblue',
-          justifyContent: 'center' },
-        this._blockPositionsSet() && (this.initialDragDone) &&
-        { position: 'absolute',
-          top: this._getBlock(type+key).currentPosition.getLayout().top._value,
-          left: this._getBlock(type+key).currentPosition.getLayout().left._value
-        }]
-      );
+          [{width: largeBoxWidth,
+            height: largeBoxHeight, backgroundColor: 'skyblue',
+            justifyContent: 'center' },
+          this._blockPositionsSet() && (this.initialDragDone) &&
+          { position: 'absolute',
+            top: this._getBlock(name+index).currentPosition.getLayout().top._value,
+            left: this._getBlock(name+index).currentPosition.getLayout().left._value
+          }]
+        );
     }
+
+
 
     return (
       [{width: smallBoxWidth,
@@ -307,8 +349,8 @@ export default class PhotoAlbum extends React.Component {
         justifyContent: 'center' },
       this._blockPositionsSet() && (this.initialDragDone) &&
       { position: 'absolute',
-        top: this._getBlock(type+key).currentPosition.getLayout().top._value,
-        left: this._getBlock(type+key).currentPosition.getLayout().left._value
+        top: this._getBlock(name+index).currentPosition.getLayout().top._value,
+        left: this._getBlock(name+index).currentPosition.getLayout().left._value
       }]
     );
   }
@@ -340,46 +382,22 @@ export default class PhotoAlbum extends React.Component {
 
   render(){
     const pictures = this.state.pictures.map((elem, key) => {
-      if (elem.type == 'largeImage'){
-        return (
-          <PictureBlock
-            key = {'largePicture'+key}
-            delayLongPress={400}
-            panHandlers = { this._panResponder.panHandlers }
-            onPress =     { ()=>this.handleShortPress()    }
-            onLongPress = { this.activateDrag('largePicture'+key)           }
-            onPressOut =  { this.handlePressOut()          }
-            picture =     { elem.bigPicture }
-            onLayout=     { this.saveBlockPositions('largePicture'+ key) }
-            style =       { this._getBlockStyle(key, 'largePicture') }
-            blockType =   {'largePicture'}
-          />
-        );
-      }
-      if (elem.type == 'smallImages'){
-        const small_pictures = elem.smallPictures.map((smallPicture, smallPicture_key) => {
-          let num_bigImages = 1
-          let top  = Math.floor((smallPicture_key)/NUM_PER_ROW) * smallBoxHeight + largeBoxHeight;
-          let left = ((smallPicture_key) % NUM_PER_ROW) * smallBoxWidth;
-          let marginLeft = MARGIN * (((smallPicture_key) % NUM_PER_ROW)+1)
           //Picture Block is an Animated View
-          return (
-            <PictureBlock
-              key = {'smallPicture'+ smallPicture_key}
-              delayLongPress={400}
-              panHandlers = { this._panResponder.panHandlers }
-              onPress =     { ()=>this.handleShortPress() }
-              onLongPress = { this.activateDrag('smallPicture'+ smallPicture_key) }
-              onPressOut =  { this.handlePressOut() }
-              picture =     { smallPicture }
-              onLayout=     { this.saveBlockPositions('smallPicture'+ smallPicture_key) }
-              style =       { this._getBlockStyle(smallPicture_key, 'smallPicture') }
-              blockType =   { 'smallPicture' }
-            />
-          )
-        });
-        return small_pictures;
-      }
+      return (
+        <PictureBlock
+          key = {'picture'+ key}
+          delayLongPress={400}
+          panHandlers = { this._panResponder.panHandlers }
+          onPress =     { ()=>this.handleShortPress() }
+          onLongPress = { this.activateDrag('picture'+ key, key) }
+          onPressOut =  { this.handlePressOut() }
+          picture =     { elem }
+          onLayout=     { this.saveBlockPositions('picture'+ key) }
+          style =       { this._getBlockStyle(key, 'picture') }
+          currentBig =   { this.state.currentBig }
+          identifier = {'picture' + key}
+        />
+      )
     })
 
     return (
@@ -413,10 +431,12 @@ class PictureBlock extends Component {
         >
           <View style={styles.itemImageContainer}>
             <View style={{flex:1}}>
-            {this.props.blockType === 'smallPicture' ?
+              {this.props.identifier !== this.props.currentBig ?
               <Image source={this.props.picture.imagesrc} style={{flex: 1, width:smallBoxWidth, height: smallBoxHeight}} />
-            : <Image source={this.props.picture.imagesrc} style={{flex: 1, width:largeBoxWidth, height: largeBoxHeight}} />
-            }
+              :
+              <Image source={this.props.picture.imagesrc} style={{flex: 1, width:largeBoxWidth, height: largeBoxHeight}} />
+              }
+
             </View>
           </View>
       </TouchableWithoutFeedback>
