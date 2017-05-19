@@ -57,7 +57,7 @@ class SortableGrid extends Component {
         style={ this._getGridStyle() }
         onLayout={ this.assessGridSize }
       >
-        
+
         { this.state.gridLayout &&
           this.items.map( (item, key) =>
             <Block
@@ -146,6 +146,7 @@ class SortableGrid extends Component {
   onStartDrag = (evt, gestureState) => {
     if (this.state.activeBlock != null) {
       let activeBlockPosition = this._getActiveBlock().origin
+      //x0, y0  :  the screen coordinates of the responder grant
       let x = activeBlockPosition.x - gestureState.x0
       let y = activeBlockPosition.y - gestureState.y0
       this.activeBlockOffset = { x, y }
@@ -193,13 +194,14 @@ class SortableGrid extends Component {
         }
       })
       if (closest !== this.state.activeBlock) {
-        Animated.timing(
+        Animated.spring(
           this._getBlock(closest).currentPosition,
           {
             toValue: this._getActiveBlock().origin,
             duration: this.blockTransitionDuration
           }
         ).start()
+
         let blockPositions = this.state.blockPositions
         this._getActiveBlock().origin = blockPositions[closest].origin
         blockPositions[closest].origin = originalPosition
