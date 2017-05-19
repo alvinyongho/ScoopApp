@@ -235,7 +235,13 @@ export default class PhotoAlbum extends React.Component {
       }
     }
 
+    // if the block we are changing with isnt the current block
     if(closest !== this.state.activeBlock){
+
+
+
+
+
       Animated.spring(
         this._getBlock(closest).currentPosition,
         {
@@ -245,12 +251,23 @@ export default class PhotoAlbum extends React.Component {
         }
       ).start()
 
+
       // should we modify current big?
       if(this.state.currentBig === this.state.activeBlock){
+        console.log('handle big')
+
+
+        curr = this._getBlock(closest).originalPosition
+
+        this._getBlock(closest).currentPosition.setValue({x: 0, y: curr.y})
+
+
+
         this.setState({
           currentBig: closest
         })
       }
+
 
       if(this.state.currentBig === closest){
         // convert the closest to smallblock
@@ -258,6 +275,7 @@ export default class PhotoAlbum extends React.Component {
           currentBig: this.state.activeBlock
         })
 
+        // move the block to the middle before sending it back down
         this._getBlock(closest).currentPosition.setValue({x: largeBoxWidth/3, y: largeBoxHeight/3})
       }
 
@@ -399,45 +417,7 @@ export default class PhotoAlbum extends React.Component {
       }]
     );
 
-
-    //
-    // // handle the big block
-    // if(name+index===this.state.currentBig && this.releasedDrag){
-    //   // console.log("handle large")
-    //   return (
-    //       [{width: largeBoxWidth,
-    //         height: largeBoxHeight, backgroundColor: 'skyblue',
-    //         justifyContent: 'center', },
-    //       this._blockPositionsSet() && (this.initialDragDone) &&
-    //       { position: 'absolute',
-    //         top: this._getBlock(name+index).currentPosition.getLayout().top._value,
-    //         left: this._getBlock(name+index).currentPosition.getLayout().left._value
-    //       }]
-    //     );
-    // }
-
-
-
-    // else if(name+index===this.state.currentBig && !this.releasedDrag){
-    //   return (
-    //       [{width: largeBoxWidth,
-    //         height: largeBoxHeight, backgroundColor: 'skyblue',
-    //         justifyContent: 'center', },
-    //       this._blockPositionsSet() && (this.initialDragDone) &&
-    //       { position: 'absolute',
-    //         top: this._getBlock(name+index).currentPosition.getLayout().top._value,
-    //         left: this._getBlock(name+index).currentPosition.getLayout().left._value
-    //       }]
-    //     );
-    // }
-
-
-
-
-
   }
-
-
 
   _getBlock = (key) => {
     return this.state.blockPositions[ key ]
