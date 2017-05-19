@@ -118,6 +118,8 @@ export default class PhotoAlbum extends React.Component {
   activateDrag = (key, index) => () => {
     this.panCapture = true;
     // Set the initialWasBig. when we scale down we have to offset the x and y
+    this.setState({activeBlock: key, activeBlockIndex: index});
+
     if (this.state.activeBlock === this.state.currentBig) {
       this.initialWasBig = true;
     }
@@ -125,7 +127,6 @@ export default class PhotoAlbum extends React.Component {
     this.props.changeScrollState(false);
     this.releasedDrag = false
 
-    this.setState({activeBlock: key, activeBlockIndex: index});
   }
 
   handleGranted = (evt, gestureState)  => {
@@ -562,7 +563,7 @@ class PictureBlock extends Component {
             <View style={{flex:1}}>
             {this.imageView()}
 
-            {this.props.releasedDrag && this.deleteButton()}
+            {this.props.releasedDrag && !this.props.activeBlock && this.deleteButton()}
             </View>
           </View>
       </TouchableWithoutFeedback>
