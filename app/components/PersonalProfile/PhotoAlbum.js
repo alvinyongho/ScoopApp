@@ -86,17 +86,9 @@ export default class PhotoAlbum extends React.Component {
     }
   }
 
-  // componentDidMount = () => this.handleNewProps(this.props)
-  // componentWillReceiveProps = (properties) => this.handleNewProps(properties)
-  //
-  // handleNewProps = (properties) => {
-  //   console.log('setting new properties')
-  // }
-
   componentWillMount(){
     this.createTouchHandlers();
   }
-
 
   createTouchHandlers = () => {
     this._panResponder = PanResponder.create({
@@ -191,24 +183,20 @@ export default class PhotoAlbum extends React.Component {
 
     // handle the case where the initial block selected was NOT the big block
     // and then drag into the big block, the position needs to be offset
-    if(!this.initialWasBig && this.state.currentBig == this.state.activeBlock){
-      console.log('have to offset further')
 
+    // this does not handle the case where the currently being dragged is wider than the smallBoxWidth
+    if(!this.initialWasBig && this.state.currentBig == this.state.activeBlock){
+      // console.log('have to offset further')
       dragPosition = { x:drag_pos_x , y:drag_pos_y}
       this.dragPosition = dragPosition
-      console.log(dragPosition)
+      // console.log(dragPosition)
       this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
     }
 
     this._endMove(evt, gestureState)
 
     let blockPositions = this.state.blockPositions
-    // // this._getActiveBlock().origin = blockPositions[closest].origin
-    // // blockPositions[closest].origin = originalPosition
     this.setState({ blockPositions })
-
-
-
   }
 
 
@@ -225,18 +213,13 @@ export default class PhotoAlbum extends React.Component {
     let closest = this.state.activeBlock
     let closestDistance = distanceToOrigin
 
-
-    // this.state.blockPositions[this.state.currentBig].originalPosition = ({x: largeBoxWidth/2 ,y: largeBoxHeight/2})
-    // this.state.blockPositions[this.state.currentBig].currentPosition.setValue({x: 0 ,y: 0})
-    //
-
     for (var key in this.state.blockPositions) {
       if(key !== this.state.activeBlock && this.state.blockPositions[key].originalPosition){
         let blockPosition = this.state.blockPositions[key].originalPosition
 
         let distance = this._getDistanceTo(blockPosition)
           if(key === this.state.currentBig){
-            if (distance < closestDistance && distance < largeBoxWidth+100) {
+            if (distance < closestDistance && distance < largeBoxWidth) {
                closest = key
                closestDistance = distance
             }
@@ -251,7 +234,6 @@ export default class PhotoAlbum extends React.Component {
     }
 
     if(closest !== this.state.activeBlock){
-
       Animated.timing(
         this._getBlock(closest).currentPosition,
         {
@@ -261,23 +243,18 @@ export default class PhotoAlbum extends React.Component {
         }
       ).start()
 
-
       // should we modify current big?
       if(this.state.currentBig === this.state.activeBlock){
-        // console.log('initially dragged the big block')
         this.setState({
           currentBig: closest
         })
       }
 
       if(this.state.currentBig === closest){
-        console.log('dragged into the big block')
         // convert the closest to smallblock
         this.setState({
           currentBig: this.state.activeBlock
         })
-        // this._getBlock(closest).currentPosition.setValue({x: largeBoxWidth/3, y: largeBoxHeight/3})
-
       }
 
       this.handleAnimation(closest);
@@ -353,13 +330,35 @@ export default class PhotoAlbum extends React.Component {
   _blockPositionsSet = () => this.state.blockPositionsSetCount === 7
 
   _getBlockStyle = (index, name) =>{
-    if(name+index===this.state.currentBig && this.releasedDrag){
-      // console.log("handle large")
 
+    // handle the case where it must be a small block
+    if(name+index!==this.state.currentBig){
+      return (
+        [{width: smallBoxWidth,
+          height: smallBoxHeight, backgroundColor: 'green',
+          justifyContent: 'center' },
+        this._blockPositionsSet() && (this.initialDragDone) &&
+        { position: 'absolute',
+          top: this._getBlock(name+index).currentPosition.getLayout().top._value,
+          left: this._getBlock(name+index).currentPosition.getLayout().left._value
+        }]
+      );
+    }
+
+    // handle the medium block
+    if(!this.releasedDrag && this.state.activeBlock !== this.state.currentBig){
+      console.log('handle medium block')
+
+    }
+
+    // handle big block
+    if(!this.releasedDrag && this.state.activeBlock == this.state.currentBig){
+      console.log('handle small block')
 
       return (
-          [{width: largeBoxWidth,
-            height: largeBoxHeight, backgroundColor: 'skyblue',
+          [{width: smallBoxWidth,
+            height: smallBoxHeight, backgroundColor: 'skyblue',
+            alignItems: 'center',
             justifyContent: 'center', },
           this._blockPositionsSet() && (this.initialDragDone) &&
           { position: 'absolute',
@@ -367,14 +366,14 @@ export default class PhotoAlbum extends React.Component {
             left: this._getBlock(name+index).currentPosition.getLayout().left._value
           }]
         );
+
     }
 
 
-
-
+    // otherwise return a small block
     return (
-      [{width: smallBoxWidth,
-        height: smallBoxHeight, backgroundColor: 'green',
+      [{width: largeBoxWidth,
+        height: largeBoxHeight, backgroundColor: 'green',
         justifyContent: 'center' },
       this._blockPositionsSet() && (this.initialDragDone) &&
       { position: 'absolute',
@@ -382,6 +381,43 @@ export default class PhotoAlbum extends React.Component {
         left: this._getBlock(name+index).currentPosition.getLayout().left._value
       }]
     );
+
+
+    //
+    // // handle the big block
+    // if(name+index===this.state.currentBig && this.releasedDrag){
+    //   // console.log("handle large")
+    //   return (
+    //       [{width: largeBoxWidth,
+    //         height: largeBoxHeight, backgroundColor: 'skyblue',
+    //         justifyContent: 'center', },
+    //       this._blockPositionsSet() && (this.initialDragDone) &&
+    //       { position: 'absolute',
+    //         top: this._getBlock(name+index).currentPosition.getLayout().top._value,
+    //         left: this._getBlock(name+index).currentPosition.getLayout().left._value
+    //       }]
+    //     );
+    // }
+
+
+
+    // else if(name+index===this.state.currentBig && !this.releasedDrag){
+    //   return (
+    //       [{width: largeBoxWidth,
+    //         height: largeBoxHeight, backgroundColor: 'skyblue',
+    //         justifyContent: 'center', },
+    //       this._blockPositionsSet() && (this.initialDragDone) &&
+    //       { position: 'absolute',
+    //         top: this._getBlock(name+index).currentPosition.getLayout().top._value,
+    //         left: this._getBlock(name+index).currentPosition.getLayout().left._value
+    //       }]
+    //     );
+    // }
+
+
+
+
+
   }
 
 
@@ -411,7 +447,7 @@ export default class PhotoAlbum extends React.Component {
       return (
         <PictureBlock
           key = {'picture'+ key}
-          delayLongPress={400}
+          delayLongPress={50}
           panHandlers = { this._panResponder.panHandlers }
           onPress =     { ()=>this.handleShortPress() }
           onLongPress = { this.activateDrag('picture'+ key, key) }
@@ -422,6 +458,7 @@ export default class PhotoAlbum extends React.Component {
           currentBig =   { this.state.currentBig }
           identifier = {'picture' + key}
           releasedDrag = {this.releasedDrag}
+          activeBlock  = {this.state.activeBlock}
         />
       )
     })
@@ -442,6 +479,36 @@ class PictureBlock extends Component {
     super(props)
   }
 
+  // Handles how the imageview should look
+  imageView = () => {
+
+    // handle all blocks that are not big
+    // if the imageview isnt the current big image the size constraints are the small box size
+    if(this.props.identifier !== this.props.currentBig)
+      return (
+          <Image source={this.props.picture.imagesrc}
+                style={{flex: 1, width:smallBoxWidth, height: smallBoxHeight}}
+          />
+      );
+
+    // handle the (possibly) medium block
+    // dragging the small block (POSSIBLY) to the big block
+    if(!this.props.releasedDrag && this.props.activeBlock !== this.props.currentBig){
+      console.log('turning it medium')
+      return (
+          <Image source={this.props.picture.imagesrc}
+                style={{flex: 1, width:smallBoxWidth*2, height: smallBoxHeight*2}} />);
+    }
+    // handle big block
+    // dragging the big block (POSSIBLY) to the small block
+    else if(!this.props.releasedDrag && this.props.activeBlock == this.props.currentBig){
+      return (<Image source={this.props.picture.imagesrc} style={{flex: 1, width:smallBoxWidth, height: smallBoxHeight}} />);
+    }
+    // released press and not a big block
+    else
+      return (<Image source={this.props.picture.imagesrc} style={{flex: 1, width:largeBoxWidth, height: largeBoxHeight}} />);
+  }
+
   render = () =>
     <Animated.View
       style={this.props.style}
@@ -457,12 +524,7 @@ class PictureBlock extends Component {
         >
           <View style={styles.itemImageContainer}>
             <View style={{flex:1}}>
-              {this.props.identifier !== this.props.currentBig || this.props.releasedDrag == false ?
-              <Image source={this.props.picture.imagesrc} style={{flex: 1, width:smallBoxWidth, height: smallBoxHeight}} />
-              :
-              <Image source={this.props.picture.imagesrc} style={{flex: 1, width:largeBoxWidth, height: largeBoxHeight}} />
-              }
-
+            {this.imageView()}
             </View>
           </View>
       </TouchableWithoutFeedback>
@@ -477,6 +539,7 @@ var styles = StyleSheet.create({
   },
   itemImageContainer: {
     flex: 1,
+    alignItems:'center',
     justifyContent: 'center'
   }
 
