@@ -163,7 +163,7 @@ export default class PhotoAlbum extends React.Component {
     drag_pos_x = this.currentActiveBlockPositionX + dx
     drag_pos_y = this.currentActiveBlockPositionY + dy
 
-    let dragPosition = { x: drag_pos_x, y: drag_pos_y }
+    let dragPosition = { x: drag_pos_x, y: drag_pos_y  }
     this.dragPosition = dragPosition
 
     let originalPosition = this._getActiveBlockPositions().originalPosition
@@ -175,17 +175,24 @@ export default class PhotoAlbum extends React.Component {
     // and then drag into a smaller block, the position needs to be offset
     if(this.initialWasBig && this.state.currentBig !== this.state.activeBlock){
       // console.log('have to offset further')
-
       dragPosition = { x:drag_pos_x - this.activeBlockOffset.x - smallBoxWidth/2, y:drag_pos_y - this.activeBlockOffset.y - smallBoxHeight}
       this.dragPosition = dragPosition
       // console.log(dragPosition)
-      console.log(`active offsets`)
-      console.log(dragPosition)
-      console.log(this.activeBlockOffset)
-
       this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
-
     }
+
+    // handle the case where the initial block selected was NOT the big block
+    // and then drag into the big block, the position needs to be offset
+    if(!this.initialWasBig && this.state.currentBig == this.state.activeBlock){
+      console.log('have to offset further')
+
+      dragPosition = { x:drag_pos_x , y:drag_pos_y}
+      this.dragPosition = dragPosition
+      console.log(dragPosition)
+      this._getActiveBlockPositions().currentPosition.setValue(dragPosition)
+    }
+
+
 
 
 
@@ -216,18 +223,29 @@ export default class PhotoAlbum extends React.Component {
     let closest = this.state.activeBlock
     let closestDistance = distanceToOrigin
 
+
+    // this.state.blockPositions[this.state.currentBig].originalPosition = ({x: largeBoxWidth/2 ,y: largeBoxHeight/2})
+    // this.state.blockPositions[this.state.currentBig].currentPosition.setValue({x: 0 ,y: 0})
+    //
+
     for (var key in this.state.blockPositions) {
       if(key !== this.state.activeBlock && this.state.blockPositions[key].originalPosition){
         let blockPosition = this.state.blockPositions[key].originalPosition
-        let distance = this._getDistanceTo(blockPosition)
 
-          if (distance < closestDistance && distance < smallBoxWidth) {
+        let distance = this._getDistanceTo(blockPosition)
+          if(key === this.state.currentBig){
+            if (distance < closestDistance && distance < largeBoxWidth+100) {
+               closest = key
+               closestDistance = distance
+            }
+          }
+          else{
+            if (distance < closestDistance && distance < smallBoxWidth) {
               closest = key
               closestDistance = distance
+            }
           }
-
       }
-
     }
 
     if(closest !== this.state.activeBlock){
@@ -252,13 +270,13 @@ export default class PhotoAlbum extends React.Component {
       }
 
       if(this.state.currentBig === closest){
-        // console.log('dragged into the big block')
+        console.log('dragged into the big block')
         // convert the closest to smallblock
         this.setState({
           currentBig: this.state.activeBlock
         })
 
-        // this._getBlock(closest).currentPosition.setValue({x: largeBoxWidth/3, y: largeBoxHeight/3})
+        this._getBlock(closest).currentPosition.setValue({x: largeBoxWidth/3, y: largeBoxHeight/3})
 
       }
       Animated.timing(
