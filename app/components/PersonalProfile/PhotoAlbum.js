@@ -504,22 +504,13 @@ export default class PhotoAlbum extends React.Component {
 
     for (var i=0; i<blockPositionsSetCount; i++){
       blockPos = _.findIndex(this.itemOrder, item => item.order === sortedItemOrder[i].order)
-
-      console.log(blockPos)
       if(i===0){
         blockPositions['picture'+blockPos].originalPosition = {x:0, y:0}
-        this.animateBlockMove(blockPos, {x:0, y:0})
+        blockPositions['picture'+blockPos].currentPosition.setValue({x:0,y:0})
         currentBig = 'picture'+blockPos
       } else {
         let x = ((i-1) % 3) * smallBoxWidth
         let y = Math.floor((i-1) / 3) * smallBoxHeight + largeBoxHeight
-        console.log('@@@@@@' + i)
-
-
-
-        console.log('i: ' + i + 'x:   ' + x)
-        console.log(y)
-
 
         blockPositions['picture'+blockPos].originalPosition = {x, y}
         blockPositions['picture'+blockPos].currentPosition.setValue({x,y})
