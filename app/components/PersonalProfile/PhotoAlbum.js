@@ -363,6 +363,10 @@ export default class PhotoAlbum extends React.Component {
     }
   }
 
+  _containsAddBlock = () => {
+    return this.state.blockPositionsSetCount < 7
+  }
+
   _blockPositionsSet = () => {
     return this.state.blockPositionsSetCount === this.itemOrder.length
   }
@@ -445,8 +449,6 @@ export default class PhotoAlbum extends React.Component {
     orderItem.order--; // decrement the orderItem
     this._fixItemOrderOnDeletion(_.find(this.itemOrder, item => item.order === orderItem.order + 2))
 
-
-    console.log('fixing item order')
   }
 
   removeBlock = (key) => {
@@ -469,11 +471,16 @@ export default class PhotoAlbum extends React.Component {
 
     sortedItemOrder = _.sortBy(this.itemOrder, item => item.order)
     for (var i=0; i<blockPositionsSetCount; i++){
+
+      // could this be causing the flickering
       blockPos = _.findIndex(this.itemOrder, item => item.order === sortedItemOrder[i].order)
+      console.log(blockPos)
+
       if(i===0){
         blockPositions['picture'+blockPos].originalPosition = {x:0, y:0}
         blockPositions['picture'+blockPos].currentPosition.setValue({x:0,y:0})
         currentBig = 'picture'+blockPos
+        this.setState({currentBig})
       } else {
         let x = ((i-1) % 3) * smallBoxWidth
         let y = Math.floor((i-1) / 3) * smallBoxHeight + largeBoxHeight
@@ -493,6 +500,21 @@ export default class PhotoAlbum extends React.Component {
       }
     ).start()
   }
+
+  renderAddPictureButton = () => {
+    <PictureBlock
+      key = {'addBlock'}
+      delayLongPress={50}
+      onPress =     { ()=>this.handleShortPress(key) }
+
+      style =       { {position: 'absolute',
+        top: 150,
+        left: 150
+    }   }
+
+    />
+  }
+
 
   render(){
     const pictures = this.state.pictures.map((elem, key) => {
@@ -528,8 +550,21 @@ export default class PhotoAlbum extends React.Component {
         style={styles.pictureContainer}
         onLayout= {this.assessGridSize}
         >
+
+        {pictures.length < 7  &&
+        <View style={{ position: 'absolute', top: largeBoxHeight+smallBoxHeight , left:smallBoxWidth*2,
+              backgroundColor: 'white',
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: '#E6E6E6',
+              marginLeft:10, marginRight:10, marginTop:10, marginBottom: 10,
+              width:smallBoxWidth-20, height: smallBoxHeight-10}}>
+        </View>
+        }
+
         {this.state.gridLayout && pictures}
       </Animated.View>
+
     );
   }
 }
@@ -635,7 +670,6 @@ class PictureBlock extends Component {
           <View style={styles.itemImageContainer}>
             <View style={{flex:1}}>
             {this.imageView()}
-
             {this.props.releasedDrag && !this.props.activeBlock && this.deleteButton()}
             </View>
           </View>
