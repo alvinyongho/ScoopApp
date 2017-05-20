@@ -29,14 +29,29 @@ smallBoxWidth = screenWidth/3
 
 
 export default class EditProfileScrollView extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      isScrollEnabled: true
+    }
+  }
 
+  changeScrollState = (isEnabled) => {
+    this.setState({isScrollEnabled: isEnabled})
+  }
+
+
+  // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     return (
-      <View>
+      <ScrollView scrollEnabled={this.state.isScrollEnabled}>
         {/* <EditPhotoAlbum /> */}
-        <PhotoAlbum largeBoxHeight={largeBoxHeight} />
+        <PhotoAlbum changeScrollState={this.changeScrollState}
+                            onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
+                            onShortPress={(key)=>console.log("handleShortPress for key: " + key)}
+        />
 
-      </View>
+      </ScrollView>
     )
   }
 
