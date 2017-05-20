@@ -552,13 +552,32 @@ export default class PhotoAlbum extends React.Component {
         >
 
         {pictures.length < 7  &&
-        <View style={{ position: 'absolute', top: largeBoxHeight+smallBoxHeight , left:smallBoxWidth*2,
+        <View style={{ flex:1, alignItems:'center', justifyContent: 'center',  position: 'absolute', top: Math.floor((this.state.blockPositionsSetCount-1)/3) * smallBoxHeight + largeBoxHeight , left:((this.state.blockPositionsSetCount-1)%3)*smallBoxWidth,
               backgroundColor: 'white',
               borderRadius: 5,
               borderWidth: 1,
               borderColor: '#E6E6E6',
               marginLeft:10, marginRight:10, marginTop:10, marginBottom: 10,
               width:smallBoxWidth-20, height: smallBoxHeight-10}}>
+
+              <Button onPress={console.log('add picture')}>
+                <View style={{width: smallBoxWidth, height: smallBoxHeight, alignItems: 'center', justifyContent: 'center',}}>
+                  <View
+                    style={{
+                    height: 20,
+                    width: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    // backgroundColor: 'blue',
+                    borderWidth:1,
+                    borderColor: '#54C9EC',
+                    borderRadius:20/2}}>
+                    <View style={{position: 'absolute', height: 10, width: 1, backgroundColor: '#54C9EC'}}/>
+                    <View style={{position: 'absolute', width: 10, height: 1, backgroundColor: '#54C9EC'}}/>
+                  </View>
+                </View>
+              </Button>
+
         </View>
         }
 
