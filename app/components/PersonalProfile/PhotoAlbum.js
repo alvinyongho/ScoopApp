@@ -456,40 +456,81 @@ export default class PhotoAlbum extends React.Component {
     let blockPositions = this.state.blockPositions;
     let blockPositionsSetCount = this.state.blockPositionsSetCount;
     let currentBig = this.state.currentBig;
+    // let currentBig = this.state.currentBig;
 
     --blockPositionsSetCount; // decrement the number of block positions
     // get the order
     let order = this.itemOrder[key].order
-    this._fixItemOrderOnDeletion(this.itemOrder[key])
+    console.log(this.itemOrder[key].imagesrc)
+    // this._fixItemOrderOnDeletion(this.itemOrder[key])
     this.itemOrder.splice(key, 1)
+    console.log('after splicing what is the order')
+    console.log(this.itemOrder)
+
+    // console.log(pictures)
     pictures.splice(key, 1)
-    // trim block positions
+
+
+
+    var blockPosKey = key
+    for(blockPosKey; blockPosKey < blockPositionsSetCount; blockPosKey++){
+        blockPositions['picture'+blockPosKey] = blockPositions['picture'+(blockPosKey+1)]
+    }
+
     delete blockPositions['picture'+blockPositionsSetCount];
+    console.log('block positions')
+    console.log(blockPositions)
 
-    let sortedOrder = _.sortBy(this.itemOrder, item => item.order)
-    sortedOrder.forEach((item, index)=>{
-      pictures[index] = item
-    })
 
-    currentBig = 'picture0'
-    pictures.forEach((item, index) => {
-      if(index === 0){
-        this.state.blockPositions['picture'+index].originalPosition = {x:0, y:0}
-        this.state.blockPositions['picture'+index].currentPosition.setValue({x:0, y:0})
+    sortedItemOrder = _.sortBy(this.itemOrder, item => item.order)
+    console.log(sortedItemOrder)
+
+    // this._fixItemOrderOnDeletion(
+
+    //TODO
+    // console.log("find the index of the itemorder")
+    // console.log(_.findIndex(this.itemOrder, item => item.order === sortedItemOrder[0].order))
+
+
+    // blockPosIndex0 = _.findIndex(this.itemOrder, item => item.order === sortedItemOrder[0].order)
+    // blockPosIndex1 = _.findIndex(this.itemOrder, item => item.order === sortedItemOrder[1].order)
+    //
+    // console.log(blockPosIndex0)
+    // console.log(blockPosIndex1)
+    //
+    // blockPositions['picture'+blockPosIndex0].originalPosition = {x:0, y:0}
+    // this.animateBlockMove(blockPosIndex0, {x:0, y:0})
+    // currentBig = 'picture'+blockPosIndex0
+
+    for (var i=0; i<blockPositionsSetCount; i++){
+      blockPos = _.findIndex(this.itemOrder, item => item.order === sortedItemOrder[i].order)
+
+      console.log(blockPos)
+      if(i===0){
+        blockPositions['picture'+blockPos].originalPosition = {x:0, y:0}
+        this.animateBlockMove(blockPos, {x:0, y:0})
+        currentBig = 'picture'+blockPos
       } else {
-        let x = ((index-1) * smallBoxWidth) % (3 * smallBoxWidth)
-        let y = Math.floor((index-1) / 3) * smallBoxHeight + largeBoxHeight
-        this.state.blockPositions['picture'+index].originalPosition = {x, y}
-        this.state.blockPositions['picture'+index].currentPosition.setValue({x, y})
+        let x = ((i-1) % 3) * smallBoxWidth
+        let y = Math.floor((i-1) / 3) * smallBoxHeight + largeBoxHeight
+        console.log('@@@@@@' + i)
+
+
+
+        console.log('i: ' + i + 'x:   ' + x)
+        console.log(y)
+
+
+        blockPositions['picture'+blockPos].originalPosition = {x, y}
+        blockPositions['picture'+blockPos].currentPosition.setValue({x,y})
       }
-    })
 
-    this.setState({pictures, blockPositions, blockPositionsSetCount})
-    this.setState({currentBig})
-    console.log(sortedOrder)
-    console.log(this.state.pictures)
-    console.log(this.state.currentBig)
 
+    }
+
+
+    this.setState({pictures,blockPositions, blockPositionsSetCount, currentBig})
+    // console.log(this.state.blockPositions)
 
 
   }
@@ -515,7 +556,7 @@ export default class PhotoAlbum extends React.Component {
           onPress =     { ()=>this.handleShortPress(key) }
           onLongPress = { this.activateDrag('picture'+ key, key) }
           onPressOut =  { this.handlePressOut() }
-          picture =     { this.itemOrder[key] }
+          picture =     { elem }
           onLayout=     { this.saveBlockPositions('picture'+ key) }
           style =       { this._getBlockStyle(key, 'picture') }
           currentBig =   { this.state.currentBig }
