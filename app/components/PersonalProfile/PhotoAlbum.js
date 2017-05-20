@@ -12,6 +12,8 @@ import {
   Image,
 } from 'react-native';
 
+import _ from 'lodash'
+
 import Button from 'react-native-button'
 import images from '@assets/images';
 
@@ -24,9 +26,11 @@ var MARGIN = 12;
 var HEADER_SIZE = 64    // IOS
 var NUM_PER_ROW = 3
 
+const NULL_FN = () => {}
+
 var largeBoxHeight = (screenWidth/3)*2
 var largeBoxWidth = (screenWidth)
-var smallBoxHeight = screenWidth/3 - 20
+var smallBoxHeight = screenWidth/3 - 30
 var smallBoxWidth = screenWidth/NUM_PER_ROW
 
 export default class PhotoAlbum extends React.Component {
@@ -46,37 +50,29 @@ export default class PhotoAlbum extends React.Component {
     this.releasedDrag = true
 
     this.itemOrder = []
-
     this.state = {
       currentBig: 'picture0',
       gridLayout: null,
       pictures: [
           {
-            backgroundColor: 'skyblue',
             imagesrc: images.placeholder_mainalbum
           },
           {
-            backgroundColor: 'red',
             imagesrc: images.placeholder_album1
           },
           {
-            backgroundColor: 'orange',
             imagesrc: images.placeholder_album2
           },
           {
-            backgroundColor: 'yellow',
             imagesrc: images.placeholder_album3
           },
           {
-            backgroundColor: 'green',
             imagesrc: images.placeholder_album4
           },
           {
-            backgroundColor: 'blue',
             imagesrc: images.placeholder_album5
           },
           {
-            backgroundColor: 'purple',
             imagesrc: images.placeholder_album6
           }
       ],
@@ -92,7 +88,14 @@ export default class PhotoAlbum extends React.Component {
   }
 
   componentDidMount(){
-
+    console.log('save the original order of the pictures')
+    // var items = {};
+    this.itemOrder = this.state.pictures.map((elem, index) => {
+      let activeItemkey = 'picture'+index
+      return {imagesrc: elem.imagesrc, order: index}
+    })
+    // this.itemOrder = items;
+    console.log(this.itemOrder)
   }
 
   createTouchHandlers = () => {
@@ -269,10 +272,21 @@ export default class PhotoAlbum extends React.Component {
       }
 
       this.handleAnimation(closest);
+
+      // swap the positions
       let blockPositions = this.state.blockPositions
       this._getActiveBlockPositions().originalPosition = blockPositions[closest].originalPosition
       blockPositions[closest].originalPosition = originalPosition
       this.setState({ blockPositions })
+
+      // swap the order indexes
+
+      closestIndex = closest.replace('picture', '')
+      console.log(closestIndex)
+      console.log(this.itemOrder[parseInt(closestIndex)])
+      let tempOrderIndex = this.itemOrder[this.state.activeBlockIndex].order
+      this.itemOrder[this.state.activeBlockIndex].order = this.itemOrder[parseInt(closestIndex)].order
+      this.itemOrder[parseInt(closestIndex)].order = tempOrderIndex
 
     }
 
@@ -308,10 +322,19 @@ export default class PhotoAlbum extends React.Component {
     this.initialWasBig = false;
     this.props.changeScrollState(true);
     this.releasedDrag = true;
+
+    // use the lodash sorting function based on the attribute of the hash map
+    let itemOrder = _.sortBy(this.itemOrder, item => item.order)
+
+
+    this.props.onFinishedDrag(itemOrder)
+    // console.log(itemOrder)
+
   }
 
   handleShortPress(key){
-    console.log('handle short press')
+    //TODO: handle the short press for key which might be better off as a callback
+    this.props.onShortPress(key)
   }
   // Helper functions
   // Returns the active block Positions: current Position and original Position
@@ -340,7 +363,9 @@ export default class PhotoAlbum extends React.Component {
     }
   }
 
-  _blockPositionsSet = () => this.state.blockPositionsSetCount === 7
+  _blockPositionsSet = () => {
+    return this.state.blockPositionsSetCount === this.itemOrder.length
+  }
 
   _getBlockStyle = (index, name) =>{
 
@@ -414,11 +439,69 @@ export default class PhotoAlbum extends React.Component {
     }
   }
 
+  _fixItemOrderOnDeletion = (orderItem) => {
+    if(!orderItem) return false
+
+    orderItem.order--; // decrement the orderItem
+    this._fixItemOrderOnDeletion(_.find(this.itemOrder, item => item.order === orderItem.order + 2))
+
+
+    console.log('fixing item order')
+  }
+
   removeBlock = (key) => {
     console.log('removing' + key)
+
     let pictures = this.state.pictures
+    let blockPositions = this.state.blockPositions;
+    let blockPositionsSetCount = this.state.blockPositionsSetCount;
+    let currentBig = this.state.currentBig;
+
+    --blockPositionsSetCount; // decrement the number of block positions
+    // get the order
+    let order = this.itemOrder[key].order
+    this._fixItemOrderOnDeletion(this.itemOrder[key])
+    this.itemOrder.splice(key, 1)
     pictures.splice(key, 1)
-    this.setState({pictures})
+    // trim block positions
+    delete blockPositions['picture'+blockPositionsSetCount];
+
+    let sortedOrder = _.sortBy(this.itemOrder, item => item.order)
+    sortedOrder.forEach((item, index)=>{
+      pictures[index] = item
+    })
+
+    currentBig = 'picture0'
+    pictures.forEach((item, index) => {
+      if(index === 0){
+        this.state.blockPositions['picture'+index].originalPosition = {x:0, y:0}
+        this.state.blockPositions['picture'+index].currentPosition.setValue({x:0, y:0})
+      } else {
+        let x = ((index-1) * smallBoxWidth) % (3 * smallBoxWidth)
+        let y = Math.floor((index-1) / 3) * smallBoxHeight + largeBoxHeight
+        this.state.blockPositions['picture'+index].originalPosition = {x, y}
+        this.state.blockPositions['picture'+index].currentPosition.setValue({x, y})
+      }
+    })
+
+    this.setState({pictures, blockPositions, blockPositionsSetCount})
+    this.setState({currentBig})
+    console.log(sortedOrder)
+    console.log(this.state.pictures)
+    console.log(this.state.currentBig)
+
+
+
+  }
+
+  animateBlockMove = (blockIndex, position) => {
+    Animated.timing(
+      this._getBlock('picture'+blockIndex).currentPosition,
+      {
+        toValue: position,
+        duration: 100
+      }
+    ).start()
   }
 
   render(){
@@ -432,14 +515,14 @@ export default class PhotoAlbum extends React.Component {
           onPress =     { ()=>this.handleShortPress(key) }
           onLongPress = { this.activateDrag('picture'+ key, key) }
           onPressOut =  { this.handlePressOut() }
-          picture =     { elem }
+          picture =     { this.itemOrder[key] }
           onLayout=     { this.saveBlockPositions('picture'+ key) }
           style =       { this._getBlockStyle(key, 'picture') }
           currentBig =   { this.state.currentBig }
           identifier = {'picture' + key}
           releasedDrag = {this.releasedDrag}
           activeBlock  = {this.state.activeBlock}
-          removeBlock = { () => this.removeBlock(key)}
+          removeBlock  = { () => this.removeBlock(key)}
         />
       )
     })
@@ -449,7 +532,6 @@ export default class PhotoAlbum extends React.Component {
       pictures.splice(this.state.activeBlockIndex, 1);
       pictures.push(selectedItem);
     }
-
 
     return (
       <Animated.View
