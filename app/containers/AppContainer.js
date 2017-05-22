@@ -15,7 +15,7 @@ import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
 // Views
 import Home from './Home';
 import WelcomePages from '../components/WelcomePages';
-import Filter from './Filter';
+// import Filter from './Filter';
 
 import ScoopTabs from '../navigators/ScoopTabsNavigator';
 

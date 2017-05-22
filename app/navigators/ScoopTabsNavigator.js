@@ -4,13 +4,9 @@ import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 
 import {StyleSheet} from 'react-native'
 
-
 import HomeWithNavigationState from './HomeNavigator';
 import MyProfileWithNavigationState from './MyProfileNavigator';
-import {MyProfileNavigator} from './MyProfileNavigator';
-
-import { MessageNavStack } from '../config/MessageNavStack';
-
+import MessengerWithNavigationState from './MessengerNavigator';
 
 
 class HomeTabNavigator extends React.Component {
@@ -30,7 +26,7 @@ class MessageTabNavigator extends React.Component {
   };
   render() {
     return (
-      <MessageNavStack />
+      <MessengerWithNavigationState />
     );
   }
 }
