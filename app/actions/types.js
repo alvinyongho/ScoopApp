@@ -19,3 +19,8 @@ export const VIEW_PROFILE  = 'VIEW_PROFILE'
 export const CHANGE_FILTER = 'CHANGE_FILTER'
 export const RESET_FILTER  = 'RESET_FILTER'
 export const SAVE_FILTER   = 'SAVE_FILTER'
+
+
+// Messenger
+export const EDIT_CHATS = 'EDIT_CHATS'
+export const CANCEL_EDIT_CHATS = 'CANCEL_EDIT_CHATS'

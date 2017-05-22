@@ -88,14 +88,14 @@ export default class PhotoAlbum extends React.Component {
   }
 
   componentDidMount(){
-    console.log('save the original order of the pictures')
+    // console.log('save the original order of the pictures')
     // var items = {};
     this.itemOrder = this.state.pictures.map((elem, index) => {
       let activeItemkey = 'picture'+index
       return {imagesrc: elem.imagesrc, order: index}
     })
     // this.itemOrder = items;
-    console.log(this.itemOrder)
+    // console.log(this.itemOrder)
   }
 
   createTouchHandlers = () => {
@@ -282,8 +282,8 @@ export default class PhotoAlbum extends React.Component {
       // swap the order indexes
 
       closestIndex = closest.replace('picture', '')
-      console.log(closestIndex)
-      console.log(this.itemOrder[parseInt(closestIndex)])
+      // console.log(closestIndex)
+      // console.log(this.itemOrder[parseInt(closestIndex)])
       let tempOrderIndex = this.itemOrder[this.state.activeBlockIndex].order
       this.itemOrder[this.state.activeBlockIndex].order = this.itemOrder[parseInt(closestIndex)].order
       this.itemOrder[parseInt(closestIndex)].order = tempOrderIndex

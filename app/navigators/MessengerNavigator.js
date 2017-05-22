@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 // import EditScreen from '../components/MyProfileScreens/EditScreen'
-import Messenger from '../components/Messenger/Messenger'
+import Messenger from '../containers/Messenger/Messenger'
 
 export const MessengerNavigator = StackNavigator({
   Messenger: { screen: Messenger },
