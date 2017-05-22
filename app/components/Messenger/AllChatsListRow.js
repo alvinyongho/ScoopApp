@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { ActionCreators } from '../../actions';
+
 
 import {
   View,
@@ -14,14 +18,14 @@ import Button from 'react-native-button';
 
 const screenWidth = Dimensions.get('window').width;
 
-const pictureSize = 60;
-
 const styles = StyleSheet.create({
   container:{
     flex:1,
     padding:20,
     backgroundColor:'white',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: screenWidth + 60,
+    left: -60,
 
   },
   otherPersonName:{
@@ -47,31 +51,117 @@ const styles = StyleSheet.create({
 
 
 
-const AllChatsListRow = (props) => (
-  <View>
-  <Animated.View style={styles.container}>
-    <View style={{height: pictureSize, width: pictureSize, borderRadius:pictureSize/2, backgroundColor:'skyblue'}} />
+class AllChatsListRow extends React.Component {
 
-    <View style={styles.nameMessageContainer}>
-      <Text style={styles.otherPersonName}>
-        {props.rowData}
-      </Text>
+  constructor(props){
+    super(props)
 
-      <Text style={styles.mostRecentMessageText}>
-        Most recent message
-      </Text>
-    </View>
+    this.state = {
+      rightTransformAmount: new Animated.Value(0),
+    };
+  }
 
-    <Text style={styles.dateColumn}>
-      8:10 pm
-    </Text>
+  getRowStyle = () => {left: this.state.rightTransformAmount}
+
+  componentDidMount(){
+    console.log('component loaded!!!')
+    console.log(this.props.editMessages)
+    if(this.props.editMessages){
+      Animated.spring(
+        this.state.rightTransformAmount,
+        {
+          toValue: 40,
+          // duration: 300,
+        }
+      ).start();
+    }
 
 
-  </Animated.View>
-  <View style={{height:1, width: (screenWidth), backgroundColor:'#FAFAFA'}}/>
-  </View>
+  }
 
-);
+  componentWillReciveProps (props){
+    console.log("@@@@@");
+  }
+
+  componentWillUpdate(nextProps, nextState){
+    console.log('performing transform')
+    //
+    console.log(this.props.editMessages)
+    if(!this.props.editMessages){
+      Animated.spring(
+        this.state.rightTransformAmount,
+        {
+          toValue: 40,
+          // duration: 300,
+        }
+      ).start();
+    } else {
+      Animated.timing(
+        this.state.rightTransformAmount,
+        {
+          toValue: 0,
+          duration: 100,
+        }
+      ).start();
+    }
+
+  }
+
+  handleAnimation = () =>{
+    // console.log(this.props.editMessages)
+  }
 
 
-export default AllChatsListRow
+  render(){
+    return(
+      <Animated.View style={{...this.props.style, left: this.state.rightTransformAmount}}>
+        <View style={styles.container}>
+
+
+          <View style={{margin: 20, alignItems:'center', justifyContent: 'center'}}>
+            <View style={{height: 20,
+                width: 20,
+                borderRadius:20/2,
+                backgroundColor:'white',
+                borderColor: '#AFAFAF',
+                borderWidth: 1}} />
+          </View>
+
+          <View style={{ height: this.props.pictureSize,
+                         width: this.props.pictureSize,
+                         borderRadius:this.props.pictureSize/2,
+                         backgroundColor:'skyblue'}} />
+
+          <View style={styles.nameMessageContainer}>
+            <Text style={styles.otherPersonName}>
+              {this.props.rowData}
+            </Text>
+
+            <Text style={styles.mostRecentMessageText}>
+              Most recent message
+            </Text>
+          </View>
+
+          <Text style={styles.dateColumn}>
+            8:10 pm
+          </Text>
+
+        </View>
+        <View style={{height:1, left: -60, width: (screenWidth + 60), backgroundColor:'#FAFAFA'}}/>
+      </Animated.View>
+    );
+  }
+
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state){
+  return {
+    editMessages: state.editMessages
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllChatsListRow);
