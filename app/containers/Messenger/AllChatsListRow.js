@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
+import { NavigationActions } from 'react-navigation';
 
 import {
   View,
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
 
 
 class AllChatsListRow extends React.Component {
-
   constructor(props){
     super(props)
     this.state = {
@@ -120,7 +120,7 @@ class AllChatsListRow extends React.Component {
   );
 
   renderCellWithHighlight = () => (
-    <TouchableHighlight onPress={()=>console.log("test")}>
+    <TouchableHighlight onPress={()=>this.props.chatDetail()}>
       {this.renderCell()}
     </TouchableHighlight>
   );
@@ -129,15 +129,13 @@ class AllChatsListRow extends React.Component {
     if(!this.props.editMessages){
       return this.renderCellWithHighlight()
     }
-
     return this.renderCell()
   }
-
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(ActionCreators, dispatch);
-}
+const mapDispatchToProps = dispatch => ({
+  chatDetail: () => dispatch(NavigationActions.navigate({ routeName: 'ChatDetail' })),
+})
 
 function mapStateToProps(state){
   return {
@@ -145,4 +143,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllChatsListRow);
+export default connect(mapStateToProps,mapDispatchToProps)(AllChatsListRow);

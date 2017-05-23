@@ -4,9 +4,11 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 // import EditScreen from '../components/MyProfileScreens/EditScreen'
 import Messenger from '../containers/Messenger/Messenger'
+import ChatDetail from '../containers/Messenger/ChatDetail'
 
 export const MessengerNavigator = StackNavigator({
-  Messenger: { screen: Messenger },
+  Messenger:  {screen: Messenger },
+  ChatDetail: {screen: ChatDetail },
 });
 
 
