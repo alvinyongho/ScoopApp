@@ -372,7 +372,6 @@ export default class PhotoAlbum extends React.Component {
   }
 
   _getBlockStyle = (index, name) =>{
-
     // handle the case where it must be a small block
     if(name+index!==this.state.currentBig){
       return (

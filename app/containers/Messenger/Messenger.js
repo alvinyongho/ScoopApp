@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 
 import AllChatsListRow from './AllChatsListRow';
+
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 
 
-class Messenger extends React.Component {
+export default class Messenger extends React.Component {
   constructor(props){
-    super(props);
+    super(props)
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       editMode: false,
@@ -25,22 +26,7 @@ class Messenger extends React.Component {
         'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin'
       ])
     };
-
   }
-
-  toggleEditMode = () => {
-    console.log('toggling edit mode')
-  }
-
-
-  static navigationOptions = ({navigation, screenProps}) => ({
-    title: 'Scoop',
-    headerLeft: <EditButton />,
-    headerRight: <DeleteButton />,
-
-    headerStyle: {backgroundColor: '#54C9EC',},
-    headerTitleStyle: {color: 'white', alignSelf:'center'}
-  });
 
   render(){
     return (
@@ -51,16 +37,3 @@ class Messenger extends React.Component {
     )
   }
 }
-
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(ActionCreators, dispatch);
-}
-
-function mapStateToProps(state){
-  return {
-    editMessages: state.editMessages
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Messenger);
