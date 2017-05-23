@@ -11,6 +11,7 @@ import {
   StyleSheet,
   Animated,
   Dimensions,
+  TouchableHighlight
 } from 'react-native';
 
 import Button from 'react-native-button';
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   nameMessageContainer: {
     flex:1,
     flexDirection: 'column',
-    marginLeft: 15
+    marginLeft: 15,
   },
   mostRecentMessageText: {
     color:'#666666',
@@ -86,43 +87,50 @@ class AllChatsListRow extends React.Component {
     }
   }
 
-
-  render(){
-    return(
-      <Animated.View style={{...this.props.style, left: this.state.rightTransformAmount}}>
-        <View style={styles.container}>
-          <View style={{margin: 20, alignItems:'center', justifyContent: 'center'}}>
-            <View style={{height: 20,
-                width: 20,
-                borderRadius:20/2,
-                backgroundColor:'white',
-                borderColor: '#AFAFAF',
-                borderWidth: 1}} />
-          </View>
-
-          <View style={{ height: this.props.pictureSize,
-                         width: this.props.pictureSize,
-                         borderRadius:this.props.pictureSize/2,
-                         backgroundColor:'skyblue'}} />
-
-          <View style={styles.nameMessageContainer}>
-            <Text style={styles.otherPersonName}>
-              {this.props.rowData}
-            </Text>
-
-            <Text style={styles.mostRecentMessageText}>
-              Most recent message
-            </Text>
-          </View>
-
-          <Text style={styles.dateColumn}>
-            8:10 pm
+  renderCell = () => (
+    <Animated.View style={{...this.props.style, left: this.state.rightTransformAmount}}>
+      <View style={styles.container}>
+        <View style={{margin: 20, alignItems:'center', justifyContent: 'center'}}>
+          <View style={{height: 20,
+              width: 20,
+              borderRadius:20/2,
+              backgroundColor:'white',
+              borderColor: '#AFAFAF',
+              borderWidth: 1}} />
+        </View>
+        <View style={{ height: this.props.pictureSize,
+                       width: this.props.pictureSize,
+                       borderRadius:this.props.pictureSize/2,
+                       backgroundColor:'skyblue'}} />
+        <View style={styles.nameMessageContainer}>
+          <Text style={styles.otherPersonName}>
+            {this.props.rowData}
           </Text>
 
+          <Text style={styles.mostRecentMessageText}>
+            Most recent message
+          </Text>
         </View>
-        <View style={{height:1, left: -60, width: (screenWidth + 60), backgroundColor:'#FAFAFA'}}/>
-      </Animated.View>
-    );
+        <Text style={styles.dateColumn}>
+          8:10 pm
+        </Text>
+      </View>
+      <View style={{height:1, left: -60, width: (screenWidth + 60), backgroundColor:'#FAFAFA'}}/>
+    </Animated.View>
+  );
+
+  renderCellWithHighlight = () => (
+    <TouchableHighlight onPress={()=>console.log("test")}>
+      {this.renderCell()}
+    </TouchableHighlight>
+  );
+
+  render(){
+    if(!this.props.editMessages){
+      return this.renderCellWithHighlight()
+    }
+
+    return this.renderCell()
   }
 
 }
