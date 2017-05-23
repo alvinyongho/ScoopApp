@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
-
 import {
   View,
   Text,
@@ -26,23 +25,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: screenWidth + 60,
     left: -60,
-
   },
   otherPersonName:{
     fontSize:20,
   },
-
   nameMessageContainer: {
     flex:1,
     flexDirection: 'column',
     marginLeft: 15
   },
-
   mostRecentMessageText: {
     color:'#666666',
 
   },
-
   dateColumn: {
     color:'#999999',
 
@@ -50,12 +45,10 @@ const styles = StyleSheet.create({
 })
 
 
-
 class AllChatsListRow extends React.Component {
 
   constructor(props){
     super(props)
-
     this.state = {
       rightTransformAmount: new Animated.Value(0),
     };
@@ -64,35 +57,22 @@ class AllChatsListRow extends React.Component {
   getRowStyle = () => {left: this.state.rightTransformAmount}
 
   componentDidMount(){
-    console.log('component loaded!!!')
-    console.log(this.props.editMessages)
     if(this.props.editMessages){
       Animated.spring(
         this.state.rightTransformAmount,
         {
           toValue: 40,
-          // duration: 300,
         }
       ).start();
     }
-
-
-  }
-
-  componentWillReciveProps (props){
-    console.log("@@@@@");
   }
 
   componentWillUpdate(nextProps, nextState){
-    console.log('performing transform')
-    //
-    console.log(this.props.editMessages)
     if(!this.props.editMessages){
       Animated.spring(
         this.state.rightTransformAmount,
         {
           toValue: 40,
-          // duration: 300,
         }
       ).start();
     } else {
@@ -104,11 +84,6 @@ class AllChatsListRow extends React.Component {
         }
       ).start();
     }
-
-  }
-
-  handleAnimation = () =>{
-    // console.log(this.props.editMessages)
   }
 
 
@@ -116,8 +91,6 @@ class AllChatsListRow extends React.Component {
     return(
       <Animated.View style={{...this.props.style, left: this.state.rightTransformAmount}}>
         <View style={styles.container}>
-
-
           <View style={{margin: 20, alignItems:'center', justifyContent: 'center'}}>
             <View style={{height: 20,
                 width: 20,

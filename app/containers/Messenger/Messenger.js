@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native';
 
-import AllChatsListRow from '../../components/Messenger/AllChatsListRow';
+import AllChatsListRow from './AllChatsListRow';
 import EditButton from './EditButton';
 import DeleteButton from './DeleteButton';
 
