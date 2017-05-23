@@ -6,6 +6,8 @@ const initialNavState = MessengerNavigator.router.getStateForAction(
 
 export function messengerNav(state = initialNavState, action){
   switch (action.type) {
+    case 'ChatDetail':
+      return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ChatDetail' }), state);
     default:
       return MessengerNavigator.router.getStateForAction(action, state);
   }

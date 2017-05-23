@@ -10,8 +10,9 @@ import {
   Image,
 } from 'react-native';
 
-import AllChatsListRow from '../../components/Messenger/AllChatsListRow';
+import AllChatsListRow from './AllChatsListRow';
 import EditButton from './EditButton';
+import DeleteButton from './DeleteButton';
 
 
 class Messenger extends React.Component {
@@ -34,12 +35,8 @@ class Messenger extends React.Component {
 
   static navigationOptions = ({navigation, screenProps}) => ({
     title: 'Scoop',
-    // headerRight: <Button onPress={() => navigation.navigate('Filter')}>
-    //                      <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
-    //              </Button>,
-
-
     headerLeft: <EditButton />,
+    headerRight: <DeleteButton />,
 
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color: 'white', alignSelf:'center'}
@@ -49,7 +46,7 @@ class Messenger extends React.Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(rowData) => <AllChatsListRow editMessagesStatus={this.props.editMessages} rowData={rowData} />}
+        renderRow={(rowData) => <AllChatsListRow pictureSize={60} rowData={rowData} />}
       />
     )
   }
