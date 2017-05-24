@@ -40,7 +40,6 @@ export default class ProfileSlider extends Component {
 
         <View style={{marginLeft: 20, height:1, backgroundColor:'#E6E6E6'}} />
 
-
         <View style={{flexDirection: 'row', margin: 20, marginTop: 30, marginBottom: 20}}>
           <Text style={[styles.sliderValueText, styles.sliderLeftValueText]}>MEN</Text>
           <Text style={[styles.sliderValueText, styles.sliderMidValueText]}>BOTH</Text>
