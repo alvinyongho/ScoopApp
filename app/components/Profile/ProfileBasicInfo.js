@@ -38,7 +38,7 @@ var styles = StyleSheet.create({
   },
   subheader: {
     fontFamily: 'Avenir-Light',
-    fontSize: 17,
+    fontSize: 18,
     marginLeft: 8,
     color: 'gray'
   }
