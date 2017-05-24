@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 
 import {StyleSheet} from 'react-native'
 
@@ -21,9 +23,15 @@ class HomeTabNavigator extends React.Component {
 }
 
 class MessageTabNavigator extends React.Component {
-  static navigationOptions = {
+  componentWillMount(){
+    this.props.navigation.setParams({hideTabBar: false})
+  }
+
+  static navigationOptions = ({ navigation, screenProps }) => ({
     tabBarLabel: 'Message',
-  };
+    tabBarVisible: !navigation.state.params.hideTabBar
+  })
+
   render() {
     return (
       <MessengerWithNavigationState />
