@@ -56,20 +56,11 @@ class ChatDetailScreen extends Component{
   }
 }
 
-// TODO: Remove this reference:
-// <View>
-//   <Button onPress={() => this.props.filter()}>
-//     <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
-//   </Button>
-// </View>
-
 
 const mapStateToProps = state => ({
-
 });
 
 const mapDispatchToProps = dispatch => ({
-  // filter: () => dispatch(NavigationActions.navigate({ routeName: 'Filter' })),
 });
 
 
