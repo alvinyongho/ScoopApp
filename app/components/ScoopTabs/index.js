@@ -14,7 +14,6 @@ import FeedList from '../FeedList/index.js'
 
 
 
-
 export const ScoopTabsNavigator = TabNavigator({
   Home: {
     screen: FeedList,

@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, TabNavigator } from 'react-navigation';
+import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../actions';
 
 import {StyleSheet} from 'react-native'
 
@@ -21,9 +23,18 @@ class HomeTabNavigator extends React.Component {
 }
 
 class MessageTabNavigator extends React.Component {
-  static navigationOptions = {
+  componentDidMount() {
+
+  }
+  componentWillMount(){
+    this.props.navigation.setParams({hideTabBar: false})
+  }
+
+  static navigationOptions = ({ navigation, screenProps }) => {
+    return ({
     tabBarLabel: 'Message',
-  };
+    tabBarVisible: !navigation.state.params.hideTabBar
+  });}
   render() {
     return (
       <MessengerWithNavigationState />
@@ -81,5 +92,12 @@ ScoopTabsWithNavigationState.propTypes = {
 const mapStateToProps = state => ({
   tabNav: state.tabNav,
 })
+
+// Create a map dispatch to props and get the prop value
+// update MessageTabNavigator by setting the navigation param
+// function mapDispatchToProps(dispatch) {
+//     return Object.assign({dispatch: dispatch}, bindActionCreators(ActionCreators, dispatch));
+// }
+
 
 export default connect(mapStateToProps)(ScoopTabsWithNavigationState);
