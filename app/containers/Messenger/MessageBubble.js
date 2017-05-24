@@ -17,6 +17,7 @@ const screenHeight = Dimensions.get('window').height;
 
 const screen_padding = 20
 const max_margin_to_screen = 50
+const fontSizeValue = 16
 
 
 export default class MessageBubble extends Component{
@@ -46,10 +47,12 @@ export default class MessageBubble extends Component{
             backgroundColor: 'skyblue',
             borderRadius: 10,
             padding: 5,
+            paddingLeft: 8,
+            paddingRight: 8,
           }}>
           <Text style={{
                     color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:18}}> This is a very long line lol with a lot of additional other text that will extend to the next line maybe </Text>
+                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> This is a very long line lol with a lot of additional other text that will extend to the next line maybe </Text>
         </View>
       </View>
 
@@ -61,10 +64,12 @@ export default class MessageBubble extends Component{
             backgroundColor: 'skyblue',
             borderRadius: 10,
             padding: 5,
+            paddingLeft: 8,
+            paddingRight: 8,
           }}>
           <Text style={{
                     color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:18}}> LOL </Text>
+                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> LOL </Text>
 
         </View>
       </View>
@@ -87,10 +92,12 @@ export default class MessageBubble extends Component{
             backgroundColor: 'pink',
             borderRadius: 10,
             padding: 5,
+            paddingLeft: 8,
+            paddingRight: 8,
           }}>
           <Text style={{
                     color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:18}}> This is the reply </Text>
+                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> This is the reply </Text>
         </View>
       </View>
 
@@ -102,10 +109,12 @@ export default class MessageBubble extends Component{
             backgroundColor: 'pink',
             borderRadius: 10,
             padding: 5,
+            paddingLeft: 8,
+            paddingRight: 8,
           }}>
           <Text style={{
                     color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:18}}> Ayyyy </Text>
+                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> Ayyyy </Text>
 
         </View>
       </View>
