@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Button,
   Navigator,
-  Dimensions, 
+  Dimensions,
   TextInput,
   Keyboard
 } from 'react-native';
@@ -21,27 +21,25 @@ const screenHeight = Dimensions.get('window').height;
 
 export default class ChatDetail extends Component{
   componentWillMount () {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',
-      this._keyboardDidShow)
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
+    // this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',
+    //   this._keyboardDidShow)
+    // this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
 
   }
-
-
-  _keyboardDidHide(){
-    alert('Keyboard shown')
-  }
-
-  _keyboardDidShow(){
-    alert('Keyboard hidden')
-  }
+  //
+  // _keyboardDidHide(){
+  //   alert('Keyboard shown')
+  // }
+  //
+  // _keyboardDidShow(){
+  //   alert('Keyboard hidden')
+  // }
 
   render(){
     return(
-      
+
 
       <View style={{flex:1}}>
-        <View style={{flex:.9, backgroundColor: 'green'}}>
 
           <ScrollView style={styles.container}>
             <View style={styles.datetimeContainer}>
@@ -49,18 +47,14 @@ export default class ChatDetail extends Component{
             </View>
 
 
-            <MessageBubble text={"Hello World"} isSelf={true}/>
-            <MessageBubble text={"Hello There"} isSelf={false}/>
-            <MessageBubble text={"How're you?"} isSelf={true}/>
+
+
+
+            <MessageBubble />
+
+
 
           </ScrollView>
-        </View>
-        <View style={{flex:.1, backgroundColor: 'skyblue', borderColor: 'gray'}}>
-          <TextInput 
-            onSubmitEditing={Keyboard.dismiss} 
-            style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          /> 
-        </View>
 
       </View>
 
@@ -75,13 +69,11 @@ var styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   datetimeContainer: {
-    height: 30, 
-    marginTop: 30,
-    marginBottom: 20
-  }, 
+    height: 30,
+    marginTop: 20,
+  },
   datetimeText: {
-    textAlign:'center', 
-    color: '#666666'
+    textAlign:'center',
+    color: '#888888'
   }
 })
-
