@@ -41,6 +41,9 @@ export default class ProfileDetail extends Component {
           <SectionTitle title={'LOOKING FOR'}/>
           <ProfileSlider />
 
+          <SectionTitle title={'CONNECTED APPS'}/>
+
+          <SectionTitle title={'ABOUT ME'}/>
 
 
 
