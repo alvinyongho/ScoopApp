@@ -15,7 +15,7 @@ import {
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const screen_padding = 10
+const screen_padding = 20
 const max_margin_to_screen = 50
 
 
