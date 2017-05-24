@@ -1,5 +1,9 @@
 import React, { PropTypes, Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight } from 'react-native';
 
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -23,6 +27,25 @@ const styles = StyleSheet.create({
 });
 
 
+class AdditionalItemsButton extends Component{
+  render(){
+    return(
+      <Button style={{flex:1}}>
+        <View style={{height: 30, justifyContent: 'center'}}>
+
+            <View style={{marginRight: 10, flexDirection: 'row', justifyContent: 'center'}}>
+                 <View style={{backgroundColor:'white', height: 6, width: 6, borderRadius: 6/2}}/>
+                 <View style={{backgroundColor:'white', height: 6, width: 6, borderRadius: 6/2, marginLeft: 4}}/>
+                 <View style={{backgroundColor:'white', height: 6, width: 6, borderRadius: 6/2, marginLeft: 4}}/>
+
+            </View>
+         </View>
+       </Button>
+    );
+  }
+}
+
+
 class ChatDetailScreen extends Component{
   static navigationOptions = ({navigation}) => ({
     title: 'Scoop',
@@ -30,15 +53,8 @@ class ChatDetailScreen extends Component{
                          <Text style={{marginLeft: 15, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Back</Text>
                  </Button>,
 
-    headerRight: <Button onPress={() => console.log('report and ignore button')}>
+    headerRight: <AdditionalItemsButton />,
 
-                    <View style={{marginRight: 10, flexDirection: 'row', justifyContent: 'center'}}>
-                         <View style={{backgroundColor:'white', height: 6, width: 6, borderRadius: 6/2}}/>
-                         <View style={{backgroundColor:'white', height: 6, width: 6, borderRadius: 6/2, marginLeft: 4}}/>
-                         <View style={{backgroundColor:'white', height: 6, width: 6, borderRadius: 6/2, marginLeft: 4}}/>
-
-                    </View>
-                 </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color: 'white', alignSelf:'center'}
   });
