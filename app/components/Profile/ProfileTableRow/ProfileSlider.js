@@ -95,30 +95,29 @@ class Slider extends Component {
     if(!this.finishedLayoutSetup){
     console.log('getting the position')
 
-    if(this.props.initialValue){
-      console.log(this.state.maxWidth)
-      console.log(this.state.maxWidth/3)
+
+      let thisPosition = {
+        x: nativeEvent.layout.x,
+        y: nativeEvent.layout.y,
+      }
+
+      let thumbPosition = this.state.thumbPosition
+      thumbPosition = new Animated.ValueXY(thisPosition)
+
+      if(this.props.initialValue){
+        console.log(this.state.maxWidth)
+        var step_length = (this.state.maxWidth/2)-THUMB_SIZE/2
+        step_length = step_length*(this.props.initialValue)
+        thumbPosition.x.setValue(step_length)
+      }
 
 
+      this.setState({thumbPosition})
+      this.prevX = thumbPosition.x._value
     }
-
-
-    let thisPosition = {
-      x: nativeEvent.layout.x,
-      y: nativeEvent.layout.y,
-    }
-
-    let thumbPosition = this.state.thumbPosition
-    thumbPosition = new Animated.ValueXY(thisPosition)
-    this.setState({thumbPosition})
-    this.prevX = thumbPosition.x._value
-    }
-
-    // console.log(thumbPosition)
 
 
     this.finishedLayoutSetup = true
-    // console.log(this.state.thumbPosition)
   }
 
   setMaxWidth = (event) => {
@@ -137,10 +136,6 @@ class Slider extends Component {
 
 
   getThumbStyle() {
-    console.log('getting thumb style')
-
-
-    console.log()
     if(this.state.thumbPosition && this.finishedLayoutSetup){
       return {
         height: THUMB_SIZE,
@@ -203,7 +198,7 @@ export default class ProfileSlider extends Component {
         <View style={{marginLeft: 20, height:1, backgroundColor:'#E6E6E6'}} />
 
         <View style={{margin:20, marginTop:30}}>
-          <Slider initialValue={2} disabled={true} changeScrollState={this.props.changeScrollState} />
+          <Slider initialValue={0} disabled={true} changeScrollState={this.props.changeScrollState} />
           <View style={{flexDirection: 'row', marginTop: 30}}>
             <Text style={[styles.sliderValueText, styles.sliderLeftValueText]}>MEN</Text>
             <Text style={[styles.sliderValueText, styles.sliderMidValueText]}>BOTH</Text>
