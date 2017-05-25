@@ -14,15 +14,10 @@ THUMB_SIZE = 27
 THUMB_RADIUS = 4
 
 class Slider extends Component {
-
   constructor(props){
     super(props)
-
     this.finishedLayoutSetup = false;
-
     this.prevX = null,
-
-
     this.state = ({
       thumbPosition: null,
       maxWidth: null,
@@ -32,60 +27,31 @@ class Slider extends Component {
 
   componentWillMount() {
     this._panResponder = PanResponder.create({
-      // Ask to be the responder:
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
       onPanResponderGrant: (evt, gestureState) => {
-        // The guesture has started. Show visual feedback so the user knows
-        // what is happening!
-
-        // gestureState.d{x,y} will be set to zero now
-        console.log(this.state.thumbPosition)
         this.props.changeScrollState(false);
-
       },
       onPanResponderMove: (evt, gestureState) => {
-        // The most recent move distance is gestureState.move{X,Y}
-
-        // The accumulated gesture distance since becoming responder is
-        // gestureState.d{x,y}
         if(!this.props.disabled){
-
         const {moveX, dx} = gestureState
-
         thumbPosition = this.state.thumbPosition
         newX = dx+this.prevX
         if (newX < 0) newX = 0
         if (newX > this.state.maxWidth-THUMB_SIZE) newX = this.state.maxWidth-THUMB_SIZE
-
         thumbPosition.x.setValue(newX)
-
-        console.log(thumbPosition.x._value)
         this.setState({thumbPosition})
-
         }
-
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (evt, gestureState) => {
-        // The user has released all touches while this view is the
-        // responder. This typically means a gesture has succeeded
-
         this.prevX = this.state.thumbPosition.x._value
         this.props.changeScrollState(true);
-
-
       },
-      onPanResponderTerminate: (evt, gestureState) => {
-        // Another component has become the responder, so this gesture
-        // should be cancelled
-      },
+      onPanResponderTerminate: (evt, gestureState) => {},
       onShouldBlockNativeResponder: (evt, gestureState) => {
-        // Returns whether this component should block native components from becoming the JS
-        // responder. Returns true by default. Is currently only supported on android.
         return true;
       },
     });
@@ -93,9 +59,6 @@ class Slider extends Component {
 
   getPosition = ({nativeEvent}) => {
     if(!this.finishedLayoutSetup){
-    console.log('getting the position')
-
-
       let thisPosition = {
         x: nativeEvent.layout.x,
         y: nativeEvent.layout.y,
@@ -105,25 +68,19 @@ class Slider extends Component {
       thumbPosition = new Animated.ValueXY(thisPosition)
 
       if(this.props.initialValue && this.props.numSteps){
-        console.log(this.state.maxWidth)
         var step_length = (this.state.maxWidth/this.props.numSteps)-THUMB_SIZE/2
         step_length = step_length*(this.props.initialValue)
         thumbPosition.x.setValue(step_length)
       }
 
-
       this.setState({thumbPosition})
       this.prevX = thumbPosition.x._value
     }
-
-
     this.finishedLayoutSetup = true
   }
 
   setMaxWidth = (event) => {
     var {x, y, width} = event.nativeEvent.layout
-    // console.log(width)
-
     this.setState({maxWidth: width})
     this.setStepValue(width)
   }
