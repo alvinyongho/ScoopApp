@@ -15,21 +15,36 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+import Swipeout from 'react-native-swipeout'
+
 import Button from 'react-native-button';
+
+
+var swipeoutBtns = [
+  {
+    component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
+    backgroundColor: 'red',
+  }
+]
+
+const SHIFT_AMOUNT = 50
+
 
 const screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
+  wrapper: {
+  },
   container:{
     flex:1,
-    padding:20,
+    padding:10,
     backgroundColor:'white',
     flexDirection: 'row',
-    width: screenWidth + 60,
-    left: -60,
+    width: screenWidth + SHIFT_AMOUNT,
+    left: -SHIFT_AMOUNT,
   },
   otherPersonName:{
-    fontSize:20,
+    fontSize:16,
   },
   nameMessageContainer: {
     flex:1,
@@ -90,7 +105,7 @@ class AllChatsListRow extends React.Component {
   renderCell = () => (
     <Animated.View style={{...this.props.style, left: this.state.rightTransformAmount}}>
       <View style={styles.container}>
-        <View style={{margin: 20, alignItems:'center', justifyContent: 'center'}}>
+        <View style={{margin: 15, alignItems:'center', justifyContent: 'center'}}>
           <View style={{height: 20,
               width: 20,
               borderRadius:20/2,
@@ -115,14 +130,16 @@ class AllChatsListRow extends React.Component {
           8:10 pm
         </Text>
       </View>
-      <View style={{height:1, left: -60, width: (screenWidth + 60), backgroundColor:'#FAFAFA'}}/>
+      <View style={{height:1, left: -SHIFT_AMOUNT, width: (screenWidth + SHIFT_AMOUNT), backgroundColor:'#FAFAFA'}}/>
     </Animated.View>
   );
 
   renderCellWithHighlight = () => (
+    <Swipeout right={swipeoutBtns} backgroundColor={'red'}>
     <TouchableHighlight onPress={()=>this.props.chatDetail()}>
       {this.renderCell()}
     </TouchableHighlight>
+    </Swipeout>
   );
 
   render(){

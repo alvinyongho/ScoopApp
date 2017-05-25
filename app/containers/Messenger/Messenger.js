@@ -32,7 +32,7 @@ export default class Messenger extends React.Component {
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(rowData) => <AllChatsListRow pictureSize={60} rowData={rowData} />}
+        renderRow={(rowData) => <AllChatsListRow pictureSize={50} rowData={rowData} />}
       />
     )
   }

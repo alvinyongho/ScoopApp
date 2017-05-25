@@ -31,6 +31,7 @@ export class ProfileScreen extends React.Component {
                 </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color:'white', alignSelf: 'center'},
+    gesturesEnabled: false
   });
 
   constructor(props) {

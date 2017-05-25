@@ -35,22 +35,32 @@ export default class ChatDetail extends Component{
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
 
   }
+
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
   //
   _keyboardDidHide = (event) => {
     // alert('Keyboard shown')
-    Animated.timing(this.keyboardHeight,{
-      toValue: 0,
-      duration: event.duration,
-    }).start();
+    this.keyboardHeight.setValue(0)
+    //
+    // Animated.timing(this.keyboardHeight,{
+    //   toValue: 0,
+    //   duration: event.duration,
+    // }).start();
 
   }
 
   _keyboardDidShow = (event) => {
     // alert('Keyboard hidden')
-    Animated.timing(this.keyboardHeight,{
-      toValue: event.endCoordinates.height,
-      duration: event.duration,
-    }).start();
+
+    this.keyboardHeight.setValue(event.endCoordinates.height)
+    //
+    // Animated.timing(this.keyboardHeight,{
+    //   toValue: event.endCoordinates.height,
+    //   duration: event.duration,
+    // }).start();
   };
 
   handleSend = () => {
