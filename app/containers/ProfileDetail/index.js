@@ -19,13 +19,19 @@ import ProfileSlider from '../../components/Profile/ProfileTableRow/ProfileSlide
 export default class ProfileDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isScrollEnabled: true
+    };
+  }
+
+  changeScrollState = (isEnabled) => {
+    this.setState({isScrollEnabled: isEnabled})
   }
 
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
-        <ScrollView>
+        <ScrollView scrollEnabled={this.state.isScrollEnabled}>
           <ProfileAlbum />
           <ProfileBasicInfo />
           <SendMessageButton />
@@ -39,7 +45,7 @@ export default class ProfileDetail extends Component {
           </View>
 
           <SectionTitle title={'LOOKING FOR'}/>
-          <ProfileSlider />
+          <ProfileSlider changeScrollState={this.changeScrollState} />
 
           <SectionTitle title={'CONNECTED APPS'}/>
 
