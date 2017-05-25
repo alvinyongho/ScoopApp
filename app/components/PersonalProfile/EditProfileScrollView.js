@@ -73,7 +73,7 @@ export default class EditProfileScrollView extends React.Component {
         <ProfileSlider changeScrollState={this.changeScrollState} />
 
         <SectionTitle title={'CONNECTED APPS'}/>
-        <ConnectedAppsRow />
+        <ConnectedAppsRow changeScrollState={this.changeScrollState} />
 
 
         <SectionTitle title={'ABOUT ME'}/>

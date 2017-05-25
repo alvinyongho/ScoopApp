@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 
 
-THUMB_SIZE = 27
+THUMB_SIZE = 20
 THUMB_RADIUS = 4
 
-class Slider extends Component {
+export class Slider extends Component {
   constructor(props){
     super(props)
     this.finishedLayoutSetup = false;
@@ -116,7 +116,7 @@ class Slider extends Component {
   render(){
     return(
       <View onLayout={this.setMaxWidth}
-        style={{height: 5, borderRadius:5/2, backgroundColor: 'purple', justifyContent: 'center'}}>
+        style={{height: 3, borderRadius:3/2, backgroundColor: 'purple', justifyContent: 'center'}}>
         {this.state.maxWidth &&
         <Animated.View onLayout={this.getPosition} {...this._panResponder.panHandlers} style={[this.getThumbStyle(), {justifyContent: 'center', alignItems: 'center'}]}>
           <View style={{height:THUMB_SIZE-THUMB_RADIUS, width: THUMB_SIZE-THUMB_RADIUS, borderRadius: (THUMB_SIZE-THUMB_RADIUS)/2, backgroundColor:'#54C9EC'}}/>
