@@ -111,11 +111,7 @@ class Slider extends Component {
       borderRadius: THUMB_SIZE/2,
       backgroundColor: 'white',
     }
-
-
   }
-
-
 
   render(){
     return(

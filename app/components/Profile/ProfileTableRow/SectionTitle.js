@@ -17,7 +17,7 @@ export default class SectionTitle extends Component {
   render(){
     return (
       <View style={{paddingTop: 30, paddingBottom: 15, backgroundColor: '#E6E6E6', paddingLeft: 10}}>
-        <Text style={{fontSize:16, fontFamily:'Avenir-Light', color: '#666666'}}> {this.props.title} </Text>
+        <Text style={{fontSize:14, fontFamily:'Avenir-Light', color: '#666666'}}> {this.props.title} </Text>
       </View>
     );
   }
