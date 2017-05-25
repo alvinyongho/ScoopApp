@@ -8,6 +8,7 @@ import {
   Text,
   ScrollView,
   Dimensions,
+  TouchableHighlight,
 } from 'react-native';
 
 import EditPhotoAlbum from './EditPhotoAlbum'
@@ -16,11 +17,16 @@ import PhotoAlbum from './PhotoAlbum'
 
 import RowDivider from '../Profile/ProfileTableRow/RowDivider'
 import ProfileSlider from '../Profile/ProfileTableRow/ProfileSlider'
+
+import ProfileDetailAccordian from '../Profile/ProfileTableRow/ProfileDetailAccordian'
+
+
 import BasicRow from '../Profile/ProfileTableRow/BasicRow'
 import ViewProfileRow from '../Profile/ProfileTableRow/ViewProfileRow'
 import SectionTitle from '../Profile/ProfileTableRow/SectionTitle'
 import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
 import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
+
 
 export default class EditProfileScrollView extends React.Component {
   constructor(props){
@@ -52,22 +58,14 @@ export default class EditProfileScrollView extends React.Component {
 
         <RowDivider />
 
+
         <ViewProfileRow />
+
+
         <SectionTitle title="PERSONAL DETAILS" />
         <ProfileBasicInfo />
 
-        <View style={{paddingLeft:15}}>
-          <RowDivider />
-          <BasicRow rowItemName={'School Name'} rowItemValue={'University of California, San...'}/>
-          <RowDivider />
-          <BasicRow rowItemName={'Job Title'} />
-          <RowDivider />
-          <BasicRow rowItemName={'Height'} rowItemValue={'Ask Me!'}/>
-          <RowDivider />
-          <BasicRow rowItemName={'Offspring'} rowItemValue={'Ask Me!'}/>
-          <RowDivider />
-          <BasicRow rowItemName={'Body Type'} rowItemValue={'Ask Me!'}/>
-        </View>
+        <ProfileDetailAccordian />
 
         <SectionTitle title="LOOKING FOR" />
         <ProfileSlider changeScrollState={this.changeScrollState} />

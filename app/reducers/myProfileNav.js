@@ -6,6 +6,8 @@ const initialNavState = MyProfileNavigator.router.getStateForAction(
 
 export function myProfileNav(state = initialNavState, action){
   switch (action.type) {
+    case 'PreviewProfile':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'PreviewProfile' }), state);
     default:
       return MyProfileNavigator.router.getStateForAction(action, state);
   }

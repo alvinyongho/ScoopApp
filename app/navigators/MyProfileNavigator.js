@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import EditScreen from '../components/MyProfileScreens/EditScreen'
+import ProfileScreen from '../components/HomeScreens/ProfileScreen'
 
 
 export const MyProfileNavigator = StackNavigator({
   Edit: { screen: EditScreen },
+  PreviewProfile: { screen: ProfileScreen }
 });
 
 
