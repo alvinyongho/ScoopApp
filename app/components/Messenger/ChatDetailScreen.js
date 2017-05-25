@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 
 const CANCEL_INDEX = 2
 const DESTRUCTIVE_INDEX = 2
-const options = [ 'Report', 'Ignore', 'Cancel' ]
+const options = [ 'Block', 'Report', 'Cancel' ]
 
 class AdditionalItemsButton extends Component{
   constructor(props){
@@ -68,7 +68,6 @@ class AdditionalItemsButton extends Component{
           ref={o => this.ActionSheet = o}
           options={options}
           cancelButtonIndex={CANCEL_INDEX}
-          destructiveButtonIndex={DESTRUCTIVE_INDEX}
           onPress={this.handlePress}
         />
        </Button>
