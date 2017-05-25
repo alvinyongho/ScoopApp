@@ -17,7 +17,19 @@ const SECTIONS = [
     rowItemValue: 'University of California, San...',
   },
   {
+    rowItemName: 'Job Title',
+    rowItemValue: 'Ask Me!',
+  },
+  {
     rowItemName: 'Height',
+    rowItemValue: 'Ask Me!',
+  },
+  {
+    rowItemName: 'Offspring',
+    rowItemValue: 'Ask Me!',
+  },
+  {
+    rowItemName: 'Body Type',
     rowItemValue: 'Ask Me!',
   }
 ];
@@ -30,12 +42,10 @@ export default class ProfileDetailAccordian extends Component {
 
   _renderHeader(section) {
     return (
-      <View>
+      <View style={{paddingLeft: 15, backgroundColor:'white'}}>
         <BasicRow rowItemName={section.rowItemName} rowItemValue={section.rowItemValue}/>
         <RowDivider />
       </View>
-
-
     );
   }
 
@@ -59,16 +69,11 @@ export default class ProfileDetailAccordian extends Component {
 
   render(){
     return (
-      <View style={{paddingLeft:15}}>
-
-
-
         <Accordion
           sections={SECTIONS}
           renderHeader={this._renderHeader}
           renderContent={this._renderContent}
         />
-      </View>
 
     );
   }
