@@ -44,10 +44,10 @@ export default class EditProfileScrollView extends React.Component {
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     return (
-      <ScrollView scrollEnabled={this.state.isScrollEnabled} >
+      <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{backgroundColor: 'white'}}>
         {/* <EditPhotoAlbum /> */}
 
-        <View>
+        <View style={{backgroundColor: 'white'}}>
         <PhotoAlbum changeScrollState={this.changeScrollState}
                             onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
                             onShortPress={(key)=>console.log("handleShortPress for key: " + key)}
