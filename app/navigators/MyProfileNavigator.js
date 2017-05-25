@@ -4,11 +4,13 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import EditScreen from '../components/MyProfileScreens/EditScreen'
 import ProfileScreen from '../components/HomeScreens/ProfileScreen'
+import SettingsScreen from '../components/SettingsScreens/SettingsScreen'
 
 
 export const MyProfileNavigator = StackNavigator({
-  Edit: { screen: EditScreen },
-  PreviewProfile: { screen: ProfileScreen }
+  Edit:           { screen: EditScreen },
+  PreviewProfile: { screen: ProfileScreen },
+  Settings:       { screen: SettingsScreen},
 });
 
 

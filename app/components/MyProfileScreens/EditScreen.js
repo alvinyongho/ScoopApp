@@ -18,9 +18,9 @@ export class EditScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
     title: 'Scoop',
     // TODO: Add Settings page
-    // headerRight: <Button onPress={() => navigation.navigate('Settings')}>
-    //                      <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
-    //              </Button>,
+    headerRight: <Button onPress={() => navigation.navigate('Settings')}>
+                         <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Settings</Text>
+                 </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color: 'white', alignSelf:'center'}
   });
@@ -38,7 +38,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  filter: () => dispatch(NavigationActions.navigate({ routeName: 'Edit' })),
 });
 
 
