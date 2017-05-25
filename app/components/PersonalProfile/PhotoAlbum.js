@@ -588,6 +588,9 @@ export default class PhotoAlbum extends React.Component {
 }
 
 DELETE_BUTTON_WIDTH = 30
+BORDER_COLOR ='#E6E6E6'
+BORDER_RADIUS = 6
+
 class PictureBlock extends Component {
   constructor(props){
     super(props)
@@ -606,13 +609,87 @@ class PictureBlock extends Component {
                       width: DELETE_BUTTON_WIDTH,
                       backgroundColor: 'white',
                       borderWidth:1,
-                      borderColor: '#E6E6E6',
+                      borderColor: BORDER_COLOR,
                       borderRadius:DELETE_BUTTON_WIDTH/2}}>
           </View>
         </Button>
       )
     }
   }
+
+
+  borderView = () => {
+    // handle all blocks that are not big
+    // if the imageview isnt the current big image the size constraints are the small box size
+    if(this.props.identifier === this.props.activeBlock && this.props.activeBlock !== this.props.currentBig){
+      return (
+          <View source={this.props.picture.imagesrc}
+                style={{position: 'absolute', flex: 1,
+                marginTop: 4,
+                marginLeft: 4,
+                marginRight: 4,
+                  width:smallBoxWidth-8,
+                  borderColor: BORDER_COLOR,
+                  borderWidth: 1,
+                  borderRadius:BORDER_RADIUS,
+                  height: smallBoxHeight-3}}
+          />
+      );
+    }
+
+    if(this.props.identifier !== this.props.currentBig)
+      return (
+          <View source={this.props.picture.imagesrc}
+                style={{position: 'absolute', flex: 1,
+                  marginTop: 9,
+                  marginLeft: 9,
+                  marginRight: 9,
+                  width:smallBoxWidth-18,
+                  borderColor: BORDER_COLOR,
+                  borderWidth: 1,
+                  borderRadius:BORDER_RADIUS,
+                  height: smallBoxHeight-8}}
+          />
+      );
+
+    // handle the (possibly) medium block
+    // dragging the small block (POSSIBLY) to the big block
+    if(!this.props.releasedDrag && this.props.activeBlock !== this.props.currentBig){
+      return (
+          <View source={this.props.picture.imagesrc}
+                style={{position: 'absolute', flex: 1,
+                  width:largeBoxWidth-58,
+                  height: largeBoxHeight-38,
+                  margin:29, marginBottom: 9,
+                  borderColor: BORDER_COLOR,
+                  borderWidth: 1,
+                  borderRadius:BORDER_RADIUS,}} />);
+    }
+    // handle big block
+    // dragging the big block (POSSIBLY) to the small block
+    else if(!this.props.releasedDrag && this.props.activeBlock == this.props.currentBig){
+      return (
+        <View source={this.props.picture.imagesrc}
+                style={{position: 'absolute', flex: 1, width:smallBoxWidth-8, height: smallBoxHeight-8,
+
+                  margin:4,
+
+                  borderColor: BORDER_COLOR,
+                  borderWidth: 1,
+                  borderRadius:BORDER_RADIUS,}} />);
+    }
+    // released press and not a big block
+    else
+      return (
+
+        <View
+        style={{position: 'absolute', flex: 1, margin:9, marginBottom:0, width:largeBoxWidth-18, height: largeBoxHeight-8,
+
+          borderColor: BORDER_COLOR,
+          borderWidth: 1,
+          borderRadius:BORDER_RADIUS,}} />);
+  }
+
   // Handles how the imageview should look
   imageView = () => {
     // handle all blocks that are not big
@@ -687,6 +764,7 @@ class PictureBlock extends Component {
         >
           <View style={styles.itemImageContainer}>
             <View style={{flex:1}}>
+            {this.borderView()}
             {this.imageView()}
             {this.props.releasedDrag && !this.props.activeBlock && this.deleteButton()}
             </View>
