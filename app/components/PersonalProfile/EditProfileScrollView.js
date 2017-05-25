@@ -14,19 +14,12 @@ import EditPhotoAlbum from './EditPhotoAlbum'
 import PanningRectExample from './PanningRectExample'
 import PhotoAlbum from './PhotoAlbum'
 
-
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-
-var ALBUM_WIDTH = 80;
-var ALBUM_HEIGHT = 60;
-var MARGIN = 20;
-
-largeBoxHeight = (screenWidth/3)*2
-largeBoxWidth = (screenWidth)
-smallBoxHeight = screenWidth/3 - 20
-smallBoxWidth = screenWidth/3
-
+import RowDivider from '../Profile/ProfileTableRow/RowDivider'
+import ProfileSlider from '../Profile/ProfileTableRow/ProfileSlider'
+import BasicRow from '../Profile/ProfileTableRow/BasicRow'
+import ViewProfileRow from '../Profile/ProfileTableRow/ViewProfileRow'
+import SectionTitle from '../Profile/ProfileTableRow/SectionTitle'
+import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
 
 export default class EditProfileScrollView extends React.Component {
   constructor(props){
@@ -56,9 +49,28 @@ export default class EditProfileScrollView extends React.Component {
         />
         </View>
 
+        <RowDivider />
 
-        <View style={{height:120, backgroundColor: 'skyblue'}}>
-        </View>
+        <ViewProfileRow />
+        <SectionTitle title="PERSONAL DETAILS" />
+        <ProfileBasicInfo />
+
+        <RowDivider />
+        <BasicRow rowItemName={'School Name'} rowItemValue={'University of California, San...'}/>
+        <RowDivider />
+        <BasicRow rowItemName={'Job Title'} />
+        <RowDivider />
+        <BasicRow rowItemName={'Height'} rowItemValue={'Ask Me!'}/>
+        <RowDivider />
+        <BasicRow rowItemName={'Offspring'} rowItemValue={'Ask Me!'}/>
+        <RowDivider />
+        <BasicRow rowItemName={'Body Type'} rowItemValue={'Ask Me!'}/>
+
+
+        <SectionTitle title="LOOKING FOR" />
+        <ProfileSlider changeScrollState={this.changeScrollState} />
+
+
       </ScrollView>
     )
   }
