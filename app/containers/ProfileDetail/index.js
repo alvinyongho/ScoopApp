@@ -11,6 +11,7 @@ import ProfileBasicInfo from '../../components/Profile/ProfileBasicInfo'
 import SendMessageButton from '../../components/Profile/SendMessageButton'
 
 
+import RowDivider from '../../components/Profile/ProfileTableRow/RowDivider'
 import BasicRow from '../../components/Profile/ProfileTableRow/BasicRow'
 import SectionTitle from '../../components/Profile/ProfileTableRow/SectionTitle'
 import ProfileSlider from '../../components/Profile/ProfileTableRow/ProfileSlider'
@@ -37,12 +38,16 @@ export default class ProfileDetail extends Component {
           <ProfileBasicInfo />
           <SendMessageButton />
 
-          <View style={{paddingTop: 10, backgroundColor: 'white'}}>
-            <BasicRow hasDivider={true}  rowItemName={'Height'} rowItemValue={<Text>5&#39; 6&#34;</Text>}/>
-            <BasicRow hasDivider={true}  rowItemName={'Job Title'}/>
-            <BasicRow hasDivider={true}  rowItemName={'Height'} rowItemValue={<Text>Ask me!</Text>}/>
-            <BasicRow hasDivider={true}  rowItemName={'Offspring'} rowItemValue={<Text>Ask me!</Text>}/>
-            <BasicRow hasDivider={false} rowItemName={'Body Type'} rowItemValue={<Text>Ask me!</Text>}/>
+          <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
+            <BasicRow rowItemName={'Height'} rowItemValue={<Text>5&#39; 6&#34;</Text>}/>
+            <RowDivider />
+            <BasicRow rowItemName={'Job Title'}/>
+            <RowDivider />
+            <BasicRow rowItemName={'Height'} rowItemValue={<Text>Ask me!</Text>}/>
+            <RowDivider />
+            <BasicRow rowItemName={'Offspring'} rowItemValue={<Text>Ask me!</Text>}/>
+            <RowDivider />
+            <BasicRow rowItemName={'Body Type'} rowItemValue={<Text>Ask me!</Text>}/>
           </View>
 
           <SectionTitle title={'LOOKING FOR'}/>

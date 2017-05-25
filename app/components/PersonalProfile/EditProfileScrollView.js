@@ -20,6 +20,7 @@ import BasicRow from '../Profile/ProfileTableRow/BasicRow'
 import ViewProfileRow from '../Profile/ProfileTableRow/ViewProfileRow'
 import SectionTitle from '../Profile/ProfileTableRow/SectionTitle'
 import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
+import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
 
 export default class EditProfileScrollView extends React.Component {
   constructor(props){
@@ -39,7 +40,7 @@ export default class EditProfileScrollView extends React.Component {
     return (
 
 
-      <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{backgroundColor: 'white'}}>
+      <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled} style={{backgroundColor: 'white'}}>
         {/* <EditPhotoAlbum /> */}
 
         <View style={{height: 480, backgroundColor: 'white'}}>
@@ -55,20 +56,32 @@ export default class EditProfileScrollView extends React.Component {
         <SectionTitle title="PERSONAL DETAILS" />
         <ProfileBasicInfo />
 
-        <RowDivider />
-        <BasicRow rowItemName={'School Name'} rowItemValue={'University of California, San...'}/>
-        <RowDivider />
-        <BasicRow rowItemName={'Job Title'} />
-        <RowDivider />
-        <BasicRow rowItemName={'Height'} rowItemValue={'Ask Me!'}/>
-        <RowDivider />
-        <BasicRow rowItemName={'Offspring'} rowItemValue={'Ask Me!'}/>
-        <RowDivider />
-        <BasicRow rowItemName={'Body Type'} rowItemValue={'Ask Me!'}/>
-
+        <View style={{paddingLeft:15}}>
+          <RowDivider />
+          <BasicRow rowItemName={'School Name'} rowItemValue={'University of California, San...'}/>
+          <RowDivider />
+          <BasicRow rowItemName={'Job Title'} />
+          <RowDivider />
+          <BasicRow rowItemName={'Height'} rowItemValue={'Ask Me!'}/>
+          <RowDivider />
+          <BasicRow rowItemName={'Offspring'} rowItemValue={'Ask Me!'}/>
+          <RowDivider />
+          <BasicRow rowItemName={'Body Type'} rowItemValue={'Ask Me!'}/>
+        </View>
 
         <SectionTitle title="LOOKING FOR" />
         <ProfileSlider changeScrollState={this.changeScrollState} />
+
+        <SectionTitle title={'CONNECTED APPS'}/>
+        <ConnectedAppsRow />
+
+
+        <SectionTitle title={'ABOUT ME'}/>
+        <View style={{height: 100, backgroundColor: 'white'}}>
+        </View>
+
+        <View style={{height: 50, backgroundColor: '#E6E6E6'}}>
+        </View>
 
 
       </ScrollView>
