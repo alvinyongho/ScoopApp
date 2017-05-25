@@ -55,7 +55,7 @@ class Slider extends Component {
         thumbPosition = this.state.thumbPosition
         newX = dx+this.prevX
         if (newX < 0) newX = 0
-        if (newX > 315) newX = 315
+        if (newX > 325-(27/2)) newX = 325-(27/2)
 
         thumbPosition.x.setValue(newX)
 
@@ -121,7 +121,7 @@ class Slider extends Component {
 
 
   getThumbStyle() {
-    const thumbSize = 20
+    const thumbSize = 27
     console.log('getting thumb style')
 
 
@@ -131,10 +131,12 @@ class Slider extends Component {
         height: thumbSize,
         width: thumbSize,
         borderRadius: thumbSize/2,
-        backgroundColor: 'skyblue',
+        backgroundColor: 'white',
         position: 'absolute',
         left: this.state.thumbPosition.x._value,
-        top: this.state.thumbPosition.y._value
+        top: this.state.thumbPosition.y._value,
+
+
       }
     }
 
@@ -142,7 +144,7 @@ class Slider extends Component {
       height: thumbSize,
       width: thumbSize,
       borderRadius: thumbSize/2,
-      backgroundColor: 'skyblue',
+      backgroundColor: 'white',
     }
 
 
@@ -156,7 +158,10 @@ class Slider extends Component {
     return(
       <View onLayout={this.setMaxWidth}
         style={{height: 5, borderRadius:5/2, backgroundColor: 'purple', justifyContent: 'center'}}>
-        <Animated.View onLayout={this.getPosition} {...this._panResponder.panHandlers} style={this.getThumbStyle()}/>
+        <Animated.View onLayout={this.getPosition} {...this._panResponder.panHandlers} style={[this.getThumbStyle(), {justifyContent: 'center', alignItems: 'center'}]}>
+
+          <View style={{height:23, width: 23, borderRadius: 23/2, backgroundColor:'#54C9EC'}}/>
+        </Animated.View>
       </View>
     );
   }
