@@ -7,6 +7,7 @@ import images from '@assets/images';
 import ProfileDetail from '../../containers/ProfileDetail';
 
 import { bindActionCreators } from 'redux';
+import Icon from 'react-native-vector-icons/EvilIcons';
 
 
 const styles = StyleSheet.create({
@@ -23,11 +24,12 @@ export class ProfileScreen extends React.Component {
     title: 'ScoopLogoHere',
     headerLeft: <Button onPress={() => navigation.goBack()}
                            style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}>
-                         <Text style={{marginLeft: 20,
-                           fontFamily:'Avenir-Light',
-                           fontSize: 18, color:'white'}}>
-                           Back
-                         </Text>
+
+                           <Icon name="chevron-left" size={50} color="white" />
+                           <Text style={{
+                              fontFamily:'Avenir-Light', marginLeft: -15,
+                              fontSize: 18, color:'white'}}>Back
+                          </Text>
                 </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color:'white', alignSelf: 'center'},

@@ -12,6 +12,7 @@ import {
   TouchableHighlight,
   Switch
 } from 'react-native';
+import Icon from 'react-native-vector-icons/EvilIcons';
 
 
 export class SettingsRow extends Component {
@@ -27,13 +28,15 @@ export class SettingsRow extends Component {
   rightSideComponent(type){
     if(type==="switch")
       return(
-        <Switch
+        <View style={{marginRight:10}}><Switch
         onValueChange={(value) => this.setState({colorTrueSwitchIsOn: value})}
         onTintColor="#54C9EC"
-        value={this.state.colorTrueSwitchIsOn} />
+        value={this.state.colorTrueSwitchIsOn} /></View>
       );
-    else if(type==="naivgation")
-      return null
+    else if(type==="navigation")
+      return (
+        <Icon name="chevron-right" size={30} color="#BBBBBB" />
+      );
     else
       return null
   }
@@ -43,7 +46,7 @@ export class SettingsRow extends Component {
       <TouchableHighlight onPress={()=>console.log('TODO')}>
         <View style={{alignItems: 'center', paddingLeft: 15, backgroundColor: 'white', flex: 1, flexDirection: 'row'}}>
           <Text style={{paddingTop: 10, paddingBottom: 10, fontSize: 16, fontFamily: 'Avenir-Light', color:'#666666', flex:.5}}>{this.props.title}</Text>
-          <View style={{marginRight: 10, alignItems:'center', alignItems:'flex-end', flex: .5}}>{this.rightSideComponent(this.props.rightComponent)}</View>
+          <View style={{marginRight: 0, alignItems:'center', justifyContent: 'center',  alignItems:'flex-end', flex: .5}}>{this.rightSideComponent(this.props.rightComponent)}</View>
         </View>
       </TouchableHighlight>
     );

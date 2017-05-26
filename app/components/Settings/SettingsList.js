@@ -19,24 +19,24 @@ export default class SettingsList extends React.Component {
   render(){
     return(
       <ScrollView style={{backgroundColor: '#E6E6E6'}}>
-        <SettingsRow title="Notifications"/>
+        <SettingsRow rightComponent={'navigation'} title="Notifications"/>
         <RowDivider />
-        <SettingsRow title="Privacy"/>
+        <SettingsRow rightComponent={'navigation'} title="Privacy"/>
         <RowDivider />
-        <SettingsRow title="Logout"/>
+        <SettingsRow rightComponent={'navigation'} title="Logout"/>
         <RowDivider />
         <SettingsRow rightComponent={'switch'} title="Hide Profile"/>
         <RowDivider />
-        <SettingsRow title="Delete Account"/>
+        <SettingsRow rightComponent={'navigation'} title="Delete Account"/>
         <RowDivider />
 
         <SettingsRowSpacer />
-        <SettingsRow title="Rate Scoop"/>
+        <SettingsRow rightComponent={'navigation'} title="Rate Scoop"/>
         <SettingsRowSpacer />
 
-        <SettingsRow title="Private Policy"/>
+        <SettingsRow rightComponent={'navigation'} title="Private Policy"/>
         <RowDivider />
-        <SettingsRow title="Terms of Service"/>
+        <SettingsRow rightComponent={'navigation'} title="Terms of Service"/>
       </ScrollView>
     );
   }
