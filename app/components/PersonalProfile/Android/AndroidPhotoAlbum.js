@@ -10,7 +10,6 @@ import {
   Dimensions,
   PanResponder,
   Image,
-  TouchableHighlight,
 } from 'react-native';
 
 import _ from 'lodash'
@@ -34,7 +33,7 @@ var largeBoxWidth = (screenWidth)
 var smallBoxHeight = screenWidth/3 - 30
 var smallBoxWidth = screenWidth/NUM_PER_ROW
 
-export default class AndroidPhotoAlbum extends React.Component {
+export default class PhotoAlbum extends React.Component {
   constructor(props){
     super(props);
     this.indexSelected = null
@@ -154,7 +153,6 @@ export default class AndroidPhotoAlbum extends React.Component {
 
   handleMove = (evt, gestureState) => {
     // Block TouchableWithoutFeedback from releasing
-    console.log('Handling move')
 
     const {moveX, moveY, dx, dy} = gestureState
 
@@ -315,12 +313,9 @@ export default class AndroidPhotoAlbum extends React.Component {
   // Handle case where move and then release
   onDragRelease = () => {
     // reset the grid
-
-    console.log('handling release')
     for (var key in this.state.blockPositions) {
         this.state.blockPositions[key].currentPosition.setValue(this.state.blockPositions[key].originalPosition)
     }
-
     this.setState({activeBlock: null});
     this.panCapture = false;
     this.blockTouchRelease = false;
@@ -378,22 +373,6 @@ export default class AndroidPhotoAlbum extends React.Component {
 
   _getBlockStyle = (index, name) =>{
     // handle the case where it must be a small block
-
-    // DEBUG = true
-    // console.log('THE CURRENT BIG IS...')
-    // console.log(this.state.currentBig)
-    //
-    // if(DEBUG){
-    //   if(this._blockPositionsSet() && (this.initialDragDone)){
-    //     console.log('THE TOP VALUE')
-    //     console.log(this._getBlock(name+index).currentPosition.getLayout().top._value)
-    //     console.log('THE LEFT VALUE FOR ' + name+index)
-    //     console.log(this._getBlock(name+index).currentPosition.getLayout().left._value)
-    //   }
-    // }
-
-
-
     if(name+index!==this.state.currentBig){
       return (
         [{width: smallBoxWidth,
@@ -402,10 +381,8 @@ export default class AndroidPhotoAlbum extends React.Component {
         this._blockPositionsSet() && (this.initialDragDone) &&
         { position: 'absolute',
           top: this._getBlock(name+index).currentPosition.getLayout().top._value,
-          left: this._getBlock(name+index).currentPosition.getLayout().left._value,
-        },
-        this.state.activeBlock == name+index && { zIndex: 1 },
-      ]
+          left: this._getBlock(name+index).currentPosition.getLayout().left._value
+        }]
       );
     }
 
@@ -424,12 +401,9 @@ export default class AndroidPhotoAlbum extends React.Component {
             justifyContent: 'center', },
           this._blockPositionsSet() && (this.initialDragDone) &&
           { position: 'absolute',
-
             top: this._getBlock(name+index).currentPosition.getLayout().top._value,
             left: this._getBlock(name+index).currentPosition.getLayout().left._value
-          },
-          this.state.activeBlock == name+index && { zIndex: 1 },
-        ]
+          }]
         );
 
     }
@@ -439,13 +413,12 @@ export default class AndroidPhotoAlbum extends React.Component {
     return (
       [{width: largeBoxWidth,
         height: largeBoxHeight,
-        justifyContent: 'center',},
+        justifyContent: 'center' },
       this._blockPositionsSet() && (this.initialDragDone) &&
       { position: 'absolute',
         top: this._getBlock(name+index).currentPosition.getLayout().top._value,
         left: this._getBlock(name+index).currentPosition.getLayout().left._value
-      }
-      ]
+      }]
     );
 
   }
@@ -565,11 +538,11 @@ export default class AndroidPhotoAlbum extends React.Component {
       )
     })
 
-    // if(this._blockPositionsSet() && (this.initialDragDone)){
-    //   let selectedItem = pictures[this.state.activeBlockIndex];
-    //   pictures.splice(this.state.activeBlockIndex, 1);
-    //   pictures.push(selectedItem);
-    // }
+    if(this._blockPositionsSet() && (this.initialDragDone)){
+      let selectedItem = pictures[this.state.activeBlockIndex];
+      pictures.splice(this.state.activeBlockIndex, 1);
+      pictures.push(selectedItem);
+    }
 
     return (
       <Animated.View
@@ -579,6 +552,7 @@ export default class AndroidPhotoAlbum extends React.Component {
 
         {pictures.length < 7  &&
         <View style={{ flex:1, alignItems:'center', justifyContent: 'center',  position: 'absolute', top: Math.floor((this.state.blockPositionsSetCount-1)/3) * smallBoxHeight + largeBoxHeight , left:((this.state.blockPositionsSetCount-1)%3)*smallBoxWidth,
+              backgroundColor: 'white',
               borderRadius: 5,
               borderWidth: 1,
               borderColor: '#E6E6E6',
@@ -622,28 +596,22 @@ class PictureBlock extends Component {
     super(props)
   }
 
-  // <TouchableHighlight >
-  // </TouchableHighlight>
-
 
   deleteButton = () => {
     if(this.props.identifier !== this.props.currentBig){
       return (
-        <Button onPress={this.props.removeBlock} style={{zIndex: 2}}>
+        <Button onPress={this.props.removeBlock}>
           <View
               style={{
-                      elevation: 3,
-                      zIndex: 2,
-                      top: 0,
-                      right: 0,
+
                       height: DELETE_BUTTON_WIDTH,
                       width: DELETE_BUTTON_WIDTH,
-                      backgroundColor: 'blue',
+                      backgroundColor: 'white',
                       borderWidth:1,
                       borderColor: BORDER_COLOR,
                       borderRadius:DELETE_BUTTON_WIDTH/2}}>
           </View>
-          </Button>
+        </Button>
       )
     }
   }
@@ -728,7 +696,7 @@ class PictureBlock extends Component {
     if(this.props.identifier === this.props.activeBlock && this.props.activeBlock !== this.props.currentBig){
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, zIndex: 0, marginLeft:5, marginRight:5, marginTop:5, width:smallBoxWidth-10,
+                style={{flex: 1, marginLeft:5, marginRight:5, marginTop:5, width:smallBoxWidth-10,
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
                   borderRadius:5,
@@ -741,12 +709,12 @@ class PictureBlock extends Component {
     if(this.props.identifier !== this.props.currentBig)
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, zIndex: 0, marginLeft:10, marginRight:10, marginTop:10, width:smallBoxWidth-20,
+                style={{flex: 1, marginLeft:10, marginRight:10, marginTop:10, width:smallBoxWidth-20,
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
                   borderRadius:5,
                   height: smallBoxHeight}}
-          ></Image>
+          />
       );
 
     // handle the (possibly) medium block
@@ -754,7 +722,7 @@ class PictureBlock extends Component {
     if(!this.props.releasedDrag && this.props.activeBlock !== this.props.currentBig){
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, zIndex: 0, margin:30, marginBottom: 10, width:largeBoxWidth-60, height: largeBoxHeight,
+                style={{flex: 1, margin:30, marginBottom: 10, width:largeBoxWidth-60, height: largeBoxHeight,
 
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
@@ -764,7 +732,7 @@ class PictureBlock extends Component {
     // dragging the big block (POSSIBLY) to the small block
     else if(!this.props.releasedDrag && this.props.activeBlock == this.props.currentBig){
       return (<Image source={this.props.picture.imagesrc}
-                style={{flex: 1, zIndex: 0, margin:5, width:smallBoxWidth-10, height: smallBoxHeight,
+                style={{flex: 1, margin:5, width:smallBoxWidth-10, height: smallBoxHeight,
 
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
@@ -773,11 +741,11 @@ class PictureBlock extends Component {
     // released press and not a big block
     else
       return (<Image source={this.props.picture.imagesrc}
-        style={{flex: 1, margin:10, zIndex: 0, marginBottom:0, width:largeBoxWidth-20, height: largeBoxHeight,
+        style={{flex: 1, margin:10, marginBottom:0, width:largeBoxWidth-20, height: largeBoxHeight,
 
           borderColor: 'white',
           borderWidth: MARGIN/3,
-          borderRadius:5,}}></Image>);
+          borderRadius:5,}} />);
   }
 
   render = () =>
@@ -786,9 +754,8 @@ class PictureBlock extends Component {
       onLayout = { this.props.onLayout }
       {...this.props.panHandlers}
     >
-
       <TouchableWithoutFeedback
-        style={{flex:1, zIndex: -1}}
+        style={{flex:1}}
         delayLongPress={400}
         onPress=       {this.props.onPress}
         onLongPress=   {this.props.onLongPress}
@@ -798,22 +765,14 @@ class PictureBlock extends Component {
             <View style={{flex:1}}>
             {this.borderView()}
             {this.imageView()}
-
-
-
             </View>
           </View>
       </TouchableWithoutFeedback>
 
-      <View style={{position: 'absolute', left: 100, top: 7}}>
-        {this.deleteButton()}
+      <View style={{position: 'absolute'}}>
+        {this.props.releasedDrag && !this.props.activeBlock && this.deleteButton()}
       </View>
     </Animated.View>
-
-
-
-
-
 }
 
 
@@ -821,13 +780,12 @@ var styles = StyleSheet.create({
   pictureContainer:{
     flexDirection: 'row',
     flexWrap: 'wrap',
-
     height: 500
   },
   itemImageContainer: {
     flex: 1,
-    // alignItems:'center',
-    // justifyContent: 'center'
+    alignItems:'center',
+    justifyContent: 'center'
   }
 
 });
