@@ -769,7 +769,7 @@ class PictureBlock extends Component {
           </View>
       </TouchableWithoutFeedback>
 
-      <View style={{position: 'absolute'}}>
+      <View style={{position: 'absolute', top: 7, left: 100}}>
         {this.props.releasedDrag && !this.props.activeBlock && this.deleteButton()}
       </View>
     </Animated.View>

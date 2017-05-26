@@ -10,6 +10,7 @@ import {
   Dimensions,
   PanResponder,
   Image,
+  Platform
 } from 'react-native';
 
 import _ from 'lodash'
@@ -546,7 +547,7 @@ export default class PhotoAlbum extends React.Component {
 
     return (
       <Animated.View
-        style={styles.pictureContainer}
+        style={[styles.pictureContainer, Platform.OS !== 'ios' && {height: 500}]}
         onLayout= {this.assessGridSize}
         >
 
@@ -602,15 +603,18 @@ class PictureBlock extends Component {
       return (
         <Button onPress={this.props.removeBlock}>
           <View
-              style={{position: 'absolute',
-                      top: -smallBoxHeight+7,
-                      left: smallBoxWidth-37,
+              style={[{
                       height: DELETE_BUTTON_WIDTH,
                       width: DELETE_BUTTON_WIDTH,
                       backgroundColor: 'white',
                       borderWidth:1,
                       borderColor: BORDER_COLOR,
-                      borderRadius:DELETE_BUTTON_WIDTH/2}}>
+                      borderRadius:DELETE_BUTTON_WIDTH/2}
+                    , Platform.OS === 'ios' && {
+                          position: 'absolute',
+                          top: -smallBoxHeight+7,
+                          left: smallBoxWidth-37,}
+                    ]}>
           </View>
         </Button>
       )
@@ -766,10 +770,21 @@ class PictureBlock extends Component {
             <View style={{flex:1}}>
             {this.borderView()}
             {this.imageView()}
-            {this.props.releasedDrag && !this.props.activeBlock && this.deleteButton()}
+            {this.props.releasedDrag && !this.props.activeBlock && Platform.OS === 'ios' && this.deleteButton()}
             </View>
           </View>
       </TouchableWithoutFeedback>
+
+      <View style={{position: 'absolute', top: 7, left: 100 }}>
+      {this.props.releasedDrag && !this.props.activeBlock && Platform.OS !== 'ios' &&
+
+      this.deleteButton()
+
+      }
+      </View>
+
+
+
     </Animated.View>
 }
 
