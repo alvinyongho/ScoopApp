@@ -16,7 +16,6 @@ import EditPhotoAlbum from './EditPhotoAlbum'
 import PanningRectExample from './PanningRectExample'
 import PhotoAlbum from './PhotoAlbum'
 
-import AndroidPhotoAlbum from './Android/AndroidPhotoAlbum'
 
 import RowDivider from '../Profile/ProfileTableRow/RowDivider'
 import ProfileSlider from '../Profile/ProfileTableRow/ProfileSlider'

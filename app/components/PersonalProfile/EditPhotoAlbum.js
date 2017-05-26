@@ -26,15 +26,6 @@ const screenHeight = Dimensions.get('window').height;
 export default class EditPhotoAlbum extends React.Component {
 
   componentWillMount(){
-    // Handle the pannign responders
-
-
-
-
-
-
-
-
     // Handling the display for cells
     cells = []
 
