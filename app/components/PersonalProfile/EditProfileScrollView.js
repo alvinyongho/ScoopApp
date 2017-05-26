@@ -56,7 +56,7 @@ export default class EditProfileScrollView extends React.Component {
     } else {
       // Handle Android case
       return(
-        <View style={{height: 550,}}>
+        <View style={{height: 550, backgroundColor: '#EEEEEE'}} >
         <AndroidPhotoAlbum changeScrollState={this.changeScrollState}
                             onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
                             onShortPress={(key)=>console.log("handleShortPress for key: " + key)}

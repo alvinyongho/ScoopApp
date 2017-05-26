@@ -622,19 +622,20 @@ class PictureBlock extends Component {
     super(props)
   }
 
-  // <TouchableHighlight onPress={this.props.removeBlock}>
+  // <TouchableHighlight >
   // </TouchableHighlight>
 
 
   deleteButton = () => {
     if(this.props.identifier !== this.props.currentBig){
       return (
-        <TouchableHighlight>
+        <Button onPress={this.props.removeBlock} style={{zIndex: 2}}>
           <View
-              style={{position: 'absolute',
-                      top: 8,
-                      left: 100,
-                      zIndex: 1,
+              style={{
+                      elevation: 3,
+                      zIndex: 2,
+                      top: 0,
+                      right: 0,
                       height: DELETE_BUTTON_WIDTH,
                       width: DELETE_BUTTON_WIDTH,
                       backgroundColor: 'blue',
@@ -642,7 +643,7 @@ class PictureBlock extends Component {
                       borderColor: BORDER_COLOR,
                       borderRadius:DELETE_BUTTON_WIDTH/2}}>
           </View>
-          </TouchableHighlight>
+          </Button>
       )
     }
   }
@@ -727,7 +728,7 @@ class PictureBlock extends Component {
     if(this.props.identifier === this.props.activeBlock && this.props.activeBlock !== this.props.currentBig){
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, marginLeft:5, marginRight:5, marginTop:5, width:smallBoxWidth-10,
+                style={{flex: 1, zIndex: 0, marginLeft:5, marginRight:5, marginTop:5, width:smallBoxWidth-10,
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
                   borderRadius:5,
@@ -740,12 +741,12 @@ class PictureBlock extends Component {
     if(this.props.identifier !== this.props.currentBig)
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, marginLeft:10, marginRight:10, marginTop:10, width:smallBoxWidth-20,
+                style={{flex: 1, zIndex: 0, marginLeft:10, marginRight:10, marginTop:10, width:smallBoxWidth-20,
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
                   borderRadius:5,
                   height: smallBoxHeight}}
-          />
+          ></Image>
       );
 
     // handle the (possibly) medium block
@@ -753,7 +754,7 @@ class PictureBlock extends Component {
     if(!this.props.releasedDrag && this.props.activeBlock !== this.props.currentBig){
       return (
           <Image source={this.props.picture.imagesrc}
-                style={{flex: 1, margin:30, marginBottom: 10, width:largeBoxWidth-60, height: largeBoxHeight,
+                style={{flex: 1, zIndex: 0, margin:30, marginBottom: 10, width:largeBoxWidth-60, height: largeBoxHeight,
 
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
@@ -763,7 +764,7 @@ class PictureBlock extends Component {
     // dragging the big block (POSSIBLY) to the small block
     else if(!this.props.releasedDrag && this.props.activeBlock == this.props.currentBig){
       return (<Image source={this.props.picture.imagesrc}
-                style={{flex: 1, margin:5, width:smallBoxWidth-10, height: smallBoxHeight,
+                style={{flex: 1, zIndex: 0, margin:5, width:smallBoxWidth-10, height: smallBoxHeight,
 
                   borderColor: 'white',
                   borderWidth: MARGIN/3,
@@ -772,11 +773,11 @@ class PictureBlock extends Component {
     // released press and not a big block
     else
       return (<Image source={this.props.picture.imagesrc}
-        style={{flex: 1, margin:10, marginBottom:0, width:largeBoxWidth-20, height: largeBoxHeight,
+        style={{flex: 1, margin:10, zIndex: 0, marginBottom:0, width:largeBoxWidth-20, height: largeBoxHeight,
 
           borderColor: 'white',
           borderWidth: MARGIN/3,
-          borderRadius:5,}} />);
+          borderRadius:5,}}></Image>);
   }
 
   render = () =>
@@ -785,8 +786,9 @@ class PictureBlock extends Component {
       onLayout = { this.props.onLayout }
       {...this.props.panHandlers}
     >
+
       <TouchableWithoutFeedback
-        style={{flex:1}}
+        style={{flex:1, zIndex: -1}}
         delayLongPress={400}
         onPress=       {this.props.onPress}
         onLongPress=   {this.props.onLongPress}
@@ -794,16 +796,24 @@ class PictureBlock extends Component {
         >
           <View style={styles.itemImageContainer}>
             <View style={{flex:1}}>
+            {this.borderView()}
             {this.imageView()}
+
+
+
             </View>
-
-
           </View>
       </TouchableWithoutFeedback>
 
-      {this.deleteButton()}
-
+      <View style={{position: 'absolute', left: 100, top: 7}}>
+        {this.deleteButton()}
+      </View>
     </Animated.View>
+
+
+
+
+
 }
 
 
@@ -816,8 +826,8 @@ var styles = StyleSheet.create({
   },
   itemImageContainer: {
     flex: 1,
-    alignItems:'center',
-    justifyContent: 'center'
+    // alignItems:'center',
+    // justifyContent: 'center'
   }
 
 });
