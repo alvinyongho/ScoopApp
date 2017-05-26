@@ -9,11 +9,14 @@ import {
   ScrollView,
   Dimensions,
   TouchableHighlight,
+  Platform
 } from 'react-native';
 
 import EditPhotoAlbum from './EditPhotoAlbum'
 import PanningRectExample from './PanningRectExample'
 import PhotoAlbum from './PhotoAlbum'
+
+import AndroidPhotoAlbum from './Android/AndroidPhotoAlbum'
 
 import RowDivider from '../Profile/ProfileTableRow/RowDivider'
 import ProfileSlider from '../Profile/ProfileTableRow/ProfileSlider'
@@ -40,21 +43,41 @@ export default class EditProfileScrollView extends React.Component {
     this.setState({isScrollEnabled: isEnabled})
   }
 
-
-  // TODO: item order needs to be saved to database corresponding to authenticated user
-  render(){
-    return (
-
-
-      <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled} style={{backgroundColor: 'white'}}>
-        {/* <EditPhotoAlbum /> */}
-
+  renderPhotoAlbum = () => {
+    if(Platform.OS === 'ios'){
+      return (
         <View style={{height: 480, backgroundColor: 'white'}}>
         <PhotoAlbum changeScrollState={this.changeScrollState}
                             onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
                             onShortPress={(key)=>console.log("handleShortPress for key: " + key)}
         />
         </View>
+      );
+    } else {
+      // Handle Android case
+      return(
+        <View style={{height: 550,}}>
+        <AndroidPhotoAlbum changeScrollState={this.changeScrollState}
+                            onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
+                            onShortPress={(key)=>console.log("handleShortPress for key: " + key)}
+        />
+        </View>
+      );
+    }
+
+  }
+
+
+  // TODO: item order needs to be saved to database corresponding to authenticated user
+  render(){
+    return (
+
+
+      <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
+        {/* <EditPhotoAlbum /> */}
+
+
+        {this.renderPhotoAlbum()}
 
         <RowDivider />
 
