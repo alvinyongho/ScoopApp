@@ -560,7 +560,7 @@ export default class PhotoAlbum extends React.Component {
               marginLeft:10, marginRight:10, marginTop:10, marginBottom: 10,
               width:smallBoxWidth-20, height: smallBoxHeight-10}}>
 
-              <Button onPress={console.log('add picture')}>
+              <Button onPress={()=>this.handleShortPress()}>
                 <View style={{width: smallBoxWidth, height: smallBoxHeight, alignItems: 'center', justifyContent: 'center',}}>
                   <View
                     style={{

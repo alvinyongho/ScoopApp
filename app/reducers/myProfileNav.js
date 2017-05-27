@@ -20,6 +20,12 @@ export function myProfileNav(state = initialNavState, action){
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsPrivacyPolicy' }), state);
     case 'SettingsTOS':
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsTOS' }), state);
+    case 'ImportPicture':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ImportPicture' }), state);
+
+    case 'AlbumContents':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'AlbumContents'}), state);
+
     default:
       return MyProfileNavigator.router.getStateForAction(action, state);
   }
