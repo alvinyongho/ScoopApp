@@ -15,7 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 
-export class SettingsRow extends Component {
+export default class SettingsRow extends Component {
 
   constructor(props){
     super(props)
@@ -43,7 +43,7 @@ export class SettingsRow extends Component {
 
   render(){
     return (
-      <TouchableHighlight onPress={()=>console.log('TODO')}>
+      <TouchableHighlight onPress={()=> this.props.onClick()}>
         <View style={{alignItems: 'center', paddingLeft: 15, backgroundColor: 'white', flex: 1, flexDirection: 'row'}}>
           <Text style={{paddingTop: 10, paddingBottom: 10, fontSize: 16, fontFamily: 'Avenir-Light', color:'#666666', flex:.5}}>{this.props.title}</Text>
           <View style={{marginRight: 0, alignItems:'center', justifyContent: 'center',  alignItems:'flex-end', flex: .5}}>{this.rightSideComponent(this.props.rightComponent)}</View>
@@ -53,18 +53,18 @@ export class SettingsRow extends Component {
   }
 
 }
-
-// Match state to props which allows us to access actions
-function mapStateToProps(state){
-  return {
-  }
-}
-
-
-const mapDispatchToProps = dispatch => ({
-});
-
-
-// Connects the state variables to the property variables within
-// the home class
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsRow);
+//
+// // Match state to props which allows us to access actions
+// function mapStateToProps(state){
+//   return {
+//   }
+// }
+//
+//
+// const mapDispatchToProps = dispatch => ({
+// });
+//
+//
+// // Connects the state variables to the property variables within
+// // the home class
+// export default connect(mapStateToProps, mapDispatchToProps)(SettingsRow);

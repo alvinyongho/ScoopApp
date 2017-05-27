@@ -10,6 +10,16 @@ export function myProfileNav(state = initialNavState, action){
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'PreviewProfile' }), state);
     case 'Settings':
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Settings' }), state);
+    case 'SettingsNotifications':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsNotifications' }), state);
+    case 'SettingsPrivacy':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsPrivacy' }), state);
+    case 'SettingsDeleteAccount':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsDeleteAccount' }), state);
+    case 'SettingsPrivacyPolicy':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsPrivacyPolicy' }), state);
+    case 'SettingsTOS':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsTOS' }), state);
     default:
       return MyProfileNavigator.router.getStateForAction(action, state);
   }

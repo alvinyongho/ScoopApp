@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {
-  View, Text
+  View, Text, WebView
 } from 'react-native';
+
 
 
 import { connect } from 'react-redux';
@@ -15,16 +16,13 @@ import SettingsList from '../Settings/SettingsList'
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 
-export class SettingsScreen extends React.Component {
+
+export class TOSScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    title: 'Terms of Service',
     // TODO: Add Settings page
     headerLeft: <Button onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={50} color="white" />
-                    <Text style={{
-                       fontFamily:'Avenir-Light', marginLeft: -15,
-                       fontSize: 18, color:'white'}}>Back
-                   </Text>
                  </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color: 'white', alignSelf:'center'}
@@ -32,7 +30,9 @@ export class SettingsScreen extends React.Component {
 
   render() {
     return(
-        <SettingsList />
+      <WebView
+      source={{uri: 'http://www.scoopdating.com/terms-of-use/'}}
+      />
     )
   }
 }
@@ -46,4 +46,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TOSScreen);

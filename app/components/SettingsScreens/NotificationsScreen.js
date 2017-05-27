@@ -11,11 +11,12 @@ import { bindActionCreators } from 'redux';
 import Button from 'react-native-button';
 import images from '@assets/images';
 
-import SettingsList from '../Settings/SettingsList'
+import NotificationsList from '../Settings/NotificationsList'
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 
-export class SettingsScreen extends React.Component {
+
+export class NotificationsScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
     title: 'Scoop',
     // TODO: Add Settings page
@@ -32,7 +33,7 @@ export class SettingsScreen extends React.Component {
 
   render() {
     return(
-        <SettingsList />
+        <NotificationsList />
     )
   }
 }
@@ -46,4 +47,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsScreen);

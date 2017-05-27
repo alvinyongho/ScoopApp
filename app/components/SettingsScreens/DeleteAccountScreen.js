@@ -15,7 +15,8 @@ import SettingsList from '../Settings/SettingsList'
 import Icon from 'react-native-vector-icons/EvilIcons';
 
 
-export class SettingsScreen extends React.Component {
+
+export class DeleteAccountScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
     title: 'Scoop',
     // TODO: Add Settings page
@@ -32,7 +33,7 @@ export class SettingsScreen extends React.Component {
 
   render() {
     return(
-        <SettingsList />
+        <View><Text>TEST</Text></View>
     )
   }
 }
@@ -46,4 +47,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteAccountScreen);
