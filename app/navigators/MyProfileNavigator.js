@@ -3,10 +3,31 @@ import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import EditScreen from '../components/MyProfileScreens/EditScreen'
+import ImportAlbumScreen from '../components/MyProfileScreens/ImportAlbumScreen'
+import ImportFromGalleryScreen from '../components/MyProfileScreens/ImportFromGalleryScreen'
+
+import ProfileScreen from '../components/HomeScreens/ProfileScreen'
+import SettingsScreen from '../components/SettingsScreens/SettingsScreen'
+import NotificationsScreen from '../components/SettingsScreens/NotificationsScreen'
+import PrivacyScreen from '../components/SettingsScreens/PrivacyScreen'
+import DeleteAccountScreen from '../components/SettingsScreens/DeleteAccountScreen'
+import PrivacyPolicyScreen from '../components/SettingsScreens/PrivacyPolicyScreen'
+import TOSScreen from '../components/SettingsScreens/TOSScreen'
 
 
 export const MyProfileNavigator = StackNavigator({
-  Edit: { screen: EditScreen },
+  Edit:                  { screen: EditScreen },
+  ImportPicture:         { screen: ImportAlbumScreen },
+  AlbumContents:          { screen: ImportFromGalleryScreen },
+  PreviewProfile:        { screen: ProfileScreen },
+
+  Settings:              { screen: SettingsScreen },
+  SettingsNotifications: { screen: NotificationsScreen },
+  SettingsPrivacy:       { screen: PrivacyScreen },
+  SettingsDeleteAccount: { screen: DeleteAccountScreen },
+  SettingsPrivacyPolicy: { screen: PrivacyPolicyScreen },
+  SettingsTOS:           { screen: TOSScreen },
+
 });
 
 

@@ -10,7 +10,6 @@ import {
   Dimensions,
   PanResponder,
   Image,
-  Platform
 } from 'react-native';
 
 import _ from 'lodash'
@@ -547,7 +546,7 @@ export default class PhotoAlbum extends React.Component {
 
     return (
       <Animated.View
-        style={[styles.pictureContainer, Platform.OS !== 'ios' && {height: 500}]}
+        style={styles.pictureContainer}
         onLayout= {this.assessGridSize}
         >
 
@@ -560,7 +559,7 @@ export default class PhotoAlbum extends React.Component {
               marginLeft:10, marginRight:10, marginTop:10, marginBottom: 10,
               width:smallBoxWidth-20, height: smallBoxHeight-10}}>
 
-              <Button onPress={()=>this.handleShortPress()}>
+              <Button onPress={console.log('add picture')}>
                 <View style={{width: smallBoxWidth, height: smallBoxHeight, alignItems: 'center', justifyContent: 'center',}}>
                   <View
                     style={{
@@ -603,18 +602,14 @@ class PictureBlock extends Component {
       return (
         <Button onPress={this.props.removeBlock}>
           <View
-              style={[{
+              style={{
+
                       height: DELETE_BUTTON_WIDTH,
                       width: DELETE_BUTTON_WIDTH,
                       backgroundColor: 'white',
                       borderWidth:1,
                       borderColor: BORDER_COLOR,
-                      borderRadius:DELETE_BUTTON_WIDTH/2}
-                    , Platform.OS === 'ios' && {
-                          position: 'absolute',
-                          top: -smallBoxHeight+7,
-                          left: smallBoxWidth-37,}
-                    ]}>
+                      borderRadius:DELETE_BUTTON_WIDTH/2}}>
           </View>
         </Button>
       )
@@ -770,21 +765,13 @@ class PictureBlock extends Component {
             <View style={{flex:1}}>
             {this.borderView()}
             {this.imageView()}
-            {this.props.releasedDrag && !this.props.activeBlock && Platform.OS === 'ios' && this.deleteButton()}
             </View>
           </View>
       </TouchableWithoutFeedback>
 
-      <View style={{position: 'absolute', top: 7, left: 100 }}>
-      {this.props.releasedDrag && !this.props.activeBlock && Platform.OS !== 'ios' &&
-
-      this.deleteButton()
-
-      }
+      <View style={{position: 'absolute', top: 7, left: 100}}>
+        {this.props.releasedDrag && !this.props.activeBlock && this.deleteButton()}
       </View>
-
-
-
     </Animated.View>
 }
 
@@ -793,6 +780,7 @@ var styles = StyleSheet.create({
   pictureContainer:{
     flexDirection: 'row',
     flexWrap: 'wrap',
+    height: 500
   },
   itemImageContainer: {
     flex: 1,

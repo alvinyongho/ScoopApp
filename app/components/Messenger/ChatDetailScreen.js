@@ -13,6 +13,7 @@ import Button from 'react-native-button';
 import images from '@assets/images';
 import ChatDetail from '../../containers/Messenger/ChatDetail';
 
+import Icon from 'react-native-vector-icons/EvilIcons';
 
 
 
@@ -82,7 +83,11 @@ class ChatDetailScreen extends Component{
   static navigationOptions = ({navigation}) => ({
     title: 'Scoop',
     headerLeft: <Button onPress={() => navigation.goBack()}>
-                         <Text style={{marginLeft: 15, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Back</Text>
+                      <Icon name="chevron-left" size={50} color="white" />
+                      <Text style={{
+                         fontFamily:'Avenir-Light', marginLeft: -15,
+                         fontSize: 18, color:'white'}}>Back
+                     </Text>
                  </Button>,
 
     headerRight: <AdditionalItemsButton />,

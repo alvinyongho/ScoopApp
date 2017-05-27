@@ -135,7 +135,7 @@ class AllChatsListRow extends React.Component {
   );
 
   renderCellWithHighlight = () => (
-    <Swipeout right={swipeoutBtns} backgroundColor={'red'}>
+    <Swipeout right={swipeoutBtns} backgroundColor={'white'}>
     <TouchableHighlight onPress={()=>this.props.chatDetail()}>
       {this.renderCell()}
     </TouchableHighlight>

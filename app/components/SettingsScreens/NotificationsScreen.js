@@ -11,15 +11,21 @@ import { bindActionCreators } from 'redux';
 import Button from 'react-native-button';
 import images from '@assets/images';
 
-import EditProfileScrollView from '../PersonalProfile/EditProfileScrollView'
+import NotificationsList from '../Settings/NotificationsList'
+import Icon from 'react-native-vector-icons/EvilIcons';
 
 
-export class EditScreen extends React.Component {
+
+export class NotificationsScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
     title: 'Scoop',
     // TODO: Add Settings page
-    headerRight: <Button onPress={() => navigation.navigate('Settings')}>
-                         <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Settings</Text>
+    headerLeft: <Button onPress={() => navigation.goBack()}>
+                    <Icon name="chevron-left" size={50} color="white" />
+                    <Text style={{
+                       fontFamily:'Avenir-Light', marginLeft: -15,
+                       fontSize: 18, color:'white'}}>Back
+                   </Text>
                  </Button>,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color: 'white', alignSelf:'center'}
@@ -27,7 +33,7 @@ export class EditScreen extends React.Component {
 
   render() {
     return(
-      <EditProfileScrollView />
+        <NotificationsList />
     )
   }
 }
@@ -41,4 +47,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationsScreen);

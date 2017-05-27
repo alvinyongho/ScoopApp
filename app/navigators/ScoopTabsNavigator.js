@@ -27,10 +27,15 @@ class MessageTabNavigator extends React.Component {
     this.props.navigation.setParams({hideTabBar: false})
   }
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
+  static navigationOptions = ({ navigation, screenProps }) => {
+    // if(navigation.state.params != undefined){
+    //   navigation.setParams({hideTabBar: false})
+    // }
+
+    return ({
     tabBarLabel: 'Message',
-    tabBarVisible: !navigation.state.params.hideTabBar
-  })
+    tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true
+  })}
 
   render() {
     return (

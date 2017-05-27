@@ -19,7 +19,7 @@ export default class ConnectedAppsRow extends Component {
 
   render(){
     return (
-      <View style={{paddingLeft: 15}}>
+      <View style={{paddingLeft: 15, backgroundColor:'white'}}>
 
         <AppSwitchRow changeScrollState={this.props.changeScrollState} showSlider={true}rowItemName="Facebook"/>
         <RowDivider />
