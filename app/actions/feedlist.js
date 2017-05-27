@@ -47,31 +47,18 @@ export function fetchMatches(match_attributes){
     //                ]);
 
     let retrievedFeedResult = performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
-
         const response = results.users.map((user, index) => {
           console.log(user.name)
           return {
             id: user.userId,
-            name: user.name
-            // name: 
+            name: user.name,
+            image: user.picURL,
+            jobTitle: user.jobTitle
           }
-
         })
-        
         dispatch(setFoundMatches( { matches_found: response } ));
-
-
     });
-  
-    
-
-
-
-
-    // then
-
   }
-
 }
 
 // Set found matches takes in a payload of fetched matches (args) => args.matches_found
