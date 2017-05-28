@@ -1,17 +1,15 @@
 import * as types from './types'
-import { performLoadFeedTask } from '../lib/scoopAPI'
+import { performLoadFeedTask, performLoadProfileTask } from '../lib/scoopAPI'
 
 
 // Make async call to the web service to retrieve the user specific information
 export function fetchUser(targetId){
   return (dispatch, getState) => {
     performLoadProfileTask(targetId).then((results) => {
-      const response = results.map((detailType, index) => {
-        return {
-          // param1: detailType.typeDef
-        }
-      })
-      dispatch(viewProfile({user_details:response}))
+      console.log("result of performing load profile task")
+      // console.log(results.userInfo)
+      const response = results.userInfo
+      dispatch(viewProfile({user_information:response}))
     })
   }
 }
@@ -51,9 +49,9 @@ export function addMatch() {
   }
 }
 
-export function viewProfile( {user_details} ){
+export function viewProfile( {user_information} ){
   return {
     type: types.VIEW_PROFILE,
-    user_details
+    user_information
   }
 }
