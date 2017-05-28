@@ -1,23 +1,23 @@
 import * as types from './types'
+import { performLoadFeedTask } from '../lib/scoopAPI'
 
 
 // Make async call to the web service to get the list of matches that
 // fit in the criterias defined by match attributes
 export function fetchMatches(match_attributes){
   return(dispatch, getState) => {
-    console.log(getState());
-
-    // Placeholder response object
-    let response = ([{id: 0, 'name': 'IU', 'description': 'Kpop Singer'},
-                     {id: 1, 'name': 'Forrest Gump', 'description': 'Tom Hanks'},
-                     {id: 2, 'name': 'James Bond', 'description': 'Secret Service Agent'}
-                   ]);
-
-    // then
-    dispatch(setFoundMatches( { matches_found: response } ));
-
+    performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
+      const response = results.users.map((user, index) => {
+        return {
+          id: user.userId,
+          name: user.name,
+          image: user.picURL,
+          jobTitle: user.jobTitle
+        }
+      })
+      dispatch(setFoundMatches( { matches_found: response } ));
+    });
   }
-
 }
 
 // Set found matches takes in a payload of fetched matches (args) => args.matches_found

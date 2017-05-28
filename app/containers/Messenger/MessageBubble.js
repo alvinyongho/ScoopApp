@@ -40,16 +40,7 @@ export default class MessageBubble extends Component{
     }}>
 
       <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={{
-            flex: -1,
-            marginLeft: max_margin_to_screen,
-            marginRight: screen_padding,
-            backgroundColor: 'skyblue',
-            borderRadius: 10,
-            padding: 5,
-            paddingLeft: 8,
-            paddingRight: 8,
-          }}>
+        <View style={styles.rightBubble}>
           <Text style={{
                     color: 'white',
                     fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> This is a very long line lol with a lot of additional other text that will extend to the next line maybe </Text>
@@ -57,16 +48,7 @@ export default class MessageBubble extends Component{
       </View>
 
       <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={{
-            flex: -1,
-            marginLeft: max_margin_to_screen,
-            marginRight: screen_padding,
-            backgroundColor: 'skyblue',
-            borderRadius: 10,
-            padding: 5,
-            paddingLeft: 8,
-            paddingRight: 8,
-          }}>
+        <View style={styles.rightBubble}>
           <Text style={{
                     color: 'white',
                     fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> LOL </Text>
@@ -75,9 +57,6 @@ export default class MessageBubble extends Component{
       </View>
     </View>
 
-
-
-
     {/* REPLY */}
     <View style={{
     alignItems: 'flex-start',
@@ -85,16 +64,7 @@ export default class MessageBubble extends Component{
     }}>
 
       <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={{
-            flex: -1,
-            marginLeft: screen_padding,
-            marginRight: max_margin_to_screen,
-            backgroundColor: 'pink',
-            borderRadius: 10,
-            padding: 5,
-            paddingLeft: 8,
-            paddingRight: 8,
-          }}>
+        <View style={styles.leftBubble}>
           <Text style={{
                     color: 'white',
                     fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> This is the reply </Text>
@@ -102,16 +72,7 @@ export default class MessageBubble extends Component{
       </View>
 
       <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={{
-            flex: -1,
-            marginLeft: screen_padding,
-            marginRight: max_margin_to_screen,
-            backgroundColor: 'pink',
-            borderRadius: 10,
-            padding: 5,
-            paddingLeft: 8,
-            paddingRight: 8,
-          }}>
+        <View style={styles.leftBubble}>
           <Text style={{
                     color: 'white',
                     fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> Ayyyy </Text>
@@ -127,19 +88,24 @@ export default class MessageBubble extends Component{
 
 
 var styles = StyleSheet.create({
-  // container: {
-  //   marginBottom: 15
-  // },
-  // rightBubble: {
-  //   borderRadius: 7,
-  //   padding: 10,
-  //   height: 35,
-  //   backgroundColor: 'blue'
-  // },
-  // leftBubble: {
-  //   borderRadius: 7,
-  //   padding: 10,
-  //   height: 35,
-  //   backgroundColor: 'red'
-  // }
+  rightBubble: {
+      flex: -1,
+      marginLeft: max_margin_to_screen,
+      marginRight: screen_padding,
+      backgroundColor: 'skyblue',
+      borderRadius: 10,
+      padding: 5,
+      paddingLeft: 8,
+      paddingRight: 8,
+    },
+    leftBubble: {
+      flex: -1,
+      marginLeft: screen_padding,
+      marginRight: max_margin_to_screen,
+      backgroundColor: 'pink',
+      borderRadius: 10,
+      padding: 5,
+      paddingLeft: 8,
+      paddingRight: 8,
+    }
 })

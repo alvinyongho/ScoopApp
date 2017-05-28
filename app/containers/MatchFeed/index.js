@@ -73,7 +73,31 @@ class MatchFeed extends Component{
     this.searchMatches();
   }
 
-  _onPressProfile = () => (this.props.profile());
+
+  _renderImage = (match) => {
+    if(match.image){
+      console.log(match.image)
+      return(
+        <Image style={{flex:1}} source={{uri:match.image}}>
+          <Text style={styles.profileName}>{match.name}</Text>
+          <Text style={styles.profileDescription}>{match.jobTitle}</Text>
+        </Image>
+      );
+    }
+    // Return a gray view image is missing
+    return(
+      <View style={{flex:1, backgroundColor:'gray'}}>
+        <Text style={styles.profileName}>{match.name}</Text>
+        <Text style={styles.profileDescription}>{match.description}</Text>
+      </View>
+    );
+  }
+
+
+  _onPressProfile = () => {
+    // retrieve the userid of selected and set the state tree accordingly
+    this.props.profile()
+  };
 
   render(){
     return (
@@ -104,11 +128,8 @@ class MatchFeed extends Component{
 
                 <View style={styles.profileSlide}>
                   <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
-                    <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
-                      <View>
-                      <Text style={styles.profileName}>{match.name}</Text>
-                      <Text style={styles.profileDescription}>{match.description}</Text>
-                      </View>
+                    <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
+                      {this._renderImage(match)}
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -163,11 +184,17 @@ var styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: '500',
+    position: 'absolute',
+    bottom: 27,
+    left: 10,
   },
   profileDescription: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '200',
+    fontWeight: '300',
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
   }
 
 })
