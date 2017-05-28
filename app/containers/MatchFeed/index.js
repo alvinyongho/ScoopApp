@@ -84,6 +84,8 @@ class MatchFeed extends Component{
       </Image>
     );
     }
+
+    // If image is missing
     return(
       <Image>
         <Text style={styles.profileName}>{match.name}</Text>
@@ -124,7 +126,11 @@ class MatchFeed extends Component{
 
                 <View style={styles.profileSlide}>
                   <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
+<<<<<<< HEAD
                     <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
+=======
+                    <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
+>>>>>>> fixed image margines
                       {this._renderImage(match)}
                     </TouchableHighlight>
                   </View>
@@ -179,11 +185,17 @@ var styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: '500',
+    position: 'absolute',
+    bottom: 27,
+    left: 10,
   },
   profileDescription: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '200',
+    position: 'absolute',
+    bottom: 15,
+    left: 10,
   }
 
 })
