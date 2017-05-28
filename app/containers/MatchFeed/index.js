@@ -76,21 +76,20 @@ class MatchFeed extends Component{
 
   _renderImage = (match) => {
     if(match.image){
-
       console.log(match.image)
-      return(<Image style={{flex:1}} source={{uri:match.image}}>
-        <Text style={styles.profileName}>{match.name}</Text>
-        <Text style={styles.profileDescription}>{match.description}</Text>
-      </Image>
-    );
+      return(
+        <Image style={{flex:1}} source={{uri:match.image}}>
+          <Text style={styles.profileName}>{match.name}</Text>
+          <Text style={styles.profileDescription}>{match.description}</Text>
+        </Image>
+      );
     }
-
-    // If image is missing
+    // Return a gray view image is missing
     return(
-      <Image>
+      <View style={{flex:1, backgroundColor:'gray'}}>
         <Text style={styles.profileName}>{match.name}</Text>
         <Text style={styles.profileDescription}>{match.description}</Text>
-      </Image>
+      </View>
     );
   }
 
