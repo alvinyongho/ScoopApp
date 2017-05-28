@@ -33,18 +33,6 @@ async function performLoadFeedTask(userId, userToken){
 // fit in the criterias defined by match attributes
 export function fetchMatches(match_attributes){
   return(dispatch, getState) => {
-    console.log(getState());
-
-    console.log("Attempting to perform task: loadFeed")
-    // Placeholder response object
-
-    // performLoadFeedTask(579, 'bdvvqtctgs');
-
-
-    // let response = ([{id: 0, 'name': 'IU', 'description': 'Kpop Singer'},
-    //                  {id: 1, 'name': 'Forrest Gump', 'description': 'Tom Hanks'},
-    //                  {id: 2, 'name': 'James Bond', 'description': 'Secret Service Agent'}
-    //                ]);
 
     let retrievedFeedResult = performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
         const response = results.users.map((user, index) => {
