@@ -125,9 +125,7 @@ class MatchFeed extends Component{
                 <View style={styles.profileSlide}>
                   <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
                     <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
-
-                    {this._renderImage(match)}
-
+                      {this._renderImage(match)}
                     </TouchableHighlight>
                   </View>
                 </View>
@@ -135,7 +133,6 @@ class MatchFeed extends Component{
                   <Text style={styles.text}>Not Interested</Text>
                 </View>
               </Swiper>
-
               </View>
             );
             })}
