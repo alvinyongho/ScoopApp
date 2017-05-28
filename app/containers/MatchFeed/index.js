@@ -125,11 +125,7 @@ class MatchFeed extends Component{
 
                 <View style={styles.profileSlide}>
                   <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
-<<<<<<< HEAD
-                    <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
-=======
                     <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
->>>>>>> fixed image margines
                       {this._renderImage(match)}
                     </TouchableHighlight>
                   </View>
