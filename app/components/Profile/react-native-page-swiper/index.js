@@ -52,6 +52,8 @@ export default class Swiper extends Component {
       }
 
       this.goToPage(newIndex);
+      this.props.onDragRelease();
+      
     };
 
     this._panResponder = PanResponder.create({
@@ -70,10 +72,13 @@ export default class Swiper extends Component {
 
       },
 
+      onPanResponderGrant: (e, gestureState) => {
+        this.props.onDragStart();
+      },
+
       // Touch is released, scroll to the one that you're closest to
       onPanResponderRelease: release,
       onPanResponderTerminate: release,
-
 
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
