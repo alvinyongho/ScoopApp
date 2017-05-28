@@ -4,8 +4,8 @@ import * as types from './types'
 
 async function performLoadFeedTask(userId, userToken){
   try{
-    
-      
+
+
     let response = await fetch('https://scoopdatingapp.com/api/',{
       method: 'POST',
       headers: {
@@ -13,7 +13,7 @@ async function performLoadFeedTask(userId, userToken){
         'Content-Type': 'application/x-www-form-urlencoded',
 
       },
-      body: 
+      body:
         `task=loadFeed&userId=${userId}&userToken=${userToken}&z=scoo`
     })
     let responseJson = await response.json()
@@ -34,11 +34,11 @@ async function performLoadFeedTask(userId, userToken){
 export function fetchMatches(match_attributes){
   return(dispatch, getState) => {
     console.log(getState());
-    
+
     console.log("Attempting to perform task: loadFeed")
     // Placeholder response object
 
-    // performLoadFeedTask(579, 'bdvvqtctgs');   
+    // performLoadFeedTask(579, 'bdvvqtctgs');
 
 
     // let response = ([{id: 0, 'name': 'IU', 'description': 'Kpop Singer'},
@@ -48,7 +48,7 @@ export function fetchMatches(match_attributes){
 
     let retrievedFeedResult = performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
         const response = results.users.map((user, index) => {
-          console.log(user.name)
+          console.log(user)
           return {
             id: user.userId,
             name: user.name,
