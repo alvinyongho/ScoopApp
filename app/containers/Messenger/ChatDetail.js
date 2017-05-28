@@ -69,7 +69,6 @@ export default class ChatDetail extends Component{
 
   render(){
     return(
-
       <Animated.View style={[styles.container, {paddingBottom: this.keyboardHeight}]}>
           <ScrollView style={styles.container}>
             <View style={styles.datetimeContainer}>

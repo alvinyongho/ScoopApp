@@ -26,9 +26,6 @@ export default class MessageBubble extends Component{
     super(props)
   }
 
-  getBubbleStyle = (shiftAmount) => {
-  }
-
   render(){
     if(this.props.isSelf) {
       return(
