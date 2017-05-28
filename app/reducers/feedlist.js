@@ -18,3 +18,11 @@ export const matchCount = createReducer(0, {
     return action.matches_found.length;
   },
 });
+
+
+// Sets the state variable profile detail to the retrieved user information
+export const viewingProfileDetail = createReducer({}, {
+  [types.VIEW_PROFILE](state, action){
+    return action.user_information;
+  }
+})
