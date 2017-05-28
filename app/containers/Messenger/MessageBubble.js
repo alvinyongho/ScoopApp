@@ -30,64 +30,49 @@ export default class MessageBubble extends Component{
   }
 
   render(){
-    return(
-
-    <View>
-
-    <View style={{
-    alignItems: 'flex-end',
-    justifyContent: 'flex-start',
-    }}>
-
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={styles.rightBubble}>
-          <Text style={{
-                    color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> This is a very long line lol with a lot of additional other text that will extend to the next line maybe </Text>
+    if(this.props.isSelf) {
+      return(
+        <View>
+          <View style={styles.rightBubblePosition}>
+            <View style={styles.rowSpacing}>
+              <View style={styles.rightBubble}>
+                <Text style={styles.fontStyle}>{this.props.text}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      )
+    }
+    {/*REPLY*/}
+    return (
+      <View>
+        <View style={styles.leftBubblePosition}>
+          <View style={styles.rowSpacing}>
+            <View style={styles.leftBubble}>
+              <Text style={styles.fontStyle}>{this.props.text}</Text>
+            </View>
+          </View>
         </View>
       </View>
-
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={styles.rightBubble}>
-          <Text style={{
-                    color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> LOL </Text>
-
-        </View>
-      </View>
-    </View>
-
-    {/* REPLY */}
-    <View style={{
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    }}>
-
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={styles.leftBubble}>
-          <Text style={{
-                    color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> This is the reply </Text>
-        </View>
-      </View>
-
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={styles.leftBubble}>
-          <Text style={{
-                    color: 'white',
-                    fontFamily:'Avenir-Light', fontSize:fontSizeValue}}> Ayyyy </Text>
-
-        </View>
-      </View>
-    </View>
-
-    </View>
-  );
+    );
   }
 }
 
 
 var styles = StyleSheet.create({
+  fontStyle: {
+    color: 'white',
+    fontFamily:'Avenir-Light', 
+    fontSize: fontSizeValue
+  },
+  rowSpacing: {
+    flexDirection: 'row', 
+    marginTop: 10
+  },
+  rightBubblePosition: {
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+  },
   rightBubble: {
       flex: -1,
       marginLeft: max_margin_to_screen,
@@ -97,6 +82,10 @@ var styles = StyleSheet.create({
       padding: 5,
       paddingLeft: 8,
       paddingRight: 8,
+    },
+    leftBubblePosition: {
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
     },
     leftBubble: {
       flex: -1,
