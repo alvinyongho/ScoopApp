@@ -11,23 +11,34 @@ import Swiper from './react-native-page-swiper';
 
 
 export default class ProfileAlbum extends Component {
+  constructor(props){
+    super(props)
+
+  }
+
+  profilePictures = () => {
+    let images = ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoATq1SmLUkOaq2RpPEEEhopjLQAofuZzj2dAytm9GuI9331vY8O10XOU',
+              'https://static.pexels.com/photos/59523/pexels-photo-59523.jpeg'
+  ]
+
+    return pictureViews = images.map((imgsource, index) =>{
+      if(imgsource){
+        return(
+          <Image key={'albumPicture'+index} source={{uri:imgsource}} style={styles.profilePicture}>
+            <View style={styles.flag} />
+          </Image>
+        )
+      }
+      return null
+
+    })
+  }
+
   render(){
     return(
       <View style={styles.wrapper}>
       <Swiper showsButtons={true} loop={false}>
-
-        <View style={styles.profilePicture}>
-          <View style={styles.flag}>
-          </View>
-        </View>
-        <View style={styles.profilePicture}>
-          <View style={styles.flag}>
-          </View>
-        </View>
-        <View style={styles.profilePicture}>
-          <View style={styles.flag}>
-          </View>
-        </View>
+        {this.profilePictures(this.props.images)}
       </Swiper>
       </View>
     )
