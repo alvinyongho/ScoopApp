@@ -16,21 +16,17 @@ export default class ProfileAlbum extends Component {
 
   }
 
-  profilePictures = () => {
-    let images = ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoATq1SmLUkOaq2RpPEEEhopjLQAofuZzj2dAytm9GuI9331vY8O10XOU',
-              'https://static.pexels.com/photos/59523/pexels-photo-59523.jpeg'
-  ]
+  profilePictures = (images) => {
 
+    if(images === undefined) return null
     return pictureViews = images.map((imgsource, index) =>{
-      if(imgsource){
-        return(
-          <Image key={'albumPicture'+index} source={{uri:imgsource}} style={styles.profilePicture}>
-            <View style={styles.flag} />
-          </Image>
-        )
-      }
-      return null
-
+        if(imgsource){
+          return(
+            <Image key={'albumPicture'+index} source={{uri:imgsource}} style={styles.profilePicture}>
+              <View style={styles.flag} />
+            </Image>
+          )
+        }
     })
   }
 

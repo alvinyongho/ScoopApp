@@ -38,7 +38,13 @@ export class ProfileDetail extends Component {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled}>
-          <ProfileAlbum changeScrollState={this.changeScrollState}/>
+          {this.props.userDetail.images && 
+            <ProfileAlbum 
+              images={this.props.userDetail.images} 
+              changeScrollState={this.changeScrollState}
+            />
+          }
+            
           <ProfileBasicInfo />
           <SendMessageButton />
 
