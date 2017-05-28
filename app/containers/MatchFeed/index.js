@@ -80,7 +80,7 @@ class MatchFeed extends Component{
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
           <Text style={styles.profileName}>{match.name}</Text>
-          <Text style={styles.profileDescription}>{match.description}</Text>
+          <Text style={styles.profileDescription}>{match.jobTitle}</Text>
         </Image>
       );
     }
@@ -188,9 +188,9 @@ var styles = StyleSheet.create({
   profileDescription: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '200',
+    fontWeight: '300',
     position: 'absolute',
-    bottom: 15,
+    bottom: 10,
     left: 10,
   }
 
