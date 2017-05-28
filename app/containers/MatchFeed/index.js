@@ -105,10 +105,11 @@ class MatchFeed extends Component{
                 <View style={styles.profileSlide}>
                   <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
                     <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, padding:10, backgroundColor: 'gray', justifyContent:'flex-end'}}>
-                      <View>
-                      <Text style={styles.profileName}>{match.name}</Text>
-                      <Text style={styles.profileDescription}>{match.description}</Text>
-                      </View>
+                      <Image source={{uri: match.image}}>
+                        {console.log(match.image)}
+                        <Text style={styles.profileName}>{match.name}</Text>
+                        <Text style={styles.profileDescription}>{match.description}</Text>
+                      </Image>
                     </TouchableHighlight>
                   </View>
                 </View>
