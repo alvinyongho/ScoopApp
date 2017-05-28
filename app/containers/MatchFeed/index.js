@@ -97,6 +97,7 @@ class MatchFeed extends Component{
     // fire an action to perform the get user task of selected and set the state tree accordingly
     // populate the profile detail
     console.log(`TODO: get user task of ${matchId}`)
+    this.props.fetchUser(matchId)
     this.props.profile()
   };
 
