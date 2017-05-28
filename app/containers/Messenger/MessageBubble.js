@@ -29,12 +29,10 @@ export default class MessageBubble extends Component{
   render(){
     if(this.props.isSelf) {
       return(
-        <View>
-          <View style={styles.rightBubblePosition}>
-            <View style={styles.rowSpacing}>
-              <View style={styles.rightBubble}>
-                <Text style={styles.fontStyle}>{this.props.text}</Text>
-              </View>
+        <View style={styles.rightBubblePosition}>
+          <View style={styles.rowSpacing}>
+            <View style={styles.rightBubble}>
+              <Text style={styles.fontStyle}>{this.props.text}</Text>
             </View>
           </View>
         </View>
@@ -42,12 +40,10 @@ export default class MessageBubble extends Component{
     }
     {/*REPLY*/}
     return (
-      <View>
-        <View style={styles.leftBubblePosition}>
-          <View style={styles.rowSpacing}>
-            <View style={styles.leftBubble}>
-              <Text style={styles.fontStyle}>{this.props.text}</Text>
-            </View>
+      <View style={styles.leftBubblePosition}>
+        <View style={styles.rowSpacing}>
+          <View style={styles.leftBubble}>
+            <Text style={styles.fontStyle}>{this.props.text}</Text>
           </View>
         </View>
       </View>
