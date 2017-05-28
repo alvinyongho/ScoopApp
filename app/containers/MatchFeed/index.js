@@ -76,7 +76,6 @@ class MatchFeed extends Component{
 
   _renderImage = (match) => {
     if(match.image){
-      console.log(match.image)
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
           <Text style={styles.profileName}>{match.name}</Text>
@@ -94,8 +93,10 @@ class MatchFeed extends Component{
   }
 
 
-  _onPressProfile = () => {
-    // retrieve the userid of selected and set the state tree accordingly
+  _onPressProfile = (matchId) => {
+    // fire an action to perform the get user task of selected and set the state tree accordingly
+    // populate the profile detail
+    console.log(`TODO: get user task of ${matchId}`)
     this.props.profile()
   };
 
@@ -128,7 +129,7 @@ class MatchFeed extends Component{
 
                 <View style={styles.profileSlide}>
                   <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
-                    <TouchableHighlight onPress={this._onPressProfile} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
+                    <TouchableHighlight onPress={() => this._onPressProfile(match.id)} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
                       {this._renderImage(match)}
                     </TouchableHighlight>
                   </View>
