@@ -75,8 +75,8 @@ export default class ChatDetail extends Component{
             <View style={styles.datetimeContainer}>
               <Text style={styles.datetimeText}>April 28, 2017  8:10 PM</Text>
             </View>
-            <MessageBubble />
-
+            <MessageBubble isSelf={true} text={'This is a very long line lol with a lot of additional other text that will extend to the next line maybe'}/>
+            <MessageBubble isSelf={false} text={'hello'} />
           </ScrollView>
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
