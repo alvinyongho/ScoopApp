@@ -94,7 +94,10 @@ class MatchFeed extends Component{
   }
 
 
-  _onPressProfile = () => (this.props.profile());
+  _onPressProfile = () => {
+    // retrieve the userid of selected and set the state tree accordingly
+    this.props.profile()
+  };
 
   render(){
     return (
