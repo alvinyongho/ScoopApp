@@ -2,6 +2,21 @@ import * as types from './types'
 import { performLoadFeedTask } from '../lib/scoopAPI'
 
 
+// Make async call to the web service to retrieve the user specific information
+export function fetchUser(targetId){
+  return (dispatch, getState) => {
+    performLoadProfileTask(targetId).then((results) => {
+      const response = results.map((detailType, index) => {
+        return {
+          // param1: detailType.typeDef
+        }
+      })
+      dispatch(viewProfile({user_details:response}))
+    })
+  }
+}
+
+
 // Make async call to the web service to get the list of matches that
 // fit in the criterias defined by match attributes
 export function fetchMatches(match_attributes){
@@ -33,5 +48,12 @@ export function setFoundMatches( { matches_found } ){
 export function addMatch() {
   return {
     type: types.ADD_MATCH,
+  }
+}
+
+export function viewProfile( {user_details} ){
+  return {
+    type: types.VIEW_PROFILE,
+    user_details
   }
 }
