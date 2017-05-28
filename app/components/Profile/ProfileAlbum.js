@@ -37,7 +37,12 @@ export default class ProfileAlbum extends Component {
   render(){
     return(
       <View style={styles.wrapper}>
-      <Swiper showsButtons={true} loop={false}>
+      <Swiper 
+        showsButtons={true} 
+        loop={false} 
+        onDragRelease={() => this.props.changeScrollState(true)}
+        onDragStart={() => this.props.changeScrollState(false)}
+      >
         {this.profilePictures(this.props.images)}
       </Swiper>
       </View>
