@@ -1,50 +1,21 @@
 import * as types from './types'
-
-
-
-async function performLoadFeedTask(userId, userToken){
-  try{
-
-
-    let response = await fetch('https://scoopdatingapp.com/api/',{
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-
-      },
-      body:
-        `task=loadFeed&userId=${userId}&userToken=${userToken}&z=scoo`
-    })
-    let responseJson = await response.json()
-
-    // console.log(responseJson.results.users)
-    return responseJson.results
-
-
-  } catch(error) {
-    console.log(error);
-  }
-}
-
+import { performLoadFeedTask } from '../lib/scoopAPI'
 
 
 // Make async call to the web service to get the list of matches that
 // fit in the criterias defined by match attributes
 export function fetchMatches(match_attributes){
   return(dispatch, getState) => {
-
-    let retrievedFeedResult = performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
-        const response = results.users.map((user, index) => {
-          console.log(user)
-          return {
-            id: user.userId,
-            name: user.name,
-            image: user.picURL,
-            jobTitle: user.jobTitle
-          }
-        })
-        dispatch(setFoundMatches( { matches_found: response } ));
+    performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
+      const response = results.users.map((user, index) => {
+        return {
+          id: user.userId,
+          name: user.name,
+          image: user.picURL,
+          jobTitle: user.jobTitle
+        }
+      })
+      dispatch(setFoundMatches( { matches_found: response } ));
     });
   }
 }
