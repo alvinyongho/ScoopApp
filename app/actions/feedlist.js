@@ -1,5 +1,8 @@
 import * as types from './types'
-import { performLoadFeedTask, performLoadProfileTask } from '../lib/scoopAPI'
+import {
+  performLoadFeedTask,
+  performLoadProfileTask,
+  performLoadFeedWithNoGeo } from '../lib/scoopAPI'
 
 
 // Make async call to the web service to retrieve the user specific information
@@ -38,12 +41,8 @@ export function fetchMatches(match_attributes){
 }
 
 export function fetchFilters(match_attributes){
-  let lon = match_attributes.position.coords.longitude
-  let lat = match_attributes.position.coords.latitude
-
   return(dispatch, getState) => {
-    performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
-
+    performLoadFeedWithNoGeo(579, 'bdvvqtctgs').then((results) => {
       console.log(results)
       // const response = results.map((result, index) => {
       //   console.log(user)

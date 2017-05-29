@@ -175,7 +175,7 @@ export class Filter extends Component {
 
   componentDidMount(){
     // get the filter settings
-    // this.props.fetchFilters()
+    this.props.fetchFilters()
 
 
   }
