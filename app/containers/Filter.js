@@ -11,8 +11,11 @@ import {
   Image
 } from 'react-native';
 
+
+import FilterItem from '../components/Filter/FilterItem'
+import MultiSlider from '../components/Filter/MultiSlider'
+
 import Dimensions from 'Dimensions';
-import MultiSlider from '../components/MultiSlider/MultiSlider'
 import images from '@assets/images';
 // import NavigationBar from '../components/NavigationBar';
 // To Pass dispatching actions to containers
@@ -30,141 +33,13 @@ const SLIDER_LENGTH = screenWidth - (2*LEFT_RIGHT_PADDING)
 const SLIDER_HEIGHT = 30
 
 
-class FilterItem extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      leftValue: 0,
-      rightValue: 1,
-      defaultValue: null,   // Default type of slider
-      stepValue: null,
-    };
-  }
-
-  updateState(value){
-    switch(this.props.sliderType){
-      case 'step':
-        console.log('step')
-        console.log(value.newValue)
-        break;
-      case 'multi':
-        console.log('multi')
-        console.log(value.left)
-        console.log(value.right)
-
-        this.setState({
-                        leftValue: value.left,
-                        rightValue: value.right
-                     })
-        break;
-      default:
-        console.log('default')
-        console.log(value.newValue)
-    }
-  }
-
-  render() {
-    const {
-      attributeText,
-      statusText,
-      attrLeftText,
-      attrRightText,
-      attrMidText,
-      sliderType,
-      disabled,
-      stepAmount,
-      trueMin,
-      trueMax,
-      ...other,
-    } = this.props;
-
-
-    let slider = null;
-    if (sliderType === 'multi'){
-      slider =
-      <View style={styles.sliderContainer}>
-              <MultiSlider
-                 trackWidth = {SLIDER_LENGTH}
-                 defaultTrackColor = {'#EFDAC6'}
-                 leftThumbColor = {'#ECA45C'}
-                 rightThumbColor = {'#ECA45C'}
-                 rangeColor = {'#ECA45C'}
-                 leftValue = {this.state.leftValue}
-                 rightValue = {this.state.rightValue}
-
-                 onLeftValueChange = {(leftValue) =>
-                   this.updateState({left: leftValue,
-                                     right: this.state.rightValue})}
-                 onRightValueChange = {(rightValue) =>
-                   this.updateState({left: this.state.leftValue,
-                                     right: rightValue})}
-               />
-
-      </View>
-    }
-    if (sliderType === 'step') {
-      slider = <Slider step={this.props.stepAmount}
-                  trackImage={images.sliderSnapTrack}
-                  thumbImage={images.sliderThumb}
-                  thumbTintColor={'#ECA45C'}
-                  onValueChange = {(newValue) => this.updateState({newValue})}
-                  style={{marginLeft:20, marginRight:20}} />
-    } if(sliderType === 'default' ){
-      slider = <Slider
-                  trackImage={images.sliderTrack}
-                  thumbImage={images.sliderThumb}
-                  thumbTintColor={'#ECA45C'}
-                  onValueChange = {(newValue) => this.updateState({newValue})}
-                  style={{marginLeft:20, marginRight:20}} />
-    }
-
-
-    return(
-      <View style={{flexDirection: 'column', paddingTop:15, backgroundColor:'white'}}>
-        <View style={{width: screenWidth, height: ATTR_TITLE_HEIGHT}}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={[styles.attrTitleContainer, styles.hasLeftPadding]}>
-              <Text style={[{textAlign:'left'}, styles.attrTitleText]}>{this.props.attributeText}</Text>
-            </View>
-            <View style={[styles.attrTitleContainer, styles.hasRightPadding]}>
-              <Text style={[{textAlign:'right'}, styles.attrTitleText, styles.grayText]}>{this.props.statusText}</Text>
-            </View>
-          </View>
-        </View>
-
-        {slider}
-
-        <View style={{width: screenWidth, height: 30}}>
-          <View style={styles.attrValBottomBorder}>
-            {attrLeftText &&
-              <View style={styles.attrValueContainer}>
-                <Text style={[styles.attrValueText, styles.hasLeftPadding, {textAlign:'left'}, ]}>{this.props.attrLeftText}</Text>
-              </View>
-            }
-            {attrMidText &&
-              <View style={styles.attrValueContainer}>
-                <Text style={[styles.attrValueText, {textAlign:'center'}]}>{this.props.attrMidText}</Text>
-              </View>
-            }
-            {attrRightText &&
-              <View style={styles.attrValueContainer}>
-                <Text style={[styles.attrValueText, styles.hasRightPadding, {textAlign:'right'}]}>{this.props.attrRightText}</Text>
-              </View>
-            }
-          </View>
-        </View>
-
-      </View>
-
-    );
-  }
-}
-
 
 export class Filter extends Component {
   constructor(props) {
     super(props);
-    this.state = {filterSettings: []};
+    this.state = {searchRadius: 1,
+                      ageRange: {min:18, max:99},
+                 };
   }
 
   updateFilterSetting(filter) {
@@ -184,22 +59,41 @@ export class Filter extends Component {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView style={{height:screenHeight-110}}>
+
           <FilterItem
             attributeText='Search Radius'
-            statusText='200 miles'
+            statusText={`${this.state.searchRadius} miles`}
             sliderType='default'
+            maxValue='200'
+            onSliderUpdate={(value)=>{
+                let sliderValue = Math.floor(200*value)
+                this.setState({searchRadius: Math.max(1, sliderValue)})
+              }
+            }
           />
+
           <FilterItem
             attributeText='Age Range'
-            statusText='18 - 99 years'
-            trueMin={18}
-            trueMax={99}
+            statusText={`${this.state.ageRange.min} - ${this.state.ageRange.max}`}
             sliderType='multi'
+            onMultiSliderUpdate={(minMaxValues)=> {
+              let min = Math.floor(minMaxValues.left*81 + 18)
+              let max = Math.floor(minMaxValues.right*81 + 18)
+              this.setState({ageRange: {min: min,max: max}})
+            }}
           />
+
           <FilterItem
             attributeText='Height'
             statusText='3&#39;0&#34; - 8&#39;0&#34;'
             sliderType='multi'
+
+            onMultiSliderUpdate={(minMaxValues)=> {
+              let min = Math.floor(minMaxValues.left)
+              let max = Math.floor(minMaxValues.right)
+              this.setState({heightRange: {min: min,max: max}})
+            }}
+
           />
           <FilterItem
             attributeText='I Am Looking For'
@@ -218,6 +112,10 @@ export class Filter extends Component {
             sliderType='step'
             stepAmount={.5}
           />
+
+
+          <MultiSlider />
+
         </ScrollView>
       </View>
     );
