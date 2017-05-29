@@ -5,11 +5,15 @@ import { performLoadFeedTask, performLoadProfileTask } from '../lib/scoopAPI'
 // Make async call to the web service to retrieve the user specific information
 export function fetchUser(targetId){
   return (dispatch, getState) => {
+
+    dispatch(setLoadingUserStatus(true))
     performLoadProfileTask(targetId).then((results) => {
-      console.log("result of performing load profile task")
+      // console.log("result of performing load profile task")
       // console.log(results.userInfo)
       const response = results.userInfo
       dispatch(viewProfile({user_information:response}))
+      dispatch(setLoadingUserStatus(false))
+
     })
   }
 }
@@ -46,6 +50,13 @@ export function setFoundMatches( { matches_found } ){
 export function addMatch() {
   return {
     type: types.ADD_MATCH,
+  }
+}
+
+export function setLoadingUserStatus(is_loading){
+  return {
+    type: types.LOADING_USER,
+    is_loading
   }
 }
 
