@@ -32,6 +32,7 @@ export function facebookLoginAPI(){
 export function facebookLogoutAPI(){
   if(AccessToken.getCurrentAccessToken() != null){
     LoginManager.logOut();
+    console.log('logged out user')
   }
 }
 
