@@ -1,4 +1,4 @@
-import { facebookLoginAPI, getFacebookInfoAPI } from '../services/facebook';
+import { facebookLoginAPI, getFacebookInfoAPI, facebookLogoutAPI } from '../services/facebook';
 import * as types from './types'
 
 
@@ -23,9 +23,10 @@ export function facebookLogin() {
 }
 
 export function facebookLogout() {
+  facebookLogoutAPI()
+
   return (dispatch) => {
     dispatch(logout());
-    
   }
 }
 

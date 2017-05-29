@@ -11,14 +11,17 @@ import Swiper from './react-native-page-swiper';
 
 
 export default class ProfileBasicInfo extends Component {
+  constructor(props) {
+    super(props)
+  }
   render(){
     return(
       <View style={styles.wrapper}>
         <View style={{flex:.8}}>
-          <Text style={styles.mainheader}>Placeholder for a very long name here, 27</Text>
-          <Text style={styles.subheader}>62 mi away</Text>
-          <Text style={styles.subheader}>Yonsei University</Text>
-          <Text style={styles.subheader}>Single</Text>
+          <Text style={styles.mainheader}>{this.props.name}</Text>
+          <Text style={styles.subheader}>{this.props.distance}</Text>
+          <Text style={styles.subheader}>{this.props.schoolName}</Text>
+          <Text style={styles.subheader}>{this.props.relationshipStatus}</Text>
         </View>
 
         <View sytle={{flex:.2}}>

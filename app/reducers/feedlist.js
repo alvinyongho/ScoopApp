@@ -26,3 +26,10 @@ export const viewingProfileDetail = createReducer({}, {
     return action.user_information;
   }
 })
+
+
+export const isLoadingUser = createReducer(true, {
+  [types.LOADING_USER](state, action){
+    return action.is_loading;
+  }
+})
