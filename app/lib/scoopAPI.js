@@ -16,6 +16,10 @@ export async function performTaskWithParams(task, params){
   }
 }
 
+export function performSaveFilterSettings(userId, userToken, filterSettings){
+  return performTaskWithParams('saveFilterSettings', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&filterAgeMax=99&filterAgeMin=18&filterHeightMax=96&filterHeightMin=36&filterInterestedIn=3&filterLookingForMax=5&filterLookingForMin=1&filterSearchRadius=200`)
+}
+
 export function performLoadFeedWithNoGeo(userId, userToken){
   return performTaskWithParams('loadFeed', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}`)
 }
