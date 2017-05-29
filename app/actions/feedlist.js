@@ -21,7 +21,6 @@ export function fetchUser(targetId){
 
 export function reloadMatches(match_attributes){
   return(dispatch, getState) => {
-    console.log('getting state')
     let lon = getState().currentLocation.lon
     let lat = getState().currentLocation.lat
     performLoadFeedTask(579, 'bdvvqtctgs', lon, lat).then((results) => {
@@ -63,6 +62,8 @@ export function fetchMatches(match_attributes){
 export function saveFilters(save_filter_settings){
   return(dispatch, getState) => {
     performSaveFilterSettings(579, 'bdvvqtctgs').then((results) => {
+
+
       console.log(results)
     })
   }

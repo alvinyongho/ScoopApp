@@ -16,8 +16,23 @@ export async function performTaskWithParams(task, params){
   }
 }
 
+function filterSettingsParamString(filterSettings){
+  const filterStrArr = Object.keys(filterSettings).map((key, index) => {
+    return `${key}=${filterSettings[key]}`
+  })
+  return filterStrArr.join('&')
+}
+
 export function performSaveFilterSettings(userId, userToken, filterSettings){
-  return performTaskWithParams('saveFilterSettings', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&filterAgeMax=99&filterAgeMin=18&filterHeightMax=96&filterHeightMin=36&filterInterestedIn=3&filterLookingForMax=5&filterLookingForMin=1&filterSearchRadius=200`)
+  let paramString = filterSettingsParamString({ filterAgeMax: 99,
+                              filterAgeMin: 18,
+                              filterHeightMax:96,
+                              filterHeightMin: 36,
+                              filterInterestedIn:3,
+                              filterLookingForMax:5,
+                              filterLookingForMin: 1,
+                              filterSearchRadius:200 })
+  return performTaskWithParams('saveFilterSettings', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
 
 export function performLoadFeedWithNoGeo(userId, userToken){
