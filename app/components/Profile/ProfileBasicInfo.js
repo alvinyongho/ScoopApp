@@ -18,10 +18,10 @@ export default class ProfileBasicInfo extends Component {
     return(
       <View style={styles.wrapper}>
         <View style={{flex:.8}}>
-          <Text style={styles.mainheader}>{this.props.userBasicInfo.name}</Text>
-          <Text style={styles.subheader}>{this.props.userBasicInfo.distance}</Text>
-          <Text style={styles.subheader}>{this.props.userBasicInfo.schoolName}</Text>
-          <Text style={styles.subheader}>{this.props.userBasicInfo.relationshipStatus}</Text>
+          <Text style={styles.mainheader}>{this.props.name}</Text>
+          <Text style={styles.subheader}>{this.props.distance}</Text>
+          <Text style={styles.subheader}>{this.props.schoolName}</Text>
+          <Text style={styles.subheader}>{this.props.relationshipStatus}</Text>
         </View>
 
         <View sytle={{flex:.2}}>

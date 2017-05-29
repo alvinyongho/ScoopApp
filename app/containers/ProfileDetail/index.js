@@ -45,16 +45,16 @@ export class ProfileDetail extends Component {
             />
           }
 
+          {this.props.userDetail &&
           <ProfileBasicInfo
-            userBasicInfo={
-              {
-                name: this.props.userDetail.firstName,
-                distance: "62 mi",
-                schoolName: this.props.userDetail.schoolName,
-                relationshipStatus: "Single"
-              }
-            }/>
+                name = {this.props.userDetail.firstName}
+                distance = {"62 mi"}
+                schoolName = {this.props.userDetail.schoolName}
+                relationshipStatus = {"Single"}
+          />
+          }
           <SendMessageButton />
+
 
           <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
             <BasicRow rowItemName={'Height'} rowItemValue={<Text>5&#39; 6&#34;</Text>}/>
