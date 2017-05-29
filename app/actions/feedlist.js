@@ -8,8 +8,6 @@ export function fetchUser(targetId){
 
     dispatch(setLoadingUserStatus(true))
     performLoadProfileTask(targetId).then((results) => {
-      // console.log("result of performing load profile task")
-      // console.log(results.userInfo)
       const response = results.userInfo
       dispatch(viewProfile({user_information:response}))
       dispatch(setLoadingUserStatus(false))
@@ -35,7 +33,6 @@ export function fetchMatches(match_attributes){
     });
   }
 }
-
 
 // Set found matches takes in a payload of fetched matches (args) => args.matches_found
 // input: matches found
