@@ -18,7 +18,6 @@ export function fetchUser(targetId){
   }
 }
 
-
 // Make async call to the web service to get the list of matches that
 // fit in the criterias defined by match attributes
 export function fetchMatches(match_attributes){
@@ -36,6 +35,7 @@ export function fetchMatches(match_attributes){
     });
   }
 }
+
 
 // Set found matches takes in a payload of fetched matches (args) => args.matches_found
 // input: matches found
