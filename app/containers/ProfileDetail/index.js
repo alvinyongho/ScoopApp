@@ -35,6 +35,7 @@ export class ProfileDetail extends Component {
   }
 
   render() {
+    if(!this.props.isLoadingUser){
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled}>
@@ -141,6 +142,8 @@ export class ProfileDetail extends Component {
         </ScrollView>
       </View>
     );
+    }
+    return null
   }
 }
 
@@ -160,7 +163,8 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state) {
   return {
-    userDetail: state.viewingProfileDetail
+    userDetail: state.viewingProfileDetail,
+    isLoadingUser: state.isLoadingUser
   }
 }
 
