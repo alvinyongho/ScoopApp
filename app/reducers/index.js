@@ -12,8 +12,11 @@ import * as messengerNavReducer from './messengerNav';
 import * as tabNavReducer from './tabNav';
 
 
+import * as types from '../actions/types';
+
+
 // manage states using different reducers
-export default combineReducers(Object.assign(
+export const appReducer = combineReducers(Object.assign(
   feedlistReducer,
   authReducer,
   homeNavReducer,
@@ -22,3 +25,13 @@ export default combineReducers(Object.assign(
   messengerNavReducer,
   messengerReducer,
 ));
+
+
+
+export default rootReducer = (state, action) => {
+  if (action.type === types.LOGOUT) {
+    console.log('logging out!!!')
+    state = undefined
+  }
+  return appReducer(state, action)
+}

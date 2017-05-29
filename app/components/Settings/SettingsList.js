@@ -34,7 +34,7 @@ export class SettingsList extends React.Component {
         <RowDivider />
         <SettingsRow onClick={this.props.GoToSettingsPrivacy} rightComponent={'navigation'} title="Privacy"/>
         <RowDivider />
-        <SettingsRow onClick={()=>console.log('todo')} rightComponent={'navigation'} title="Logout"/>
+        <SettingsRow onClick={() => this.props.facebookLogout()} rightComponent={'navigation'} title="Logout"/>
         <RowDivider />
         <SettingsRow onClick={()=>console.log('todo')} rightComponent={'switch'} title="Hide Profile"/>
         <RowDivider />
