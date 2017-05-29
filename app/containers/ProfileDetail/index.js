@@ -18,7 +18,11 @@ import ProfileSlider from '../../components/Profile/ProfileTableRow/ProfileSlide
 
 import Button from 'react-native-button'
 
-export default class ProfileDetail extends Component {
+import { connect } from 'react-redux';
+import { ActionCreators } from '../../actions';
+import { bindActionCreators } from 'redux';
+
+export class ProfileDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,12 +35,27 @@ export default class ProfileDetail extends Component {
   }
 
   render() {
+    if(!this.props.isLoadingUser){
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled}>
-          <ProfileAlbum />
-          <ProfileBasicInfo />
+          {this.props.userDetail.images &&
+            <ProfileAlbum
+              images={this.props.userDetail.images}
+              changeScrollState={this.changeScrollState}
+            />
+          }
+
+          {this.props.userDetail &&
+          <ProfileBasicInfo
+                name = {this.props.userDetail.firstName}
+                distance = {"62 mi"}
+                schoolName = {this.props.userDetail.schoolName}
+                relationshipStatus = {"Single"}
+          />
+          }
           <SendMessageButton />
+
 
           <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
             <BasicRow rowItemName={'Height'} rowItemValue={<Text>5&#39; 6&#34;</Text>}/>
@@ -123,6 +142,8 @@ export default class ProfileDetail extends Component {
         </ScrollView>
       </View>
     );
+    }
+    return null
   }
 }
 
@@ -132,3 +153,20 @@ var styles = StyleSheet.create({
     height: 25, backgroundColor: '#E6E6E6'
   }
 });
+
+// maps action creator calls to a dispatch to update the tree
+// Bind actions (dispatcher) to props
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
+
+// Match state to props which allows us to access actions
+function mapStateToProps(state) {
+  return {
+    userDetail: state.viewingProfileDetail,
+    isLoadingUser: state.isLoadingUser
+  }
+}
+
+// Connects the state variables to the property variables within the home class
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileDetail)

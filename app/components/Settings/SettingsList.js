@@ -17,6 +17,7 @@ import { ActionCreators } from '../../actions';
 import { NavigationActions } from 'react-navigation';
 
 
+
 import SettingsRow from './SettingsRow'
 import SettingsRowSpacer from './SettingsRowSpacer'
 import RowDivider from '../Profile/ProfileTableRow/RowDivider'
@@ -33,7 +34,7 @@ export class SettingsList extends React.Component {
         <RowDivider />
         <SettingsRow onClick={this.props.GoToSettingsPrivacy} rightComponent={'navigation'} title="Privacy"/>
         <RowDivider />
-        <SettingsRow onClick={()=>console.log('todo')} rightComponent={'navigation'} title="Logout"/>
+        <SettingsRow onClick={() => this.props.facebookLogout()} rightComponent={'navigation'} title="Logout"/>
         <RowDivider />
         <SettingsRow onClick={()=>console.log('todo')} rightComponent={'switch'} title="Hide Profile"/>
         <RowDivider />
@@ -60,20 +61,10 @@ function mapStateToProps(state){
 }
 
 
-const mapDispatchToProps = dispatch => ({
-  GoToSettingsNotifications: () => dispatch(NavigationActions.navigate({ routeName: 'SettingsNotifications' })),
-  GoToSettingsPrivacy: () => dispatch(NavigationActions.navigate({ routeName: 'SettingsPrivacy' })),
-  GoToSettingsDeleteAccount: () => dispatch(NavigationActions.navigate({ routeName: 'SettingsDeleteAccount' })),
-  GoToSettingsPrivacyPolicy: () => dispatch(NavigationActions.navigate({ routeName: 'SettingsPrivacyPolicy' })),
-  GoToSettingsTOS: () => dispatch(NavigationActions.navigate({ routeName:'SettingsTOS' })),
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
-  //TODO:
-  GoToSettingsRateScoop: () => console.log('todo rate scoopp'),
-  Logout: () => console.log('todo logout'),
-  HideProfile: () => console.log('todo hide profile'),
-
-
-});
 
 
 // Connects the state variables to the property variables within
