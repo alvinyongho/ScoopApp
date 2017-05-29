@@ -45,7 +45,15 @@ export class ProfileDetail extends Component {
             />
           }
             
-          <ProfileBasicInfo />
+          <ProfileBasicInfo 
+            userBasicInfo={
+              {
+                name: this.props.userDetail.firstName,
+                distance: "62 mi",
+                schoolName: this.props.userDetail.schoolName,
+                relationshipStatus: "Single"
+              } 
+            }/>
           <SendMessageButton />
 
           <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
