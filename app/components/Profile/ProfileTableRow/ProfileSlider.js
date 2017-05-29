@@ -115,13 +115,19 @@ export class Slider extends Component {
 
   render(){
     return(
-      <View onLayout={this.setMaxWidth}
-        style={{height: 3, borderRadius:3/2, backgroundColor: 'purple', justifyContent: 'center'}}>
+
+      <View style={{justifyContent: 'center'}}>
+        <View onLayout={this.setMaxWidth}
+          style={{height: 3, borderRadius:3/2, backgroundColor: 'purple'}}>
+
+        </View>
+
         {this.state.maxWidth &&
-        <Animated.View onLayout={this.getPosition} {...this._panResponder.panHandlers} style={[this.getThumbStyle(), {justifyContent: 'center', alignItems: 'center'}]}>
+        <Animated.View onLayout={this.getPosition} {...this._panResponder.panHandlers} style={[this.getThumbStyle(), {position: 'absolute', justifyContent: 'center', alignItems: 'center'}]}>
           <View style={{height:THUMB_SIZE-THUMB_RADIUS, width: THUMB_SIZE-THUMB_RADIUS, borderRadius: (THUMB_SIZE-THUMB_RADIUS)/2, backgroundColor:'#54C9EC'}}/>
         </Animated.View>
         }
+
       </View>
     );
   }
