@@ -16,8 +16,12 @@ export async function performTaskWithParams(task, params){
   }
 }
 
-export function performLoadFeedTask(userId, userToken){
+export function performLoadFeedWithNoGeo(userId, userToken){
   return performTaskWithParams('loadFeed', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}`)
+}
+
+export function performLoadFeedTask(userId, userToken, lon, lat){
+  return performTaskWithParams('loadFeed', `lat=${lat}&lon=${lon}&userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}`)
 }
 
 export function performLoadProfileTask(targetId){
