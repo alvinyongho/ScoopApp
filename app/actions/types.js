@@ -14,7 +14,7 @@ export const LOGOUT = 'LOGOUT'
 // HOME COMPONENTS
 //  * feedlist
 export const VIEW_PROFILE  = 'VIEW_PROFILE'
-
+export const LOADING_USER  = 'LOADING_USER'
 
 
 //  * filters

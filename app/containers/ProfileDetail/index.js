@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from 'react-native';
 
 import ProfileAlbum from '../../components/Profile/ProfileAlbum'
@@ -36,102 +37,114 @@ export class ProfileDetail extends Component {
 
   render() {
     return(
-      <View style={{backgroundColor:'#E6E6E6'}}>
-        <ScrollView scrollEnabled={this.state.isScrollEnabled}>
-          {this.props.userDetail.images && 
-            <ProfileAlbum 
-              images={this.props.userDetail.images} 
-              changeScrollState={this.changeScrollState}
-            />
-          }
-            
-          <ProfileBasicInfo />
-          <SendMessageButton />
+      <View>
+        <View style={{backgroundColor:'#E6E6E6'}}>
 
-          <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
-            <BasicRow rowItemName={'Height'} rowItemValue={<Text>5&#39; 6&#34;</Text>}/>
-            <RowDivider />
-            <BasicRow rowItemName={'Job Title'}/>
-            <RowDivider />
-            <BasicRow rowItemName={'Height'} rowItemValue={<Text>Ask me!</Text>}/>
-            <RowDivider />
-            <BasicRow rowItemName={'Offspring'} rowItemValue={<Text>Ask me!</Text>}/>
-            <RowDivider />
-            <BasicRow rowItemName={'Body Type'} rowItemValue={<Text>Ask me!</Text>}/>
-          </View>
+          <ScrollView scrollEnabled={this.state.isScrollEnabled}>
+            {this.props.userDetail.images &&
+              <ProfileAlbum
+                images={this.props.userDetail.images}
+                changeScrollState={this.changeScrollState}
+              />
+            }
 
-          <SectionTitle title={'LOOKING FOR'}/>
-          <ProfileSlider changeScrollState={this.changeScrollState} />
+            <ProfileBasicInfo />
+            <SendMessageButton />
 
-          <SectionTitle title={'CONNECTED APPS'}/>
-          <View style={{backgroundColor:'white', paddingLeft: 15}}>
-            <View style={{justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
-              <View style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
-              <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
-              <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
+            <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
+              <BasicRow rowItemName={'Height'} rowItemValue={<Text>5&#39; 6&#34;</Text>}/>
+              <RowDivider />
+              <BasicRow rowItemName={'Job Title'}/>
+              <RowDivider />
+              <BasicRow rowItemName={'Height'} rowItemValue={<Text>Ask me!</Text>}/>
+              <RowDivider />
+              <BasicRow rowItemName={'Offspring'} rowItemValue={<Text>Ask me!</Text>}/>
+              <RowDivider />
+              <BasicRow rowItemName={'Body Type'} rowItemValue={<Text>Ask me!</Text>}/>
             </View>
 
-            <View style={{height:1, backgroundColor:'#E6E6E6'}} />
-            <View style={{height: 40, justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
-              <Text style={{fontSize: 16, fontFamily: 'Avenir-Light'}}>Coming Soon:</Text>
-                <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
-                <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
-                <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
-            </View>
-          </View>
+            <SectionTitle title={'LOOKING FOR'}/>
+            <ProfileSlider changeScrollState={this.changeScrollState} />
 
-          <SectionTitle title={'THEIR INTERESTS'}/>
-          <View style={{height: 120, backgroundColor: 'white', justifyContent: 'center'}}>
-            <View style={{justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
-
-              {/* Interest 1 */}
-              <View style={{height:120, width:90, flexDirection: 'column'}}>
-                <View style={{flex:.75, alignItems:'center', justifyContent: 'center'}}>
-                  <View style={{width: 65, height: 65, borderRadius: 65/2, backgroundColor: 'orange'}} />
-                  <View style={{position: 'absolute',top:5, left:5, width:23, height: 23, backgroundColor: 'white', borderRadius: 23/2, alignItems: 'center', justifyContent: 'center'}}>
-                    <View style={{width:20, height: 20, backgroundColor: 'orange', borderRadius: 23/2}} />
-                  </View>
-                </View>
-                <View style={{flex:.25, alignItems: 'center'}}>
-                  <Text style={{fontSize: 14, fontFamily: 'Avenir-Light'}}>Interest 1...</Text>
-                </View>
+            <SectionTitle title={'CONNECTED APPS'}/>
+            <View style={{backgroundColor:'white', paddingLeft: 15}}>
+              <View style={{justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
+                <View style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
+                <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
+                <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
               </View>
 
-              {/* Interest 2 */}
-              <View style={{height:120, width:90, flexDirection: 'column'}}>
-                <View style={{flex:.75, alignItems:'center', justifyContent: 'center'}}>
-                  <View style={{width: 65, height: 65, borderRadius: 65/2, backgroundColor: 'orange'}} />
-                  <View style={{position: 'absolute',top:5, left:5, width:23, height: 23, backgroundColor: 'white', borderRadius: 23/2, alignItems: 'center', justifyContent: 'center'}}>
-                    <View style={{width:20, height: 20, backgroundColor: 'orange', borderRadius: 23/2}} />
+              <View style={{height:1, backgroundColor:'#E6E6E6'}} />
+              <View style={{height: 40, justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
+                <Text style={{fontSize: 16, fontFamily: 'Avenir-Light'}}>Coming Soon:</Text>
+                  <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
+                  <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
+                  <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
+              </View>
+            </View>
+
+            <SectionTitle title={'THEIR INTERESTS'}/>
+            <View style={{height: 120, backgroundColor: 'white', justifyContent: 'center'}}>
+              <View style={{justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
+
+                {/* Interest 1 */}
+                <View style={{height:120, width:90, flexDirection: 'column'}}>
+                  <View style={{flex:.75, alignItems:'center', justifyContent: 'center'}}>
+                    <View style={{width: 65, height: 65, borderRadius: 65/2, backgroundColor: 'orange'}} />
+                    <View style={{position: 'absolute',top:5, left:5, width:23, height: 23, backgroundColor: 'white', borderRadius: 23/2, alignItems: 'center', justifyContent: 'center'}}>
+                      <View style={{width:20, height: 20, backgroundColor: 'orange', borderRadius: 23/2}} />
+                    </View>
+                  </View>
+                  <View style={{flex:.25, alignItems: 'center'}}>
+                    <Text style={{fontSize: 14, fontFamily: 'Avenir-Light'}}>Interest 1...</Text>
                   </View>
                 </View>
-                <View style={{flex:.25, alignItems: 'center'}}>
-                  <Text style={{fontSize: 14, fontFamily: 'Avenir-Light'}}>Interest 2...</Text>
+
+                {/* Interest 2 */}
+                <View style={{height:120, width:90, flexDirection: 'column'}}>
+                  <View style={{flex:.75, alignItems:'center', justifyContent: 'center'}}>
+                    <View style={{width: 65, height: 65, borderRadius: 65/2, backgroundColor: 'orange'}} />
+                    <View style={{position: 'absolute',top:5, left:5, width:23, height: 23, backgroundColor: 'white', borderRadius: 23/2, alignItems: 'center', justifyContent: 'center'}}>
+                      <View style={{width:20, height: 20, backgroundColor: 'orange', borderRadius: 23/2}} />
+                    </View>
+                  </View>
+                  <View style={{flex:.25, alignItems: 'center'}}>
+                    <Text style={{fontSize: 14, fontFamily: 'Avenir-Light'}}>Interest 2...</Text>
+                  </View>
                 </View>
+
               </View>
-
             </View>
-          </View>
 
 
-          <SectionTitle title={'ABOUT ME'}/>
-          <View style={{height: 100, backgroundColor: 'white'}}>
-          </View>
-
-
-          { /* Block User button */ }
-          <Button>
-          <View style={{marginTop: 20}}>
-            <View style={{margin: 15, borderRadius: 5, borderWidth: 1, padding: 8, alignItems: 'center', justifyContent: 'center'}}>
-              <Text style={{fontSize: 14, fontFamily: 'Avenir-Light'}}>Block or Report this User</Text>
+            <SectionTitle title={'ABOUT ME'}/>
+            <View style={{height: 100, backgroundColor: 'white'}}>
             </View>
-          </View>
-          </Button>
 
-          <View style={styles.footer} />
 
-        </ScrollView>
+            { /* Block User button */ }
+            <Button>
+            <View style={{marginTop: 20}}>
+              <View style={{margin: 15, borderRadius: 5, borderWidth: 1, padding: 8, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{fontSize: 14, fontFamily: 'Avenir-Light'}}>Block or Report this User</Text>
+              </View>
+            </View>
+            </Button>
+
+            <View style={styles.footer} />
+
+          </ScrollView>
+
+        </View>
+
+
+        {/* TODO: loading bar */}
+        {this.props.isLoadingUser &&
+        <View style={{position: 'absolute', top: 0, left: 0, width:Dimensions.get('window').width, height:Dimensions.get('window').height, backgroundColor: 'blue'}}/>
+        }
+
       </View>
+
     );
   }
 }
@@ -152,11 +165,10 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state) {
   return {
-    userDetail: state.viewingProfileDetail
+    userDetail: state.viewingProfileDetail,
+    loadingUser: state.isLoadingUser
   }
 }
 
 // Connects the state variables to the property variables within the home class
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileDetail)
-
-
