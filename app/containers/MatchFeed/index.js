@@ -17,6 +17,7 @@ import {
 
 import Swiper from 'react-native-page-swiper';
 
+const FB_EXPIRED_URL = 'https://scontent.xx.fbcdn.net';
 
 var rightBtns = [
   {
@@ -34,6 +35,8 @@ class MatchFeed extends Component{
 
   state = {
     isRefreshing: false,
+    initialPosition: 'unknown',
+    lastPosition: 'unknown',
   };
 
   _onRefresh = () => {
@@ -48,15 +51,20 @@ class MatchFeed extends Component{
     }, 3000);
   };
 
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
   searchMatches() {
     // due to destruct in app container <Home {...this.props} all the actions
     // from the AppContainer get passed into the Home container
+    // console.log(this.state.initialPosition)
+    console.log("THE LAST POSITION")
+    console.log(this.state.lastPosition)
     this.props.fetchMatches(
       match_attributes =
-        {
-          'attribute1': 'criteria1',
-          'atrribute2': 'criteria2',
-        }
+        this.state.lastPosition
     )
   }
 
@@ -66,16 +74,35 @@ class MatchFeed extends Component{
   }
 
   componentDidMount(){
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // var initialPosition = JSON.stringify(position);
+        this.setState({initialPosition: position});
+        this.props.fetchMatches(match_attributes=position)
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      // var lastPosition = JSON.stringify(position);
+      this.setState({lastPosition: position});
+    });
+
+    // this.searchMatches();
+
+
 
   }
 
   componentWillMount(){
-    this.searchMatches();
+    // this.searchMatches();
   }
 
 
   _renderImage = (match) => {
-    if(match.image){
+    if(match.image && !match.image.includes(FB_EXPIRED_URL)){
+      console.log(match.image)
+
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
           <Text style={styles.profileName}>{match.name}</Text>

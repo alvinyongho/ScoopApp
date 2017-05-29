@@ -57,7 +57,7 @@ export class FilterScreen extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-  filter: () => dispatch(NavigationActions.navigate({ routeName: 'Filter' })),
+  // filter: () => dispatch(NavigationActions.navigate({ routeName: 'Filter' })),
 });
 
 export default connect(mapDispatchToProps)(FilterScreen);

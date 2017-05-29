@@ -15,9 +15,11 @@ import Dimensions from 'Dimensions';
 import MultiSlider from '../components/MultiSlider/MultiSlider'
 import images from '@assets/images';
 // import NavigationBar from '../components/NavigationBar';
+// To Pass dispatching actions to containers
+import { connect } from 'react-redux';        // handles state and actions
+import { ActionCreators } from '../actions';   // Retrieves all the action creators
+import { bindActionCreators } from 'redux';
 
-
-// var Slider = require('react-native-slider');
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
@@ -159,7 +161,7 @@ class FilterItem extends Component{
 }
 
 
-export default class Filter extends Component {
+export class Filter extends Component {
   constructor(props) {
     super(props);
     this.state = {filterSettings: []};
@@ -169,6 +171,13 @@ export default class Filter extends Component {
     var filters = this.state.filterSettings;
     contacts.push(filter);
     this.setState({filterSettings: filters});
+  }
+
+  componentDidMount(){
+    // get the filter settings
+    this.props.fetchFilters()
+
+
   }
 
   render() {
@@ -202,7 +211,7 @@ export default class Filter extends Component {
           />
           <FilterItem
             attributeText='I Am Interested In'
-            statusText='200 miles'
+            // statusText='200 miles'
             attrLeftText='Men'
             attrMidText='Both'
             attrRightText='Women'
@@ -265,3 +274,21 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
+
+// maps action creator calls to a dispatch to update the state
+// Bind actions (dispatcher) to props
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
+
+// Match state to props which allows us to access actions
+function mapStateToProps(state){
+  return {
+    // foundMatches: state.foundMatches
+  }
+}
+
+// Connects the state variables to the property variables within
+// the home class
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

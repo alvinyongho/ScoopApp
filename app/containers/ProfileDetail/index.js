@@ -22,6 +22,8 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { bindActionCreators } from 'redux';
 
+FB_EXPIRED_URL = 'https://scontent.xx.fbcdn.net'
+
 export class ProfileDetail extends Component {
   constructor(props) {
     super(props);
