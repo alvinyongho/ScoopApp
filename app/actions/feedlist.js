@@ -59,46 +59,6 @@ export function fetchMatches(match_attributes){
 }
 
 
-export function saveFilters(save_filter_settings){
-  return(dispatch, getState) => {
-    performSaveFilterSettings(579, 'bdvvqtctgs').then((results) => {
-
-
-      console.log(results)
-    })
-  }
-}
-
-
-export function fetchFilters(match_attributes){
-  return(dispatch, getState) => {
-    performLoadFeedWithNoGeo(579, 'bdvvqtctgs').then((results) => {
-      console.log(results.params)
-      console.log('min range is ')
-      var current_year = new Date().getFullYear()
-      var min_year = results.params[4].split('-')[0]
-      var max_year = results.params[5].split('-')[0]
-
-      var max_age = current_year - min_year
-      var min_age = current_year - max_year
-
-      var min_height_inches = results.params[6]
-      var max_height_inches = results.params[7]
-
-      // const response = results.map((result, index) => {
-      //   console.log(user)
-      //   // return {
-      //   //   id: user.userId,
-      //   //   name: user.name,
-      //   //   image: user.picURL,
-      //   //   jobTitle: user.jobTitle
-      //   // }
-      // })
-
-      // dispatch(setFoundMatches( { matches_found: response } ));
-    });
-  }
-}
 
 // Set found matches takes in a payload of fetched matches (args) => args.matches_found
 // input: matches found

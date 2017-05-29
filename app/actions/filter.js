@@ -1,24 +1,50 @@
 import * as types from './types'
+import {
+  performLoadFeedTask,
+  performLoadProfileTask,
+  performLoadFeedWithNoGeo,
+  performSaveFilterSettings } from '../lib/scoopAPI'
 
 
-// // Make async call to the web service to get the list of matches that
-// // fit in the criterias defined by match attributes
-// export function fetchMatches(match_attributes){
-//   return(dispatch, getState) => {
-//     console.log(getState());
-//
-//     // Placeholder response object
-//     let response = ([{id: 0, 'name': 'IU', 'description': 'Kpop Singer'},
-//                      {id: 1, 'name': 'Forrest Gump', 'description': 'Tom Hanks'},
-//                      {id: 2, 'name': 'James Bond', 'description': 'Secret Service Agent'}
-//                    ]);
-//
-//     // then
-//     dispatch(setFoundMatches( { matches_found: response } ));
-//
-//   }
-//
-// }
+export function saveFilters(save_filter_settings){
+
+  return(dispatch, getState) => {
+    performSaveFilterSettings(579, 'bdvvqtctgs').then((results) => {
+      console.log(results)
+    })
+  }
+}
+
+
+export function fetchFilters(match_attributes){
+  return(dispatch, getState) => {
+    performLoadFeedWithNoGeo(579, 'bdvvqtctgs').then((results) => {
+      console.log(results.params)
+      console.log('min range is ')
+      var current_year = new Date().getFullYear()
+      var min_year = results.params[4].split('-')[0]
+      var max_year = results.params[5].split('-')[0]
+
+      var max_age = current_year - min_year
+      var min_age = current_year - max_year
+
+      var min_height_inches = results.params[6]
+      var max_height_inches = results.params[7]
+
+      // const response = results.map((result, index) => {
+      //   console.log(user)
+      //   // return {
+      //   //   id: user.userId,
+      //   //   name: user.name,
+      //   //   image: user.picURL,
+      //   //   jobTitle: user.jobTitle
+      //   // }
+      // })
+
+      // dispatch(setFoundMatches( { matches_found: response } ));
+    });
+  }
+}
 
 
 export function changeFilterSetting(filter_setting){

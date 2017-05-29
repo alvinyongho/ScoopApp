@@ -35,6 +35,7 @@ export class FilterScreen extends React.Component {
     headerRight: <SaveButton onSavePressed={()=> navigation.goBack()} />,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color:'white', alignSelf: 'center'},
+    gesturesEnabled: false
   });
 
   constructor(props) {
