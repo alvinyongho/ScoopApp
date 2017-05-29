@@ -20,7 +20,10 @@ export function fetchUser(targetId){
 // fit in the criterias defined by match attributes
 export function fetchMatches(match_attributes){
   return(dispatch, getState) => {
-    performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
+    let lon = match_attributes.coords.longitude
+    let lat = match_attributes.coords.latitude
+
+    performLoadFeedTask(579, 'bdvvqtctgs', lon, lat).then((results) => {
       const response = results.users.map((user, index) => {
         return {
           id: user.userId,
@@ -30,6 +33,29 @@ export function fetchMatches(match_attributes){
         }
       })
       dispatch(setFoundMatches( { matches_found: response } ));
+    });
+  }
+}
+
+export function fetchFilters(match_attributes){
+  let lon = match_attributes.position.coords.longitude
+  let lat = match_attributes.position.coords.latitude
+
+  return(dispatch, getState) => {
+    performLoadFeedTask(579, 'bdvvqtctgs').then((results) => {
+
+      console.log(results)
+      // const response = results.map((result, index) => {
+      //   console.log(user)
+      //   // return {
+      //   //   id: user.userId,
+      //   //   name: user.name,
+      //   //   image: user.picURL,
+      //   //   jobTitle: user.jobTitle
+      //   // }
+      // })
+
+      // dispatch(setFoundMatches( { matches_found: response } ));
     });
   }
 }

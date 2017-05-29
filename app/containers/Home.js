@@ -21,9 +21,6 @@ import MatchFeed from './MatchFeed'
 
 
 class Home extends Component{
-  onLogoutPressed(){
-    this.props.facebookLogout();
-  }
 
   render(){
     return (
