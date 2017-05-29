@@ -27,10 +27,8 @@ export const appReducer = combineReducers(Object.assign(
 ));
 
 
-
 export default rootReducer = (state, action) => {
   if (action.type === types.LOGOUT) {
-    console.log('logging out!!!')
     state = undefined
   }
   return appReducer(state, action)
