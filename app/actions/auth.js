@@ -27,7 +27,6 @@ export function facebookLogout() {
 
   return (dispatch) => {
     dispatch(logout());
-
   }
 }
 
