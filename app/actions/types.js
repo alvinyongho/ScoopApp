@@ -27,3 +27,7 @@ export const SAVE_FILTER   = 'SAVE_FILTER'
 // Messenger
 export const EDIT_CHATS = 'EDIT_CHATS'
 export const CANCEL_EDIT_CHATS = 'CANCEL_EDIT_CHATS'
+
+// Photo Album
+export const OPEN_PHOTO_ALBUM = 'OPEN_PHOTO_ALBUM'
+export const CLOSE_PHOTO_ALBUM = 'CLOSE_PHOTO_ALBUM'
