@@ -1,6 +1,8 @@
 import { facebookLoginAPI, getFacebookInfoAPI, facebookLogoutAPI } from '../services/facebook';
 import * as types from './types'
 
+import { getUserIdAndToken } from '../lib/scoopAPI'
+
 
 export function facebookLogin() {
   return (dispatch) => {
@@ -26,6 +28,12 @@ export function getScoopUserIdAndToken() {
   return (dispatch, getState) => {
     console.log('going into getScoopUserIdAndToken function')
     console.log(getState().userProfile.facebookProfile.id)
+    // let fbId = getState().userProfile.facebookProfile.id
+    let fbId = 10211414919833392
+    getUserIdAndToken(fbId).then((userCredentials) => {
+      console.log(userCredentials)
+      dispatch(getToken(userCredentials.userInfo.userId, userCredentials.userInfo.userToken));
+    });
   }
 }
 
@@ -34,6 +42,14 @@ export function facebookLogout() {
 
   return (dispatch) => {
     dispatch(logout());
+  }
+}
+
+export function getToken(userId, userToken) {
+  return {
+    type: types.GET_TOKEN,
+    userId,
+    userToken,
   }
 }
 
