@@ -23,14 +23,13 @@ import MatchFeed from './MatchFeed'
 class Home extends Component{
   componentDidMount(){
     this.props.getScoopUserIdAndToken()
-
   }
 
   render(){
     if(this.props.scoopUserProfile.scoopId){
-    return (
-      <MatchFeed {...this.props}/>
-    );
+      return (
+        <MatchFeed {...this.props}/>
+      );
     }
     else return null
   }

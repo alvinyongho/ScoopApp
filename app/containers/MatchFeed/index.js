@@ -59,9 +59,6 @@ class MatchFeed extends Component{
   searchMatches() {
     // due to destruct in app container <Home {...this.props} all the actions
     // from the AppContainer get passed into the Home container
-    // console.log(this.state.initialPosition)
-    console.log("THE LAST POSITION")
-    console.log(this.state.lastPosition)
     this.props.fetchMatches(
       match_attributes =
         this.state.lastPosition
@@ -101,7 +98,7 @@ class MatchFeed extends Component{
 
   _renderImage = (match) => {
     if(match.image && !match.image.includes(FB_EXPIRED_URL)){
-      console.log(match.image)
+      // console.log(match.image)
 
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
@@ -123,7 +120,7 @@ class MatchFeed extends Component{
   _onPressProfile = (matchId) => {
     // fire an action to perform the get user task of selected and set the state tree accordingly
     // populate the profile detail
-    console.log(`TODO: get user task of ${matchId}`)
+    // console.log(`TODO: get user task of ${matchId}`)
     this.props.fetchUser(matchId)
     this.props.profile()
   };

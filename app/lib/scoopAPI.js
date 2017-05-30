@@ -12,7 +12,7 @@ export async function performTaskWithParams(task, params){
     let responseJson = await response.json()
     return responseJson.results
   } catch(error){
-    console.log(error)
+    console.log('error')
   }
 }
 
@@ -24,7 +24,6 @@ function filterSettingsParamString(filterSettings){
 }
 
 export function getUserIdAndToken(facebookId){
-  console.log(`z=${CLIENT_SECRET}&facebookId=${facebookId}`)
   return performTaskWithParams('loginRegister', `z=${CLIENT_SECRET}&facebookId=${facebookId}`)
 }
 
