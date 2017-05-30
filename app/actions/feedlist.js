@@ -23,7 +23,9 @@ export function reloadMatches(match_attributes){
   return(dispatch, getState) => {
     let lon = getState().currentLocation.lon
     let lat = getState().currentLocation.lat
-    performLoadFeedTask(579, 'bdvvqtctgs', lon, lat).then((results) => {
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    let scoopUserToken = getState().scoopUserProfile.scoopToken
+    performLoadFeedTask(scoopUserId, scoopUserToken, lon, lat).then((results) => {
       const response = results.users.map((user, index) => {
         return {
           id: user.userId,
@@ -43,8 +45,9 @@ export function fetchMatches(match_attributes){
   return(dispatch, getState) => {
     let lon = match_attributes.coords.longitude
     let lat = match_attributes.coords.latitude
-
-    performLoadFeedTask(579, 'bdvvqtctgs', lon, lat).then((results) => {
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    let scoopUserToken = getState().scoopUserProfile.scoopToken
+    performLoadFeedTask(scoopUserId, scoopUserToken, lon, lat).then((results) => {
       const response = results.users.map((user, index) => {
         return {
           id: user.userId,
