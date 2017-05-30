@@ -25,14 +25,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1444194795882017</string>
+				<string>fb1022203281186635</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>1444194795882017</string>
+	<string>1022203281186635</string>
 	<key>FacebookDisplayName</key>
 	<string>ScoopApp</string>
 	<key>LSApplicationQueriesSchemes</key>
