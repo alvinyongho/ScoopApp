@@ -51,14 +51,13 @@ export class Filter extends Component {
   componentDidMount(){
     // get the filter settings
     this.props.fetchFilters()
-
-
   }
 
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView style={{height:screenHeight-110}}>
+          <MultiSlider />
 
           <FilterItem
             attributeText='Search Radius'
@@ -114,7 +113,7 @@ export class Filter extends Component {
           />
 
 
-          <MultiSlider />
+
 
         </ScrollView>
       </View>

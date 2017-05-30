@@ -10,6 +10,7 @@ export function saveFilters(save_filter_settings){
 
   return(dispatch, getState) => {
     performSaveFilterSettings(579, 'bdvvqtctgs').then((results) => {
+      // TODO: save the filters to local state via reducer function
       console.log(results)
     })
   }
@@ -18,19 +19,22 @@ export function saveFilters(save_filter_settings){
 
 export function fetchFilters(match_attributes){
   return(dispatch, getState) => {
-    performLoadFeedWithNoGeo(579, 'bdvvqtctgs').then((results) => {
-      console.log(results.params)
-      console.log('min range is ')
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    let scoopUserToken = getState().scoopUserProfile.scoopToken
+
+    performLoadFeedWithNoGeo(scoopUserId, scoopUserToken).then((results) => {
       var current_year = new Date().getFullYear()
       var min_year = results.params[4].split('-')[0]
       var max_year = results.params[5].split('-')[0]
-
       var max_age = current_year - min_year
       var min_age = current_year - max_year
-
       var min_height_inches = results.params[6]
       var max_height_inches = results.params[7]
 
+
+      // TODO: fetch the current filters and populate the filters fields
+
+      
       // const response = results.map((result, index) => {
       //   console.log(user)
       //   // return {
