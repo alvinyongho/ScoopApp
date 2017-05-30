@@ -27,9 +27,12 @@ class Home extends Component{
   }
 
   render(){
+    if(this.props.scoopUserProfile.scoopId){
     return (
       <MatchFeed {...this.props}/>
     );
+    }
+    else return null
   }
 }
 
@@ -42,7 +45,8 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    foundMatches: state.foundMatches
+    // foundMatches: state.foundMatches,
+    scoopUserProfile: state.scoopUserProfile,
   }
 }
 
