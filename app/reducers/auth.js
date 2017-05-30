@@ -35,5 +35,20 @@ export const userProfile = createReducer({},{
   [types.LOGOUT](state, action){
     return {}
   }
-
 });
+
+export const scoopUserProfile = createReducer({}, {
+  [types.GET_TOKEN](state, action){
+    let profile = {
+      scoopId: action.userId,
+      scoopToken: action.userToken,
+    }
+    return profile
+  }
+})
+
+
+
+
+
+
