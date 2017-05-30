@@ -21,6 +21,10 @@ import MatchFeed from './MatchFeed'
 
 
 class Home extends Component{
+  componentDidMount(){
+    this.props.getScoopUserIdAndToken()
+
+  }
 
   render(){
     return (
