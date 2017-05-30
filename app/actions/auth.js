@@ -22,6 +22,13 @@ export function facebookLogin() {
   };
 }
 
+export function getScoopUserIdAndToken() {
+  return (dispatch, getState) => {
+    console.log('going into getScoopUserIdAndToken function')
+    console.log(getState().userProfile.facebookProfile.id)
+  }
+}
+
 export function facebookLogout() {
   facebookLogoutAPI()
 

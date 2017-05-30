@@ -23,6 +23,10 @@ function filterSettingsParamString(filterSettings){
   return filterStrArr.join('&')
 }
 
+export function getUserIdAndToken(facebookId){
+  return performTaskWithParams('loginRegister', `z=${CLIENT_SECRET}&facebookId=${facebookId}`)
+}
+
 export function performSaveFilterSettings(userId, userToken, filterSettings){
   let paramString = filterSettingsParamString({ filterAgeMax: 99,
                               filterAgeMin: 18,
