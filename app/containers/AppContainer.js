@@ -40,6 +40,7 @@ class AppContainer extends Component {
            barStyle="light-content" />
           {/* Routes for authenticated and non authenticated */}
           <Route exact path="/" component={ ResultRoute }/>
+          {/*<View style={{position: 'absolute', backgroundColor: 'blue', height: 100, width: 100}}/>*/}
         </View>
       </NativeRouter>
     );
