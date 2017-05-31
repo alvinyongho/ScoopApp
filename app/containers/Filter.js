@@ -63,7 +63,10 @@ export class Filter extends Component {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{height:screenHeight-110}}>
-          <MultiSlider changeScrollState={this.changeScrollState} onRelease={(positions)=>console.log(positions)}/>
+
+
+          <MultiSlider disabled={true} changeScrollState={this.changeScrollState} hasSteps={false} onRelease={(positions)=>console.log(positions)}/>
+
 
           <FilterItem
             attributeText='Search Radius'
