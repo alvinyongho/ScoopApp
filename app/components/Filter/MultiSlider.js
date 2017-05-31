@@ -12,16 +12,9 @@ import {
   PropTypes
 } from 'react-native';
 
-thumbs = [{
-    initialPosition: 0,
-  },
-  {
-    initialPosition: 1,
-  },
-]
+
 
 export default class MultiSlider extends Component{
-
   constructor(props){
     super(props)
     this.panCapture = false     //initially capture touch event from TouchableWithoutFeedback
@@ -34,9 +27,7 @@ export default class MultiSlider extends Component{
       stepDistance: null,
       thumbPositions: [],
       activeThumb: null,
-
       disabled: this.props.disabled,
-
     })
   }
 
@@ -49,6 +40,7 @@ export default class MultiSlider extends Component{
     thumbColor: React.PropTypes.string,               // Sets the the inner thumb color
     sliderLeftRightMargin: React.PropTypes.number,    // Sets the left and right margins of the slider
     sliderHeight: React.PropTypes.number,             // sets the height of the slider
+    thumbs:    React.PropTypes.array,
   }
 
   static defaultProps = {
@@ -61,6 +53,10 @@ export default class MultiSlider extends Component{
     sliderLeftRightMargin: 25,
     sliderHeight: 5,
     disabled: false,
+    thumbs: [
+              { initialPosition: 0, },
+              { initialPosition: 1, },
+            ]
   }
 
   computeReleasedPositions = () => {
@@ -71,7 +67,7 @@ export default class MultiSlider extends Component{
 
   componentWillMount() {
     // creates an array of thumbPanResponders that maps to the index of thumb
-    this.thumbPanResponders = thumbs.map((key, index) => {
+    this.thumbPanResponders = this.props.thumbs.map((key, index) => {
       return PanResponder.create({
         onStartShouldSetPanResponder: (evt, gestureState) => true,
         onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
@@ -155,7 +151,7 @@ export default class MultiSlider extends Component{
   }
 
   getThumbStyle(key){
-    if(this.finishedLayoutSetup && this.state.thumbPositions.length == thumbs.length){
+    if(this.finishedLayoutSetup && this.state.thumbPositions.length == this.props.thumbs.length){
       return [styles.thumbOuter,
               {height: this.props.thumbSize,
               width: this.props.thumbSize,
@@ -182,24 +178,22 @@ export default class MultiSlider extends Component{
     }
     let thumbPositions = this.state.thumbPositions
 
-    thisPosition.x = this.state.sliderWidth * thumbs[key].initialPosition
+    thisPosition.x = this.state.sliderWidth * this.props.thumbs[key].initialPosition
     thumbPosition = new Animated.ValueXY(thisPosition)
 
     this.thumbPrevPositions[key] = thisPosition
     thumbPositions[key] = thumbPosition
     this.setState({thumbPositions})
 
-    if(this.state.thumbPositions.length === thumbs.length){
-      console.log('finished layout setup')
+    if(this.state.thumbPositions.length === this.props.thumbs.length){
       this.finishedLayoutSetup = true;
     }
-
   }
 
   setLayerPosition = (key) => key === this.state.activeThumb && { zIndex: 1 }
 
   _renderThumbs(){
-    const thumbViews = thumbs.map((key, index) => {
+    const thumbViews = this.props.thumbs.map((key, index) => {
       return(
         <Animated.View {...this.thumbPanResponders[index].panHandlers} onLayout={this._saveThumbPositions(index)} style={[styles.thumbContainer, this.setLayerPosition(index)]} key={index}>
           {this.finishedLayoutSetup &&
@@ -208,7 +202,7 @@ export default class MultiSlider extends Component{
                        {height: this.props.thumbSize-this.props.thumbBorderRadiusWidth,
                         width: this.props.thumbSize- this.props.thumbBorderRadiusWidth,
                         backgroundColor: this.props.thumbColor,
-                        borderRadius: ( this.props.thumbSize- this.props.thumbBorderRadiusWidth)/2,}]} />
+                        borderRadius: (this.props.thumbSize-this.props.thumbBorderRadiusWidth)/2,}]} />
             </View>
           }
         </Animated.View>
@@ -220,11 +214,13 @@ export default class MultiSlider extends Component{
   render() {
     return(
       <View style={{flex:1, height: 50, marginLeft:25, marginRight: 25, backgroundColor: 'gray', justifyContent: 'center'}}>
-        <View onLayout={this._setSliderWidth} style={[styles.sliderContainer,{height: this.props.sliderHeight,
-        borderRadius: this.props.sliderHeight/2}]} />
-        {this.state.sliderWidth &&
-            this._renderThumbs()
-        }
+        <View onLayout={this._setSliderWidth}
+                 style={[styles.sliderContainer,
+                        {height: this.props.sliderHeight,
+                         borderRadius: this.props.sliderHeight/2}
+                       ]}
+        />
+          {this.state.sliderWidth && this._renderThumbs()}
       </View>
     );
   }
@@ -247,7 +243,5 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   thumbInner: {
-
   }
-
 })
