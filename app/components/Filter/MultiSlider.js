@@ -11,6 +11,7 @@ import {
   Animated
 } from 'react-native';
 
+numThumbs = 2
 thumbs = {
   0: {
     initialPosition: 0,
@@ -26,56 +27,76 @@ debug = true
 thumbSize = 22
 thumbBorderRadiusWidth = 4
 thumbColor = 'orange'
+sliderLeftRightMargin = 25
+sliderHeight = 5
+
 
 export default class MultiSlider extends Component{
 
   constructor(props){
     super(props)
+
+    this.panCapture = false     //initially capture touch event from TouchableWithoutFeedback
+    this.thumbPrevPositions = []
+    this.finishedLayoutSetup = false
+
     this.state = ({
       isSliderWidthSet: false,
       sliderWidth: null,
       stepDistance: null,
-
       thumbPositions: [],
-      thumbPrevPositions: [],
+      activeThumb: null,
     })
   }
 
   componentWillMount() {
-    this._panResponder = PanResponder.create({
-      // Ask to be the responder:
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+    this.thumbPanResponders = Object.keys(thumbs).map((key, index) => {
+      return PanResponder.create({
+        // Ask to be the responder:
+        onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
+        onMoveShouldSetPanResponder: (evt, gestureState) => true,
+        onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
-      onPanResponderGrant: (evt, gestureState) => {
-        // The guesture has started. Show visual feedback so the user knows
-        // what is happening!
+        onPanResponderGrant: (evt, gestureState) => {
+          console.log('granted for key' + index)
+          // set the active block
+          // The guesture has started. Show visual feedback so the user knows
+          // what is happening!
+          // gestureState.d{x,y} will be set to zero now
+        },
+        onPanResponderMove: (evt, gestureState) => {
+          // The most recent move distance is gestureState.move{X,Y}
 
-        // gestureState.d{x,y} will be set to zero now
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        // The most recent move distance is gestureState.move{X,Y}
+          // The accumulated gesture distance since becoming responder is
+          // gestureState.d{x,y}
+        },
+        onPanResponderTerminationRequest: (evt, gestureState) => true,
+        onPanResponderRelease: (evt, gestureState) => {
+          // The user has released all touches while this view is the
+          // responder. This typically means a gesture has succeeded
+        },
+        onPanResponderTerminate: (evt, gestureState) => {
+          // Another component has become the responder, so this gesture
+          // should be cancelled
+        },
+        onShouldBlockNativeResponder: (evt, gestureState) => {
+          // Returns whether this component should block native components from becoming the JS
+          // responder. Returns true by default. Is currently only supported on android.
+          return true;
+        },
+      });
 
-        // The accumulated gesture distance since becoming responder is
-        // gestureState.d{x,y}
-      },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
-      onPanResponderRelease: (evt, gestureState) => {
-        // The user has released all touches while this view is the
-        // responder. This typically means a gesture has succeeded
-      },
-      onPanResponderTerminate: (evt, gestureState) => {
-        // Another component has become the responder, so this gesture
-        // should be cancelled
-      },
-      onShouldBlockNativeResponder: (evt, gestureState) => {
-        // Returns whether this component should block native components from becoming the JS
-        // responder. Returns true by default. Is currently only supported on android.
-        return true;
-      },
-    });
+    })
+
+
+
+  }
+
+
+  setActiveThumb = (key) => {
+    console.log('setting the active block to ' + key)
+    this.setState({activeThumb: key})
   }
 
 
@@ -89,10 +110,8 @@ export default class MultiSlider extends Component{
     spawn the thumbs
   */
   _setSliderWidth = (event) => {
-    console.log('setting the slider width')
     var {x, y, width} = event.nativeEvent.layout
     this.setState({sliderWidth: width})
-
     // Set the step distance
     if(hasSteps)
       this.setStepDistances(width)
@@ -107,41 +126,100 @@ export default class MultiSlider extends Component{
   }
 
   getThumbComputedPosition(key){
-    if (this.state.thumbPrevPositions[key])
-      return this.state.thumbPositions[key]
-    else {
-      console.log('thumb position does not exist! returning 0')
-      return 0
+    if (this.state.thumbPositions[key]){
+      console.log(this.state.thumbPositions[key].x._value)
+      return this.state.thumbPositions[key].x._value - (thumbSize/2)
     }
   }
 
   getThumbStyle(key){
-    return {left: this.getThumbComputedPosition(key)}
+
+    if(this.finishedLayoutSetup && this.state.thumbPositions.length == numThumbs){
+      return [styles.thumbOuter, {left: this.getThumbComputedPosition(key)}]
+    }
+
+    return({
+      height: thumbSize,
+      width: thumbSize,
+      borderRadius: thumbSize/2,
+      backgroundColor: 'white',
+      justifyContent: 'center',
+      alignItems: 'center'
+    })
+
   }
+
+
+  // on layout set initial position as Animated.ValueXY
+  _saveThumbPositions = (key) => ({nativeEvent}) => {
+    // console.log('going to save the thumb initial positions')
+    // console.log(nativeEvent)
+
+    if (!this.finishedLayoutSetup){
+      let thisPosition = {
+        x: nativeEvent.layout.x,
+        y: nativeEvent.layout.y,
+      }
+      let thumbPositions = this.state.thumbPositions
+
+      thisPosition.x = this.state.sliderWidth * thumbs[key].initialPosition
+      thumbPosition = new Animated.ValueXY(thisPosition)
+      this.thumbPrevPositions[key] = thisPosition
+      thumbPositions[key] = thumbPosition
+      this.setState({thumbPositions})
+    }
+
+
+    if(this.state.thumbPositions.length === numThumbs){
+      // console.log('finished layout setup')
+      this.finishedLayoutSetup = true;
+    }
+
+  }
+
 
   _renderThumbs(){
     const thumbViews = Object.keys(thumbs).map((key, index)=> {
-      return <View key={index} style={[styles.thumbOuterStyle, this.getThumbStyle(key)]}>
-                <View style={styles.thumbInnerStyle} />
-             </View>
+      return(
+        <Animated.View {...this.thumbPanResponders[index].panHandlers} onLayout={this._saveThumbPositions(index)} style={styles.thumbContainer} key={index}>
+          {this.finishedLayoutSetup &&
+            <View style={this.getThumbStyle(index)}>
+              <View style={styles.thumbInner} />
+            </View>
+          }
+        </Animated.View>
+      );
     })
     return thumbViews;
   }
 
   render() {
     return(
-      <View style={{flex:1, height: 50, backgroundColor: 'gray', justifyContent: 'center'}}>
-        <View onLayout={this._setSliderWidth} style={{height: 5, borderRadius: 5/2, marginLeft: 25, marginRight: 25, backgroundColor: 'orange' }} />
-        <Animated.View {...this._panResponder.panHandlers} style={{position: 'absolute', justifyContent: 'center' }}>
-          {this._renderThumbs()}
-        </Animated.View>
+      <View style={{flex:1, height: 50, marginLeft:25, marginRight: 25, backgroundColor: 'gray', justifyContent: 'center'}}>
+        <View onLayout={this._setSliderWidth} style={styles.sliderContainer} />
+        {this.state.sliderWidth &&
+          <View style={{position: 'absolute', justifyContent: 'center' }}>
+            {this._renderThumbs()}
+          </View>
+        }
       </View>
     );
   }
 }
 
+
 var styles = StyleSheet.create({
-  thumbOuterStyle: {
+  sliderContainer: {
+    height: sliderHeight,
+    borderRadius: sliderHeight/2,
+    backgroundColor: 'orange'
+  },
+  thumbContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  thumbOuter: {
     position: 'absolute',
     height: thumbSize,
     width: thumbSize,
@@ -150,7 +228,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  thumbInnerStyle: {
+  thumbInner: {
     height: thumbSize-thumbBorderRadiusWidth,
     width: thumbSize-thumbBorderRadiusWidth,
     borderRadius: (thumbSize-thumbBorderRadiusWidth)/2,
