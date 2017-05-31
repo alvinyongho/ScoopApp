@@ -136,7 +136,7 @@ export default class MultiSlider extends Component{
   */
   _setSliderWidth = (event) => {
     var {x, y, width} = event.nativeEvent.layout
-    this.setState({sliderWidth: width})
+    this.setState({sliderWidth: width-thumbSize})
     // Set the step distance
     if(hasSteps)
       this.setStepDistances(width)
@@ -151,14 +151,17 @@ export default class MultiSlider extends Component{
 
   getThumbComputedPosition(key){
     if (this.state.thumbPositions[key]){
-      return this.state.thumbPositions[key].x._value - (thumbSize/2)
+      return this.state.thumbPositions[key].x._value
     }
   }
 
   getThumbStyle(key){
 
     if(this.finishedLayoutSetup && this.state.thumbPositions.length == numThumbs){
-      return [styles.thumbOuter, {left: this.getThumbComputedPosition(key)}]
+      return [styles.thumbOuter,
+              {left: this.getThumbComputedPosition(key)},
+              this.state.activeThumb === key && { /* TODO: Add granted style effect */ }
+             ]
     }
 
     return({
