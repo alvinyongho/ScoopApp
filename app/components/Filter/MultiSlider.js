@@ -11,7 +11,6 @@ import {
   Animated
 } from 'react-native';
 
-numThumbs = 2
 thumbs = [{
     initialPosition: 0,
   },
@@ -19,6 +18,7 @@ thumbs = [{
     initialPosition: 1,
   },
 ]
+
 
 hasSteps = true
 numSteps = 3
@@ -49,7 +49,7 @@ export default class MultiSlider extends Component{
   }
 
   computeReleasedPositions = () => {
-    return thumbPositions.map((animValue, index)=> {
+    return this.state.thumbPositions.map((animValue, index)=> {
       // console.log(animValue)
       return (animValue.x._value/this.state.sliderWidth)
 
@@ -93,8 +93,13 @@ export default class MultiSlider extends Component{
         onPanResponderTerminationRequest: (evt, gestureState) => true,
         onPanResponderRelease: (evt, gestureState) => {
 
-          this.thumbPrevPositions[index].x = this.state.thumbPositions[index].x._value
+          if(hasSteps){
+            const indexToSnapTo = Math.round(this.state.thumbPositions[index].x._value/this.state.stepDistance)
+            const xPositionToSnapTo = indexToSnapTo * this.state.stepDistance
+            this.state.thumbPositions[index].x.setValue(xPositionToSnapTo)
+          }
 
+          this.thumbPrevPositions[index].x = this.state.thumbPositions[index].x._value
           this.props.onRelease(this.computeReleasedPositions());
           this.setActiveThumb(null)
           this.props.changeScrollState(true);
@@ -136,15 +141,17 @@ export default class MultiSlider extends Component{
   */
   _setSliderWidth = (event) => {
     var {x, y, width} = event.nativeEvent.layout
-    this.setState({sliderWidth: width-thumbSize})
+    // Handling case where thumb does NOT exceeds ends of the bar
+    let trueWidth = width - thumbSize
+    this.setState({sliderWidth: trueWidth})
     // Set the step distance
     if(hasSteps)
-      this.setStepDistances(width)
+      this.setStepDistances(trueWidth)
 
   }
 
   setStepDistances(width){
-    this.setState({stepDistance: width/numSteps})
+    this.setState({stepDistance: width/(numSteps-1)})
     // if(debug)
     //   console.log('setting the stepDistance to ' + width/numSteps)
   }
@@ -157,7 +164,7 @@ export default class MultiSlider extends Component{
 
   getThumbStyle(key){
 
-    if(this.finishedLayoutSetup && this.state.thumbPositions.length == numThumbs){
+    if(this.finishedLayoutSetup && this.state.thumbPositions.length == thumbs.length){
       return [styles.thumbOuter,
               {left: this.getThumbComputedPosition(key)},
               this.state.activeThumb === key && { /* TODO: Add granted style effect */ }
@@ -172,29 +179,26 @@ export default class MultiSlider extends Component{
       justifyContent: 'center',
       alignItems: 'center'
     })
-
   }
 
 
   // on layout set initial position as Animated.ValueXY
   _saveThumbPositions = (key) => ({nativeEvent}) => {
 
-      let thisPosition = {
-        x: nativeEvent.layout.x,
-        y: nativeEvent.layout.y,
-      }
-      let thumbPositions = this.state.thumbPositions
+    let thisPosition = {
+      x: nativeEvent.layout.x,
+      y: nativeEvent.layout.y,
+    }
+    let thumbPositions = this.state.thumbPositions
 
-      thisPosition.x = this.state.sliderWidth * thumbs[key].initialPosition
-      thumbPosition = new Animated.ValueXY(thisPosition)
+    thisPosition.x = this.state.sliderWidth * thumbs[key].initialPosition
+    thumbPosition = new Animated.ValueXY(thisPosition)
 
-      this.thumbPrevPositions[key] = thisPosition
-      thumbPositions[key] = thumbPosition
-      this.setState({thumbPositions})
-    // }
+    this.thumbPrevPositions[key] = thisPosition
+    thumbPositions[key] = thumbPosition
+    this.setState({thumbPositions})
 
-
-    if(this.state.thumbPositions.length === numThumbs){
+    if(this.state.thumbPositions.length === thumbs.length){
       console.log('finished layout setup')
       this.finishedLayoutSetup = true;
     }
@@ -202,8 +206,6 @@ export default class MultiSlider extends Component{
   }
 
   setLayerPosition = (key) => key === this.state.activeThumb && { zIndex: 1 }
-
-
 
   _renderThumbs(){
     const thumbViews = thumbs.map((key, index)=> {
