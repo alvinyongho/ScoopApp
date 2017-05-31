@@ -37,9 +37,15 @@ const SLIDER_HEIGHT = 30
 export class Filter extends Component {
   constructor(props) {
     super(props);
-    this.state = {searchRadius: 1,
+    this.state = {    searchRadius: 1,
                       ageRange: {min:18, max:99},
+                      isScrollEnabled: true
                  };
+
+  }
+
+  changeScrollState = (isEnabled) => {
+    this.setState({isScrollEnabled: isEnabled})
   }
 
   updateFilterSetting(filter) {
@@ -56,8 +62,8 @@ export class Filter extends Component {
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
-        <ScrollView style={{height:screenHeight-110}}>
-          <MultiSlider />
+        <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{height:screenHeight-110}}>
+          <MultiSlider changeScrollState={this.changeScrollState} />
 
           <FilterItem
             attributeText='Search Radius'

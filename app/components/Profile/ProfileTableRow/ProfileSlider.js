@@ -36,13 +36,13 @@ export class Slider extends Component {
       },
       onPanResponderMove: (evt, gestureState) => {
         if(!this.props.disabled){
-        const {moveX, dx} = gestureState
-        thumbPosition = this.state.thumbPosition
-        newX = dx+this.prevX
-        if (newX < 0) newX = 0
-        if (newX > this.state.maxWidth-THUMB_SIZE) newX = this.state.maxWidth-THUMB_SIZE
-        thumbPosition.x.setValue(newX)
-        this.setState({thumbPosition})
+          const {moveX, dx} = gestureState
+          thumbPosition = this.state.thumbPosition
+          newX = dx+this.prevX
+          if (newX < 0) newX = 0
+          if (newX > this.state.maxWidth-THUMB_SIZE) newX = this.state.maxWidth-THUMB_SIZE
+          thumbPosition.x.setValue(newX)
+          this.setState({thumbPosition})
         }
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
