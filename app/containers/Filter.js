@@ -54,19 +54,30 @@ export class Filter extends Component {
     this.setState({filterSettings: filters});
   }
 
+
+  createThumbs(){
+    let positions = [0, 1]
+    return positions.map((value)=>{
+      return {initialPosition: value}
+    })
+  }
+
   componentDidMount(){
     // get the filter settings
     this.props.fetchFilters()
+
   }
 
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{height:screenHeight-110}}>
-
-
-          <MultiSlider disabled={true} changeScrollState={this.changeScrollState} hasSteps={false} onRelease={(positions)=>console.log(positions)}/>
-
+          <MultiSlider disabled={false}
+              changeScrollState={this.changeScrollState}
+              hasSteps={false}
+              thumbs={this.createThumbs()}
+              onRelease={(positions)=>console.log(positions)}
+          />
 
           <FilterItem
             attributeText='Search Radius'
