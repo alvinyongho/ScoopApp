@@ -48,6 +48,14 @@ export default class MultiSlider extends Component{
     })
   }
 
+  computeReleasedPositions = () => {
+    return thumbPositions.map((animValue, index)=> {
+      // console.log(animValue)
+      return (animValue.x._value/this.state.sliderWidth)
+
+    })
+  }
+
   componentWillMount() {
     this.thumbPanResponders = thumbs.map((key, index) => {
       return PanResponder.create({
@@ -60,6 +68,7 @@ export default class MultiSlider extends Component{
         onPanResponderGrant: (evt, gestureState) => {
           // console.log('granted for key' + index)
           this.props.changeScrollState(false);
+          this.setActiveThumb(index)
           // set the active block
           // The guesture has started. Show visual feedback so the user knows
           // what is happening!
@@ -86,7 +95,8 @@ export default class MultiSlider extends Component{
 
           this.thumbPrevPositions[index].x = this.state.thumbPositions[index].x._value
 
-
+          this.props.onRelease(this.computeReleasedPositions());
+          this.setActiveThumb(null)
           this.props.changeScrollState(true);
           // The user has released all touches while this view is the
           // responder. This typically means a gesture has succeeded
@@ -188,11 +198,14 @@ export default class MultiSlider extends Component{
 
   }
 
+  setLayerPosition = (key) => key === this.state.activeThumb && { zIndex: 1 }
+
+
 
   _renderThumbs(){
     const thumbViews = thumbs.map((key, index)=> {
       return(
-        <Animated.View {...this.thumbPanResponders[index].panHandlers} onLayout={this._saveThumbPositions(index)} style={styles.thumbContainer} key={index}>
+        <Animated.View {...this.thumbPanResponders[index].panHandlers} onLayout={this._saveThumbPositions(index)} style={[styles.thumbContainer, this.setLayerPosition(index)]} key={index}>
           {this.finishedLayoutSetup &&
             <View style={this.getThumbStyle(index)}>
               <View style={styles.thumbInner} />
