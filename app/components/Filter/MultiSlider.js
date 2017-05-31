@@ -34,7 +34,6 @@ export default class MultiSlider extends Component{
 
   constructor(props){
     super(props)
-
     this.panCapture = false     //initially capture touch event from TouchableWithoutFeedback
     this.thumbPrevPositions = []
     this.finishedLayoutSetup = false
@@ -49,36 +48,24 @@ export default class MultiSlider extends Component{
   }
 
   computeReleasedPositions = () => {
-    return this.state.thumbPositions.map((animValue, index)=> {
-      // console.log(animValue)
+    return this.state.thumbPositions.map((animValue, index) => {
       return (animValue.x._value/this.state.sliderWidth)
-
     })
   }
 
   componentWillMount() {
+    // creates an array of thumbPanResponders that maps to the index of thumb
     this.thumbPanResponders = thumbs.map((key, index) => {
       return PanResponder.create({
-        // Ask to be the responder:
         onStartShouldSetPanResponder: (evt, gestureState) => true,
         onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
         onMoveShouldSetPanResponder: (evt, gestureState) => true,
         onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
         onPanResponderGrant: (evt, gestureState) => {
-          // console.log('granted for key' + index)
           this.props.changeScrollState(false);
           this.setActiveThumb(index)
-          // set the active block
-          // The guesture has started. Show visual feedback so the user knows
-          // what is happening!
-          // gestureState.d{x,y} will be set to zero now
         },
         onPanResponderMove: (evt, gestureState) => {
-          // The most recent move distance is gestureState.move{X,Y}
-
-          // The accumulated gesture distance since becoming responder is
-          // gestureState.d{x,y}
           const {moveX, dx} = gestureState
           thumbPositions = this.state.thumbPositions
 
@@ -92,7 +79,6 @@ export default class MultiSlider extends Component{
         },
         onPanResponderTerminationRequest: (evt, gestureState) => true,
         onPanResponderRelease: (evt, gestureState) => {
-
           if(hasSteps){
             const indexToSnapTo = Math.round(this.state.thumbPositions[index].x._value/this.state.stepDistance)
             const xPositionToSnapTo = indexToSnapTo * this.state.stepDistance
@@ -103,32 +89,17 @@ export default class MultiSlider extends Component{
           this.props.onRelease(this.computeReleasedPositions());
           this.setActiveThumb(null)
           this.props.changeScrollState(true);
-          // The user has released all touches while this view is the
-          // responder. This typically means a gesture has succeeded
         },
-        onPanResponderTerminate: (evt, gestureState) => {
-          // Another component has become the responder, so this gesture
-          // should be cancelled
-        },
-        onShouldBlockNativeResponder: (evt, gestureState) => {
-          // Returns whether this component should block native components from becoming the JS
-          // responder. Returns true by default. Is currently only supported on android.
-          return true;
-        },
+        onPanResponderTerminate: (evt, gestureState) => {},
+        onShouldBlockNativeResponder: (evt, gestureState) => true,
       });
-
     })
-
-
-
   }
-
 
   setActiveThumb = (key) => {
     console.log('setting the active block to ' + key)
     this.setState({activeThumb: key})
   }
-
 
   /*
     States set:
@@ -152,8 +123,6 @@ export default class MultiSlider extends Component{
 
   setStepDistances(width){
     this.setState({stepDistance: width/(numSteps-1)})
-    // if(debug)
-    //   console.log('setting the stepDistance to ' + width/numSteps)
   }
 
   getThumbComputedPosition(key){
@@ -163,7 +132,6 @@ export default class MultiSlider extends Component{
   }
 
   getThumbStyle(key){
-
     if(this.finishedLayoutSetup && this.state.thumbPositions.length == thumbs.length){
       return [styles.thumbOuter,
               {left: this.getThumbComputedPosition(key)},
@@ -181,10 +149,8 @@ export default class MultiSlider extends Component{
     })
   }
 
-
   // on layout set initial position as Animated.ValueXY
   _saveThumbPositions = (key) => ({nativeEvent}) => {
-
     let thisPosition = {
       x: nativeEvent.layout.x,
       y: nativeEvent.layout.y,
@@ -208,7 +174,7 @@ export default class MultiSlider extends Component{
   setLayerPosition = (key) => key === this.state.activeThumb && { zIndex: 1 }
 
   _renderThumbs(){
-    const thumbViews = thumbs.map((key, index)=> {
+    const thumbViews = thumbs.map((key, index) => {
       return(
         <Animated.View {...this.thumbPanResponders[index].panHandlers} onLayout={this._saveThumbPositions(index)} style={[styles.thumbContainer, this.setLayerPosition(index)]} key={index}>
           {this.finishedLayoutSetup &&
