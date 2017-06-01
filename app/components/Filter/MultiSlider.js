@@ -41,6 +41,7 @@ export default class MultiSlider extends Component{
     sliderLeftRightMargin: React.PropTypes.number,    // Sets the left and right margins of the slider
     sliderHeight: React.PropTypes.number,             // sets the height of the slider
     thumbs:    React.PropTypes.array,
+    sliderColor: React.PropTypes.string,
   }
 
   static defaultProps = {
@@ -50,6 +51,7 @@ export default class MultiSlider extends Component{
     thumbSize: 22,
     thumbBorderRadiusWidth: 4,
     thumbColor: 'orange',
+    sliderColor: 'orange',
     sliderLeftRightMargin: 25,
     sliderHeight: 5,
     disabled: false,
@@ -213,10 +215,11 @@ export default class MultiSlider extends Component{
 
   render() {
     return(
-      <View style={{flex:1, height: 50, marginLeft:25, marginRight: 25, backgroundColor: 'gray', justifyContent: 'center'}}>
+      <View style={{flex:1, marginLeft:this.props.sliderLeftRightMargin, marginRight: this.props.sliderLeftRightMargin, justifyContent: 'center'}}>
         <View onLayout={this._setSliderWidth}
                  style={[styles.sliderContainer,
-                        {height: this.props.sliderHeight,
+                        {backgroundColor: this.props.sliderColor,
+                         height: this.props.sliderHeight,
                          borderRadius: this.props.sliderHeight/2}
                        ]}
         />
@@ -229,7 +232,6 @@ export default class MultiSlider extends Component{
 
 var styles = StyleSheet.create({
   sliderContainer: {
-    backgroundColor: 'orange'
   },
   thumbContainer: {
     position: 'absolute',
