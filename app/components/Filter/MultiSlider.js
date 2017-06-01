@@ -93,6 +93,8 @@ export default class MultiSlider extends Component{
             if (newX > this.state.sliderWidth) newX = this.state.sliderWidth
             thumbPositions[index].x.setValue(newX)
             this.setState({thumbPositions})
+
+            this.props.onThumbMove(this.computeReleasedPositions())
           }
         },
         onPanResponderTerminationRequest: (evt, gestureState) => true,

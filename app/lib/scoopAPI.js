@@ -28,14 +28,17 @@ export function getUserIdAndToken(facebookId){
 }
 
 export function performSaveFilterSettings(userId, userToken, filterSettings){
-  let paramString = filterSettingsParamString({ filterAgeMax: 99,
-                              filterAgeMin: 18,
-                              filterHeightMax:96,
-                              filterHeightMin: 36,
-                              filterInterestedIn:3,
-                              filterLookingForMax:5,
-                              filterLookingForMin: 1,
-                              filterSearchRadius:200 })
+  let paramString = filterSettingsParamString({
+                      filterAgeMax:         filterSettings.ageMax,
+                      filterAgeMin:         filterSettings.ageMin,
+                      filterHeightMax:      filterSettings.heightMax,
+                      filterHeightMin:      filterSettings.heightMin,
+                      filterInterestedIn:   filterSettings.interestedIn,
+                      filterLookingForMax:  filterSettings.lookingForMax,
+                      filterLookingForMin:  filterSettings.lookingForMin,
+                      filterSearchRadius:   filterSettings.searchRadius
+                    })
+
   return performTaskWithParams('saveFilterSettings', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
 
