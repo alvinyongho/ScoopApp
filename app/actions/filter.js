@@ -26,26 +26,26 @@ export function fetchFilters(match_attributes){
       var current_year = new Date().getFullYear()
       var min_year = results.params[4].split('-')[0]
       var max_year = results.params[5].split('-')[0]
+
       var max_age = current_year - min_year
       var min_age = current_year - max_year
       var min_height_inches = results.params[6]
       var max_height_inches = results.params[7]
 
 
-      // TODO: fetch the current filters and populate the filters fields
+      dispatch(
+        setPrevFilters(
+          {
+            'minYear': min_year,
+            'maxYear': max_year,
+            'maxAge': max_age,
+            'minAge': min_age,
+            'maxHeightInches': max_height_inches,
+            'minHeightInches': min_height_inches,
+          }
+        )
+      );
 
-      
-      // const response = results.map((result, index) => {
-      //   console.log(user)
-      //   // return {
-      //   //   id: user.userId,
-      //   //   name: user.name,
-      //   //   image: user.picURL,
-      //   //   jobTitle: user.jobTitle
-      //   // }
-      // })
-
-      // dispatch(setFoundMatches( { matches_found: response } ));
     });
   }
 }
@@ -91,5 +91,12 @@ export function saveFilter(new_settings){
   return {
     type: types.SAVE_FILTER,
     new_settings
+  }
+}
+
+export function setPrevFilters(prev_filters){
+  return{
+    type: types.SET_PREV_FILTERS,
+    prev_filters
   }
 }
