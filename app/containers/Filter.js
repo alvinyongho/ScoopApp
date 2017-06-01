@@ -13,6 +13,10 @@ import {
 
 
 import FilterItem from '../components/Filter/FilterItem'
+import FilterRow from '../components/Filter/FilterRow'
+
+
+
 import MultiSlider from '../components/Filter/MultiSlider'
 
 import Dimensions from 'Dimensions';
@@ -54,85 +58,58 @@ export class Filter extends Component {
     this.setState({filterSettings: filters});
   }
 
-
-  createThumbs(){
-    let positions = [0, 1]
-    return positions.map((value)=>{
-      return {initialPosition: value}
-    })
-  }
-
   componentDidMount(){
     // get the filter settings
     this.props.fetchFilters()
-
   }
 
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{height:screenHeight-110}}>
-          <MultiSlider disabled={false}
-              changeScrollState={this.changeScrollState}
-              hasSteps={false}
-              thumbs={this.createThumbs()}
-              onRelease={(positions)=>console.log(positions)}
+
+
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'Search Radius'}
+            containsSliderLabels={false}
+            thumbPositions={[0]}
+            sliderColor={'orange'}
           />
 
-          <FilterItem
-            attributeText='Search Radius'
-            statusText={`${this.state.searchRadius} miles`}
-            sliderType='default'
-            maxValue='200'
-            onSliderUpdate={(value)=>{
-                let sliderValue = Math.floor(200*value)
-                this.setState({searchRadius: Math.max(1, sliderValue)})
-              }
-            }
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'Age Range'}
+            containsSliderLabels={false}
+            thumbPositions={[0,1]}
+            sliderColor={'orange'}
           />
 
-          <FilterItem
-            attributeText='Age Range'
-            statusText={`${this.state.ageRange.min} - ${this.state.ageRange.max}`}
-            sliderType='multi'
-            onMultiSliderUpdate={(minMaxValues)=> {
-              let min = Math.floor(minMaxValues.left*81 + 18)
-              let max = Math.floor(minMaxValues.right*81 + 18)
-              this.setState({ageRange: {min: min,max: max}})
-            }}
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'Height'}
+            containsSliderLabels={false}
+            thumbPositions={[0,1]}
+            sliderColor={'orange'}
           />
 
-          <FilterItem
-            attributeText='Height'
-            statusText='3&#39;0&#34; - 8&#39;0&#34;'
-            sliderType='multi'
-
-            onMultiSliderUpdate={(minMaxValues)=> {
-              let min = Math.floor(minMaxValues.left)
-              let max = Math.floor(minMaxValues.right)
-              this.setState({heightRange: {min: min,max: max}})
-            }}
-
-          />
-          <FilterItem
-            attributeText='I Am Looking For'
-            showAttrLeft='true'
-            sliderType='multi'
-
-            attrLeftText='Relationship'
-            attrRightText='Friendship'
-          />
-          <FilterItem
-            attributeText='I Am Interested In'
-            // statusText='200 miles'
-            attrLeftText='Men'
-            attrMidText='Both'
-            attrRightText='Women'
-            sliderType='step'
-            stepAmount={.5}
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'I Am Looking For'}
+            containsSliderLabels={true}
+            sliderLabels={['Relationship', 'Friendship']}
+            thumbPositions={[0,1]}
+            sliderColor={'orange'}
           />
 
-
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'I Am Interested In'}
+            containsSliderLabels={true}
+            sliderLabels={['Men', 'Both', 'Women']}
+            thumbPositions={[0]}
+            sliderColor={'yellow'}
+          />
 
 
         </ScrollView>
