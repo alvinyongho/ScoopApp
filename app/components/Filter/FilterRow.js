@@ -107,8 +107,8 @@ export default class FilterItem extends Component{
         console.log(this.props.sliderResultFunction(sliderValue))
         this.setState({sliderResult: this.props.sliderResultFunction(sliderValue)})
       } else {
-
-      this.setSliderResult(sliderValue)
+        return;
+      // this.setSliderResult(sliderValue)
       }
   }
 

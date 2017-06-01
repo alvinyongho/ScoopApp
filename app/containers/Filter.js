@@ -63,19 +63,31 @@ export class Filter extends Component {
     this.props.fetchFilters()
   }
 
-
   computeInMiles = (sliderValue) => {
     return Math.floor(sliderValue * 200) + ' miles'
   }
 
+  computeSliderToHeight = (sliderValues) => {
+    let min = 36
+    let max = 96
 
-
-  computeSliderValuesToInches = (sliderValues) => {
-    inchesArray = sliderValues.map((values)=>{
-      // console.log
-      return values
+    inchesArray = sliderValues.map((sliderValue)=>{
+      // console.log(
+      return Math.floor(sliderValue*(max-min)+min)
     })
 
+    ftInArray = this.inchesArrayToFtInArray(inchesArray)
+    console.log(ftInArray)
+    return ftInArray.sort().join(' - ')
+  }
+
+  inchesArrayToFtInArray = (inchesArray) => {
+    return inchesArray.map((inches)=>{
+      console.log(inches)
+      ft = Math.floor(inches/12)
+      inches = inches-(12*ft)
+      return `${ft}'${inches}"`
+    })
   }
 
   computeSliderToAgeRange = (sliderValues) => {
@@ -83,16 +95,9 @@ export class Filter extends Component {
     let max = 99
 
     ageArray = sliderValues.map((sliderValue)=>{
-      return Math.floor((sliderValue*(max-min))+18)
+      return Math.floor((sliderValue*(max-min))+min)
     })
-
-
     return ageArray.sort().join(' - ') + ' years'
-  }
-
-
-  computeInchesToFtIn = (inches) => {
-
   }
 
 
@@ -110,7 +115,6 @@ export class Filter extends Component {
             initialValue={'tbd'}
             hasSteps={false}
             sliderResultFunction={this.computeInMiles}
-
           />
 
           <FilterRow
@@ -122,8 +126,6 @@ export class Filter extends Component {
             initialValue={'tbd'}
             hasSteps={false}
             sliderResultFunction={this.computeSliderToAgeRange}
-
-
           />
 
           <FilterRow
@@ -134,8 +136,7 @@ export class Filter extends Component {
             sliderColor={'#ECA45C'}
             initialValue={'tbd'}
             hasSteps={false}
-
-
+            sliderResultFunction={this.computeSliderToHeight}
           />
 
           <FilterRow
@@ -145,11 +146,8 @@ export class Filter extends Component {
             sliderLabels={['Relationship', 'Friendship']}
             thumbPositions={[0,1]}
             sliderColor={'#ECA45C'}
-            initialValue={'tbd'}
             hasSteps={true}
             numSteps={5}
-
-
           />
 
           <FilterRow
@@ -159,12 +157,8 @@ export class Filter extends Component {
             sliderLabels={['Men', 'Both', 'Women']}
             thumbPositions={[0]}
             sliderColor={'#EFDAC6'}
-            initialValue={'tbd'}
             hasSteps={true}
             numSteps={3}
-
-
-
           />
 
 
