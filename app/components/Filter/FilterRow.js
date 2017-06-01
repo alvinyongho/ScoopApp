@@ -18,8 +18,14 @@ export default class FilterItem extends Component{
     };
   }
 
+  componentDidMount(){
+    this.setSliderResult(this.props.initialValue)
+  }
+
   createThumbs(positions){
     // let positions = [0, 1]
+
+
     return positions.map((value)=>{
       return {initialPosition: value}
     })
@@ -93,6 +99,19 @@ export default class FilterItem extends Component{
     )
   }
 
+  computeAndSetSliderResult(sliderValue){
+      if(this.props.sliderResultFunction){
+
+        console.log('has result function')
+
+        console.log(this.props.sliderResultFunction(sliderValue))
+        this.setState({sliderResult: this.props.sliderResultFunction(sliderValue)})
+      } else {
+
+      this.setSliderResult(sliderValue)
+      }
+  }
+
   setSliderResult(sliderValue){
     this.setState({sliderResult: sliderValue})
   }
@@ -114,13 +133,16 @@ export default class FilterItem extends Component{
       <View style={{flex:1, backgroundColor: 'white'}}>
         {this.topLabels()}
 
-        <MultiSlider disabled={false}
+        <MultiSlider
+            disabled={false}
             changeScrollState={this.props.changeScrollState}
             hasSteps={false}
             sliderLeftRightMargin={leftRightMargin}
             thumbs={this.createThumbs(this.props.thumbPositions)}
-            onRelease={(positions)=>console.log(positions)}
+            onRelease={(positions)=>this.computeAndSetSliderResult(positions)}
             sliderColor={this.props.sliderColor}
+            hasSteps={this.props.hasSteps}
+            numSteps={this.props.numSteps}
         />
 
 
