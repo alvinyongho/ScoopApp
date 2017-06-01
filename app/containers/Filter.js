@@ -15,8 +15,6 @@ import {
 import FilterItem from '../components/Filter/FilterItem'
 import FilterRow from '../components/Filter/FilterRow'
 
-
-
 import MultiSlider from '../components/Filter/MultiSlider'
 
 import Dimensions from 'Dimensions';
@@ -67,6 +65,10 @@ export class Filter extends Component {
     return Math.floor(sliderValue * 200) + ' miles'
   }
 
+  computeInMilesPOSTFormat = (sliderValue) =>{
+    return Math.floor(sliderValue * 200)
+  }
+
   computeSliderToHeight = (sliderValues) => {
     let min = 36
     let max = 96
@@ -87,19 +89,15 @@ export class Filter extends Component {
     })
   }
 
-
   inchesToFt = (inches) => {
     ft = Math.floor(inches/12)
     inches = inches-(12*ft)
     return `${ft}'${inches}"`
   }
 
-
-
   computeSliderToAgeRange = (sliderValues) => {
     let min = 18
     let max = 99
-
     ageArray = sliderValues.map((sliderValue)=>{
       return Math.floor((sliderValue*(max-min))+min)
     })
@@ -112,21 +110,19 @@ export class Filter extends Component {
   }
 
   _getInitialHeightRange(){
-
     minHeightInches = this.props.prevFilters.minHeightInches
     maxHeightInches = this.props.prevFilters.maxHeightInches
     minHt = this.inchesToFt(parseInt(minHeightInches))
     maxHt = this.inchesToFt(parseInt(maxHeightInches))
-
-
     return `${minHt} - ${maxHt}`
   }
+
+
 
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{height:screenHeight-110}}>
-
 
           {/* TODO: set the miles and the thumb position*/}
           <FilterRow
@@ -138,6 +134,11 @@ export class Filter extends Component {
             initialValue={'200 miles'}
             hasSteps={false}
             sliderResultFunction={this.computeInMiles}
+
+            onSliderUpdate = {(positions)=>
+                                this.props.changeFilterSetting({searchRadius:this.computeInMilesPOSTFormat(positions)})
+                             }
+
           />
 
           <FilterRow

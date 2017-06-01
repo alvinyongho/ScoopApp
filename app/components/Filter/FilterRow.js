@@ -139,7 +139,13 @@ export default class FilterItem extends Component{
             hasSteps={false}
             sliderLeftRightMargin={leftRightMargin}
             thumbs={this.createThumbs(this.props.thumbPositions)}
-            onRelease={(positions)=>this.computeAndSetSliderResult(positions)}
+            onRelease={(positions)=>{
+                                      this.computeAndSetSliderResult(positions)
+                                      this.props.onSliderUpdate(positions)
+                                    }
+
+                      }
+            onThumbMove={(positions)=>this.computeAndSetSliderResult(positions)}
             sliderColor={this.props.sliderColor}
             hasSteps={this.props.hasSteps}
             numSteps={this.props.numSteps}

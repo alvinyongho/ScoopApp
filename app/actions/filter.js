@@ -8,10 +8,17 @@ import {
 
 export function saveFilters(save_filter_settings){
 
+  console.log(save_filter_settings)
   return(dispatch, getState) => {
-    performSaveFilterSettings(579, 'bdvvqtctgs').then((results) => {
-      // TODO: save the filters to local state via reducer function
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    let scoopUserToken = getState().scoopUserProfile.scoopToken
+    performSaveFilterSettings(scoopUserId, scoopUserToken, save_filter_settings).then((results) => {
+      console.log('performing save filter settings')
+
       console.log(results)
+
+
+
     })
   }
 }
@@ -32,32 +39,25 @@ export function fetchFilters(match_attributes){
       var min_height_inches = results.params[6]
       var max_height_inches = results.params[7]
 
-
-      dispatch(
-        setPrevFilters(
-          {
-            'minYear': min_year,
-            'maxYear': max_year,
-            'maxAge': max_age,
-            'minAge': min_age,
-            'maxHeightInches': max_height_inches,
-            'minHeightInches': min_height_inches,
-          }
-        )
-      );
-
+      dispatch(setPrevFilters({
+        'minYear': min_year,
+        'maxYear': max_year,
+        'maxAge': max_age,
+        'minAge': min_age,
+        'maxHeightInches': max_height_inches,
+        'minHeightInches': min_height_inches, }));
     });
   }
 }
 
 
+
+
+
 export function changeFilterSetting(filter_setting){
   // TODO: Update the temporary storage for the filter settings
   return(dispatch, getState) => {
-    updated_filter_setting = {}
-
-    console.log('updating the filter setting: ...TODO')
-    dispatch(updateFilter({filter_setting: updated_filter_setting}))
+    dispatch(updateFilter({...filter_setting}))
 
   }
 }
