@@ -45,7 +45,7 @@ export default class MultiSlider extends Component{
   }
 
   static defaultProps = {
-    hasSteps: true,
+    hasSteps: false,
     numSteps: 3,
     debug: false,
     thumbSize: 22,
