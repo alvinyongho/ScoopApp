@@ -83,12 +83,18 @@ export class Filter extends Component {
 
   inchesArrayToFtInArray = (inchesArray) => {
     return inchesArray.map((inches)=>{
-      console.log(inches)
-      ft = Math.floor(inches/12)
-      inches = inches-(12*ft)
-      return `${ft}'${inches}"`
+      return this.inchesToFt(inches)
     })
   }
+
+
+  inchesToFt = (inches) => {
+    ft = Math.floor(inches/12)
+    inches = inches-(12*ft)
+    return `${ft}'${inches}"`
+  }
+
+
 
   computeSliderToAgeRange = (sliderValues) => {
     let min = 18
@@ -100,19 +106,36 @@ export class Filter extends Component {
     return ageArray.sort().join(' - ') + ' years'
   }
 
+  _getInitialAgeRange(){
+    max_limit = Math.min(99, this.props.prevFilters.maxAge)
+    return `${this.props.prevFilters.minAge} - ${max_limit} years`
+  }
+
+  _getInitialHeightRange(){
+
+    minHeightInches = this.props.prevFilters.minHeightInches
+    maxHeightInches = this.props.prevFilters.maxHeightInches
+    minHt = this.inchesToFt(parseInt(minHeightInches))
+    maxHt = this.inchesToFt(parseInt(maxHeightInches))
+
+
+    return `${minHt} - ${maxHt}`
+  }
 
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{height:screenHeight-110}}>
 
+
+          {/* TODO: set the miles and the thumb position*/}
           <FilterRow
             changeScrollState={this.changeScrollState}
             topLeftTitle={'Search Radius'}
             containsSliderLabels={false}
-            thumbPositions={[0]}
+            thumbPositions={[1]}
             sliderColor={'#ECA45C'}
-            initialValue={'tbd'}
+            initialValue={'200 miles'}
             hasSteps={false}
             sliderResultFunction={this.computeInMiles}
           />
@@ -123,7 +146,7 @@ export class Filter extends Component {
             containsSliderLabels={false}
             thumbPositions={[0,1]}
             sliderColor={'#ECA45C'}
-            initialValue={'tbd'}
+            initialValue={this._getInitialAgeRange()}
             hasSteps={false}
             sliderResultFunction={this.computeSliderToAgeRange}
           />
@@ -134,7 +157,7 @@ export class Filter extends Component {
             containsSliderLabels={false}
             thumbPositions={[0,1]}
             sliderColor={'#ECA45C'}
-            initialValue={'tbd'}
+            initialValue={this._getInitialHeightRange()}
             hasSteps={false}
             sliderResultFunction={this.computeSliderToHeight}
           />
@@ -229,7 +252,7 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    // foundMatches: state.foundMatches
+    prevFilters: state.previousFilters
   }
 }
 
