@@ -20,6 +20,8 @@ export const LOADING_USER  = 'LOADING_USER'
 
 //  * filters
 export const UPDATE_FILTER = 'UPDATE_FILTER'
+export const UPDATE_SLIDER = 'UPDATE_SLIDER'
+
 export const RESET_FILTER  = 'RESET_FILTER'
 export const SAVE_FILTER   = 'SAVE_FILTER'
 export const SET_PREV_FILTERS = 'SET_PREV_FILTERS'

@@ -29,15 +29,18 @@ export function getUserIdAndToken(facebookId){
 
 export function performSaveFilterSettings(userId, userToken, filterSettings){
   let paramString = filterSettingsParamString({
-                      filterAgeMax:         filterSettings.ageMax,
-                      filterAgeMin:         filterSettings.ageMin,
-                      filterHeightMax:      filterSettings.heightMax,
-                      filterHeightMin:      filterSettings.heightMin,
-                      filterInterestedIn:   filterSettings.interestedIn,
-                      filterLookingForMax:  filterSettings.lookingForMax,
-                      filterLookingForMin:  filterSettings.lookingForMin,
-                      filterSearchRadius:   filterSettings.searchRadius
+                      filterAgeMax:         filterSettings.filterAgeMax,
+                      filterAgeMin:         filterSettings.filterAgeMin,
+                      filterHeightMax:      filterSettings.filterHeightMax,
+                      filterHeightMin:      filterSettings.filterHeightMin,
+                      filterInterestedIn:   filterSettings.filterInterestedIn,
+                      filterLookingForMax:  filterSettings.filterLookingForMax,
+                      filterLookingForMin:  filterSettings.filterLookingForMin,
+                      filterSearchRadius:   filterSettings.filterSearchRadius
                     })
+
+  console.log('THE PARAM STRING')
+  console.log(filterSettings)
 
   return performTaskWithParams('saveFilterSettings', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
@@ -50,7 +53,7 @@ export function performLoadFeedTask(userId, userToken, lon, lat){
   return performTaskWithParams('loadFeed', `lat=${lat}&lon=${lon}&userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}`)
 }
 
-export function performLoadProfileTask(targetId){
-  return performTaskWithParams('loadProfile', `targetId=${targetId}&z=${CLIENT_SECRET}`)
+export function performLoadProfileTask(targetId, userId){
+  return performTaskWithParams('loadProfile', `targetId=${targetId}&z=${CLIENT_SECRET}&userId=${userId}`)
 
 }

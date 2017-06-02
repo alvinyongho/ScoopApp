@@ -46,6 +46,8 @@ export class Filter extends Component {
 
   }
 
+
+
   changeScrollState = (isEnabled) => {
     this.setState({isScrollEnabled: isEnabled})
   }
@@ -58,7 +60,9 @@ export class Filter extends Component {
 
   componentDidMount(){
     // get the filter settings
+    console.log('setting default filters')
     this.props.fetchFilters()
+
   }
 
   computeInMiles = (sliderValue) => {
@@ -74,14 +78,23 @@ export class Filter extends Component {
     let max = 96
 
     inchesArray = sliderValues.map((sliderValue)=>{
-      // console.log(
       return Math.floor(sliderValue*(max-min)+min)
     })
 
     ftInArray = this.inchesArrayToFtInArray(inchesArray)
-    console.log(ftInArray)
     return ftInArray.sort().join(' - ')
   }
+
+  computeAgeRangePostFormat = (sliderValues) =>{
+    let min = 18
+    let max = 99
+    ageArray = sliderValues.map((sliderValue)=>{
+      return Math.floor((sliderValue*(max-min))+min)
+    })
+    return ageArray.sort()
+  }
+
+
 
   inchesArrayToFtInArray = (inchesArray) => {
     return inchesArray.map((inches)=>{
@@ -104,20 +117,54 @@ export class Filter extends Component {
     return ageArray.sort().join(' - ') + ' years'
   }
 
+  computeHeightRangePostFormat = (sliderValues)=>{
+    let min = 36
+    let max = 96
+    inchesArray = sliderValues.map((sliderValue)=>{
+      return Math.floor(sliderValue*(max-min)+min)
+    })
+    return inchesArray.sort()
+  }
+
   _getInitialAgeRange(){
-    max_limit = Math.min(99, this.props.prevFilters.maxAge)
-    return `${this.props.prevFilters.minAge} - ${max_limit} years`
+    ageRange = this.props.prevSliderValues.AGE_RANGE.sort()
+    min = Math.floor((ageRange[0] * (99-18))+18)
+    max = Math.floor((ageRange[1] * (99-18))+18)
+    return `${min} - ${max} years`
   }
 
   _getInitialHeightRange(){
-    minHeightInches = this.props.prevFilters.minHeightInches
-    maxHeightInches = this.props.prevFilters.maxHeightInches
+    heightRange = this.props.prevSliderValues.HEIGHT.sort()
+    minHeightInches = Math.floor((heightRange[0]*(96-36))+36)
+    maxHeightInches = Math.floor((heightRange[1]*(96-36))+36)
+    minHeightInches = minHeightInches
+    maxHeightInches = maxHeightInches
     minHt = this.inchesToFt(parseInt(minHeightInches))
     maxHt = this.inchesToFt(parseInt(maxHeightInches))
     return `${minHt} - ${maxHt}`
   }
 
 
+  computeLookingForPostFormat = (numSteps, sliderValues)=>{
+    return this.computeStepPostFormat(numSteps, sliderValues)
+  }
+
+
+  computeGenderInterestPostFormat = (numSteps, sliderValues)=>{
+    return this.computeStepPostFormat(numSteps, sliderValues)
+  }
+
+
+  computeStepPostFormat = (numSteps, sliderValues)=>{
+    lookingForValues = sliderValues.map((value, index)=>{
+      return (value * (numSteps-1))+1
+    })
+    return lookingForValues
+  }
+
+  updateSliderSettings = (type, positionArr) =>{
+    this.props.updateSliderSetting(type, positionArr)
+  }
 
   render() {
     return(
@@ -129,14 +176,19 @@ export class Filter extends Component {
             changeScrollState={this.changeScrollState}
             topLeftTitle={'Search Radius'}
             containsSliderLabels={false}
-            thumbPositions={[1]}
+            thumbPositions={[this.props.prevSliderValues.SEARCH_RADIUS[0]]}
             sliderColor={'#ECA45C'}
-            initialValue={'200 miles'}
+
+
+            initialValue={`${Math.floor(this.props.prevSliderValues.SEARCH_RADIUS[0]*200)} miles`}
+
+
             hasSteps={false}
             sliderResultFunction={this.computeInMiles}
-
-            onSliderUpdate = {(positions)=>
-                                this.props.changeFilterSetting({searchRadius:this.computeInMilesPOSTFormat(positions)})
+            onSliderUpdate = {(positions)=>{
+                                  this.props.changeFilterSetting({searchRadius:this.computeInMilesPOSTFormat(positions)})
+                                  this.updateSliderSettings('SEARCH_RADIUS', positions)
+                                }
                              }
 
           />
@@ -145,22 +197,40 @@ export class Filter extends Component {
             changeScrollState={this.changeScrollState}
             topLeftTitle={'Age Range'}
             containsSliderLabels={false}
-            thumbPositions={[0,1]}
+            thumbPositions={[this.props.prevSliderValues.AGE_RANGE[0],this.props.prevSliderValues.AGE_RANGE[1]]}
             sliderColor={'#ECA45C'}
             initialValue={this._getInitialAgeRange()}
             hasSteps={false}
             sliderResultFunction={this.computeSliderToAgeRange}
+            onSliderUpdate = {(positions)=>{
+                                this.props.changeFilterSetting({ageMin:this.computeAgeRangePostFormat(positions)[0]})
+                                this.props.changeFilterSetting({ageMax:this.computeAgeRangePostFormat(positions)[1]})
+                                this.updateSliderSettings('AGE_RANGE', positions)
+                              }
+                             }
+
           />
 
           <FilterRow
             changeScrollState={this.changeScrollState}
             topLeftTitle={'Height'}
             containsSliderLabels={false}
-            thumbPositions={[0,1]}
+            thumbPositions={[this.props.prevSliderValues.HEIGHT[0], this.props.prevSliderValues.HEIGHT[1]]}
             sliderColor={'#ECA45C'}
             initialValue={this._getInitialHeightRange()}
             hasSteps={false}
             sliderResultFunction={this.computeSliderToHeight}
+
+            onSliderUpdate = {(positions)=>{
+                              this.props.changeFilterSetting({heightMin: this.computeHeightRangePostFormat(positions)[0]})
+                              this.props.changeFilterSetting({heightMax: this.computeHeightRangePostFormat(positions)[1]})
+                              this.updateSliderSettings('HEIGHT', positions)
+
+              }
+            }
+
+
+
           />
 
           <FilterRow
@@ -168,10 +238,19 @@ export class Filter extends Component {
             topLeftTitle={'I Am Looking For'}
             containsSliderLabels={true}
             sliderLabels={['Relationship', 'Friendship']}
-            thumbPositions={[0,1]}
+            thumbPositions={[this.props.prevSliderValues.LOOKING_FOR[0], this.props.prevSliderValues.LOOKING_FOR[1]]}
             sliderColor={'#ECA45C'}
             hasSteps={true}
             numSteps={5}
+
+            onSliderUpdate = {(positions)=>{
+                              this.props.changeFilterSetting({lookingForMin: this.computeLookingForPostFormat(5, positions)[0]})
+                              this.props.changeFilterSetting({lookingForMax: this.computeLookingForPostFormat(5, positions)[1]})
+                              this.updateSliderSettings('LOOKING_FOR', positions)
+
+              }
+            }
+
           />
 
           <FilterRow
@@ -179,10 +258,15 @@ export class Filter extends Component {
             topLeftTitle={'I Am Interested In'}
             containsSliderLabels={true}
             sliderLabels={['Men', 'Both', 'Women']}
-            thumbPositions={[0]}
+            thumbPositions={[this.props.prevSliderValues.INTERESTED_IN[0]]}
             sliderColor={'#EFDAC6'}
             hasSteps={true}
             numSteps={3}
+            onSliderUpdate = {(positions)=>{
+                              this.props.changeFilterSetting({interestedIn: this.computeStepPostFormat(3, positions)[0]})
+                              this.updateSliderSettings('INTERESTED_IN', positions)
+              }
+            }
           />
 
 
@@ -253,7 +337,8 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    prevFilters: state.previousFilters
+    prevFilters: state.previousFilters,
+    prevSliderValues: state.prevSliderValues
   }
 }
 

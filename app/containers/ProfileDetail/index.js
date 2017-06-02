@@ -24,6 +24,22 @@ import { bindActionCreators } from 'redux';
 
 FB_EXPIRED_URL = 'https://scontent.xx.fbcdn.net'
 
+
+function distance(lat1, lon1, lat2, lon2, unit) {
+	var radlat1 = Math.PI * lat1/180
+	var radlat2 = Math.PI * lat2/180
+	var theta = lon1-lon2
+	var radtheta = Math.PI * theta/180
+	var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	dist = Math.acos(dist)
+	dist = dist * 180/Math.PI
+	dist = dist * 60 * 1.1515
+	if (unit=="K") { dist = dist * 1.609344 }
+	if (unit=="N") { dist = dist * 0.8684 }
+	return dist
+}
+
+
 export class ProfileDetail extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +50,35 @@ export class ProfileDetail extends Component {
 
   changeScrollState = (isEnabled) => {
     this.setState({isScrollEnabled: isEnabled})
+  }
+
+  _getHeight = () => {
+    if(this.props.userDetail.heightInches){
+      console.log(this.props.userDetail.heightInches)
+        ft = Math.floor(parseInt(this.props.userDetail.heightInches)/12)
+        inches = parseInt(this.props.userDetail.heightInches)-(12*ft)
+      return(<Text>{`${ft}'${inches}"`}</Text>)
+    } else {
+      return(<Text>Ask me!</Text>)
+    }
+  }
+
+  _getOffSpring = () => {
+    if(this.props.userDetail.offspring === "0"){
+      return(<Text>Ask me!</Text>)
+    }
+    return(<Text>TODO!</Text>)
+  }
+
+  _getBodyType = () => {
+    if(this.props.userDetail.offspring === "0"){
+      return(<Text>Ask me!</Text>)
+    }
+    return(<Text>TODO!</Text>)
+  }
+
+  _getDistanceInMiles = () => {
+    return Math.floor(this.props.userDetail.distance)
   }
 
   render() {
@@ -51,24 +96,20 @@ export class ProfileDetail extends Component {
           {this.props.userDetail &&
           <ProfileBasicInfo
                 name = {this.props.userDetail.firstName}
-                distance = {"62 mi"}
+                distance = {`${this._getDistanceInMiles()} mi`}
                 schoolName = {this.props.userDetail.schoolName}
                 relationshipStatus = {"Single"}
           />
           }
-          <SendMessageButton />
+          <SendMessageButton name={this.props.userDetail.firstName}/>
 
 
           <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
-            <BasicRow rowItemName={'Height'} rowItemValue={<Text>5&#39; 6&#34;</Text>}/>
+            <BasicRow rowItemName={'Height'} rowItemValue={this._getHeight()}/>
             <RowDivider />
-            <BasicRow rowItemName={'Job Title'}/>
+            <BasicRow rowItemName={'Offspring'} rowItemValue={this._getOffSpring()}/>
             <RowDivider />
-            <BasicRow rowItemName={'Height'} rowItemValue={<Text>Ask me!</Text>}/>
-            <RowDivider />
-            <BasicRow rowItemName={'Offspring'} rowItemValue={<Text>Ask me!</Text>}/>
-            <RowDivider />
-            <BasicRow rowItemName={'Body Type'} rowItemValue={<Text>Ask me!</Text>}/>
+            <BasicRow rowItemName={'Body Type'} rowItemValue={this._getBodyType()}/>
           </View>
 
           <SectionTitle title={'LOOKING FOR'}/>
@@ -166,7 +207,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     userDetail: state.viewingProfileDetail,
-    isLoadingUser: state.isLoadingUser
+    isLoadingUser: state.isLoadingUser,
+    currentLocation: state.currentLocation,
   }
 }
 

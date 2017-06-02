@@ -10,8 +10,14 @@ import {
 export function fetchUser(targetId){
   return (dispatch, getState) => {
     dispatch(setLoadingUserStatus(true))
-    performLoadProfileTask(targetId).then((results) => {
+
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    console.log('THE SCOOP USER ID IS ' + scoopUserId)
+    performLoadProfileTask(targetId, scoopUserId).then((results) => {
       const response = results.userInfo
+
+      console.log('fetched USER')
+      console.log(results["z-distance"])
       dispatch(viewProfile({user_information:response}))
       dispatch(setLoadingUserStatus(false))
     })
@@ -48,6 +54,10 @@ export function fetchMatches(match_attributes){
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
     performLoadFeedTask(scoopUserId, scoopUserToken, lon, lat).then((results) => {
+
+      // console.log('LOAD FEED RESULTS')
+      // console.log(results)
+
       const response = results.users.map((user, index) => {
         return {
           id: user.userId,

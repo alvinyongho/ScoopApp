@@ -32,7 +32,15 @@ export class FilterScreen extends React.Component {
                            Cancel
                          </Text>
                 </Button>,
-    headerRight: <SaveButton onSavePressed={()=> navigation.goBack()} />,
+    headerRight: <SaveButton onSavePressed={()=> {
+
+      console.log('handling save pressed')
+
+
+      navigation.goBack()}
+
+
+    } />,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color:'white', alignSelf: 'center'},
     gesturesEnabled: false
