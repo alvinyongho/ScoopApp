@@ -118,7 +118,10 @@ export class ProfileDetail extends Component {
           <SectionTitle title={'CONNECTED APPS'}/>
           <View style={{backgroundColor:'white', paddingLeft: 15}}>
             <View style={{justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
-              <View style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
+              <View style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}>
+
+              </View>
+
               <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
               <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
             </View>

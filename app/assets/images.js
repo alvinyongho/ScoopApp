@@ -12,6 +12,15 @@ const images = {
 	sliderTrack: require('./img/Slider/Track.png'),
 	sliderSnapTrack: require('./img/Slider/TrackSnapBg.png'),
 
+	facebook_noColor:			require('./img/ProfileDetail/facebook@3x.png')
+	facebook_withColor:		require('./img/ProfileDetail/facebookcolor@3x.png')
+	fitbit_noColor:				require('./img/ProfileDetail/fitbit@3x.png')
+	fitbit_withColor:			require('./img/ProfileDetail/fitbitcolor@3x.png')
+	pinterest_noColor:		require('./img/ProfileDetail/pinterest@3x.png')
+	pinterest_withColor:	require('./img/ProfileDetail/pinterestcolor@3x.png')
+	spotify_noColor:			require('./img/ProfileDetail/spotify@3x.png')
+	spotify_withColor:		require('./img/ProfileDetail/spotifycolor@3x.png')
+
 	placeholder_album1: require('./img/MyProfile/placeholders/album1.png'),
 	placeholder_album2: require('./img/MyProfile/placeholders/album2.png'),
 	placeholder_album3: require('./img/MyProfile/placeholders/album3.png'),
