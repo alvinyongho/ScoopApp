@@ -11,12 +11,12 @@ import Swiper from './react-native-page-swiper';
 import Button from 'react-native-button';
 
 
-export default class ProfileBasicInfo extends Component {
+export default class SendMessageButton extends Component {
   render(){
     return(
       <View style={styles.wrapper}>
         <Button containerStyle={styles.buttonContainer}>
-          <Text style={styles.subheader}> Send IU a Message </Text>
+          <Text style={styles.subheader}> Send {this.props.name} a Message </Text>
         </Button>
       </View>
     )
