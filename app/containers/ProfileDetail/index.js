@@ -3,13 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView
+  ScrollView,
+  Image
 } from 'react-native';
 
 import ProfileAlbum from '../../components/Profile/ProfileAlbum'
 import ProfileBasicInfo from '../../components/Profile/ProfileBasicInfo'
 import SendMessageButton from '../../components/Profile/SendMessageButton'
 
+import images from '@assets/images';
 
 import RowDivider from '../../components/Profile/ProfileTableRow/RowDivider'
 import BasicRow from '../../components/Profile/ProfileTableRow/BasicRow'
@@ -53,8 +55,8 @@ export class ProfileDetail extends Component {
   }
 
   _getHeight = () => {
-    if(this.props.userDetail.heightInches){
-      console.log(this.props.userDetail.heightInches)
+    if(this.props.userDetail.heightInches && this.props.userDetail.heightInches !== "0"){
+      // console.log(this.props.userDetail.heightInches)
         ft = Math.floor(parseInt(this.props.userDetail.heightInches)/12)
         inches = parseInt(this.props.userDetail.heightInches)-(12*ft)
       return(<Text>{`${ft}'${inches}"`}</Text>)
@@ -113,25 +115,26 @@ export class ProfileDetail extends Component {
           </View>
 
           <SectionTitle title={'LOOKING FOR'}/>
-          <ProfileSlider changeScrollState={this.changeScrollState} />
+          <ProfileSlider lookingForValues={{relationshipType: [0], genderType: [1]}} changeScrollState={this.changeScrollState} />
 
           <SectionTitle title={'CONNECTED APPS'}/>
           <View style={{backgroundColor:'white', paddingLeft: 15}}>
             <View style={{justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
-              <View style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}>
-
-              </View>
-
-              <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
-              <View style={{height:50, width:50, margin: 15, marginRight: 0, borderRadius: 50/2, backgroundColor: 'green'}}/>
+              <Image source={images.facebook_noColor} style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 15, borderRadius: 50/2}}/>
+              <Image source={images.fitbit_noColor} style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 15, borderRadius: 50/2}}/>
+              <Image source={images.pinterest_noColor} style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 15, borderRadius: 50/2}}/>
+              <Image source={images.spotify_noColor} style={{height:50, width:50, margin: 15, marginLeft: 0, marginRight: 15, borderRadius: 50/2}}/>
             </View>
 
             <View style={{height:1, backgroundColor:'#E6E6E6'}} />
             <View style={{height: 40, justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row'}}>
               <Text style={{fontSize: 16, fontFamily: 'Avenir-Light'}}>Coming Soon:</Text>
-                <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
-                <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
-                <View style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2, backgroundColor: 'red'}}/>
+                <Image source={images.instagram_noColor} style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2}}/>
+                <Image source={images.youtube_noColor} style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2}}/>
+                <Image source={images.foursqure_noColor} style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2}}/>
+                <Image source={images.twitter_noColor} style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2}}/>
+                <Image source={images.linkedin_noColor} style={{ marginLeft:5, marginRight: 5,  height: 20, width:20, borderRadius: 20/2}}/>
+
             </View>
           </View>
 

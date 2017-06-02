@@ -9,7 +9,7 @@ import {
   Dimensions
 } from 'react-native';
 
-
+import MultiSlider from '../../Filter/MultiSlider'
 THUMB_SIZE = 20
 THUMB_RADIUS = 4
 
@@ -141,29 +141,24 @@ export default class ProfileSlider extends Component {
     super(props)
   }
 
+  createThumbs(positions){
+    // let positions = [0, 1]
+
+
+    return positions.map((value)=>{
+      return {initialPosition: value}
+    })
+  }
+
   render(){
     return (
 
       <View style={{flex: 1, flexDirection: 'column', backgroundColor: 'white'}}>
-
-        <View style={{margin: 20, marginTop: 30}}>
-          <Slider disabled={false} changeScrollState={this.props.changeScrollState} />
-          <View style={{flexDirection: 'row', marginTop: 30}}>
-            <Text style={[styles.sliderValueText, styles.sliderLeftValueText]}>RELATIONSHIP</Text>
-            <Text style={[styles.sliderValueText, styles.sliderRightValueText]}>FRIENDSHIP</Text>
-          </View>
-        </View>
-
-        <View style={{marginLeft: 20, height:1, backgroundColor:'#E6E6E6'}} />
-
-        <View style={{margin:20, marginTop:30}}>
-          <Slider initialValue={2} numSteps={2} disabled={true} changeScrollState={this.props.changeScrollState} />
-          <View style={{flexDirection: 'row', marginTop: 30}}>
-            <Text style={[styles.sliderValueText, styles.sliderLeftValueText]}>MEN</Text>
-            <Text style={[styles.sliderValueText, styles.sliderMidValueText]}>BOTH</Text>
-            <Text style={[styles.sliderValueText, styles.sliderRightValueText]}>WOMEN</Text>
-          </View>
-        </View>
+        <MultiSlider changeScrollState={this.props.changeScrollState}
+         onThumbMove={()=>{}}
+         onRelease={()=>{}}
+         thumbs={this.createThumbs([0])}
+         />
       </View>
 
     );
