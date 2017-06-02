@@ -21,16 +21,10 @@ import Button from 'react-native-button';
 
 class SaveButton extends Component{
   _saveAndCallback(){
-    this.props.saveFilters({
-      ageMax:99,
-      ageMin:5,
-      heightMax:96,
-      heightMin:36,
-      interestedIn:3,
-      lookingForMax:5,
-      lookingForMin:1,
-      searchRadius:200
-    })
+    this.props.saveFilters()
+
+
+    // this.props.updatePrevFilters()
 
     this.props.reloadMatches()
     this.props.onSavePressed()

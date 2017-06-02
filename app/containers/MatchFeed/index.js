@@ -63,6 +63,10 @@ class MatchFeed extends Component{
       match_attributes =
         this.state.lastPosition
     )
+
+
+
+
   }
 
   matches(){
@@ -85,6 +89,8 @@ class MatchFeed extends Component{
       this.setState({lastPosition: position});
     });
 
+
+    this.props.fetchFilters()
     // this.searchMatches();
 
 
