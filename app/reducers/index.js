@@ -3,7 +3,8 @@ import  {combineReducers} from 'redux';
 import * as feedlistReducer from './feedlist';
 import * as authReducer from './auth';
 import * as messengerReducer from './messenger';
-
+import * as photoAlbumReducer from './photoAlbum';
+import * as filterReducer from './filter';
 
 // Navigation Reducers
 import * as homeNavReducer from './homeNav';
@@ -24,6 +25,8 @@ export const appReducer = combineReducers(Object.assign(
   tabNavReducer,
   messengerNavReducer,
   messengerReducer,
+  photoAlbumReducer,
+  filterReducer,
 ));
 
 

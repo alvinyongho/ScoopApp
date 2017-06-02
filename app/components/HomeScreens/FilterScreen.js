@@ -7,7 +7,10 @@ import images from '@assets/images';
 import Filter from '../../containers/Filter';
 
 import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../../actions';   // Retrieves all the action creators
 
+
+import SaveButton from '../Filter/SaveButton'
 
 const styles = StyleSheet.create({
   container: {
@@ -29,16 +32,18 @@ export class FilterScreen extends React.Component {
                            Cancel
                          </Text>
                 </Button>,
-    headerRight: <Button onPress={() => navigation.goBack()}
-                           style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}>
-                         <Text style={{marginRight: 20,
-                           fontFamily:'Avenir-Light',
-                           fontSize: 18, color:'white'}}>
-                           Save
-                         </Text>
-                </Button>,
+    headerRight: <SaveButton onSavePressed={()=> {
+
+      console.log('handling save pressed')
+
+
+      navigation.goBack()}
+
+
+    } />,
     headerStyle: {backgroundColor: '#54C9EC',},
     headerTitleStyle: {color:'white', alignSelf: 'center'},
+    gesturesEnabled: false
   });
 
   constructor(props) {
@@ -56,8 +61,8 @@ export class FilterScreen extends React.Component {
 }
 
 
-const mapDispatchToProps = dispatch => ({
-  // filter: () => dispatch(NavigationActions.navigate({ routeName: 'Filter' })),
-});
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 export default connect(mapDispatchToProps)(FilterScreen);

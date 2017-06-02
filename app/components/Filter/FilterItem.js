@@ -16,10 +16,8 @@ import MultiSlider from '../MultiSlider/MultiSlider'
 import images from '@assets/images';
 
 
-// var Slider = require('react-native-slider');
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
-
 
 const ATTR_TITLE_HEIGHT = 35
 const LEFT_RIGHT_PADDING = 20
@@ -45,9 +43,11 @@ export default class FilterItem extends Component{
         console.log(value.newValue)
         break;
       case 'multi':
-        console.log('multi')
-        console.log(value.left)
-        console.log(value.right)
+        // console.log('multi')
+        // console.log(value.left)
+        // console.log(value.right)
+        // let sliderValue = Math.floor()
+        this.props.onMultiSliderUpdate({left: value.left, right: value.right})
 
         this.setState({
                         leftValue: value.left,
@@ -55,8 +55,8 @@ export default class FilterItem extends Component{
                      })
         break;
       default:
-        console.log('default')
-        console.log(value.newValue)
+        // let sliderValue = Math.floor(this.props.maxValue*value.newValue)
+        this.props.onSliderUpdate(value.newValue)
     }
   }
 
@@ -70,8 +70,6 @@ export default class FilterItem extends Component{
       sliderType,
       disabled,
       stepAmount,
-      trueMin,
-      trueMax,
       ...other,
     } = this.props;
 
@@ -156,6 +154,7 @@ export default class FilterItem extends Component{
     );
   }
 }
+
 
 
 var styles = StyleSheet.create({

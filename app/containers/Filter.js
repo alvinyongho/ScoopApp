@@ -11,8 +11,13 @@ import {
   Image
 } from 'react-native';
 
+
+import FilterItem from '../components/Filter/FilterItem'
+import FilterRow from '../components/Filter/FilterRow'
+
+import MultiSlider from '../components/Filter/MultiSlider'
+
 import Dimensions from 'Dimensions';
-import MultiSlider from '../components/MultiSlider/MultiSlider'
 import images from '@assets/images';
 // import NavigationBar from '../components/NavigationBar';
 // To Pass dispatching actions to containers
@@ -30,141 +35,21 @@ const SLIDER_LENGTH = screenWidth - (2*LEFT_RIGHT_PADDING)
 const SLIDER_HEIGHT = 30
 
 
-class FilterItem extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      leftValue: 0,
-      rightValue: 1,
-      defaultValue: null,   // Default type of slider
-      stepValue: null,
-    };
-  }
-
-  updateState(value){
-    switch(this.props.sliderType){
-      case 'step':
-        console.log('step')
-        console.log(value.newValue)
-        break;
-      case 'multi':
-        console.log('multi')
-        console.log(value.left)
-        console.log(value.right)
-
-        this.setState({
-                        leftValue: value.left,
-                        rightValue: value.right
-                     })
-        break;
-      default:
-        console.log('default')
-        console.log(value.newValue)
-    }
-  }
-
-  render() {
-    const {
-      attributeText,
-      statusText,
-      attrLeftText,
-      attrRightText,
-      attrMidText,
-      sliderType,
-      disabled,
-      stepAmount,
-      trueMin,
-      trueMax,
-      ...other,
-    } = this.props;
-
-
-    let slider = null;
-    if (sliderType === 'multi'){
-      slider =
-      <View style={styles.sliderContainer}>
-              <MultiSlider
-                 trackWidth = {SLIDER_LENGTH}
-                 defaultTrackColor = {'#EFDAC6'}
-                 leftThumbColor = {'#ECA45C'}
-                 rightThumbColor = {'#ECA45C'}
-                 rangeColor = {'#ECA45C'}
-                 leftValue = {this.state.leftValue}
-                 rightValue = {this.state.rightValue}
-
-                 onLeftValueChange = {(leftValue) =>
-                   this.updateState({left: leftValue,
-                                     right: this.state.rightValue})}
-                 onRightValueChange = {(rightValue) =>
-                   this.updateState({left: this.state.leftValue,
-                                     right: rightValue})}
-               />
-
-      </View>
-    }
-    if (sliderType === 'step') {
-      slider = <Slider step={this.props.stepAmount}
-                  trackImage={images.sliderSnapTrack}
-                  thumbImage={images.sliderThumb}
-                  thumbTintColor={'#ECA45C'}
-                  onValueChange = {(newValue) => this.updateState({newValue})}
-                  style={{marginLeft:20, marginRight:20}} />
-    } if(sliderType === 'default' ){
-      slider = <Slider
-                  trackImage={images.sliderTrack}
-                  thumbImage={images.sliderThumb}
-                  thumbTintColor={'#ECA45C'}
-                  onValueChange = {(newValue) => this.updateState({newValue})}
-                  style={{marginLeft:20, marginRight:20}} />
-    }
-
-
-    return(
-      <View style={{flexDirection: 'column', paddingTop:15, backgroundColor:'white'}}>
-        <View style={{width: screenWidth, height: ATTR_TITLE_HEIGHT}}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={[styles.attrTitleContainer, styles.hasLeftPadding]}>
-              <Text style={[{textAlign:'left'}, styles.attrTitleText]}>{this.props.attributeText}</Text>
-            </View>
-            <View style={[styles.attrTitleContainer, styles.hasRightPadding]}>
-              <Text style={[{textAlign:'right'}, styles.attrTitleText, styles.grayText]}>{this.props.statusText}</Text>
-            </View>
-          </View>
-        </View>
-
-        {slider}
-
-        <View style={{width: screenWidth, height: 30}}>
-          <View style={styles.attrValBottomBorder}>
-            {attrLeftText &&
-              <View style={styles.attrValueContainer}>
-                <Text style={[styles.attrValueText, styles.hasLeftPadding, {textAlign:'left'}, ]}>{this.props.attrLeftText}</Text>
-              </View>
-            }
-            {attrMidText &&
-              <View style={styles.attrValueContainer}>
-                <Text style={[styles.attrValueText, {textAlign:'center'}]}>{this.props.attrMidText}</Text>
-              </View>
-            }
-            {attrRightText &&
-              <View style={styles.attrValueContainer}>
-                <Text style={[styles.attrValueText, styles.hasRightPadding, {textAlign:'right'}]}>{this.props.attrRightText}</Text>
-              </View>
-            }
-          </View>
-        </View>
-
-      </View>
-
-    );
-  }
-}
-
 
 export class Filter extends Component {
   constructor(props) {
     super(props);
-    this.state = {filterSettings: []};
+    this.state = {    searchRadius: 1,
+                      ageRange: {min:18, max:99},
+                      isScrollEnabled: true
+                 };
+
+  }
+
+
+
+  changeScrollState = (isEnabled) => {
+    this.setState({isScrollEnabled: isEnabled})
   }
 
   updateFilterSetting(filter) {
@@ -175,49 +60,216 @@ export class Filter extends Component {
 
   componentDidMount(){
     // get the filter settings
+    console.log('setting default filters')
     this.props.fetchFilters()
 
+  }
 
+  computeInMiles = (sliderValue) => {
+    return Math.floor(sliderValue * 200) + ' miles'
+  }
+
+  computeInMilesPOSTFormat = (sliderValue) =>{
+    return Math.floor(sliderValue * 200)
+  }
+
+  computeSliderToHeight = (sliderValues) => {
+    let min = 36
+    let max = 96
+
+    inchesArray = sliderValues.map((sliderValue)=>{
+      return Math.floor(sliderValue*(max-min)+min)
+    })
+
+    ftInArray = this.inchesArrayToFtInArray(inchesArray)
+    return ftInArray.sort().join(' - ')
+  }
+
+  computeAgeRangePostFormat = (sliderValues) =>{
+    let min = 18
+    let max = 99
+    ageArray = sliderValues.map((sliderValue)=>{
+      return Math.floor((sliderValue*(max-min))+min)
+    })
+    return ageArray.sort()
+  }
+
+
+
+  inchesArrayToFtInArray = (inchesArray) => {
+    return inchesArray.map((inches)=>{
+      return this.inchesToFt(inches)
+    })
+  }
+
+  inchesToFt = (inches) => {
+    ft = Math.floor(inches/12)
+    inches = inches-(12*ft)
+    return `${ft}'${inches}"`
+  }
+
+  computeSliderToAgeRange = (sliderValues) => {
+    let min = 18
+    let max = 99
+    ageArray = sliderValues.map((sliderValue)=>{
+      return Math.floor((sliderValue*(max-min))+min)
+    })
+    return ageArray.sort().join(' - ') + ' years'
+  }
+
+  computeHeightRangePostFormat = (sliderValues)=>{
+    let min = 36
+    let max = 96
+    inchesArray = sliderValues.map((sliderValue)=>{
+      return Math.floor(sliderValue*(max-min)+min)
+    })
+    return inchesArray.sort()
+  }
+
+  _getInitialAgeRange(){
+    ageRange = this.props.prevSliderValues.AGE_RANGE.sort()
+    min = Math.floor((ageRange[0] * (99-18))+18)
+    max = Math.floor((ageRange[1] * (99-18))+18)
+    return `${min} - ${max} years`
+  }
+
+  _getInitialHeightRange(){
+    heightRange = this.props.prevSliderValues.HEIGHT.sort()
+    minHeightInches = Math.floor((heightRange[0]*(96-36))+36)
+    maxHeightInches = Math.floor((heightRange[1]*(96-36))+36)
+    minHeightInches = minHeightInches
+    maxHeightInches = maxHeightInches
+    minHt = this.inchesToFt(parseInt(minHeightInches))
+    maxHt = this.inchesToFt(parseInt(maxHeightInches))
+    return `${minHt} - ${maxHt}`
+  }
+
+
+  computeLookingForPostFormat = (numSteps, sliderValues)=>{
+    return this.computeStepPostFormat(numSteps, sliderValues)
+  }
+
+
+  computeGenderInterestPostFormat = (numSteps, sliderValues)=>{
+    return this.computeStepPostFormat(numSteps, sliderValues)
+  }
+
+
+  computeStepPostFormat = (numSteps, sliderValues)=>{
+    lookingForValues = sliderValues.map((value, index)=>{
+      return (value * (numSteps-1))+1
+    })
+    return lookingForValues
+  }
+
+  updateSliderSettings = (type, positionArr) =>{
+    this.props.updateSliderSetting(type, positionArr)
   }
 
   render() {
     return(
       <View style={{backgroundColor:'#E6E6E6'}}>
-        <ScrollView style={{height:screenHeight-110}}>
-          <FilterItem
-            attributeText='Search Radius'
-            statusText='200 miles'
-            sliderType='default'
-          />
-          <FilterItem
-            attributeText='Age Range'
-            statusText='18 - 99 years'
-            trueMin={18}
-            trueMax={99}
-            sliderType='multi'
-          />
-          <FilterItem
-            attributeText='Height'
-            statusText='3&#39;0&#34; - 8&#39;0&#34;'
-            sliderType='multi'
-          />
-          <FilterItem
-            attributeText='I Am Looking For'
-            showAttrLeft='true'
-            sliderType='multi'
+        <ScrollView scrollEnabled={this.state.isScrollEnabled} style={{height:screenHeight-110}}>
 
-            attrLeftText='Relationship'
-            attrRightText='Friendship'
+          {/* TODO: set the miles and the thumb position*/}
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'Search Radius'}
+            containsSliderLabels={false}
+            thumbPositions={[this.props.prevSliderValues.SEARCH_RADIUS[0]]}
+            sliderColor={'#ECA45C'}
+
+
+            initialValue={`${Math.floor(this.props.prevSliderValues.SEARCH_RADIUS[0]*200)} miles`}
+
+
+            hasSteps={false}
+            sliderResultFunction={this.computeInMiles}
+            onSliderUpdate = {(positions)=>{
+                                  this.props.changeFilterSetting({searchRadius:this.computeInMilesPOSTFormat(positions)})
+                                  this.updateSliderSettings('SEARCH_RADIUS', positions)
+                                }
+                             }
+
           />
-          <FilterItem
-            attributeText='I Am Interested In'
-            // statusText='200 miles'
-            attrLeftText='Men'
-            attrMidText='Both'
-            attrRightText='Women'
-            sliderType='step'
-            stepAmount={.5}
+
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'Age Range'}
+            containsSliderLabels={false}
+            thumbPositions={[this.props.prevSliderValues.AGE_RANGE[0],this.props.prevSliderValues.AGE_RANGE[1]]}
+            sliderColor={'#ECA45C'}
+            initialValue={this._getInitialAgeRange()}
+            hasSteps={false}
+            sliderResultFunction={this.computeSliderToAgeRange}
+            onSliderUpdate = {(positions)=>{
+                                this.props.changeFilterSetting({ageMin:this.computeAgeRangePostFormat(positions)[0]})
+                                this.props.changeFilterSetting({ageMax:this.computeAgeRangePostFormat(positions)[1]})
+                                this.updateSliderSettings('AGE_RANGE', positions)
+                              }
+                             }
+
           />
+
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'Height'}
+            containsSliderLabels={false}
+            thumbPositions={[this.props.prevSliderValues.HEIGHT[0], this.props.prevSliderValues.HEIGHT[1]]}
+            sliderColor={'#ECA45C'}
+            initialValue={this._getInitialHeightRange()}
+            hasSteps={false}
+            sliderResultFunction={this.computeSliderToHeight}
+
+            onSliderUpdate = {(positions)=>{
+                              this.props.changeFilterSetting({heightMin: this.computeHeightRangePostFormat(positions)[0]})
+                              this.props.changeFilterSetting({heightMax: this.computeHeightRangePostFormat(positions)[1]})
+                              this.updateSliderSettings('HEIGHT', positions)
+
+              }
+            }
+
+
+
+          />
+
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'I Am Looking For'}
+            containsSliderLabels={true}
+            sliderLabels={['Relationship', 'Friendship']}
+            thumbPositions={[this.props.prevSliderValues.LOOKING_FOR[0], this.props.prevSliderValues.LOOKING_FOR[1]]}
+            sliderColor={'#ECA45C'}
+            hasSteps={true}
+            numSteps={5}
+
+            onSliderUpdate = {(positions)=>{
+                              this.props.changeFilterSetting({lookingForMin: this.computeLookingForPostFormat(5, positions)[0]})
+                              this.props.changeFilterSetting({lookingForMax: this.computeLookingForPostFormat(5, positions)[1]})
+                              this.updateSliderSettings('LOOKING_FOR', positions)
+
+              }
+            }
+
+          />
+
+          <FilterRow
+            changeScrollState={this.changeScrollState}
+            topLeftTitle={'I Am Interested In'}
+            containsSliderLabels={true}
+            sliderLabels={['Men', 'Both', 'Women']}
+            thumbPositions={[this.props.prevSliderValues.INTERESTED_IN[0]]}
+            sliderColor={'#EFDAC6'}
+            hasSteps={true}
+            numSteps={3}
+            onSliderUpdate = {(positions)=>{
+                              this.props.changeFilterSetting({interestedIn: this.computeStepPostFormat(3, positions)[0]})
+                              this.updateSliderSettings('INTERESTED_IN', positions)
+              }
+            }
+          />
+
+
         </ScrollView>
       </View>
     );
@@ -285,7 +337,8 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    // foundMatches: state.foundMatches
+    prevFilters: state.previousFilters,
+    prevSliderValues: state.prevSliderValues
   }
 }
 

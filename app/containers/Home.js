@@ -21,11 +21,17 @@ import MatchFeed from './MatchFeed'
 
 
 class Home extends Component{
+  componentDidMount(){
+    this.props.getScoopUserIdAndToken()
+  }
 
   render(){
-    return (
-      <MatchFeed {...this.props}/>
-    );
+    if(this.props.scoopUserProfile.scoopId){
+      return (
+        <MatchFeed {...this.props}/>
+      );
+    }
+    else return null
   }
 }
 
@@ -38,7 +44,8 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    foundMatches: state.foundMatches
+    // foundMatches: state.foundMatches,
+    scoopUserProfile: state.scoopUserProfile,
   }
 }
 
