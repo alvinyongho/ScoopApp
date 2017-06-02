@@ -92,7 +92,19 @@ export class EditProfileScrollView extends React.Component {
         <ProfileDetailAccordian />
 
         <SectionTitle title="LOOKING FOR" />
-        <ProfileSlider changeScrollState={this.changeScrollState} />
+
+
+
+
+
+
+        <ProfileSlider lookingForValues={{relationshipType: [0], genderType: [1]}} changeScrollState={this.changeScrollState} />
+
+
+
+
+
+
 
         <SectionTitle title={'CONNECTED APPS'}/>
         <ConnectedAppsRow changeScrollState={this.changeScrollState} />
