@@ -13,7 +13,30 @@ import Swiper from './react-native-page-swiper';
 export default class ProfileBasicInfo extends Component {
   constructor(props) {
     super(props)
+    this.state = ({
+      showLikeButton: true,
+      buttonStatus: null,
+    })
   }
+
+  renderLikeButton(buttonStatus){
+
+    if(!this.state.showLikeButton){
+      return <View />
+    }
+
+    if(!this.state.buttonStatus){
+      return (
+        <Image source={images.heart_plus} style={{ width:60, height: 60, borderRadius:30}}/>
+      );
+    }
+    return (
+      <Image source={images.heart} style={{ width:60, height: 60, borderRadius:30}}/>
+    );
+
+  }
+
+
   render(){
     return(
       <View style={styles.wrapper}>
@@ -25,8 +48,10 @@ export default class ProfileBasicInfo extends Component {
         </View>
 
         <View sytle={{flex:.2}}>
-          <View style={{backgroundColor:'orange', width:60, height: 60, borderRadius:30}}>
-          </View>
+          <TouchableHighlight underlayColor={'white'} onPress={()=>{this.setState({buttonStatus:'heart'})
+            console.log("TODO")}}>
+            {this.renderLikeButton()}
+          </TouchableHighlight>
         </View>
       </View>
     )

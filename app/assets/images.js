@@ -27,6 +27,9 @@ const images = {
 	twitter_noColor:			require('./img/ProfileDetail/comingsoon/twitter@3x.png'),
 	linkedin_noColor:			require('./img/ProfileDetail/comingsoon/linkedin@3x.png'),
 
+	flag:									require('./img/ProfileDetail/552-flag-1@3x.png'),
+	heart_plus:						require('./img/ProfileDetail/Heart-Plus@3x.png'),
+	heart:								require('./img/ProfileDetail/heart@3x.png'),
 
 	placeholder_album1: require('./img/MyProfile/placeholders/album1.png'),
 	placeholder_album2: require('./img/MyProfile/placeholders/album2.png'),

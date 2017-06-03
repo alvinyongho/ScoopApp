@@ -16,14 +16,16 @@ export default class ProfileAlbum extends Component {
 
   }
 
-  profilePictures = (images) => {
+  profilePictures = (pics) => {
 
-    if(images === undefined) return null
-    return pictureViews = images.map((imgsource, index) =>{
+    if(pics === undefined) return null
+    return pictureViews = pics.map((imgsource, index) =>{
         if(imgsource){
           return(
             <Image key={'albumPicture'+index} source={{uri:imgsource}} style={styles.profilePicture}>
-              <View style={styles.flag} />
+                <View style={styles.flag}>
+                  <Image source={images.flag} />
+                </View>
             </Image>
           )
         }
@@ -33,9 +35,9 @@ export default class ProfileAlbum extends Component {
   render(){
     return(
       <View style={styles.wrapper}>
-      <Swiper 
-        showsButtons={true} 
-        loop={false} 
+      <Swiper
+        showsButtons={true}
+        loop={false}
         onDragRelease={() => this.props.changeScrollState(true)}
         onDragStart={() => this.props.changeScrollState(false)}
       >
@@ -57,7 +59,9 @@ var styles = StyleSheet.create({
     right: 8,
     width: 40,
     height: 40,
-    backgroundColor:'#E6E6E6'
+    backgroundColor:'#E6E6E6',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   profilePicture: {
     flex: 1,
