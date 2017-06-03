@@ -46,6 +46,13 @@ export class EditProfileScrollView extends React.Component {
   componentDidMount(){
   }
 
+
+  convertItemOrderToImageArray(itemOrder){
+    return itemOrder.map((item, index)=>{
+      return item.imagesrc.uri
+    })
+  }
+
   mapImagesToArray(){
     return this.props.myProfileImages.map((images, index)=>{
       return {imagesrc: {uri: images}}
@@ -59,10 +66,10 @@ export class EditProfileScrollView extends React.Component {
         <View style={{height: 480, backgroundColor: 'white'}}>
         <PhotoAlbum
             changeScrollState={this.changeScrollState}
-            onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
+            onFinishedDrag={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
             onShortPress={(key)=>this.props.GoToImportPicture(key)}
             profileImages={this.mapImagesToArray()}
-            onFinishedDelete={(itemOrder)=>console.log(itemOrder)}
+            onFinishedDelete={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
         />
         </View>
       );
@@ -71,9 +78,10 @@ export class EditProfileScrollView extends React.Component {
       return(
         <View style={{height: 550, backgroundColor: '#EEEEEE'}} >
         <PhotoAlbum changeScrollState={this.changeScrollState}
-                            onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
+                            onFinishedDrag={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
                             onShortPress={(key)=>this.props.GoToImportPicture(key)}
                             profileImages={this.mapImagesToArray()}
+                            onFinishedDelete={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
         />
         </View>
       );
@@ -132,10 +140,9 @@ function mapStateToProps(state){
 }
 
 
-const mapDispatchToProps = dispatch => ({
-  GoToImportPicture: (key) => dispatch(NavigationActions.navigate({ routeName:'ImportPicture' })),
-});
-
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 // Connects the state variables to the property variables within
 // the home class
