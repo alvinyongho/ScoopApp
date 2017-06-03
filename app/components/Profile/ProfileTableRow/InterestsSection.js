@@ -18,7 +18,7 @@ export default class InterestsSection extends Component{
 
     if(profileLikes){
     return interests = profileLikes.map((item, key)=>{
-      console.log(item)
+      // console.log(item)
       return(
         <View key={'profileLike'+key} style={{marginLeft:5, marginRight: 5, height:120, width:90, flexDirection: 'column'}}>
           <View style={{flex:.75, alignItems:'center', justifyContent: 'center'}}>

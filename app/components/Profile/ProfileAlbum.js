@@ -3,7 +3,7 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   Text,
 } from 'react-native';
 import images from '@assets/images';
@@ -13,7 +13,10 @@ import Swiper from './react-native-page-swiper';
 export default class ProfileAlbum extends Component {
   constructor(props){
     super(props)
+  }
 
+  openAlbum(){
+    this.props.openPhotoAlbum()
   }
 
   profilePictures = (pics) => {
@@ -35,14 +38,21 @@ export default class ProfileAlbum extends Component {
   render(){
     return(
       <View style={styles.wrapper}>
-      <Swiper
-        showsButtons={true}
-        loop={false}
-        onDragRelease={() => this.props.changeScrollState(true)}
-        onDragStart={() => this.props.changeScrollState(false)}
-      >
-        {this.profilePictures(this.props.images)}
-      </Swiper>
+
+        <View>
+          <Swiper
+            showsButtons={true}
+            loop={false}
+            onDragRelease={() => this.props.changeScrollState(true)}
+            onDragStart={() => this.props.changeScrollState(false)}
+            onShortPress={()=>{this.openAlbum()}}
+          >
+
+            {this.profilePictures(this.props.images)}
+
+          </Swiper>
+        </View>
+
       </View>
     )
   }

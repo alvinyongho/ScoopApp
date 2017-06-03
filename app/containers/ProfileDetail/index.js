@@ -79,7 +79,7 @@ export class ProfileDetail extends Component {
       <View style={{backgroundColor:'#E6E6E6'}}>
         <ScrollView scrollEnabled={this.state.isScrollEnabled}>
           {this.props.userDetail.images &&
-            <ProfileAlbum
+            <ProfileAlbum {...this.props}
               images={this.props.userDetail.images}
               changeScrollState={this.changeScrollState}
             />
@@ -154,6 +154,7 @@ function mapStateToProps(state) {
     userDetail: state.viewingProfileDetail,
     isLoadingUser: state.isLoadingUser,
     currentLocation: state.currentLocation,
+    isAlbumOpen: state.isAlbumOpen,
   }
 }
 
