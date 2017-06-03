@@ -17,6 +17,9 @@ import Home from './Home';
 import WelcomePages from '../components/WelcomePages';
 // import Filter from './Filter';
 
+import ProfileAlbumOverlay from '../components/Profile/ProfileAlbumOverlay'
+
+
 import ScoopTabs from '../navigators/ScoopTabsNavigator';
 
 
@@ -40,7 +43,9 @@ class AppContainer extends Component {
            barStyle="light-content" />
           {/* Routes for authenticated and non authenticated */}
           <Route exact path="/" component={ ResultRoute }/>
-          {/*<View style={{position: 'absolute', backgroundColor: 'blue', height: 100, width: 100}}/>*/}
+          {this.props.isAlbumOpened &&
+            <ProfileAlbumOverlay {...this.props}/>
+          }
         </View>
       </NativeRouter>
     );
@@ -56,4 +61,4 @@ function mapDispatchToProps(dispatch) {
 
 // maps the state properties to this.props.____
 // which is defined from the return value of the function in connect
-export default connect((state) => { return {isAuthenticated: state.isAuthenticated} }, mapDispatchToProps)(AppContainer);
+export default connect((state) => { return {isAlbumOpened: state.isAlbumOpened, isAuthenticated: state.isAuthenticated, overlayImages: state.viewingProfileDetail.images} }, mapDispatchToProps)(AppContainer);

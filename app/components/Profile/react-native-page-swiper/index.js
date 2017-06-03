@@ -36,6 +36,8 @@ export default class Swiper extends Component {
       scrollValue: new Animated.Value(props.index),
       viewWidth: Dimensions.get('window').width,
     };
+
+    this.onReleaseOpenAlbum = false;
   }
 
   componentWillMount() {
@@ -53,12 +55,23 @@ export default class Swiper extends Component {
 
       this.goToPage(newIndex);
       this.props.onDragRelease();
-      
+
+      if(this.onReleaseOpenAlbum){
+        this.props.onShortPress()
+      }
+      this.onReleaseOpenAlbum= false
+
     };
 
     this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+      this.onReleaseOpenAlbum = true;
+      return false},
+      // onShouldBlockNativeResponder: (evt, gestureState) => false,
       onMoveShouldSetPanResponder: (e, gestureState) => {
         const { threshold } = this.props;
+
 
         // Claim responder if it's a horizontal pan
         if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
@@ -82,6 +95,9 @@ export default class Swiper extends Component {
 
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
+        console.log('we movin')
+        this.onReleaseOpenAlbum = false;
+
         let dx = gestureState.dx;
         let offsetX = -dx / this.state.viewWidth + this.state.index;
 

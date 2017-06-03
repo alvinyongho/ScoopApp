@@ -11,7 +11,6 @@ export default class ProfileDetailConnectedApps extends Component{
   }
 
   componentDidMount(){
-    console.log('LOOKING FOR SECTION')
   }
 
 
