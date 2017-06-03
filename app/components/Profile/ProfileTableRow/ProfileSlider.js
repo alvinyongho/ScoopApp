@@ -10,130 +10,6 @@ import {
 } from 'react-native';
 
 import MultiSlider from '../../Filter/MultiSlider'
-THUMB_SIZE = 20
-THUMB_RADIUS = 4
-
-export class Slider extends Component {
-  constructor(props){
-    super(props)
-    this.finishedLayoutSetup = false;
-    this.prevX = null,
-    this.state = ({
-      thumbPosition: null,
-      maxWidth: null,
-      stepValue: null
-    })
-  }
-
-  componentWillMount() {
-    this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onPanResponderGrant: (evt, gestureState) => {
-        this.props.changeScrollState(false);
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        if(!this.props.disabled){
-          const {moveX, dx} = gestureState
-          thumbPosition = this.state.thumbPosition
-          newX = dx+this.prevX
-          if (newX < 0) newX = 0
-          if (newX > this.state.maxWidth-THUMB_SIZE) newX = this.state.maxWidth-THUMB_SIZE
-          thumbPosition.x.setValue(newX)
-          this.setState({thumbPosition})
-        }
-      },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
-      onPanResponderRelease: (evt, gestureState) => {
-        this.prevX = this.state.thumbPosition.x._value
-        this.props.changeScrollState(true);
-      },
-      onPanResponderTerminate: (evt, gestureState) => {},
-      onShouldBlockNativeResponder: (evt, gestureState) => {
-        return true;
-      },
-    });
-  }
-
-  getPosition = ({nativeEvent}) => {
-    if(!this.finishedLayoutSetup){
-      let thisPosition = {
-        x: nativeEvent.layout.x,
-        y: nativeEvent.layout.y,
-      }
-
-      let thumbPosition = this.state.thumbPosition
-      thumbPosition = new Animated.ValueXY(thisPosition)
-
-      if(this.props.initialValue && this.props.numSteps){
-        var step_length = (this.state.maxWidth/this.props.numSteps)-THUMB_SIZE/2
-        step_length = step_length*(this.props.initialValue)
-        thumbPosition.x.setValue(step_length)
-      }
-
-      this.setState({thumbPosition})
-      this.prevX = thumbPosition.x._value
-    }
-    this.finishedLayoutSetup = true
-  }
-
-  setMaxWidth = (event) => {
-    var {x, y, width} = event.nativeEvent.layout
-    this.setState({maxWidth: width})
-    this.setStepValue(width)
-  }
-
-  setStepValue(width){
-    const num_steps = 3
-    this.setState({stepValue: width/num_steps})
-  }
-
-
-
-  getThumbStyle() {
-    if(this.state.thumbPosition && this.finishedLayoutSetup){
-      return {
-        height: THUMB_SIZE,
-        width: THUMB_SIZE,
-        borderRadius: THUMB_SIZE/2,
-        backgroundColor: 'white',
-        position: 'absolute',
-        left: this.state.thumbPosition.x._value,
-        top: this.state.thumbPosition.y._value,
-      }
-    }
-
-    else return {
-      height: THUMB_SIZE,
-      width: THUMB_SIZE,
-      borderRadius: THUMB_SIZE/2,
-      backgroundColor: 'white',
-    }
-  }
-
-  render(){
-    return(
-
-      <View style={{justifyContent: 'center'}}>
-        <View onLayout={this.setMaxWidth}
-          style={{height: 3, borderRadius:3/2, backgroundColor: 'purple'}}>
-
-        </View>
-
-        {this.state.maxWidth &&
-        <Animated.View onLayout={this.getPosition} {...this._panResponder.panHandlers} style={[this.getThumbStyle(), {position: 'absolute', justifyContent: 'center', alignItems: 'center'}]}>
-          <View style={{height:THUMB_SIZE-THUMB_RADIUS, width: THUMB_SIZE-THUMB_RADIUS, borderRadius: (THUMB_SIZE-THUMB_RADIUS)/2, backgroundColor:'#54C9EC'}}/>
-        </Animated.View>
-        }
-
-      </View>
-    );
-  }
-}
-
-
 
 export default class ProfileSlider extends Component {
 
@@ -142,9 +18,6 @@ export default class ProfileSlider extends Component {
   }
 
   createThumbs(positions){
-    // let positions = [0, 1]
-
-
     return positions.map((value)=>{
       return {initialPosition: value}
     })
@@ -152,13 +25,34 @@ export default class ProfileSlider extends Component {
 
   render(){
     return (
-
       <View style={{flex: 1, flexDirection: 'column', backgroundColor: 'white'}}>
-        <MultiSlider changeScrollState={this.props.changeScrollState}
-         onThumbMove={()=>{}}
-         onRelease={()=>{}}
-         thumbs={this.createThumbs([0])}
-         />
+        <View style={styles.sliderContainer}>
+          <MultiSlider changeScrollState={this.props.changeScrollState}
+           onThumbMove={()=>{}}
+           onRelease={()=>{}}
+           numSteps={this.props.numSteps}
+           hasSteps={this.props.hasSteps}
+           sliderLeftRightMargin={20}
+           thumbs={this.createThumbs([this.props.thumbLocation])}
+           />
+         </View>
+
+         <View style={styles.labelsContainer}>
+          <View style={styles.labelBox}>
+            <Text>{this.props.leftLabel}</Text>
+          </View>
+
+          {this.props.middleLabel &&
+            <View style={[styles.labelBox, {alignItems: 'center'}]}>
+              <Text>{this.props.middleLabel}</Text>
+            </View>
+          }
+
+          <View style={[styles.labelBox, {alignItems: 'flex-end'}]}>
+            <Text>{this.props.rightLabel}</Text>
+          </View>
+
+         </View>
       </View>
 
     );
@@ -172,6 +66,17 @@ var styles = StyleSheet.create({
     fontSize: 16, fontFamily: 'Avenir-Light',
     color: '#888888'
   },
+  labelBox:{
+    flex:.5,
+    margin: 20,
+    marginTop: 0,
+  },
+  labelsContainer:{
+    flex: 1,
+    flexDirection: 'row',
+
+  },
+  sliderContainer:{height: 40, backgroundColor: 'white'},
   sliderLeftValueText: {
     textAlign: 'left',
     flex: 1
