@@ -2,7 +2,7 @@ import * as types from './types'
 
 export function openPhotoAlbum() {
 	return (dispatch) => {
-		dispatch(openAlbum);
+		dispatch(openAlbum());
 	}
 }
 
@@ -14,16 +14,12 @@ export function closePhotoAlbum() {
 
 export function openAlbum() {
 	return {
-		type: types.OPEN_PHOTO_ALBUM,
+		type: types.OPEN_ALBUM
 	}
 }
 
 export function closeAlbum() {
 	return {
-		type: types.CLOSE_PHOTO_ALBUM,
+		type: types.CLOSE_ALBUM
 	}
 }
-
-
-
-

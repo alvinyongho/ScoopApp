@@ -25,7 +25,6 @@ const default_slider_vals = {
 
 export const previousFilters = createReducer({}, {
   [types.SET_PREV_FILTERS](state, action){
-    console.log('setting previous filters')
     return action.prev_filters
   }
 });

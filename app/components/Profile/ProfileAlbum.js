@@ -3,7 +3,7 @@ import {
   View,
   StyleSheet,
   Image,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   Text,
 } from 'react-native';
 import images from '@assets/images';
@@ -13,17 +13,22 @@ import Swiper from './react-native-page-swiper';
 export default class ProfileAlbum extends Component {
   constructor(props){
     super(props)
-
   }
 
-  profilePictures = (images) => {
+  openAlbum(){
+    this.props.openPhotoAlbum()
+  }
 
-    if(images === undefined) return null
-    return pictureViews = images.map((imgsource, index) =>{
+  profilePictures = (pics) => {
+
+    if(pics === undefined) return null
+    return pictureViews = pics.map((imgsource, index) =>{
         if(imgsource){
           return(
             <Image key={'albumPicture'+index} source={{uri:imgsource}} style={styles.profilePicture}>
-              <View style={styles.flag} />
+                <View style={styles.flag}>
+                  <Image source={images.flag} />
+                </View>
             </Image>
           )
         }
@@ -33,14 +38,21 @@ export default class ProfileAlbum extends Component {
   render(){
     return(
       <View style={styles.wrapper}>
-      <Swiper 
-        showsButtons={true} 
-        loop={false} 
-        onDragRelease={() => this.props.changeScrollState(true)}
-        onDragStart={() => this.props.changeScrollState(false)}
-      >
-        {this.profilePictures(this.props.images)}
-      </Swiper>
+
+        <View>
+          <Swiper
+            showsButtons={true}
+            loop={false}
+            onDragRelease={() => this.props.changeScrollState(true)}
+            onDragStart={() => this.props.changeScrollState(false)}
+            onShortPress={()=>{this.openAlbum()}}
+          >
+
+            {this.profilePictures(this.props.images)}
+
+          </Swiper>
+        </View>
+
       </View>
     )
   }
@@ -57,7 +69,9 @@ var styles = StyleSheet.create({
     right: 8,
     width: 40,
     height: 40,
-    backgroundColor:'#E6E6E6'
+    backgroundColor:'#E6E6E6',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   profilePicture: {
     flex: 1,
