@@ -65,6 +65,7 @@ export class EditProfileScrollView extends React.Component {
             onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
             onShortPress={(key)=>this.props.GoToImportPicture(key)}
             profileImages={this.mapImagesToArray()}
+            onFinishedDelete={(itemOrder)=>console.log(itemOrder)}
         />
         </View>
       );
@@ -75,6 +76,7 @@ export class EditProfileScrollView extends React.Component {
         <PhotoAlbum changeScrollState={this.changeScrollState}
                             onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
                             onShortPress={(key)=>this.props.GoToImportPicture(key)}
+                            profileImages={this.mapImagesToArray()}
         />
         </View>
       );
