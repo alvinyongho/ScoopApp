@@ -44,9 +44,6 @@ export class EditProfileScrollView extends React.Component {
   }
 
   componentDidMount(){
-    // this.props.
-    console.log('MY PROFILE IMAGES')
-    console.log(this.props.myProfileImages)
   }
 
   mapImagesToArray(){
