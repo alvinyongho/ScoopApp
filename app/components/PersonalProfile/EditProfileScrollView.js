@@ -34,12 +34,29 @@ export class EditProfileScrollView extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      isScrollEnabled: true
+      isScrollEnabled: true,
+      profileImages: this.props.myProfileImages
     }
   }
 
   changeScrollState = (isEnabled) => {
     this.setState({isScrollEnabled: isEnabled})
+  }
+
+  componentDidMount(){
+  }
+
+
+  convertItemOrderToImageArray(itemOrder){
+    return itemOrder.map((item, index)=>{
+      return item.imagesrc.uri
+    })
+  }
+
+  mapImagesToArray(){
+    return this.props.myProfileImages.map((images, index)=>{
+      return {imagesrc: {uri: images}}
+    })
   }
 
   // Goto Import picture should take argument
@@ -49,8 +66,10 @@ export class EditProfileScrollView extends React.Component {
         <View style={{height: 480, backgroundColor: 'white'}}>
         <PhotoAlbum
             changeScrollState={this.changeScrollState}
-            onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
+            onFinishedDrag={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
             onShortPress={(key)=>this.props.GoToImportPicture(key)}
+            profileImages={this.mapImagesToArray()}
+            onFinishedDelete={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
         />
         </View>
       );
@@ -59,8 +78,10 @@ export class EditProfileScrollView extends React.Component {
       return(
         <View style={{height: 550, backgroundColor: '#EEEEEE'}} >
         <PhotoAlbum changeScrollState={this.changeScrollState}
-                            onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
+                            onFinishedDrag={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
                             onShortPress={(key)=>this.props.GoToImportPicture(key)}
+                            profileImages={this.mapImagesToArray()}
+                            onFinishedDelete={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
         />
         </View>
       );
@@ -77,8 +98,8 @@ export class EditProfileScrollView extends React.Component {
       <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
         {/* <EditPhotoAlbum /> */}
 
-
         {this.renderPhotoAlbum()}
+
 
         <RowDivider />
 
@@ -114,14 +135,14 @@ export class EditProfileScrollView extends React.Component {
 
 function mapStateToProps(state){
   return {
+    myProfileImages: state.myProfileImages,
   }
 }
 
 
-const mapDispatchToProps = dispatch => ({
-  GoToImportPicture: (key) => dispatch(NavigationActions.navigate({ routeName:'ImportPicture' })),
-});
-
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 // Connects the state variables to the property variables within
 // the home class

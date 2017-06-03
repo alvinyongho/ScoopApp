@@ -5,7 +5,7 @@ import * as authReducer from './auth';
 import * as messengerReducer from './messenger';
 import * as filterReducer from './filter';
 import * as photoAlbumReducer from './photoAlbum';
-
+import * as personalProfileReducer from './personalProfile'
 
 // Navigation Reducers
 import * as homeNavReducer from './homeNav';
@@ -28,6 +28,7 @@ export const appReducer = combineReducers(Object.assign(
   messengerReducer,
   photoAlbumReducer,
   filterReducer,
+  personalProfileReducer
 ));
 
 

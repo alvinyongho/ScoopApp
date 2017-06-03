@@ -27,6 +27,24 @@ export function getUserIdAndToken(facebookId){
   return performTaskWithParams('loginRegister', `z=${CLIENT_SECRET}&facebookId=${facebookId}`)
 }
 
+
+export function performSaveMyProfileImages(userId, userToken, imageArray){
+  // imageArray = ['https://scoopdatingapp.com/_uploads/579320170526231735.jpeg',
+  //               'https://scoopdatingapp.com/_uploads/579320170526231735.jpeg',]
+
+
+  const changesToSaveParam = 'changesToSave%5Bimages%5D%5B%5D='
+
+  textImageFieldParamsArray = imageArray.map((image, index)=>{
+    return changesToSaveParam+(encodeURIComponent(image))
+  })
+
+  paramString = textImageFieldParamsArray.join('&')
+
+  return performTaskWithParams('saveProfile', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
+}
+
+
 export function performSaveFilterSettings(userId, userToken, filterSettings){
   let paramString = filterSettingsParamString({
                       filterAgeMax:         filterSettings.filterAgeMax,
@@ -38,10 +56,6 @@ export function performSaveFilterSettings(userId, userToken, filterSettings){
                       filterLookingForMin:  filterSettings.filterLookingForMin,
                       filterSearchRadius:   filterSettings.filterSearchRadius
                     })
-
-  console.log('THE PARAM STRING')
-  console.log(filterSettings)
-
   return performTaskWithParams('saveFilterSettings', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
 

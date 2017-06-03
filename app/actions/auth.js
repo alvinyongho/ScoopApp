@@ -1,4 +1,4 @@
-import { facebookLoginAPI, getFacebookInfoAPI, facebookLogoutAPI } from '../services/facebook';
+import { facebookLoginAPI, getFacebookInfoAPI, facebookLogoutAPI, callFacebookGraphAPIForUserAlbums } from '../services/facebook';
 import * as types from './types'
 
 import { getUserIdAndToken } from '../lib/scoopAPI'
@@ -24,6 +24,17 @@ export function facebookLogin() {
   };
 }
 
+export function getUserAlbums() {
+  return (dispatch, getState) =>{
+    let fbId = getState().userProfile.facebookProfile.id
+
+    callFacebookGraphAPIForUserAlbums(fbId).then((result)=>{
+      console.log(result)
+      // PROCESS THE ALBUMS
+
+    })
+  }
+}
 
 export function getScoopUserIdAndToken() {
   return (dispatch, getState) => {

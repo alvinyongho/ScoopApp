@@ -34,3 +34,8 @@ export const CANCEL_EDIT_CHATS = 'CANCEL_EDIT_CHATS'
 // Photo Album
 export const OPEN_ALBUM = 'OPEN_ALBUM'
 export const CLOSE_ALBUM = 'CLOSE_ALBUM'
+
+
+// personal profile
+export const GET_MY_IMAGES = 'GET_MY_IMAGES'
+export const SET_MY_IMAGES = 'SET_MY_IMAGES'
