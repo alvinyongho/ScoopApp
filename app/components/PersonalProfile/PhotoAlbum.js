@@ -54,29 +54,7 @@ export default class PhotoAlbum extends React.Component {
     this.state = {
       currentBig: 'picture0',
       gridLayout: null,
-      pictures: [
-          {
-            imagesrc: images.placeholder_mainalbum
-          },
-          {
-            imagesrc: images.placeholder_album1
-          },
-          {
-            imagesrc: images.placeholder_album2
-          },
-          {
-            imagesrc: images.placeholder_album3
-          },
-          {
-            imagesrc: images.placeholder_album4
-          },
-          {
-            imagesrc: images.placeholder_album5
-          },
-          {
-            imagesrc: images.placeholder_album6
-          }
-      ],
+      pictures: this.props.profileImages,
       blockPositions: [],
       blockPositionsSetCount: 0,
       activeBlock: null,          // The block that is set from a long press select.
