@@ -29,9 +29,7 @@ export function getUserAlbums() {
     let fbId = getState().userProfile.facebookProfile.id
 
     callFacebookGraphAPIForUserAlbums(fbId).then((result)=>{
-      console.log(result)
-      // PROCESS THE ALBUMS
-
+      dispatch(albumRetrievalSuccess(result.data))
     })
   }
 }
@@ -59,6 +57,15 @@ export function getToken(userId, userToken) {
     type: types.GET_TOKEN,
     userId,
     userToken,
+  }
+}
+
+
+
+export function albumRetrievalSuccess(albums){
+  return {
+    type: types.GOT_MY_ALBUMS,
+    albums
   }
 }
 

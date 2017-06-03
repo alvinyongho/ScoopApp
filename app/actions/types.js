@@ -39,3 +39,7 @@ export const CLOSE_ALBUM = 'CLOSE_ALBUM'
 // personal profile
 export const GET_MY_IMAGES = 'GET_MY_IMAGES'
 export const SET_MY_IMAGES = 'SET_MY_IMAGES'
+
+
+export const GOT_MY_ALBUMS = 'GOT_MY_ALBUMS'
+export const IMPORT_PICTURE = 'IMPORT_PICTURE'

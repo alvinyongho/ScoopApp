@@ -44,6 +44,7 @@ export class EditProfileScrollView extends React.Component {
   }
 
   componentDidMount(){
+    this.props.getUserAlbums()
   }
 
 
