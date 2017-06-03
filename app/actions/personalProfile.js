@@ -34,8 +34,19 @@ export function postProfileImages(imageArray){
 
 
 export function GoToImportPicture(key){
-  return(dispatch) => {
+  return(dispatch, getState) => {
+
+    if(!key) dispatch(importPicture("undefined"))
+    else     dispatch(importPicture(key))
+
     dispatch(NavigationActions.navigate({ routeName:'ImportPicture' }))
+  }
+}
+
+export function importPicture(albumSlot){
+  return{
+    type: types.IMPORT_PICTURE,
+    albumSlot
   }
 }
 

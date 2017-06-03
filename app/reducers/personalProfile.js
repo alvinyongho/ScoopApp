@@ -9,3 +9,15 @@ export const myProfileImages = createReducer({}, {
 		return action.images
 	},
 })
+
+export const myFacebookAlbums = createReducer({},{
+	[types.GOT_MY_ALBUMS](state, action) {
+		return action.albums
+	}
+})
+
+export const importPictureIntoSlot = createReducer({},{
+	[types.IMPORT_PICTURE](state, action){
+		return action.albumSlot
+	}
+})

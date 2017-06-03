@@ -311,9 +311,15 @@ export default class PhotoAlbum extends React.Component {
 
   }
 
+
   handleShortPress(key){
     //TODO: handle the short press for key which might be better off as a callback
-    this.props.onShortPress(key)
+    // console.log("HANDLING SHORT PRESS FOR KEY" + key)
+    // console.log("@@@@")
+    // console.log(this.itemOrder[key])
+
+    positionOfItem = this.itemOrder[key].order
+    this.props.onShortPress(positionOfItem)
   }
   // Helper functions
   // Returns the active block Positions: current Position and original Position
@@ -657,9 +663,7 @@ class PictureBlock extends Component {
       return (
         <View source={this.props.picture.imagesrc}
                 style={{position: 'absolute', flex: 1, width:smallBoxWidth-8, height: smallBoxHeight-8,
-
                   margin:4,
-
                   borderColor: BORDER_COLOR,
                   borderWidth: 1,
                   borderRadius:BORDER_RADIUS,}} />);
