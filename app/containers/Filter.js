@@ -60,7 +60,7 @@ export class Filter extends Component {
 
   componentDidMount(){
     // get the filter settings
-    console.log('setting default filters')
+    // console.log('setting default filters')
     this.props.fetchFilters()
 
   }

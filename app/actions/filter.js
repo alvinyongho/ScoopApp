@@ -39,9 +39,6 @@ export function fetchFilters(match_attributes){
     let scoopUserToken = getState().scoopUserProfile.scoopToken
 
     performLoadFeedWithNoGeo(scoopUserId, scoopUserToken).then((results) => {
-      console.log('FROM API THE FILTER SETTINGS')
-      console.log(results)
-
       var current_year = new Date().getFullYear()
       var min_year = results.params[4].split('-')[0]
       var max_year = results.params[5].split('-')[0]
@@ -51,16 +48,16 @@ export function fetchFilters(match_attributes){
       var min_height_inches = results.params[6]
       var max_height_inches = results.params[7]
 
-
-      console.log('THE PREV FILTERS')
-      console.log({
-        'minYear': min_year,
-        'maxYear': max_year,
-        'maxAge': max_age,
-        'minAge': min_age,
-        'maxHeightInches': max_height_inches,
-        'minHeightInches': min_height_inches
-    })
+    //
+    //   console.log('THE PREV FILTERS')
+    //   console.log({
+    //     'minYear': min_year,
+    //     'maxYear': max_year,
+    //     'maxAge': max_age,
+    //     'minAge': min_age,
+    //     'maxHeightInches': max_height_inches,
+    //     'minHeightInches': min_height_inches
+    // })
 
       dispatch(setPrevFilters({
         'minYear': min_year,
