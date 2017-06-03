@@ -34,12 +34,25 @@ export class EditProfileScrollView extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      isScrollEnabled: true
+      isScrollEnabled: true,
+      profileImages: this.props.myProfileImages
     }
   }
 
   changeScrollState = (isEnabled) => {
     this.setState({isScrollEnabled: isEnabled})
+  }
+
+  componentDidMount(){
+    // this.props.
+    console.log('MY PROFILE IMAGES')
+    console.log(this.props.myProfileImages)
+  }
+
+  mapImagesToArray(){
+    return this.props.myProfileImages.map((images, index)=>{
+      return {imagesrc: {uri: images}}
+    })
   }
 
   // Goto Import picture should take argument
@@ -51,6 +64,7 @@ export class EditProfileScrollView extends React.Component {
             changeScrollState={this.changeScrollState}
             onFinishedDrag={(itemOrder)=>console.log(itemOrder)}
             onShortPress={(key)=>this.props.GoToImportPicture(key)}
+            profileImages={this.mapImagesToArray()}
         />
         </View>
       );
@@ -77,8 +91,8 @@ export class EditProfileScrollView extends React.Component {
       <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
         {/* <EditPhotoAlbum /> */}
 
-
         {this.renderPhotoAlbum()}
+
 
         <RowDivider />
 
@@ -114,6 +128,7 @@ export class EditProfileScrollView extends React.Component {
 
 function mapStateToProps(state){
   return {
+    myProfileImages: state.myProfileImages,
   }
 }
 

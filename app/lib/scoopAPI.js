@@ -38,10 +38,6 @@ export function performSaveFilterSettings(userId, userToken, filterSettings){
                       filterLookingForMin:  filterSettings.filterLookingForMin,
                       filterSearchRadius:   filterSettings.filterSearchRadius
                     })
-
-  console.log('THE PARAM STRING')
-  console.log(filterSettings)
-
   return performTaskWithParams('saveFilterSettings', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
 

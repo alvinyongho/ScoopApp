@@ -23,6 +23,7 @@ import MatchFeed from './MatchFeed'
 class Home extends Component{
   componentDidMount(){
     this.props.getScoopUserIdAndToken()
+    this.props.getScoopUserImages()
   }
 
   render(){
