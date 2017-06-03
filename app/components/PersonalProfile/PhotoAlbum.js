@@ -467,6 +467,10 @@ export default class PhotoAlbum extends React.Component {
       }
     }
     this.setState({pictures,blockPositions, blockPositionsSetCount, currentBig})
+
+
+    let itemOrder = _.sortBy(this.itemOrder, item => item.order)
+    this.props.onFinishedDelete(itemOrder)
   }
 
   animateBlockMove = (blockIndex, position) => {
