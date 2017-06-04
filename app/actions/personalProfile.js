@@ -80,9 +80,10 @@ export function exitAlbumDetailActionCreator(){
 
 
 export function GoToImportPicture(key){
+  console.log("GOING TO IMPORT PICTURE WITH KEY " + key)
   return(dispatch, getState) => {
 
-    if(!key) dispatch(importPicture("undefined"))
+    if(key==undefined || key == null) dispatch(importPicture("undefined"))
     else     dispatch(importPicture(key))
 
     dispatch(NavigationActions.navigate({ routeName:'ImportPicture' }))
