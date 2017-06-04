@@ -32,6 +32,39 @@ export const myAlbumCovers = createReducer({},{
 	},
 })
 
+
+export const myAlbumImages = createReducer({}, {
+	[types.SET_ALBUM_DETAIL_IMAGES](state, action){
+		return action.albumImages
+
+		// return state.map((item, index) =>{
+		// }
+		//
+	},
+
+})
+//
+// ...state,
+// arr: [...state.arr, action.newItem]
+
+const initialAlbumDetailState = {
+    albumImages:[]
+}
+export const albumDetails = createReducer(state = initialAlbumDetailState, {
+	[types.ADD_ALBUM_DETAIL_IMAGES_URL](state, action){
+		return {
+				...state,
+      	albumImages: [...state.albumImages, action.albumImageURL]
+		}
+	},
+	[types.EXIT_ALBUM_DETAIL](state, action){
+		return initialAlbumDetailState
+	}
+
+})
+
+
+
 export const myAlbumCoverUrls = createReducer({},{
 	[types.ADD_ALBUM_COVER_URL](state, action){
 		console.log('ADDING')

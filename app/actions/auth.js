@@ -68,9 +68,6 @@ export function getAlbumCovers(){
 
       })
       .then(()=>{
-        console.log('COVERPHOTO ID')
-        console.log(coverPhotoId)
-
         getPictureUrlByPictureId(coverPhotoId).then((result)=>{
           dispatch(addFBAlbumCoverURL(album.id, result.picture))
         })

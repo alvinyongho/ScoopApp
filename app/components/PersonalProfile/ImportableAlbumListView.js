@@ -53,18 +53,21 @@ export class ImportableAlbumListView extends React.Component {
   }
 
   renderListOfAlbums(){
-    if(!this.props.myAlbumCovers) return null
+    if(!this.props.myAlbumCovers || !this.props.myAlbumCoverUrls) return null
     //
     // console.log("@@@@ RENDERING ALBUMS")
     // console.log(this.state.myAlbumCovers)
-
     return Object.keys(this.props.myAlbumCovers).map((index)=>{
       // console.log(this.state.myAlbumCovers[index].picture)
       return (
       <View key={index}>
         <TouchableHighlight underlayColor={'#DFDFDF'} onPress={()=>this.props.GoToAlbumContents(this.props.myAlbumCoverUrls[index].albumId)}>
           <View style={{height:70, backgroundColor:'white', flex:1, flexDirection:'row', alignItems: 'center'}}>
+
+            {this.props.myAlbumCoverUrls[index] &&
             <Image source={{uri:this.props.myAlbumCoverUrls[index].coverURL}} style={{margin: 5, width:60, height:60,}}/>
+            }
+
             <View style={{justifyContent: 'center'}}><Text style={{fontSize:18, fontFamily:'Avenir-Light'}}> {this.props.myAlbumCovers[index].albumName} </Text></View>
             <View style={{flex: .1, justifyContent: 'center', alignItems: 'flex-end'}}><Icon name="chevron-right" size={30} color="#BBBBBB" /></View>
           </View>

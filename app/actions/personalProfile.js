@@ -1,5 +1,8 @@
 import { getUserIdAndToken, performSaveMyProfileImages } from '../lib/scoopAPI'
 import { NavigationActions } from 'react-navigation';
+import {  getFBAlbumPhotos, getPictureUrlByPictureId
+} from '../services/facebook'
+
 
 import * as types from './types'
 
@@ -9,8 +12,6 @@ export function getScoopUserImages(){
     let fbId = getState().userProfile.facebookProfile.id
     // let fbId = 10211414919833392
     getUserIdAndToken(fbId).then((result) => {
-      console.log('THE RESULT@@@@')
-      console.log(result.userInfo.images)
       dispatch(getUserImages(result.userInfo.images));
     });
   }
@@ -21,11 +22,7 @@ export function postProfileImages(imageArray){
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
 
-    console.log('THE IMAGE ARRAY')
-    console.log(imageArray)
     performSaveMyProfileImages(scoopUserId, scoopUserToken, imageArray).then((result) =>{
-      console.log('set my images')
-      console.log(result.userInfo.images)
       dispatch(setUserImages(result.userInfo.images))
     })
 
@@ -33,13 +30,52 @@ export function postProfileImages(imageArray){
 }
 
 
-export function GoToAlbumContents(key){
+export function GoToAlbumContents(albumId){
   return(dispatch, getState) => {
-    console.log(key)
-    dispatch(NavigationActions.navigate({ routeName:'AlbumContents' }))
+    console.log(albumId)
+    getFBAlbumPhotos(albumId)
+    .then((albumContent)=>{
+      console.log(albumContent.data)
+      dispatch(setAlbumDetailImages(albumContent.data))
+      dispatch(NavigationActions.navigate({ routeName:'AlbumContents' }))
+
+    })
+    // .then(()=>{
+    //   // console.log('GETTING ALBUM DETAIL IMAGE URLS')
+    //   // getAlbumDetailImageURLs()
+    //
+    // })
+
+
   }
 }
 
+export function getAlbumDetailImageURLs(){
+  return(dispatch, getState) => {
+    console.log('GOT THE ALBUM DETAIL IMAGE URLS')
+    console.log(getState().myAlbumImages)
+    getState().myAlbumImages.map((imageData, index)=>{
+      getPictureUrlByPictureId(imageData.id).then((result)=>{
+        // console.log('')
+        console.log('SETTING ALBUM DETAIL IMAGES URL')
+        // dispatch(addAlbumDetailImageURL(index, result.picture))
+        return result.picture
+      })
+      .then((pictureURL)=>{
+
+        dispatch(addAlbumDetailImageURL(index, pictureURL))
+
+
+      })
+    })
+  }
+}
+
+export function exitAlbumDetailActionCreator(){
+  return(dispatch, getState)=>{
+    dispatch(exitAlbumDetail())
+  }
+}
 
 
 
@@ -50,6 +86,31 @@ export function GoToImportPicture(key){
     else     dispatch(importPicture(key))
 
     dispatch(NavigationActions.navigate({ routeName:'ImportPicture' }))
+  }
+}
+
+export function setAlbumDetailImages(albumImages){
+  return{
+    type: types.SET_ALBUM_DETAIL_IMAGES,
+    albumImages
+  }
+}
+
+export function exitAlbumDetail(){
+  return{
+    type: types.EXIT_ALBUM_DETAIL
+  }
+}
+
+export function addAlbumDetailImageURL(index, albumImageURL){
+
+  console.log('setting album detail images')
+  console.log(index)
+  // console.log(albumImagesURL)
+  return{
+    type: types.ADD_ALBUM_DETAIL_IMAGES_URL,
+    index,
+    albumImageURL
   }
 }
 

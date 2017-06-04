@@ -33,21 +33,31 @@ export class ImportableGalleryCollectionView extends React.Component {
   // _navigateTo(){
   //   console.log('navigate to destination')
   // }
+  componentDidMount(){
+    this.props.getAlbumDetailImageURLs()
+  }
+
+  componentWillUnmount(){
+    this.props.exitAlbumDetailActionCreator()
+  }
+
+  renderImagesGrid(){
+    if(!this.props.albumDetails) return null
+
+    return this.props.albumDetails.albumImages.map((imageURL, index)=>{
+      return (
+      <TouchableHighlight key={index} onPress={()=>console.log("todo")}>
+        <Image source={{uri:imageURL}} style={{height:ScreenWidth/3, width: ScreenWidth/3, }}/>
+      </TouchableHighlight>
+    );
+    })
+  }
 
   render(){
     return(
       <ScrollView style={{backgroundColor:'#DFDFDF'}}>
         <View style={{flex:1, flexWrap: 'wrap', flexDirection:'row'}}>
-          <TouchableHighlight onPress={()=>console.log("todo")}>
-            <View style={{height:ScreenWidth/3, width: ScreenWidth/3, backgroundColor: 'orange'}}/>
-          </TouchableHighlight>
-
-
-          <View style={{height:ScreenWidth/3, width: ScreenWidth/3, backgroundColor: 'red'}}/>
-          <View style={{height:ScreenWidth/3, width: ScreenWidth/3, backgroundColor: 'green'}}/>
-          <View style={{height:ScreenWidth/3, width: ScreenWidth/3, backgroundColor: 'purple'}}/>
-          <View style={{height:ScreenWidth/3, width: ScreenWidth/3, backgroundColor: 'cyan'}}/>
-
+          {this.renderImagesGrid()}
 
         </View>
 
@@ -61,14 +71,14 @@ export class ImportableGalleryCollectionView extends React.Component {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
+    albumDetails: state.albumDetails
   }
 }
 
 
-const mapDispatchToProps = dispatch => ({
-
-});
-
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 // Connects the state variables to the property variables within
 // the home class
