@@ -30,9 +30,6 @@ const ScreenWidth = Dimensions.get('window').width
 
 
 export class ImportableGalleryCollectionView extends React.Component {
-  // _navigateTo(){
-  //   console.log('navigate to destination')
-  // }
   componentDidMount(){
     this.props.getAlbumDetailImageURLs()
   }
@@ -46,10 +43,10 @@ export class ImportableGalleryCollectionView extends React.Component {
 
     return this.props.albumDetails.albumImages.map((imageURL, index)=>{
       return (
-      <TouchableHighlight key={index} onPress={()=>console.log("todo")}>
-        <Image source={{uri:imageURL}} style={{height:ScreenWidth/3, width: ScreenWidth/3, }}/>
-      </TouchableHighlight>
-    );
+        <TouchableHighlight key={index} onPress={()=>this.props.navigateToPhotoPreviewScreen(index)}>
+          <Image source={{uri:imageURL}} style={{height:ScreenWidth/3, width: ScreenWidth/3, }}/>
+        </TouchableHighlight>
+      );
     })
   }
 

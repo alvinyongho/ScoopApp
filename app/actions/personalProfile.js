@@ -2,8 +2,6 @@ import { getUserIdAndToken, performSaveMyProfileImages } from '../lib/scoopAPI'
 import { NavigationActions } from 'react-navigation';
 import {  getFBAlbumPhotos, getPictureUrlByPictureId
 } from '../services/facebook'
-
-
 import * as types from './types'
 
 
@@ -16,6 +14,7 @@ export function getScoopUserImages(){
     });
   }
 }
+
 
 export function postProfileImages(imageArray){
   return(dispatch, getState) => {
@@ -52,12 +51,12 @@ export function GoToAlbumContents(albumId){
 
 export function getAlbumDetailImageURLs(){
   return(dispatch, getState) => {
-    console.log('GOT THE ALBUM DETAIL IMAGE URLS')
-    console.log(getState().myAlbumImages)
+    // console.log('GOT THE ALBUM DETAIL IMAGE URLS')
+    // console.log(getState().myAlbumImages)
     getState().myAlbumImages.map((imageData, index)=>{
       getPictureUrlByPictureId(imageData.id).then((result)=>{
         // console.log('')
-        console.log('SETTING ALBUM DETAIL IMAGES URL')
+        // console.log('SETTING ALBUM DETAIL IMAGES URL')
         // dispatch(addAlbumDetailImageURL(index, result.picture))
         return result.picture
       })
@@ -90,6 +89,14 @@ export function GoToImportPicture(key){
   }
 }
 
+export function navigateToPhotoPreviewScreen(photoId){
+  return(dispatch, getState) => {
+    console.log('the photo selected was ' + photoId)
+    dispatch(NavigationActions.navigate({ routeName:'PicturePreview'}))
+  }
+}
+
+
 export function setAlbumDetailImages(albumImages){
   return{
     type: types.SET_ALBUM_DETAIL_IMAGES,
@@ -105,8 +112,8 @@ export function exitAlbumDetail(){
 
 export function addAlbumDetailImageURL(index, albumImageURL){
 
-  console.log('setting album detail images')
-  console.log(index)
+  // console.log('setting album detail images')
+  // console.log(index)
   // console.log(albumImagesURL)
   return{
     type: types.ADD_ALBUM_DETAIL_IMAGES_URL,
