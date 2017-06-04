@@ -1,3 +1,6 @@
+// Photo album corresponds to other User Profile details and the slider overlay
+// that pops up
+
 import * as types from './types'
 
 export function openPhotoAlbum() {
