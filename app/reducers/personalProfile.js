@@ -1,6 +1,8 @@
 import createReducer from '../lib/createReducer';
 import * as types from '../actions/types';
 
+import update from 'immutability-helper';
+
 export const myProfileImages = createReducer({}, {
 	[types.GET_MY_IMAGES](state, action) {
 		return action.images
@@ -52,10 +54,18 @@ const initialAlbumDetailState = {
 }
 export const albumDetails = createReducer(state = initialAlbumDetailState, {
 	[types.ADD_ALBUM_DETAIL_IMAGES_URL](state, action){
-		return {
-				...state,
-      	albumImages: [...state.albumImages, action.albumImageURL]
-		}
+		// return {
+		// 		...state,
+    //   	albumImages: [...state.albumImages, action.albumImageURL]
+		// }
+
+		return update(state, {
+    albumImages: {
+      [action.index]: {$set: action.albumImageURL}
+    }
+	  });
+
+
 	},
 	[types.EXIT_ALBUM_DETAIL](state, action){
 		return initialAlbumDetailState
