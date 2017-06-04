@@ -1,4 +1,4 @@
-
+import {getPictureUrlByPictureId } from '../../services/facebook';
 
 import React, {Component} from 'react';
 import ReactNative from 'react-native';
@@ -29,18 +29,63 @@ export class ImportableAlbumListView extends React.Component {
   //   console.log('navigate to destination')
   // }
 
-  render(){
-    return(
-      <ScrollView style={{backgroundColor:'#DFDFDF'}}>
+  getPictureUrl = (imageId) =>{
+    getPictureUrlByPictureId(imageId).then((image)=>{
+      return image.picture
+    })
+  }
 
-        <TouchableHighlight underlayColor={'#DFDFDF'} onPress={()=>this.props.GoToAlbumContents()}>
+  constructor(props){
+    super(props)
+    this.state = ({
+      myAlbumCovers: this.props.myAlbumCovers
+    })
+  }
+
+  componentDidMount(){
+    this.requestAlbumListAndImages()
+    this.props.getAlbumCovers()
+
+  }
+
+  requestAlbumListAndImages(){
+    this.props.populateFacebookAlbums()
+  }
+
+  renderListOfAlbums(){
+    if(!this.props.myAlbumCovers) return null
+    //
+    // console.log("@@@@ RENDERING ALBUMS")
+    // console.log(this.state.myAlbumCovers)
+
+    return Object.keys(this.props.myAlbumCovers).map((index)=>{
+      // console.log(this.state.myAlbumCovers[index].picture)
+      return (
+      <View key={index}>
+        <TouchableHighlight underlayColor={'#DFDFDF'} onPress={()=>this.props.GoToAlbumContents(this.props.myAlbumCoverUrls[index].albumId)}>
           <View style={{height:70, backgroundColor:'white', flex:1, flexDirection:'row', alignItems: 'center'}}>
-            <View style={{margin: 5, width:60, height:60, backgroundColor: 'red'}}></View>
-            <View style={{justifyContent: 'center'}}><Text style={{fontSize:18, fontFamily:'Avenir-Light'}}> Album Name Here </Text></View>
+            <Image source={{uri:this.props.myAlbumCoverUrls[index].coverURL}} style={{margin: 5, width:60, height:60,}}/>
+            <View style={{justifyContent: 'center'}}><Text style={{fontSize:18, fontFamily:'Avenir-Light'}}> {this.props.myAlbumCovers[index].albumName} </Text></View>
             <View style={{flex: .1, justifyContent: 'center', alignItems: 'flex-end'}}><Icon name="chevron-right" size={30} color="#BBBBBB" /></View>
           </View>
         </TouchableHighlight>
         <RowDivider/>
+      </View>
+      )
+
+    })
+
+    return null
+
+
+
+  }
+
+
+  render(){
+    return(
+      <ScrollView style={{backgroundColor:'#DFDFDF'}}>
+      {this.renderListOfAlbums()}
 
       </ScrollView>
     );
@@ -51,15 +96,15 @@ export class ImportableAlbumListView extends React.Component {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
+    myAlbumCovers: state.myAlbumCovers,
+    myAlbumCoverUrls: state.myAlbumCoverUrls
   }
 }
 
 
-const mapDispatchToProps = dispatch => ({
-  GoToAlbumContents: (key) => dispatch(NavigationActions.navigate({ routeName:'AlbumContents' })),
-
-});
-
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 // Connects the state variables to the property variables within
 // the home class

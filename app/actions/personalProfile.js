@@ -33,6 +33,16 @@ export function postProfileImages(imageArray){
 }
 
 
+export function GoToAlbumContents(key){
+  return(dispatch, getState) => {
+    console.log(key)
+    dispatch(NavigationActions.navigate({ routeName:'AlbumContents' }))
+  }
+}
+
+
+
+
 export function GoToImportPicture(key){
   return(dispatch, getState) => {
 
