@@ -16,6 +16,36 @@ export const myFacebookAlbums = createReducer({},{
 	}
 })
 
+
+export const myAlbumCovers = createReducer({},{
+	[types.ADD_ALBUM_IDS](state, action){
+		const newState = Object.assign({}, state);
+		idToAdd = action.albumId
+		console.log('ID TO ADD')
+		console.log(idToAdd)
+
+    newState[idToAdd] = {albumId: action.albumId, albumName: action.albumName, coverId: action.coverId}
+
+
+    return newState
+
+	},
+})
+
+export const myAlbumCoverUrls = createReducer({},{
+	[types.ADD_ALBUM_COVER_URL](state, action){
+		console.log('ADDING')
+
+		const newState = Object.assign({}, state);
+		idToAdd = action.albumId
+
+    newState[idToAdd] = {albumId: action.albumId, coverURL: action.coverURL}
+
+    return newState
+	}
+})
+
+
 export const importPictureIntoSlot = createReducer({},{
 	[types.IMPORT_PICTURE](state, action){
 		return action.albumSlot

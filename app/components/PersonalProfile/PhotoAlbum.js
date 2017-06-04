@@ -313,14 +313,14 @@ export default class PhotoAlbum extends React.Component {
 
 
   handleShortPress(key){
-    //TODO: handle the short press for key which might be better off as a callback
-    // console.log("HANDLING SHORT PRESS FOR KEY" + key)
-    // console.log("@@@@")
-    // console.log(this.itemOrder[key])
-
-    positionOfItem = this.itemOrder[key].order
+    let positionOfItem = 0
+    if(this.itemOrder[key])
+      positionOfItem = this.itemOrder[key].order
+    else
+      positionOfItem = this.itemOrder.length
     this.props.onShortPress(positionOfItem)
   }
+  
   // Helper functions
   // Returns the active block Positions: current Position and original Position
   _getActiveBlockPositions = () => {
