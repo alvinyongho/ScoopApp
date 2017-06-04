@@ -23,14 +23,8 @@ export const myAlbumCovers = createReducer({},{
 	[types.ADD_ALBUM_IDS](state, action){
 		const newState = Object.assign({}, state);
 		idToAdd = action.albumId
-		console.log('ID TO ADD')
-		console.log(idToAdd)
-
     newState[idToAdd] = {albumId: action.albumId, albumName: action.albumName, coverId: action.coverId}
-
-
     return newState
-
 	},
 })
 
