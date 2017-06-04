@@ -5,6 +5,7 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import EditScreen from '../components/MyProfileScreens/EditScreen'
 import ImportAlbumScreen from '../components/MyProfileScreens/ImportAlbumScreen'
 import ImportFromGalleryScreen from '../components/MyProfileScreens/ImportFromGalleryScreen'
+import PicturePreviewScreen from '../components/MyProfileScreens/PicturePreviewScreen'
 
 import ProfileScreen from '../components/HomeScreens/ProfileScreen'
 import SettingsScreen from '../components/SettingsScreens/SettingsScreen'
@@ -15,10 +16,13 @@ import PrivacyPolicyScreen from '../components/SettingsScreens/PrivacyPolicyScre
 import TOSScreen from '../components/SettingsScreens/TOSScreen'
 
 
+
 export const MyProfileNavigator = StackNavigator({
   Edit:                  { screen: EditScreen },
   ImportPicture:         { screen: ImportAlbumScreen },
-  AlbumContents:          { screen: ImportFromGalleryScreen },
+  AlbumContents:         { screen: ImportFromGalleryScreen },
+  PicturePreview:        { screen: PicturePreviewScreen },
+
   PreviewProfile:        { screen: ProfileScreen },
 
   Settings:              { screen: SettingsScreen },

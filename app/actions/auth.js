@@ -1,4 +1,12 @@
-import { facebookLoginAPI, getFacebookInfoAPI, facebookLogoutAPI, callFacebookGraphAPIForUserAlbums } from '../services/facebook';
+import {
+  facebookLoginAPI,
+  getFacebookInfoAPI,
+  facebookLogoutAPI,
+  callFacebookGraphAPIForUserAlbums,
+  getFBAlbumPhotos,
+  getFBAlbumCover,
+  getPictureUrlByPictureId,
+  getFBAlbumPicture } from '../services/facebook';
 import * as types from './types'
 
 import { getUserIdAndToken } from '../lib/scoopAPI'
@@ -29,12 +37,110 @@ export function getUserAlbums() {
     let fbId = getState().userProfile.facebookProfile.id
 
     callFacebookGraphAPIForUserAlbums(fbId).then((result)=>{
-      console.log(result)
-      // PROCESS THE ALBUMS
-
+      dispatch(albumRetrievalSuccess(result.data))
     })
   }
 }
+
+
+export function getAlbumCovers(){
+  return (dispatch, getState) =>{
+    const albums = getState().myFacebookAlbums.map((item, index)=>{
+      return {id: item.id, name: item.name}
+    })
+
+    albums.map((album, index)=>{
+      getFBAlbumCover(album.id)
+      .then((result)=>{
+        albumId = album.id
+        coverId = result.cover_photo.id
+        albumDescription = album.name
+        dispatch(addFBAlbumIDs(albumId, albumDescription, coverId))
+      })
+
+    })
+
+    albums.map((album, index)=>{
+      coverPhotoId = 0
+      getFBAlbumPhotos(album.id)
+      .then((result)=>{
+        coverPhotoId = result.data[0].id
+
+      })
+      .then(()=>{
+        getPictureUrlByPictureId(coverPhotoId).then((result)=>{
+          dispatch(addFBAlbumCoverURL(album.id, result.picture))
+        })
+      })
+
+    })
+
+  }
+}
+
+
+
+export function getImageURLById(imageId){
+  return(dispatch, getState)=>{
+
+    // console.log('@@@@@ GETTING IMAGE BY ID')
+    // console.log(imageId)
+    getPictureUrlByPictureId(imageId).then((image)=>{
+      // console.log("ADDING COVER")
+      // console.log(image.picture)
+    })
+  }
+    // dispatch(addFBAlbumCoverURL(albumId, cover.picture))
+    // return cover.picture
+}
+
+
+
+export function populateFacebookAlbums() {
+  return (dispatch, getState) => {
+
+    let albumId = "1588875886507"
+
+    getFBAlbumPhotos(albumId).then((result)=>{
+
+      // TODO
+      // console.log('@@@@@@@')
+      // console.log(result)
+    })
+
+    // dispatch(populateAlbumContents(albumContents))
+
+  }
+}
+
+
+export function populateAlbumContents(albumContents){
+  return {
+    type: types.POPULATE_ALBUMS,
+    albumContents
+  }
+}
+
+
+export function addFBAlbumIDs(albumId, albumName, coverURL){
+  return {
+    type: types.ADD_ALBUM_IDS,
+    albumId,
+    albumName,
+    coverId
+  }
+}
+
+
+export function addFBAlbumCoverURL(albumId, coverURL){
+  console.log('adding fbalbum cover url')
+  return {
+    type: types.ADD_ALBUM_COVER_URL,
+    albumId,
+    coverURL
+  }
+}
+
 
 export function getScoopUserIdAndToken() {
   return (dispatch, getState) => {
@@ -59,6 +165,15 @@ export function getToken(userId, userToken) {
     type: types.GET_TOKEN,
     userId,
     userToken,
+  }
+}
+
+
+
+export function albumRetrievalSuccess(albums){
+  return {
+    type: types.GOT_MY_ALBUMS,
+    albums
   }
 }
 
