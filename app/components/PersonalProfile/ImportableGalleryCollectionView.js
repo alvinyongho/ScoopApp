@@ -43,7 +43,7 @@ export class ImportableGalleryCollectionView extends React.Component {
 
     return this.props.albumDetails.albumImages.map((imageURL, index)=>{
       return (
-        <TouchableHighlight key={index} onPress={()=>this.props.navigateToPhotoPreviewScreen(index)}>
+        <TouchableHighlight key={index} onPress={()=>this.props.navigateToPhotoPreviewScreen(this.props.albumImages[index])}>
           <Image source={{uri:imageURL}} style={{height:ScreenWidth/3, width: ScreenWidth/3, }}/>
         </TouchableHighlight>
       );
@@ -68,7 +68,8 @@ export class ImportableGalleryCollectionView extends React.Component {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    albumDetails: state.albumDetails
+    albumDetails: state.albumDetails,
+    albumImages: state.myAlbumImages
   }
 }
 

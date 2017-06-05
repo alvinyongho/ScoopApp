@@ -48,6 +48,11 @@ export const albumDetails = createReducer(state = initialAlbumDetailState, {
 	  });
 
 	},
+	[types.SET_ALBUM_IMAGE_TO_SAVE](state,action){
+		return update(state, {
+			albumToSave: {$set: action.photoId}
+		})
+	},
 	[types.EXIT_ALBUM_DETAIL](state, action){
 		return initialAlbumDetailState
 	}

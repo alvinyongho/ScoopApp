@@ -24,30 +24,32 @@ export function postProfileImages(imageArray){
     performSaveMyProfileImages(scoopUserId, scoopUserToken, imageArray).then((result) =>{
       dispatch(setUserImages(result.userInfo.images))
     })
-
   }
 }
 
 
 export function GoToAlbumContents(albumId){
   return(dispatch, getState) => {
-    console.log(albumId)
     getFBAlbumPhotos(albumId)
     .then((albumContent)=>{
-      console.log(albumContent.data)
       dispatch(setAlbumDetailImages(albumContent.data))
       dispatch(NavigationActions.navigate({ routeName:'AlbumContents' }))
-
     })
-    // .then(()=>{
-    //   // console.log('GETTING ALBUM DETAIL IMAGE URLS')
-    //   // getAlbumDetailImageURLs()
-    //
-    // })
+  }
+}
 
+
+export function saveMyPictureToPhotoAlbum(){
+  return(dispatch, getState) => {
+    getPictureUrlByPictureId(getState().albumDetails.albumToSave.id).then((result)=>
+      console.log(result.images[0].source)
+      dispatch(setImageURLToSave(result.images[0].source))
+
+    )
 
   }
 }
+
 
 export function getAlbumDetailImageURLs(){
   return(dispatch, getState) => {
@@ -55,16 +57,10 @@ export function getAlbumDetailImageURLs(){
     // console.log(getState().myAlbumImages)
     getState().myAlbumImages.map((imageData, index)=>{
       getPictureUrlByPictureId(imageData.id).then((result)=>{
-        // console.log('')
-        // console.log('SETTING ALBUM DETAIL IMAGES URL')
-        // dispatch(addAlbumDetailImageURL(index, result.picture))
         return result.picture
       })
       .then((pictureURL)=>{
-
         dispatch(addAlbumDetailImageURL(index, pictureURL))
-
-
       })
     })
   }
@@ -92,7 +88,24 @@ export function GoToImportPicture(key){
 export function navigateToPhotoPreviewScreen(photoId){
   return(dispatch, getState) => {
     console.log('the photo selected was ' + photoId)
+    dispatch(setAlbumImageToSave(photoId))
     dispatch(NavigationActions.navigate({ routeName:'PicturePreview'}))
+  }
+}
+
+
+export function setImageURLToSave(url){
+  return{
+    type: types.SET_IMAGE_URL_TO_SAVE,
+    url
+  }
+}
+
+
+export function setAlbumImageToSave(photoId){
+  return{
+    type: types.SET_ALBUM_IMAGE_TO_SAVE,
+    photoId
   }
 }
 
