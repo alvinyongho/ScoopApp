@@ -10,6 +10,7 @@ export const myProfileImages = createReducer({}, {
 	[types.SET_MY_IMAGES](state, action) {
 		return action.images
 	},
+
 })
 
 export const myFacebookAlbums = createReducer({},{
@@ -53,6 +54,13 @@ export const albumDetails = createReducer(state = initialAlbumDetailState, {
 			albumToSave: {$set: action.photoId}
 		})
 	},
+
+	[types.SET_IMAGE_URL_TO_PREVIEW](state,action){
+		return update(state, {
+			albumToPreview: {$set: action.url}
+		})
+	},
+
 	[types.EXIT_ALBUM_DETAIL](state, action){
 		return initialAlbumDetailState
 	}
