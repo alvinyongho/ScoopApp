@@ -32,48 +32,51 @@ export function facebookLogin() {
   };
 }
 
-export function getUserAlbums() {
-  return (dispatch, getState) =>{
-    let fbId = getState().userProfile.facebookProfile.id
-
-    callFacebookGraphAPIForUserAlbums(fbId).then((result)=>{
-      dispatch(albumRetrievalSuccess(result.data))
-    })
-  }
-}
+// export function getUserAlbums() {
+//   return (dispatch, getState) =>{
+//     let fbId = getState().userProfile.facebookProfile.id
+//
+//     callFacebookGraphAPIForUserAlbums(fbId).then((result)=>{
+//       dispatch(albumRetrievalSuccess(result.data))
+//     })
+//   }
+// }
 
 
 export function getAlbumCovers(){
   return (dispatch, getState) =>{
-    const albums = getState().myFacebookAlbums.map((item, index)=>{
-      return {id: item.id, name: item.name}
+
+    let fbId = getState().userProfile.facebookProfile.id
+    callFacebookGraphAPIForUserAlbums(fbId)
+    .then((result)=>{
+      dispatch(albumRetrievalSuccess(result.data))
+      return result.data
     })
-
-    albums.map((album, index)=>{
-      getFBAlbumCover(album.id)
-      .then((result)=>{
-        albumId = album.id
-        coverId = result.cover_photo.id
-        albumDescription = album.name
-        dispatch(addFBAlbumIDs(albumId, albumDescription, coverId))
+    .then((albumIds)=>{
+      // Extract the raw cover ids from the api call
+      return raw_album_ids = albumIds.map((album, index)=>{
+        return (album.id)
       })
-
     })
-
-    albums.map((album, index)=>{
-      coverPhotoId = 0
-      getFBAlbumPhotos(album.id)
-      .then((result)=>{
-        coverPhotoId = result.data[0].id
-
-      })
-      .then(()=>{
-        getPictureUrlByPictureId(coverPhotoId).then((result)=>{
-          dispatch(addFBAlbumCoverURL(album.id, result.picture))
+    .then((raw_ids)=>{
+      raw_ids.map((id, index)=>{
+        console.log(id)
+        //Get album cover photo by album id
+        coverPhotoId = 0
+        getFBAlbumPhotos(id).then((result)=>{
+            coverPhotoId = result.data[0].id
+            albumId = id
+            albumOrderIndex = index
+            dispatch(setCoverPhotoIds(albumOrderIndex, albumId, coverPhotoId))
+        })
+        .then(()=>{
+          getPictureUrlByPictureId(coverPhotoId).then((result)=>{
+            dispatch(addFBAlbumCoverURL(index, result.picture))
+          })
         })
       })
-
     })
+
 
   }
 }
@@ -82,44 +85,48 @@ export function getAlbumCovers(){
 
 export function getImageURLById(imageId){
   return(dispatch, getState)=>{
-
-    // console.log('@@@@@ GETTING IMAGE BY ID')
-    // console.log(imageId)
     getPictureUrlByPictureId(imageId).then((image)=>{
-      // console.log("ADDING COVER")
-      // console.log(image.picture)
     })
   }
-    // dispatch(addFBAlbumCoverURL(albumId, cover.picture))
-    // return cover.picture
 }
+//
+//
+// export function populateFacebookAlbums() {
+//   return (dispatch, getState) => {
+//
+//     let albumId = "1588875886507"
+//
+//     getFBAlbumPhotos(albumId).then((result)=>{
+//
+//       // TODO
+//       // console.log('@@@@@@@')
+//       // console.log(result)
+//     })
+//
+//     // dispatch(populateAlbumContents(albumContents))
+//
+//   }
+// }
 
 
+export function setCoverPhotoIds(albumOrderIndex, albumId, coverPhotoId){
+  console.log(`setting cover photo ids with ${albumOrderIndex}`)
 
-export function populateFacebookAlbums() {
-  return (dispatch, getState) => {
-
-    let albumId = "1588875886507"
-
-    getFBAlbumPhotos(albumId).then((result)=>{
-
-      // TODO
-      // console.log('@@@@@@@')
-      // console.log(result)
-    })
-
-    // dispatch(populateAlbumContents(albumContents))
-
-  }
-}
-
-
-export function populateAlbumContents(albumContents){
   return {
-    type: types.POPULATE_ALBUMS,
-    albumContents
+    type: types.SET_COVER_PHOTO_IDS,
+    albumOrderIndex,
+    albumId,
+    coverPhotoId
   }
 }
+
+// 
+// export function populateAlbumContents(albumContents){
+//   return {
+//     type: types.POPULATE_ALBUMS,
+//     albumContents
+//   }
+// }
 
 
 export function addFBAlbumIDs(albumId, albumName, coverURL){
