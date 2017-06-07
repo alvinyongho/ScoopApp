@@ -16,7 +16,12 @@ export function getScoopUserImages(){
 }
 
 
+
+///TODO
 export function postProfileImages(imageArray){
+
+  console.log("POSTING PROFILE IMAGES WITH IMAGE ARRAY")
+  console.log(imageArray)
   return(dispatch, getState) => {
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
@@ -24,47 +29,52 @@ export function postProfileImages(imageArray){
     performSaveMyProfileImages(scoopUserId, scoopUserToken, imageArray).then((result) =>{
       dispatch(setUserImages(result.userInfo.images))
     })
-
   }
 }
 
 
 export function GoToAlbumContents(albumId){
   return(dispatch, getState) => {
-    console.log(albumId)
     getFBAlbumPhotos(albumId)
     .then((albumContent)=>{
-      console.log(albumContent.data)
       dispatch(setAlbumDetailImages(albumContent.data))
       dispatch(NavigationActions.navigate({ routeName:'AlbumContents' }))
-
     })
-    // .then(()=>{
-    //   // console.log('GETTING ALBUM DETAIL IMAGE URLS')
-    //   // getAlbumDetailImageURLs()
-    //
-    // })
-
-
   }
 }
 
+
+export function GetImageToPreview(){
+  return(dispatch, getState) => {
+    getPictureUrlByPictureId(getState().albumDetails.albumToSave.id).then((result)=>{
+      dispatch(setImageURLToPreview(result.images[0].source))
+    })
+  }
+}
+
+
+export function saveMyPictureToPhotoAlbum(){
+  return(dispatch, getState) => {
+    // getPictureUrlByPictureId(getState().albumDetails.albumToSave.id).then((result)=>{
+      imageURL              = getState().albumDetails.albumToPreview
+      myProfileImagesArray  = getState().myProfileImages
+      slotIndexToImportInto = getState().importPictureIntoSlot
+
+      myProfileImagesArray[slotIndexToImportInto] = imageURL
+
+      dispatch(setUserImages(myProfileImagesArray))
+  }
+}
+
+
 export function getAlbumDetailImageURLs(){
   return(dispatch, getState) => {
-    // console.log('GOT THE ALBUM DETAIL IMAGE URLS')
-    // console.log(getState().myAlbumImages)
     getState().myAlbumImages.map((imageData, index)=>{
       getPictureUrlByPictureId(imageData.id).then((result)=>{
-        // console.log('')
-        // console.log('SETTING ALBUM DETAIL IMAGES URL')
-        // dispatch(addAlbumDetailImageURL(index, result.picture))
         return result.picture
       })
       .then((pictureURL)=>{
-
         dispatch(addAlbumDetailImageURL(index, pictureURL))
-
-
       })
     })
   }
@@ -76,14 +86,11 @@ export function exitAlbumDetailActionCreator(){
   }
 }
 
-
-
 export function GoToImportPicture(key){
-  console.log("GOING TO IMPORT PICTURE WITH KEY " + key)
   return(dispatch, getState) => {
 
-    if(key==undefined || key == null) dispatch(importPicture("undefined"))
-    else     dispatch(importPicture(key))
+    // if(key==undefined || key == null) dispatch(importPicture("undefined"))
+    dispatch(importPicture(key))
 
     dispatch(NavigationActions.navigate({ routeName:'ImportPicture' }))
   }
@@ -91,11 +98,32 @@ export function GoToImportPicture(key){
 
 export function navigateToPhotoPreviewScreen(photoId){
   return(dispatch, getState) => {
-    console.log('the photo selected was ' + photoId)
+    dispatch(setAlbumImageIDToSave(photoId))
     dispatch(NavigationActions.navigate({ routeName:'PicturePreview'}))
   }
 }
 
+
+export function setImageURLToSave(url){
+  return{
+    type: types.SET_IMAGE_URL_TO_SAVE,
+    url
+  }
+}
+
+export function setImageURLToPreview(url){
+  return{
+    type: types.SET_IMAGE_URL_TO_PREVIEW,
+    url
+  }
+}
+
+export function setAlbumImageIDToSave(photoId){
+  return{
+    type: types.SET_ALBUM_IMAGE_TO_SAVE,
+    photoId
+  }
+}
 
 export function setAlbumDetailImages(albumImages){
   return{
@@ -111,10 +139,6 @@ export function exitAlbumDetail(){
 }
 
 export function addAlbumDetailImageURL(index, albumImageURL){
-
-  // console.log('setting album detail images')
-  // console.log(index)
-  // console.log(albumImagesURL)
   return{
     type: types.ADD_ALBUM_DETAIL_IMAGES_URL,
     index,
@@ -142,3 +166,12 @@ export function getUserImages(images) {
     images,
   }
 }
+//
+// export function updateAlbumPhotos(imagesArray){
+//   console.log('updating album photos')
+//   console.log(imagesArray)
+//   return {
+//     type: types.SET_MY_IMAGES,
+//     imagesArray
+//   }
+// }

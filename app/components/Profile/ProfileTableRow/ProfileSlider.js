@@ -30,6 +30,7 @@ export default class ProfileSlider extends Component {
           <MultiSlider changeScrollState={this.props.changeScrollState}
            onThumbMove={()=>{}}
            onRelease={()=>{}}
+           disabled={this.props.disabled}
            numSteps={this.props.numSteps}
            hasSteps={this.props.hasSteps}
            sliderLeftRightMargin={20}
