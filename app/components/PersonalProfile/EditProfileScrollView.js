@@ -44,10 +44,11 @@ export class EditProfileScrollView extends React.Component {
   }
 
   componentDidMount(){
-    this.props.getUserAlbums()
+    // console.log("COMPONENT MOUNTED")
+    if (!this.props.myProfileImages)
+      this.props.getUserAlbums()
 
   }
-
 
   convertItemOrderToImageArray(itemOrder){
     return itemOrder.map((item, index)=>{
@@ -56,6 +57,7 @@ export class EditProfileScrollView extends React.Component {
   }
 
   mapImagesToArray(){
+    console.log("MAPPING IMAGES TO ARRAY")
     return this.props.myProfileImages.map((images, index)=>{
       return {imagesrc: {uri: images}}
     })

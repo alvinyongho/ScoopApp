@@ -10,6 +10,7 @@ export const myProfileImages = createReducer({}, {
 	[types.SET_MY_IMAGES](state, action) {
 		return action.images
 	},
+
 })
 
 export const myFacebookAlbums = createReducer({},{
@@ -23,14 +24,8 @@ export const myAlbumCovers = createReducer({},{
 	[types.ADD_ALBUM_IDS](state, action){
 		const newState = Object.assign({}, state);
 		idToAdd = action.albumId
-		console.log('ID TO ADD')
-		console.log(idToAdd)
-
     newState[idToAdd] = {albumId: action.albumId, albumName: action.albumName, coverId: action.coverId}
-
-
     return newState
-
 	},
 })
 
@@ -38,35 +33,34 @@ export const myAlbumCovers = createReducer({},{
 export const myAlbumImages = createReducer({}, {
 	[types.SET_ALBUM_DETAIL_IMAGES](state, action){
 		return action.albumImages
-
-		// return state.map((item, index) =>{
-		// }
-		//
 	},
 
 })
-//
-// ...state,
-// arr: [...state.arr, action.newItem]
 
 const initialAlbumDetailState = {
     albumImages:[]
 }
 export const albumDetails = createReducer(state = initialAlbumDetailState, {
 	[types.ADD_ALBUM_DETAIL_IMAGES_URL](state, action){
-		// return {
-		// 		...state,
-    //   	albumImages: [...state.albumImages, action.albumImageURL]
-		// }
-
 		return update(state, {
-    albumImages: {
-      [action.index]: {$set: action.albumImageURL}
-    }
+	    albumImages: {
+	      [action.index]: {$set: action.albumImageURL}
+	    }
 	  });
 
-
 	},
+	[types.SET_ALBUM_IMAGE_TO_SAVE](state,action){
+		return update(state, {
+			albumToSave: {$set: action.photoId}
+		})
+	},
+
+	[types.SET_IMAGE_URL_TO_PREVIEW](state,action){
+		return update(state, {
+			albumToPreview: {$set: action.url}
+		})
+	},
+
 	[types.EXIT_ALBUM_DETAIL](state, action){
 		return initialAlbumDetailState
 	}
