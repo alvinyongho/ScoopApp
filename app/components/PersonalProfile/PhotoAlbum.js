@@ -314,15 +314,15 @@ export default class PhotoAlbum extends React.Component {
 
   handleShortPress(key){
     let positionOfItem = 0
-    console.log('HANDLING SHORT PRESS FOR KEY AT' + key)
-    console.log(this.itemOrder)
     if(this.itemOrder[key]){
       console.log(this.itemOrder[key])
       positionOfItem = this.itemOrder[key].order
     }
     else
       positionOfItem = this.itemOrder.length
-    this.props.onShortPress(positionOfItem)
+
+
+    this.props.onShortPress({elementKey: key, order: positionOfItem})
   }
 
   // Helper functions

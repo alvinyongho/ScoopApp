@@ -16,6 +16,12 @@ export function getScoopUserImages(){
 }
 
 
+export function resetAlbumImagePreview(){
+  return (dispatch, getState) =>{
+    dispatch(resetImagePreview())
+  }
+}
+
 
 ///TODO
 export function postProfileImages(imageArray){
@@ -164,6 +170,13 @@ export function getUserImages(images) {
   return {
     type: types.GET_MY_IMAGES,
     images,
+  }
+}
+
+export function resetImagePreview(){
+  console.log("RESETTING ALBUM CONTENT")
+  return {
+    type: types.RESET_ALBUM_IMAGE_PREVIEW
   }
 }
 //
