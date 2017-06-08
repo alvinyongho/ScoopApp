@@ -33,9 +33,12 @@ import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
 export class EditProfileScrollView extends React.Component {
   constructor(props){
     super(props)
+    this.acc = 0
+    this.prevImages = this.props.myProfileImages
     this.state = {
       isScrollEnabled: true,
-      profileImages: this.props.myProfileImages
+      profileImages: this.props.myProfileImages,
+
     }
   }
 
@@ -50,20 +53,36 @@ export class EditProfileScrollView extends React.Component {
 
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log("THE NEXT PROPS")
+    console.log(nextProps)
+
+
+    if(nextProps.myProfileImages.length !== this.prevImages.length){
+      console.log('UPDATED!!!')
+      this.acc += 1
+      this.renderPhotoAlbum(nextProps.myProfileImages, this.acc)
+
+      this.prevImages = nextProps.myProfileImages
+      this.setState({profileImages:nextProps.myProfileImages})
+    }
+
+  }
+
   convertItemOrderToImageArray(itemOrder){
     return itemOrder.map((item, index)=>{
       return item.imagesrc.uri
     })
   }
 
-  mapImagesToArray(){
+  mapImagesToArray(myProfileImages){
     console.log("MAPPING IMAGES TO ARRAY")
 
     //TODO: handle init state (need to check what is initial value)
-    if(!this.props.myProfileImages === {} || !this.props.myProfileImages === [])
+    if(!myProfileImages === {} || !myProfileImages === [])
       return []
 
-    return this.props.myProfileImages.map((images, index)=>{
+    return myProfileImages.map((images, index)=>{
       return {imagesrc: {uri: images}}
     })
 
@@ -71,17 +90,18 @@ export class EditProfileScrollView extends React.Component {
   }
 
   // Goto Import picture should take argument
-  renderPhotoAlbum = () => {
+  renderPhotoAlbum = (myProfileImages, acc) => {
+    console.log("RENDERING HAPPENING")
     if(Platform.OS === 'ios'){
       return (
-        <View style={{height: 480, backgroundColor: 'white'}}>
+        <View key={acc} style={{height: 480, backgroundColor: 'white'}}>
         <PhotoAlbum
             changeScrollState={this.changeScrollState}
             onFinishedDrag={(itemOrder)=>{
               this.props.syncOrderToPhotoAlbumOrder(itemOrder) // remove after adding a reset for order
               this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
             onShortPress={(key)=>this.props.GoToImportPicture(key)}
-            profileImages={this.mapImagesToArray()}
+            profileImages={this.mapImagesToArray(myProfileImages)}
             onFinishedDelete={(itemOrder)=>{
               this.props.syncOrderToPhotoAlbumOrder(itemOrder)
               this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
@@ -113,7 +133,7 @@ export class EditProfileScrollView extends React.Component {
       <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
         {/* <EditPhotoAlbum /> */}
 
-        {this.renderPhotoAlbum()}
+        {this.renderPhotoAlbum(this.state.profileImages, this.acc)}
 
 
         <RowDivider />

@@ -19,6 +19,7 @@ export class SaveButton extends React.Component{
     return(
       <Button onPress={() => {this.props.saveMyPictureToPhotoAlbum()
                               // this.props.navigateToMyProfile()
+                              // this.props.
 
                       }}>
                       <Text style={{

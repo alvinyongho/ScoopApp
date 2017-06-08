@@ -62,6 +62,20 @@ export default class PhotoAlbum extends React.Component {
     }
   }
 
+  // componentWillReceiveProps(nextProps){
+  //   console.log("THE PROPS HAS BEEN UPDATED")
+  //   console.log(nextProps)
+  //   // if(this.state.activeBlock === null){
+  //   //   this.setState({pictures:nextProps.profileImages})
+  //   //   this.itemOrder = this.state.pictures.map((elem, index) => {
+  //   //     let activeItemkey = 'picture'+index
+  //   //     return {imagesrc: elem.imagesrc, order: index}
+  //   //   })
+  //   //   this.forceUpdate()
+  //   // }
+  //
+  // }
+
   componentWillMount(){
     this.createTouchHandlers();
   }
@@ -446,6 +460,9 @@ export default class PhotoAlbum extends React.Component {
     let currentBig = this.state.currentBig;
     --blockPositionsSetCount; // decrement the number of block positions
     // get the order
+
+    // console.log(this.itemOrder)
+
     let order = this.itemOrder[key].order
     this.itemOrder.splice(key, 1)
     pictures.splice(key, 1)
