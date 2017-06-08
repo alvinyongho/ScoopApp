@@ -68,7 +68,22 @@ export function saveMyPictureToPhotoAlbum(){
 
       myProfileImagesArray[slotIndexToImportInto] = imageURL
 
-      dispatch(setUserImages(myProfileImagesArray))
+      // dispatch(setUserImages(myProfileImagesArray))
+      // save my picture to ordered index
+
+      // 
+      // const resetAction = NavigationActions.reset({
+      //   index: 0,
+      //   actions: [
+      //     NavigationActions.navigate({ routeName: 'Profile'})
+      //   ]
+      // })
+      //
+      // dispatch(resetAction)
+
+
+
+
   }
 }
 

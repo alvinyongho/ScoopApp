@@ -3,6 +3,7 @@ import * as types from '../actions/types';
 
 import update from 'immutability-helper';
 
+
 export const myProfileImages = createReducer({}, {
 	[types.GET_MY_IMAGES](state, action) {
 		return action.images

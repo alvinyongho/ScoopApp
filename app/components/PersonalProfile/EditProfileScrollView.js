@@ -59,9 +59,13 @@ export class EditProfileScrollView extends React.Component {
   mapImagesToArray(){
     console.log("MAPPING IMAGES TO ARRAY")
 
+    // return []
+
     return this.props.myProfileImages.map((images, index)=>{
       return {imagesrc: {uri: images}}
     })
+
+
   }
 
   // Goto Import picture should take argument
