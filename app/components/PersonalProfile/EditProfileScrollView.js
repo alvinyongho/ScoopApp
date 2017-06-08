@@ -53,15 +53,15 @@ export class EditProfileScrollView extends React.Component {
 
   componentWillReceiveProps(nextProps){
     // Re-render by accumulating the key
-    if(nextProps.myProfileImages.length !== this.prevImages.length &&
-      nextProps.myProfileImages.length > this.prevImages.length
+    if(nextProps.myProfileImages.length !== this.prevImages.length
+      && nextProps.myProfileImages.length > this.prevImages.length
     ){
       this.acc += 1
       this.renderPhotoAlbum(nextProps.myProfileImages, this.acc)
 
-      this.prevImages = nextProps.myProfileImages
       this.setState({profileImages:nextProps.myProfileImages})
     }
+    this.prevImages = nextProps.myProfileImages
 
   }
 
