@@ -77,10 +77,14 @@ export class EditProfileScrollView extends React.Component {
         <View style={{height: 480, backgroundColor: 'white'}}>
         <PhotoAlbum
             changeScrollState={this.changeScrollState}
-            onFinishedDrag={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
+            onFinishedDrag={(itemOrder)=>{
+              this.props.syncOrderToPhotoAlbumOrder(itemOrder) // remove after adding a reset for order
+              this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
             onShortPress={(key)=>this.props.GoToImportPicture(key)}
             profileImages={this.mapImagesToArray()}
-            onFinishedDelete={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
+            onFinishedDelete={(itemOrder)=>{
+              this.props.syncOrderToPhotoAlbumOrder(itemOrder)
+              this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
         />
         </View>
       );
