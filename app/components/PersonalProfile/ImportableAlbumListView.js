@@ -44,31 +44,28 @@ export class ImportableAlbumListView extends React.Component {
 
   componentDidMount(){
     this.requestAlbumListAndImages()
-    this.props.getAlbumCovers()
 
   }
 
   requestAlbumListAndImages(){
-    this.props.populateFacebookAlbums()
+    this.props.getAlbumCovers()
   }
 
   renderListOfAlbums(){
-    if(!this.props.myAlbumCovers || !this.props.myAlbumCoverUrls) return null
-    //
-    // console.log("@@@@ RENDERING ALBUMS")
-    // console.log(this.state.myAlbumCovers)
-    return Object.keys(this.props.myAlbumCovers).map((index)=>{
+    if(!this.props.albumDetails.albumIds || !this.props.albumDetails.albumCoverURLs) return null
+
+    return Object.keys(this.props.albumDetails.albumIds).map((index)=>{
       // console.log(this.state.myAlbumCovers[index].picture)
       return (
       <View key={index}>
-        <TouchableHighlight underlayColor={'#DFDFDF'} onPress={()=>this.props.GoToAlbumContents(this.props.myAlbumCoverUrls[index].albumId)}>
+        <TouchableHighlight underlayColor={'#DFDFDF'} onPress={()=>this.props.GoToAlbumContents(this.props.albumDetails.albumIds[index].id)}>
           <View style={{height:70, backgroundColor:'white', flex:1, flexDirection:'row', alignItems: 'center'}}>
 
-            {this.props.myAlbumCoverUrls[index] &&
-            <Image source={{uri:this.props.myAlbumCoverUrls[index].coverURL}} style={{margin: 5, width:60, height:60,}}/>
+            {this.props.albumDetails.albumCoverURLs[index] &&
+            <Image source={{uri:this.props.albumDetails.albumCoverURLs[index]}} style={{margin: 5, width:60, height:60,}}/>
             }
 
-            <View style={{justifyContent: 'center'}}><Text style={{fontSize:18, fontFamily:'Avenir-Light'}}> {this.props.myAlbumCovers[index].albumName} </Text></View>
+            <View style={{justifyContent: 'center'}}><Text style={{fontSize:18, fontFamily:'Avenir-Light'}}> {this.props.albumDetails.albumIds[index].name} </Text></View>
             <View style={{flex: .1, justifyContent: 'center', alignItems: 'flex-end'}}><Icon name="chevron-right" size={30} color="#BBBBBB" /></View>
           </View>
         </TouchableHighlight>
@@ -78,7 +75,6 @@ export class ImportableAlbumListView extends React.Component {
 
     })
 
-    return null
 
 
 
@@ -99,8 +95,9 @@ export class ImportableAlbumListView extends React.Component {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    myAlbumCovers: state.myAlbumCovers,
-    myAlbumCoverUrls: state.myAlbumCoverUrls
+    albumDetails: state.albumDetails,
+    // myAlbumCovers: state.myAlbumCovers,
+    // myAlbumCoverUrls: state.myAlbumCoverUrls
   }
 }
 

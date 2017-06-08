@@ -3,6 +3,7 @@ import * as types from '../actions/types';
 
 import update from 'immutability-helper';
 
+
 export const myProfileImages = createReducer({}, {
 	[types.GET_MY_IMAGES](state, action) {
 		return action.images
@@ -10,12 +11,33 @@ export const myProfileImages = createReducer({}, {
 	[types.SET_MY_IMAGES](state, action) {
 		return action.images
 	},
+	//
+	// [types.SYNC_WITH_SET_RESULT](state, action){
+	// 	return action.images
+	// }
 
 })
 
 export const myFacebookAlbums = createReducer({},{
 	[types.GOT_MY_ALBUMS](state, action) {
 		return action.albums
+	}
+})
+
+
+export const myAlbumPicturesOrder = createReducer({}, {
+	[types.GET_MY_IMAGES](state, action) {
+		return action.images
+	},
+	// TODO: APPEND
+	[types.APPEND_TO_MY_PICTURE_ORDER](state, action) {
+		return update(state,
+			{$push: [action.imageURL]}
+		)
+	},
+
+	[types.SYNC_WITH_PHOTO_ALBUM_ORDER](state, action){
+		return action.images
 	}
 })
 
@@ -38,9 +60,34 @@ export const myAlbumImages = createReducer({}, {
 })
 
 const initialAlbumDetailState = {
-    albumImages:[]
+    albumImages:[],
+		albumCoverIds:[],
+		albumCoverURLs:[]
 }
+
 export const albumDetails = createReducer(state = initialAlbumDetailState, {
+	[types.ADD_ALBUM_COVER_URL](state, action){
+			return update(state, {
+				albumCoverURLs: {
+					[action.albumId]: {$set: action.coverURL}
+				}
+			})
+	},
+
+	[types.SET_COVER_PHOTO_IDS](state, action) {
+		return update(state, {
+			albumCoverIds: {
+				[action.albumOrderIndex]: {$set: action.coverPhotoId }
+			}
+		});
+	},
+
+	[types.GOT_MY_ALBUMS](state, action) {
+		return update(state, {
+			albumIds: {$set: action.albums}
+		})
+	},
+
 	[types.ADD_ALBUM_DETAIL_IMAGES_URL](state, action){
 		return update(state, {
 	    albumImages: {
@@ -61,25 +108,19 @@ export const albumDetails = createReducer(state = initialAlbumDetailState, {
 		})
 	},
 
+	[types.RESET_ALBUM_IMAGE_PREVIEW](state, action){
+		return update(state, {
+			albumToSave: {$set: {}},
+			albumToPreview: {$set: ""}
+		})
+	},
+
 	[types.EXIT_ALBUM_DETAIL](state, action){
-		return initialAlbumDetailState
+		return update(state, {
+			albumImages: {$set: []}
+		})
 	}
 
-})
-
-
-
-export const myAlbumCoverUrls = createReducer({},{
-	[types.ADD_ALBUM_COVER_URL](state, action){
-		console.log('ADDING')
-
-		const newState = Object.assign({}, state);
-		idToAdd = action.albumId
-
-    newState[idToAdd] = {albumId: action.albumId, coverURL: action.coverURL}
-
-    return newState
-	}
 })
 
 
