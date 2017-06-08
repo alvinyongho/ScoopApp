@@ -66,12 +66,24 @@ export function saveMyPictureToPhotoAlbum(){
       myProfileImagesArray  = getState().myProfileImages
       slotIndexToImportInto = getState().importPictureIntoSlot
 
-      myProfileImagesArray[slotIndexToImportInto] = imageURL
+      // myProfileImagesArray[slotIndexToImportInto] = imageURL
 
       // dispatch(setUserImages(myProfileImagesArray))
       // save my picture to ordered index
+      if(getState().importPictureIntoSlot.elementKey === undefined){
+        console.log("handle appending case")
+        dispatch(appendToMyPictureOrder(imageURL))
 
-      // 
+      } else {
+        console.log("handle replace case")
+      }
+
+
+
+
+
+
+      //
       // const resetAction = NavigationActions.reset({
       //   index: 0,
       //   actions: [
@@ -194,6 +206,16 @@ export function resetImagePreview(){
     type: types.RESET_ALBUM_IMAGE_PREVIEW
   }
 }
+
+export function appendToMyPictureOrder(imageURL){
+  return {
+    type: types.APPEND_TO_MY_PICTURE_ORDER,
+    imageURL
+  }
+
+}
+
+
 //
 // export function updateAlbumPhotos(imagesArray){
 //   console.log('updating album photos')

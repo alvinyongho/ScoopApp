@@ -59,7 +59,9 @@ export class EditProfileScrollView extends React.Component {
   mapImagesToArray(){
     console.log("MAPPING IMAGES TO ARRAY")
 
-    // return []
+    //TODO: handle init state (need to check what is initial value)
+    if(!this.props.myProfileImages === {} || !this.props.myProfileImages === [])
+      return []
 
     return this.props.myProfileImages.map((images, index)=>{
       return {imagesrc: {uri: images}}
