@@ -22,7 +22,8 @@ export function myProfileNav(state = initialNavState, action){
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SettingsTOS' }), state);
     case 'ImportPicture':
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ImportPicture' }), state);
-
+    case 'Edit':
+      return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Edit' }), state);
     case 'AlbumContents':
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'AlbumContents'}), state);
 
