@@ -11,6 +11,10 @@ export const myProfileImages = createReducer({}, {
 	[types.SET_MY_IMAGES](state, action) {
 		return action.images
 	},
+	//
+	// [types.SYNC_WITH_SET_RESULT](state, action){
+	// 	return action.images
+	// }
 
 })
 
@@ -30,6 +34,10 @@ export const myAlbumPicturesOrder = createReducer({}, {
 		return update(state,
 			{$push: [action.imageURL]}
 		)
+	},
+
+	[types.SYNC_WITH_PHOTO_ALBUM_ORDER](state, action){
+		return action.images
 	}
 })
 

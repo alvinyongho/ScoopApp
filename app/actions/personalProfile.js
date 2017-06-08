@@ -74,32 +74,39 @@ export function saveMyPictureToPhotoAlbum(){
         console.log("handle appending case")
         dispatch(appendToMyPictureOrder(imageURL))
 
+        dispatch(setUserImages(getState().myAlbumPicturesOrder))
+
       } else {
         console.log("handle replace case")
       }
 
 
       dispatch(resetMyProfileNav())
-
-
-
-
-      //
-      // const resetAction = NavigationActions.reset({
-      //   index: 0,
-      //   actions: [
-      //     NavigationActions.navigate({ routeName: 'Profile'})
-      //   ]
-      // })
-      //
-      // dispatch(resetAction)
-
-
+      // dispatch(syncMyAlbum)
 
 
   }
 }
 
+
+// Resulting state from set pictures
+export function syncOrderToPhotoAlbumOrder(itemOrder){
+  return(dispatch, getState) => {
+
+    images = itemOrder.map((imageFormat, key)=>{
+      return imageFormat.imagesrc.uri
+    })
+
+    dispatch(syncWithPhotoAlbumOrder(images))
+  }
+}
+
+export function syncWithPhotoAlbumOrder(images){
+  return {
+    type: types.SYNC_WITH_PHOTO_ALBUM_ORDER,
+    images
+  }
+}
 
 export function getAlbumDetailImageURLs(){
   return(dispatch, getState) => {
