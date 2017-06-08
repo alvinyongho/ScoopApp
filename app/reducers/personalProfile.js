@@ -21,6 +21,19 @@ export const myFacebookAlbums = createReducer({},{
 })
 
 
+export const myAlbumPicturesOrder = createReducer({}, {
+	[types.GET_MY_IMAGES](state, action) {
+		return action.images
+	},
+	// TODO: APPEND
+	[types.APPEND_TO_MY_PICTURE_ORDER](state, action) {
+		return update(state,
+			{$push: [action.imageURL]}
+		)
+	}
+})
+
+
 export const myAlbumCovers = createReducer({},{
 	[types.ADD_ALBUM_IDS](state, action){
 		const newState = Object.assign({}, state);
