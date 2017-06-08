@@ -47,19 +47,15 @@ export class EditProfileScrollView extends React.Component {
   }
 
   componentDidMount(){
-    // console.log("COMPONENT MOUNTED")
-    // if (!this.props.myProfileImages)
-      // this.props.getUserAlbums()
+
 
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("THE NEXT PROPS")
-    console.log(nextProps)
-
-
-    if(nextProps.myProfileImages.length !== this.prevImages.length){
-      console.log('UPDATED!!!')
+    // Re-render by accumulating the key
+    if(nextProps.myProfileImages.length !== this.prevImages.length &&
+      nextProps.myProfileImages.length > this.prevImages.length
+    ){
       this.acc += 1
       this.renderPhotoAlbum(nextProps.myProfileImages, this.acc)
 
@@ -76,7 +72,7 @@ export class EditProfileScrollView extends React.Component {
   }
 
   mapImagesToArray(myProfileImages){
-    console.log("MAPPING IMAGES TO ARRAY")
+    // console.log("MAPPING IMAGES TO ARRAY")
 
     //TODO: handle init state (need to check what is initial value)
     if(!myProfileImages === {} || !myProfileImages === [])
