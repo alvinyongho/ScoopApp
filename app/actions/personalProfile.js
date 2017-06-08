@@ -16,6 +16,12 @@ export function getScoopUserImages(){
 }
 
 
+export function resetAlbumImagePreview(){
+  return (dispatch, getState) =>{
+    dispatch(resetImagePreview())
+  }
+}
+
 
 ///TODO
 export function postProfileImages(imageArray){
@@ -60,12 +66,47 @@ export function saveMyPictureToPhotoAlbum(){
       myProfileImagesArray  = getState().myProfileImages
       slotIndexToImportInto = getState().importPictureIntoSlot
 
-      myProfileImagesArray[slotIndexToImportInto] = imageURL
+      // myProfileImagesArray[slotIndexToImportInto] = imageURL
 
-      dispatch(setUserImages(myProfileImagesArray))
+      // dispatch(setUserImages(myProfileImagesArray))
+      // save my picture to ordered index
+      if(getState().importPictureIntoSlot.elementKey === undefined){
+        console.log("handle appending case")
+        dispatch(appendToMyPictureOrder(imageURL))
+
+        dispatch(setUserImages(getState().myAlbumPicturesOrder))
+
+      } else {
+        console.log("handle replace case")
+      }
+
+
+      dispatch(resetMyProfileNav())
+      // dispatch(syncMyAlbum)
+
+
   }
 }
 
+
+// Resulting state from set pictures
+export function syncOrderToPhotoAlbumOrder(itemOrder){
+  return(dispatch, getState) => {
+
+    images = itemOrder.map((imageFormat, key)=>{
+      return imageFormat.imagesrc.uri
+    })
+
+    dispatch(syncWithPhotoAlbumOrder(images))
+  }
+}
+
+export function syncWithPhotoAlbumOrder(images){
+  return {
+    type: types.SYNC_WITH_PHOTO_ALBUM_ORDER,
+    images
+  }
+}
 
 export function getAlbumDetailImageURLs(){
   return(dispatch, getState) => {
@@ -166,6 +207,29 @@ export function getUserImages(images) {
     images,
   }
 }
+
+export function resetImagePreview(){
+  console.log("RESETTING ALBUM CONTENT")
+  return {
+    type: types.RESET_ALBUM_IMAGE_PREVIEW
+  }
+}
+
+export function appendToMyPictureOrder(imageURL){
+  return {
+    type: types.APPEND_TO_MY_PICTURE_ORDER,
+    imageURL
+  }
+
+}
+
+export function resetMyProfileNav(){
+  return {
+    type: types.RESET_MY_PROFILE_NAV,
+  }
+}
+
+
 //
 // export function updateAlbumPhotos(imagesArray){
 //   console.log('updating album photos')
