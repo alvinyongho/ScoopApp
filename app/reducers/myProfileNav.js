@@ -26,6 +26,18 @@ export function myProfileNav(state = initialNavState, action){
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Edit' }), state);
     case 'AlbumContents':
       return MyProfileNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'AlbumContents'}), state);
+    case 'RESET_MY_PROFILE_NAV':
+    {
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({routeName: 'Edit'})
+        ]
+      })
+      return MyProfileNavigator.router.getStateForAction(resetAction, state);
+
+    }
+
 
     default:
       return MyProfileNavigator.router.getStateForAction(action, state);

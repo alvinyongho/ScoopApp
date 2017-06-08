@@ -79,6 +79,7 @@ export function saveMyPictureToPhotoAlbum(){
       }
 
 
+      dispatch(resetMyProfileNav())
 
 
 
@@ -213,6 +214,12 @@ export function appendToMyPictureOrder(imageURL){
     imageURL
   }
 
+}
+
+export function resetMyProfileNav(){
+  return {
+    type: types.RESET_MY_PROFILE_NAV,
+  }
 }
 
 
