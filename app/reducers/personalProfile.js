@@ -38,7 +38,15 @@ export const myAlbumPicturesOrder = createReducer({}, {
 
 	[types.SYNC_WITH_PHOTO_ALBUM_ORDER](state, action){
 		return action.images
+	},
+
+	[types.ALBUM_SET_IMAGEURL_AT_INDEX](state, action){
+		return update(state, {
+			[action.index]: {$set: action.imageURL}
+		})
 	}
+
+
 })
 
 
@@ -128,4 +136,14 @@ export const importPictureIntoSlot = createReducer({},{
 	[types.IMPORT_PICTURE](state, action){
 		return action.albumSlot
 	}
+})
+
+export const albumImageState = createReducer('VIEWING_ALBUM',{
+	[types.REPLACING_IMAGE](state, action){
+		return 'REPLACING_IMAGE'
+	},
+	[types.VIEWING_ALBUM](state, action){
+		return 'VIEWING_ALBUM'
+	}
+
 })
