@@ -25,7 +25,7 @@ class Home extends Component{
     this.props.getScoopUserIdAndToken()
     this.props.getScoopUserImages()
 
-    
+
     this.props.getMyProfileInfo()
     this.props.retrieveEduExperience()
   }

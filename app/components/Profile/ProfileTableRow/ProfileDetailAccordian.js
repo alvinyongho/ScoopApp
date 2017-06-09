@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   ListView,
+  Picker,
   TouchableHighlight
 } from 'react-native';
 
@@ -13,6 +14,73 @@ import Accordion from 'react-native-collapsible/Accordion';
 import RowDivider from './RowDivider'
 import BasicRow from './BasicRow'
 
+
+
+export class HeightPicker extends Component{
+  constructor(props){
+    super(props)
+    this.state=({
+      selectedHeightFeet: this.props.height.feet,
+      selectedHeightInches: this.props.height.inches
+    })
+  }
+
+  componentDidMount(){
+    // this.setState({selectedHeightFeet: this.props.height.feet,
+    //   selectedHeightInches: this.props.height.inches
+    //             })
+
+    console.log("HEIGHT FEET")
+    console.log(this.props.height.feet)
+
+  }
+
+  updateSelected(feet, inches){
+
+    this.props.updateSelected({feet, inches})
+  }
+
+  render(){
+    return(
+      <View style={{flex:1, flexDirection:'row'}}>
+        <Picker style={{flex:.5}}
+          selectedValue={this.state.selectedHeightFeet}
+          onValueChange={(itemValue, itemIndex) => {
+                                      this.setState({selectedHeightFeet: itemValue}, this.updateSelected(itemValue, this.state.selectedHeightInches))
+                                      }}>
+          <Picker.Item label="1'" value={1} />
+          <Picker.Item label="2'" value={2} />
+          <Picker.Item label="3'" value={3} />
+          <Picker.Item label="4'" value={4} />
+          <Picker.Item label="5'" value={5} />
+          <Picker.Item label="6'" value={6} />
+          <Picker.Item label="7'" value={7} />
+          <Picker.Item label="8'" value={8} />
+        </Picker>
+
+        <Picker style={{flex:.5}}
+          selectedValue={this.state.selectedHeightInches}
+          onValueChange={(itemValue, itemIndex) => {
+                                    this.setState({selectedHeightInches: itemValue}, this.updateSelected(this.state.selectedHeightFeet, itemValue))
+                                    }}>
+
+          <Picker.Item label="1&#34;" value={1} />
+          <Picker.Item label="2&#34;" value={2} />
+          <Picker.Item label="3&#34;" value={3} />
+          <Picker.Item label="4&#34;" value={4} />
+          <Picker.Item label="5&#34;" value={5} />
+          <Picker.Item label="6&#34;" value={6} />
+          <Picker.Item label="7&#34;" value={7} />
+          <Picker.Item label="8&#34;" value={8} />
+          <Picker.Item label="9&#34;" value={9} />
+          <Picker.Item label="10&#34;" value={10} />
+          <Picker.Item label="11&#34;" value={11} />
+        </Picker>
+      </View>
+    );
+  }
+
+}
 
 export class SelectableList extends Component {
   constructor(props){
@@ -81,11 +149,34 @@ export default class ProfileDetailAccordian extends Component {
     super(props)
     this.state = ({
       eduBackground: null,
-      eduSelected: this.props.userProfile.scoopApiStore.schoolName
+      eduSelected: this.props.userProfile.scoopApiStore.schoolName,
+      height: this.computeHeightFromAPIStore()
     })
   }
 
+
+  computeHeightFromAPIStore(){
+    height_inches = this.props.userProfile.scoopApiStore.heightInches
+    ft = Math.floor(height_inches/12)
+    inches = height_inches-(ft*12)
+    console.log("HEIGHT COMPUTED INTO STATE")
+    return(
+      {
+          feet: ft,
+          inches: inches
+      }
+    )
+  }
+
+
   componentDidMount(){
+
+    // this.computeHeightFromAPIStore()
+    // console.log("THe users height")
+    // console.log(this.props.userProfile.scoopApiStore.heightInches)
+    //
+
+
     this.setState({eduBackground: this.mapEduToArray()})
   }
 
@@ -105,11 +196,22 @@ export default class ProfileDetailAccordian extends Component {
         },
         {
           rowItemName: 'Job Title',
+
           rowItemValue: 'Ask Me!',
         },
         {
           rowItemName: 'Height',
-          rowItemValue: 'Ask Me!',
+          height: this.state.height,
+          rowItemValue: `${this.state.height.feet}' ${this.state.height.inches}"`,
+          updateSelected: (heightSelected) => {
+            console.log("THE HEIGHT SELECTED")
+            console.log(heightSelected)
+            this.setState({height: {
+                                      feet: heightSelected.feet,
+                                      inches: heightSelected.inches
+                                    }
+                          })
+          }
         },
         {
           rowItemName: 'Offspring',
@@ -148,6 +250,11 @@ export default class ProfileDetailAccordian extends Component {
       switch(section.rowItemName){
         case ("School Name"): {
             return (<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.eduBackgroundArr}/>)
+        }
+        case("Height"): {
+            return (
+              <HeightPicker updateSelected={section.updateSelected} height={section.height}/>
+            )
         }
 
 
