@@ -47,12 +47,15 @@ export default class ProfileBasicInfo extends Component {
           <Text style={styles.subheader}>{this.props.relationshipStatus}</Text>
         </View>
 
+
+        {!this.props.disabledLike &&
         <View sytle={{flex:.2}}>
           <TouchableHighlight underlayColor={'white'} onPress={()=>{this.setState({buttonStatus:'heart'})
             console.log("TODO")}}>
             {this.renderLikeButton()}
           </TouchableHighlight>
         </View>
+        }
       </View>
     )
   }

@@ -30,6 +30,9 @@ import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
 import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
 
 
+import PhotoAlbumsContainer from './ProfileAlbumsContainer'
+
+
 export class EditProfileScrollView extends React.Component {
   constructor(props){
     super(props)
@@ -47,81 +50,14 @@ export class EditProfileScrollView extends React.Component {
   }
 
   componentDidMount(){
-
-
-  }
-
-  componentWillReceiveProps(nextProps){
-    // Re-render by accumulating the key
-    if(nextProps.myProfileImages.length !== this.prevImages.length
-      && nextProps.myProfileImages.length > this.prevImages.length
-      || this.props.albumImageState === "REPLACING_IMAGE"
-    ){
-      this.acc += 1
-      this.renderPhotoAlbum(nextProps.myProfileImages, this.acc)
-      this.setState({profileImages:nextProps.myProfileImages})
-    }
-    this.prevImages = nextProps.myProfileImages
-    this.props.setViewingAlbumState()
-  }
-
-  convertItemOrderToImageArray(itemOrder){
-    return itemOrder.map((item, index)=>{
-      return item.imagesrc.uri
-    })
-  }
-
-  mapImagesToArray(myProfileImages){
-    // console.log("MAPPING IMAGES TO ARRAY")
-
-    //TODO: handle init state (need to check what is initial value)
-    if(!myProfileImages === {} || !myProfileImages === [])
-      return []
-
-    return myProfileImages.map((images, index)=>{
-      return {imagesrc: {uri: images}}
-    })
-
+    // Gets the user information and populates the viewingProfileDetail state.
+    // This call also gets activated in View Profile so that call may be removed inside ViewProfileRow
+    // at a later time.
+    // this.props.fetchUser(this.props.scoopUserId)
 
   }
 
-  // Goto Import picture should take argument
-  renderPhotoAlbum = (myProfileImages, acc) => {
-    console.log("RENDERING HAPPENING")
-    if(Platform.OS === 'ios'){
-      return (
-        <View key={acc} style={{height: 480, backgroundColor: 'white'}}>
-        <PhotoAlbum
-            changeScrollState={this.changeScrollState}
-            onFinishedDrag={(itemOrder)=>{
-              this.props.syncOrderToPhotoAlbumOrder(itemOrder) // remove after adding a reset for order
-              this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
-            onShortPress={(key)=>this.props.GoToImportPicture(key)}
-            profileImages={this.mapImagesToArray(myProfileImages)}
-            onFinishedDelete={(itemOrder)=>{
-              this.props.syncOrderToPhotoAlbumOrder(itemOrder)
-              this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
-        />
-        </View>
-      );
-    } else {
-      // Handle Android case
-      return(
-        <View style={{height: 550, backgroundColor: '#EEEEEE'}} >
-        <PhotoAlbum changeScrollState={this.changeScrollState}
-                    onFinishedDrag={(itemOrder)=>{
-                      this.props.syncOrderToPhotoAlbumOrder(itemOrder) // remove after adding a reset for order
-                      this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
-                    onShortPress={(key)=>this.props.GoToImportPicture(key)}
-                    profileImages={this.mapImagesToArray(myProfileImages)}
-                    onFinishedDelete={(itemOrder)=>{
-                      this.props.syncOrderToPhotoAlbumOrder(itemOrder)
-                      this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
-        />
-        </View>
-      );
-    }
-  }
+
 
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
@@ -129,12 +65,16 @@ export class EditProfileScrollView extends React.Component {
 
 
       <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
-        {this.renderPhotoAlbum(this.state.profileImages, this.acc)}
+
+        <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
+
         <RowDivider />
         <ViewProfileRow />
 
         <SectionTitle title="PERSONAL DETAILS" />
-        <ProfileBasicInfo />
+        <ProfileBasicInfo  disabledLike={true} />
+
+
 
         <ProfileDetailAccordian />
 
@@ -162,7 +102,11 @@ export class EditProfileScrollView extends React.Component {
 function mapStateToProps(state){
   return {
     myProfileImages: state.myProfileImages,
-    albumImageState: state.albumImageState
+    albumImageState: state.albumImageState,
+    // myProfileDetails: state.viewingProfileDetail,
+    scoopUserId: state.scoopUserProfile.scoopId
+
+
   }
 }
 
