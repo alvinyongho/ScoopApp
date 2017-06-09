@@ -15,7 +15,7 @@ export default class LookingForSection extends Component{
       <ProfileSlider
         numSteps={5}
         hasSteps={true}
-        disabled={true}
+        disabled={this.props.disabled}
         leftLabel={'Relationship'}
         rightLabel={'Friendship'}
         thumbLocation={this.computeThumbLocation(5, this.props.lookingForType-1)}
@@ -24,7 +24,7 @@ export default class LookingForSection extends Component{
       <View style={{height:1, backgroundColor:'gray'}}/>
       <ProfileSlider
         numSteps={3}
-        disabled={true}
+        disabled={this.props.disabled}
         hasSteps={true}
         leftLabel={'Men'}
         middleLabel={'Both'}

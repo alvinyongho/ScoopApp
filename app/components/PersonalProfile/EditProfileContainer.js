@@ -30,6 +30,8 @@ import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
 import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
 
 
+import LookingForSection from '../Profile/ProfileTableRow/LookingForSection'
+
 
 export class EditProfileContainer extends React.Component {
   constructor(props){
@@ -63,8 +65,7 @@ export class EditProfileContainer extends React.Component {
 
         <ProfileDetailAccordian userProfile={myProfile} />
 
-        <SectionTitle title="LOOKING FOR" />
-        <ProfileSlider lookingForValues={{relationshipType: [0], genderType: [1]}} changeScrollState={this.changeScrollState} />
+        <LookingForSection disabled={false} lookingForType={myProfile.scoopApiStore.lookingForType} lookingForGender={myProfile.scoopApiStore.lookingForGender} changeScrollState={this.props.changeScrollState} />
 
         <SectionTitle title={'CONNECTED APPS'}/>
 
