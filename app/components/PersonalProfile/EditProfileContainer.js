@@ -29,8 +29,15 @@ import SectionTitle from '../Profile/ProfileTableRow/SectionTitle'
 import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
 import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
 
+import {ComingSoonRow,EditableConnectedApps} from '../Profile/ProfileTableRow/ProfileDetailConnectedApps'
 
 import LookingForSection from '../Profile/ProfileTableRow/LookingForSection'
+
+
+import images from '@assets/images';
+
+
+
 
 
 export class EditProfileContainer extends React.Component {
@@ -61,13 +68,51 @@ export class EditProfileContainer extends React.Component {
       <View>
         <SectionTitle title="PERSONAL DETAILS" />
 
-        <ProfileBasicInfo relationshipStatus={myProfile.scoopApiStore.relationship} distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName} name={myProfile.scoopApiStore.firstName} disabledLike={true} />
+        <ProfileBasicInfo
+          relationshipStatus={myProfile.scoopApiStore.relationship}
+          distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName}
+          name={myProfile.scoopApiStore.firstName} disabledLike={true}
+        />
 
         <ProfileDetailAccordian userProfile={myProfile} />
 
-        <LookingForSection disabled={false} lookingForType={myProfile.scoopApiStore.lookingForType} lookingForGender={myProfile.scoopApiStore.lookingForGender} changeScrollState={this.props.changeScrollState} />
+        <LookingForSection
+          disabled={false}
+          lookingForType={myProfile.scoopApiStore.lookingForType}
+          lookingForGender={myProfile.scoopApiStore.lookingForGender}
+          changeScrollState={this.props.changeScrollState}
+        />
 
         <SectionTitle title={'CONNECTED APPS'}/>
+        <View style={{paddingLeft: 20, backgroundColor:'white'}}>
+          <EditableConnectedApps
+            showSlider={true}
+            isEnabled={true}
+            serviceImages={[images.facebook_noColor, images.facebook_withColor]}
+            rowItemName={'Facebook'}
+          />
+          <View style={{height:1, backgroundColor:'gray'}}/>
+          <EditableConnectedApps
+            showSlider={false}
+            serviceImages={[images.fitbit_noColor, images.fitbit_withColor]}
+            rowItemName={'FitBit'}
+          />
+          <View style={{height:1, backgroundColor:'gray'}}/>
+          <EditableConnectedApps
+            showSlider={false}
+            serviceImages={[images.pinterest_noColor, images.pinterest_withColor]}
+            rowItemName={'Pinterest'}
+          />
+          <View style={{height:1, backgroundColor:'gray'}}/>
+          <EditableConnectedApps
+            showSlider={false}
+            serviceImages={[images.spotify_noColor, images.spotify_withColor]}
+            rowItemName={'Spotify'}
+          />
+          <View style={{height:1, backgroundColor:'gray'}}/>
+          <ComingSoonRow />
+        </View>
+
 
         <SectionTitle title={'ABOUT ME'}/>
         <View style={{backgroundColor: 'white'}}>
