@@ -25,9 +25,6 @@ export function resetAlbumImagePreview(){
 
 ///TODO
 export function postProfileImages(imageArray){
-
-  console.log("POSTING PROFILE IMAGES WITH IMAGE ARRAY")
-  console.log(imageArray)
   return(dispatch, getState) => {
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
@@ -114,6 +111,16 @@ export function getAlbumDetailImageURLs(){
     })
   }
 }
+
+
+
+export function PreviewProfile(){
+  return(dispatch, getState) => {
+    dispatch(NavigationActions.navigate({ routeName: 'PreviewProfile' }))
+  }
+}
+
+
 
 export function exitAlbumDetailActionCreator(){
   return(dispatch, getState)=>{
