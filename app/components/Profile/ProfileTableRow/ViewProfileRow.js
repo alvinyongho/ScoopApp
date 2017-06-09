@@ -12,6 +12,8 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+import Icon from 'react-native-vector-icons/EvilIcons';
+
 
 export class ViewProfileRow extends Component {
 
@@ -21,10 +23,16 @@ export class ViewProfileRow extends Component {
 
   render(){
     return (
-      <TouchableHighlight onPress={()=>this.props.PreviewProfile()}>
-        <View style={{padding: 10, paddingTop: 12, backgroundColor: 'white', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-          <Text style={{fontSize: 16, fontFamily: 'Avenir-Light', color:'#666666', flex:.5}}> View Profile </Text>
-          <View style={{alignItems:'center', justifyContent: 'center', flex: .5}}></View>
+      <TouchableHighlight onPress={()=>{
+        this.props.fetchUser(this.props.scoopUserId)
+        this.props.PreviewProfile()}}
+      >
+        <View style={{padding: 10, paddingTop: 12, backgroundColor: 'white', flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={{fontSize: 18, fontFamily: 'Avenir-Light', color:'#666666', flex:.5}}> View Profile </Text>
+
+          <View style={{alignItems:'flex-end', justifyContent: 'flex-end', flex: .5}}>
+            <Icon name="chevron-right" size={35} color="#BBBBBB" />
+          </View>
         </View>
       </TouchableHighlight>
     );
@@ -35,13 +43,14 @@ export class ViewProfileRow extends Component {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
+    scoopUserId: state.scoopUserProfile.scoopId
   }
 }
 
 
-const mapDispatchToProps = dispatch => ({
-  PreviewProfile: () => dispatch(NavigationActions.navigate({ routeName: 'PreviewProfile' })),
-});
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 
 // Connects the state variables to the property variables within

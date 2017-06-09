@@ -4,6 +4,21 @@ import * as types from '../actions/types';
 import update from 'immutability-helper';
 
 
+export const myProfile = createReducer({}, {
+	[types.GET_MY_PROFILE](state, action) {
+		return update(state,
+			{scoopApiStore: {$set: action.user_information}}
+	)},
+
+	[types.GOT_EDU_BACKGROUND](state, action) {
+		return update(state,
+			{eduBackground: {$set: action.eduBackground}}
+	)}
+
+})
+
+
+
 export const myProfileImages = createReducer({}, {
 	[types.GET_MY_IMAGES](state, action) {
 		return action.images
@@ -38,7 +53,15 @@ export const myAlbumPicturesOrder = createReducer({}, {
 
 	[types.SYNC_WITH_PHOTO_ALBUM_ORDER](state, action){
 		return action.images
+	},
+
+	[types.ALBUM_SET_IMAGEURL_AT_INDEX](state, action){
+		return update(state, {
+			[action.index]: {$set: action.imageURL}
+		})
 	}
+
+
 })
 
 
@@ -128,4 +151,14 @@ export const importPictureIntoSlot = createReducer({},{
 	[types.IMPORT_PICTURE](state, action){
 		return action.albumSlot
 	}
+})
+
+export const albumImageState = createReducer('VIEWING_ALBUM',{
+	[types.REPLACING_IMAGE](state, action){
+		return 'REPLACING_IMAGE'
+	},
+	[types.VIEWING_ALBUM](state, action){
+		return 'VIEWING_ALBUM'
+	}
+
 })

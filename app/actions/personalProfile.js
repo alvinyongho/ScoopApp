@@ -25,9 +25,6 @@ export function resetAlbumImagePreview(){
 
 ///TODO
 export function postProfileImages(imageArray){
-
-  console.log("POSTING PROFILE IMAGES WITH IMAGE ARRAY")
-  console.log(imageArray)
   return(dispatch, getState) => {
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
@@ -66,27 +63,21 @@ export function saveMyPictureToPhotoAlbum(){
       myProfileImagesArray  = getState().myProfileImages
       slotIndexToImportInto = getState().importPictureIntoSlot
 
-      // myProfileImagesArray[slotIndexToImportInto] = imageURL
-
-      // dispatch(setUserImages(myProfileImagesArray))
-      // save my picture to ordered index
       if(getState().importPictureIntoSlot.elementKey === undefined){
-        console.log("handle appending case")
         dispatch(appendToMyPictureOrder(imageURL))
-
         dispatch(setUserImages(getState().myAlbumPicturesOrder))
 
       } else {
-        console.log("handle replace case")
+        // console.log("handle replace case")
+        dispatch(setAlbumImageAtIndex(getState().importPictureIntoSlot.elementKey, imageURL))
+        dispatch(setUserImages(getState().myAlbumPicturesOrder))
+        dispatch(replacingImage())
+
       }
-
-
       dispatch(resetMyProfileNav())
-      // dispatch(syncMyAlbum)
-
-
   }
 }
+
 
 
 // Resulting state from set pictures
@@ -121,6 +112,16 @@ export function getAlbumDetailImageURLs(){
   }
 }
 
+
+
+export function PreviewProfile(){
+  return(dispatch, getState) => {
+    dispatch(NavigationActions.navigate({ routeName: 'PreviewProfile' }))
+  }
+}
+
+
+
 export function exitAlbumDetailActionCreator(){
   return(dispatch, getState)=>{
     dispatch(exitAlbumDetail())
@@ -141,6 +142,12 @@ export function navigateToPhotoPreviewScreen(photoId){
   return(dispatch, getState) => {
     dispatch(setAlbumImageIDToSave(photoId))
     dispatch(NavigationActions.navigate({ routeName:'PicturePreview'}))
+  }
+}
+
+export function setViewingAlbumState(){
+  return(dispatch)=>{
+    dispatch(viewingAlbum())
   }
 }
 
@@ -229,13 +236,23 @@ export function resetMyProfileNav(){
   }
 }
 
+export function setAlbumImageAtIndex(index, imageURL){
+  return{
+    type: types.ALBUM_SET_IMAGEURL_AT_INDEX,
+    index,
+    imageURL
+  }
+}
 
-//
-// export function updateAlbumPhotos(imagesArray){
-//   console.log('updating album photos')
-//   console.log(imagesArray)
-//   return {
-//     type: types.SET_MY_IMAGES,
-//     imagesArray
-//   }
-// }
+
+export function replacingImage(){
+  return{
+    type: types.REPLACING_IMAGE
+  }
+}
+
+export function viewingAlbum(){
+  return{
+    type: types.VIEWING_ALBUM
+  }
+}
