@@ -6,9 +6,17 @@ import update from 'immutability-helper';
 
 export const myProfile = createReducer({}, {
 	[types.GET_MY_PROFILE](state, action) {
-		return action.user_information
-	}
+		return update(state,
+			{scoopApiStore: {$set: action.user_information}}
+	)},
+
+	[types.GOT_EDU_BACKGROUND](state, action) {
+		return update(state,
+			{eduBackground: {$set: action.eduBackground}}
+	)}
+
 })
+
 
 
 export const myProfileImages = createReducer({}, {

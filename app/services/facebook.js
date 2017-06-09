@@ -153,6 +153,47 @@ export function callFacebookGraphAPIForUserAlbums(userId){
 
 }
 
+export function getEduExperience(userId){
+  return new Promise((resolve, reject) => {
+    const userRequestCallback = (error, profileInfo) => {
+      if (error) reject(error);
+
+      // console.log(profileInfo)
+      resolve(profileInfo);
+    };
+
+    const userRequest =
+      new GraphRequest(
+        `/${userId}/?fields=education`,
+        null,
+        userRequestCallback
+      );
+
+    new GraphRequestManager().addRequest(userRequest).start();
+  });
+}
+
+
+
+export function getUser(userId){
+  return new Promise((resolve, reject) => {
+    const userRequestCallback = (error, profileInfo) => {
+      if (error) reject(error);
+
+      // console.log(profileInfo)
+      resolve(profileInfo);
+    };
+
+    const userRequest =
+      new GraphRequest(
+        `/${userId}`,
+        null,
+        userRequestCallback
+      );
+
+    new GraphRequestManager().addRequest(userRequest).start();
+  });
+}
 
 
 

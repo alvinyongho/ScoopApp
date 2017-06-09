@@ -11,34 +11,73 @@ import Accordion from 'react-native-collapsible/Accordion';
 import RowDivider from './RowDivider'
 import BasicRow from './BasicRow'
 
-const SECTIONS = [
-  {
-    rowItemName: 'School Name',
-    rowItemValue: 'University of California, San...',
-  },
-  {
-    rowItemName: 'Job Title',
-    rowItemValue: 'Ask Me!',
-  },
-  {
-    rowItemName: 'Height',
-    rowItemValue: 'Ask Me!',
-  },
-  {
-    rowItemName: 'Offspring',
-    rowItemValue: 'Ask Me!',
-  },
-  {
-    rowItemName: 'Body Type',
-    rowItemValue: 'Ask Me!',
-  }
-];
 
+
+
+  const SECTIONS = [
+    {
+      rowItemName: 'School Name',
+      rowItemValue: 'University of California, San...',
+    },
+    {
+      rowItemName: 'Job Title',
+      rowItemValue: 'Ask Me!',
+    },
+    {
+      rowItemName: 'Height',
+      rowItemValue: 'Ask Me!',
+    },
+    {
+      rowItemName: 'Offspring',
+      rowItemValue: 'Ask Me!',
+    },
+    {
+      rowItemName: 'Body Type',
+      rowItemValue: 'Ask Me!',
+    }
+  ];
 
 export default class ProfileDetailAccordian extends Component {
+
+
   constructor(props){
     super(props)
+    this.state = ({
+      schoolName: this.props.userProfile.scoopApiStore.schoolName
+    })
   }
+
+  genSections = () => {
+    // 
+    // console.log(this.props.userProfile.scoopApiStore)
+
+    return (
+      [{
+          rowItemName: 'School Name',
+          rowItemValue: this.state.schoolName
+        },
+        {
+          rowItemName: 'Job Title',
+          rowItemValue: 'Ask Me!',
+        },
+        {
+          rowItemName: 'Height',
+          rowItemValue: 'Ask Me!',
+        },
+        {
+          rowItemName: 'Offspring',
+          rowItemValue: 'Ask Me!',
+        },
+        {
+          rowItemName: 'Body Type',
+          rowItemValue: 'Ask Me!',
+        }]
+    );
+
+  }
+
+
+
 
   _renderHeader(section) {
     return (
@@ -70,7 +109,7 @@ export default class ProfileDetailAccordian extends Component {
   render(){
     return (
         <Accordion
-          sections={SECTIONS}
+          sections={this.genSections()}
           renderHeader={this._renderHeader}
           renderContent={this._renderContent}
         />
