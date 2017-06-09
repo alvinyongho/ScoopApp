@@ -75,7 +75,7 @@ export class EditProfileScrollView extends React.Component {
         <RowDivider />
         <ViewProfileRow />
 
-        <EditProfileContainer />
+        <EditProfileContainer changeScrollState={this.changeScrollState}/>
 
 
 
