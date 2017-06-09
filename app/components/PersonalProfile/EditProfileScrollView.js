@@ -59,13 +59,10 @@ export class EditProfileScrollView extends React.Component {
     ){
       this.acc += 1
       this.renderPhotoAlbum(nextProps.myProfileImages, this.acc)
-
       this.setState({profileImages:nextProps.myProfileImages})
     }
     this.prevImages = nextProps.myProfileImages
-
     this.props.setViewingAlbumState()
-
   }
 
   convertItemOrderToImageArray(itemOrder){
@@ -112,17 +109,19 @@ export class EditProfileScrollView extends React.Component {
       return(
         <View style={{height: 550, backgroundColor: '#EEEEEE'}} >
         <PhotoAlbum changeScrollState={this.changeScrollState}
-                            onFinishedDrag={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
-                            onShortPress={(key)=>this.props.GoToImportPicture(key)}
-                            profileImages={this.mapImagesToArray()}
-                            onFinishedDelete={(itemOrder)=>this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}
+                    onFinishedDrag={(itemOrder)=>{
+                      this.props.syncOrderToPhotoAlbumOrder(itemOrder) // remove after adding a reset for order
+                      this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
+                    onShortPress={(key)=>this.props.GoToImportPicture(key)}
+                    profileImages={this.mapImagesToArray(myProfileImages)}
+                    onFinishedDelete={(itemOrder)=>{
+                      this.props.syncOrderToPhotoAlbumOrder(itemOrder)
+                      this.props.postProfileImages(this.convertItemOrderToImageArray(itemOrder))}}
         />
         </View>
       );
     }
-
   }
-
 
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
@@ -130,16 +129,9 @@ export class EditProfileScrollView extends React.Component {
 
 
       <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
-        {/* <EditPhotoAlbum /> */}
-
         {this.renderPhotoAlbum(this.state.profileImages, this.acc)}
-
-
         <RowDivider />
-
-
         <ViewProfileRow />
-
 
         <SectionTitle title="PERSONAL DETAILS" />
         <ProfileBasicInfo />
