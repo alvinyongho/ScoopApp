@@ -150,7 +150,9 @@ export default class ProfileDetailAccordian extends Component {
     this.state = ({
       eduBackground: null,
       eduSelected: this.props.userProfile.scoopApiStore.schoolName,
-      height: this.computeHeightFromAPIStore()
+      height: this.computeHeightFromAPIStore(),
+      offSpringSelected: "TODO: Ask me",
+      bodyTypeSelected: "TODO: Ask me"
     })
   }
 
@@ -159,7 +161,6 @@ export default class ProfileDetailAccordian extends Component {
     height_inches = this.props.userProfile.scoopApiStore.heightInches
     ft = Math.floor(height_inches/12)
     inches = height_inches-(ft*12)
-    console.log("HEIGHT COMPUTED INTO STATE")
     return(
       {
           feet: ft,
@@ -168,25 +169,16 @@ export default class ProfileDetailAccordian extends Component {
     )
   }
 
-
   componentDidMount(){
-
-    // this.computeHeightFromAPIStore()
-    // console.log("THe users height")
-    // console.log(this.props.userProfile.scoopApiStore.heightInches)
-    //
-
-
     this.setState({eduBackground: this.mapEduToArray()})
   }
-
 
   genSections = () => {
     return (
       [{
           rowItemName: 'School Name',
           eduBackgroundArr: this.state.eduBackground,
-          selected: this.state.eduSelected,
+          eduSelected: this.state.eduSelected,
           rowItemValue: this.state.eduSelected,
           updateSelected: (eduSelected) => {
             this.setState({eduSelected:(eduSelected.entryTitle)})
@@ -196,7 +188,6 @@ export default class ProfileDetailAccordian extends Component {
         },
         {
           rowItemName: 'Job Title',
-
           rowItemValue: 'Ask Me!',
         },
         {
@@ -215,11 +206,20 @@ export default class ProfileDetailAccordian extends Component {
         },
         {
           rowItemName: 'Offspring',
-          rowItemValue: 'Ask Me!',
+          offspringArr: ["I have kids", "I do not have kids", "Do not share"],
+          rowItemValue: this.state.offSpringSelected,
+          updateSelected: (offspringSelected) => {
+            this.setState({offSpringSelected:(offspringSelected.entryTitle)})
+          }
+
         },
         {
           rowItemName: 'Body Type',
-          rowItemValue: 'Ask Me!',
+          values: ["Slender", "Athletic", "Average", "Full Figured", "More to Love", "Do not share"],
+          rowItemValue: this.state.bodyTypeSelected,
+          updateSelected: (bodyTypeSelected) => {
+            this.setState({bodyTypeSelected:(bodyTypeSelected.entryTitle)})
+          }
         }]
     );
 
@@ -255,6 +255,12 @@ export default class ProfileDetailAccordian extends Component {
             return (
               <HeightPicker updateSelected={section.updateSelected} height={section.height}/>
             )
+        }
+        case("Offspring"): {
+          return(<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.offspringArr}/>)
+        }
+        case("Body Type"): {
+          return(<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.values}/>)
         }
 
 
