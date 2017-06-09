@@ -22,7 +22,10 @@ function configureStore(initialState) {
 
   const store = createStore(reducer, initialState, enhancer);
   // begin periodically persisting the store
-  persistStore(store, {storage: AsyncStorage})
+
+  // console.log("THE STORE @@@@@@@@@@@@@@@@@")
+
+  persistStore(store, {storage: AsyncStorage}, ()=>console.log("PURGE SHOULD HAPPEN")).purge()
   return store;
 }
 
