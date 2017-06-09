@@ -36,6 +36,29 @@ export default class ProfileBasicInfo extends Component {
 
   }
 
+  computeRelationshipStatus = (statusId) =>{
+    switch(statusId) {
+      case "0":
+          return "Ask me!"
+      case "1":
+          return "Single"
+      case "2":
+          return "In a Relationship"
+      case "3":
+          return "Married"
+      default:
+          return "TODO"
+    }
+  }
+
+  computeSchoolName = (schoolName) =>{
+    switch(schoolName){
+      case "Do not share":
+        return ""
+      default:
+        return schoolName
+    }
+  }
 
   render(){
     return(
@@ -43,8 +66,12 @@ export default class ProfileBasicInfo extends Component {
         <View style={{flex:.8}}>
           <Text style={styles.mainheader}>{this.props.name}</Text>
           <Text style={styles.subheader}>{this.props.distance}</Text>
-          <Text style={styles.subheader}>{this.props.schoolName}</Text>
-          <Text style={styles.subheader}>{this.props.relationshipStatus}</Text>
+          <Text style={styles.subheader}>
+            {this.computeSchoolName(this.props.schoolName)}
+          </Text>
+          <Text style={styles.subheader}>
+            {this.computeRelationshipStatus(this.props.relationshipStatus)}
+          </Text>
         </View>
 
 

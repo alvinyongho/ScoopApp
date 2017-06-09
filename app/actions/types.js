@@ -12,6 +12,9 @@ export const LOGOUT = 'LOGOUT'
 export const GET_TOKEN = 'GET_TOKEN'
 
 
+
+
+
 // HOME COMPONENTS
 //  * feedlist
 export const VIEW_PROFILE  = 'VIEW_PROFILE'
@@ -37,6 +40,8 @@ export const CLOSE_ALBUM = 'CLOSE_ALBUM'
 
 
 // personal profile
+export const GET_MY_PROFILE = 'GET_MY_PROFILE'
+
 export const GET_MY_IMAGES = 'GET_MY_IMAGES'
 export const SET_MY_IMAGES = 'SET_MY_IMAGES'
 

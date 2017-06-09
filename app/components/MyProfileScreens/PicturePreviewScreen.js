@@ -72,6 +72,7 @@ function mapStateToProps(state){
   return {
     albumDetails: state.albumDetails
 
+
   }
 }
 
