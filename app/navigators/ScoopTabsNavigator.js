@@ -46,13 +46,13 @@ class MessageTabNavigator extends React.Component {
 
 class MyProfileTabNavigator extends React.Component {
   componentWillMount(){
-    this.props.navigation.setParams({hideTabBar: false})
+    // this.props.navigation.setParams({hideTabBar: false})
   }
 
   static navigationOptions = ({ navigation, screenProps }) => {
     return ({
     tabBarLabel: 'Profile',
-    tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true
+    // tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true
   })}
   render() {
     return (
