@@ -49,6 +49,8 @@ export class ProfileAlbumsContainer extends React.Component {
       && nextProps.myProfileImages.length > this.prevImages.length
       || this.props.albumImageState === "REPLACING_IMAGE"
     ){
+
+
       this.acc += 1
       this.renderPhotoAlbum(nextProps.myProfileImages, this.acc)
       this.setState({profileImages:nextProps.myProfileImages})
@@ -79,7 +81,7 @@ export class ProfileAlbumsContainer extends React.Component {
 
   // Goto Import picture should take argument
   renderPhotoAlbum = (myProfileImages, acc) => {
-    console.log("RENDERING HAPPENING")
+    // console.log("RENDERING HAPPENING")
     if(Platform.OS === 'ios'){
       return (
         <View key={acc} style={{height: 480, backgroundColor: 'white'}}>

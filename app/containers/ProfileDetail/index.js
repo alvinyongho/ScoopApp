@@ -73,6 +73,8 @@ export class ProfileDetail extends Component {
     return Math.floor(this.props.userDetail.distance)
   }
 
+
+
   render() {
     if(!this.props.isLoadingUser){
     return(
@@ -90,7 +92,7 @@ export class ProfileDetail extends Component {
                 name = {this.props.userDetail.firstName}
                 distance = {`${this._getDistanceInMiles()} mi`}
                 schoolName = {this.props.userDetail.schoolName}
-                relationshipStatus = {"Single"}
+                relationshipStatus = {this.props.userDetail.relationship}
           />
           }
           <SendMessageButton name={this.props.userDetail.firstName}/>
