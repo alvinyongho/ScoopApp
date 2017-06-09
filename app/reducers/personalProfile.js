@@ -3,8 +3,15 @@ import * as types from '../actions/types';
 
 import update from 'immutability-helper';
 
+const initialMyProfileState = {
+	scoopApiStore: {
+		relationship: 0,
+		schoolName: "",
+		firstName: "",
+	}
+}
 
-export const myProfile = createReducer({}, {
+export const myProfile = createReducer(initialMyProfileState, {
 	[types.GET_MY_PROFILE](state, action) {
 		return update(state,
 			{scoopApiStore: {$set: action.user_information}}
