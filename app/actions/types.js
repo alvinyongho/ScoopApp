@@ -66,3 +66,8 @@ export const RESET_MY_PROFILE_NAV = 'RESET_MY_PROFILE_NAV'
 // sets the prop for the photoalbum pictures
 export const SYNC_WITH_PHOTO_ALBUM_ORDER = 'SYNC_WITH_PHOTO_ALBUM_ORDER'
 export const SYNC_WITH_SET_RESULT = 'SYNC_WITH_SET_RESULT'
+
+// for setting an album at a certain index on a save
+export const ALBUM_SET_IMAGEURL_AT_INDEX = 'ALBUM_SET_IMAGEURL_AT_INDEX'
+export const REPLACING_IMAGE = 'REPLACING_IMAGE'
+export const VIEWING_ALBUM ='VIEWING_ALBUM'

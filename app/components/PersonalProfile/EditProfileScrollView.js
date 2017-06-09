@@ -55,6 +55,7 @@ export class EditProfileScrollView extends React.Component {
     // Re-render by accumulating the key
     if(nextProps.myProfileImages.length !== this.prevImages.length
       && nextProps.myProfileImages.length > this.prevImages.length
+      || this.props.albumImageState === "REPLACING_IMAGE"
     ){
       this.acc += 1
       this.renderPhotoAlbum(nextProps.myProfileImages, this.acc)
@@ -62,6 +63,8 @@ export class EditProfileScrollView extends React.Component {
       this.setState({profileImages:nextProps.myProfileImages})
     }
     this.prevImages = nextProps.myProfileImages
+
+    this.props.setViewingAlbumState()
 
   }
 
@@ -167,6 +170,7 @@ export class EditProfileScrollView extends React.Component {
 function mapStateToProps(state){
   return {
     myProfileImages: state.myProfileImages,
+    albumImageState: state.albumImageState
   }
 }
 
