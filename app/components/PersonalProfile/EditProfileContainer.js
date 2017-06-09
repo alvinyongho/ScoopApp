@@ -58,7 +58,7 @@ export class EditProfileContainer extends React.Component {
     return (
       <View>
         <SectionTitle title="PERSONAL DETAILS" />
-        {myProfile.scoopApiStore.relationship && myProfile.scoopApiStore.schoolName && myProfile.scoopApiStore.firstName  &&
+        {myProfile.scoopApiStore &&
           <ProfileBasicInfo relationshipStatus={myProfile.scoopApiStore.relationship} distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName} name={myProfile.scoopApiStore.firstName} disabledLike={true} />
         }
 
