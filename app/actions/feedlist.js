@@ -26,6 +26,7 @@ export function fetchUser(targetId){
 
 
 export function getMyProfileInfo(){
+  console.log("GETTING MY PROFILE INFO")
   return (dispatch, getState) => {
 
     let scoopUserId = getState().scoopUserProfile.scoopId
@@ -33,6 +34,7 @@ export function getMyProfileInfo(){
     performLoadProfileTask(targetId, scoopUserId).then((results) => {
       const response = results.userInfo
       console.log('THE RESPONSE IS')
+      console.log(response)
 
       dispatch(getMyProfile({user_information:response}))
       // console.log('fetched USER')

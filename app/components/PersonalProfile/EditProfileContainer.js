@@ -37,7 +37,7 @@ export class EditProfileContainer extends React.Component {
 
   }
 
-  componentDidMount(){
+  componentWillMount(){
     // Gets the user information and populates the viewingProfileDetail state.
     // This call also gets activated in View Profile so that call may be removed inside ViewProfileRow
     // at a later time.
@@ -58,8 +58,10 @@ export class EditProfileContainer extends React.Component {
     return (
       <View>
         <SectionTitle title="PERSONAL DETAILS" />
-        <ProfileBasicInfo relationshipStatus={myProfile.scoopApiStore.relationship} distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName} name={myProfile.scoopApiStore.firstName} disabledLike={true} />
 
+        {myProfile.scoopApiStore &&
+        <ProfileBasicInfo relationshipStatus={myProfile.scoopApiStore.relationship} distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName} name={myProfile.scoopApiStore.firstName} disabledLike={true} />
+        }
 
         <ProfileDetailAccordian userProfile={myProfile} />
 

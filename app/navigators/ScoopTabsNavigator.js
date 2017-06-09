@@ -23,7 +23,7 @@ class HomeTabNavigator extends React.Component {
 }
 
 class MessageTabNavigator extends React.Component {
-  componentWillMount(){
+  componentDidMount(){
     this.props.navigation.setParams({hideTabBar: false})
   }
 
@@ -45,7 +45,7 @@ class MessageTabNavigator extends React.Component {
 }
 
 class MyProfileTabNavigator extends React.Component {
-  componentWillMount(){
+  componentDidMount(){
     this.props.navigation.setParams({hideTabBar: false})
   }
 
