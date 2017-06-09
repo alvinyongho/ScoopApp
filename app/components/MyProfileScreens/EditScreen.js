@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { bindActionCreators } from 'redux';
 
+import {ActionCreators} from '../../actions'
+
 import Button from 'react-native-button';
 import images from '@assets/images';
 
@@ -25,6 +27,9 @@ export class EditScreen extends React.Component {
     headerTitleStyle: {color: 'white', alignSelf:'center'}
   });
 
+  componentDidMount(){
+  }
+
   render() {
     return(
       <EditProfileScrollView />
@@ -37,8 +42,9 @@ const mapStateToProps = state => ({
 
 });
 
-const mapDispatchToProps = dispatch => ({
-});
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditScreen);

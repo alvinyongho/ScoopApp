@@ -37,6 +37,25 @@ export const CLOSE_ALBUM = 'CLOSE_ALBUM'
 
 
 // personal profile
+export const GET_MY_PROFILE = 'GET_MY_PROFILE'
+export const GOT_EDU_BACKGROUND = 'GOT_EDU_BACKGROUND'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Photo Album stuff...TODO cleanup unused and concat reducers and remove obsoletes
+
 export const GET_MY_IMAGES = 'GET_MY_IMAGES'
 export const SET_MY_IMAGES = 'SET_MY_IMAGES'
 
@@ -57,7 +76,6 @@ export const SET_IMAGE_URL_TO_PREVIEW = 'SET_IMAGE_URL_TO_PREVIEW'
 export const UPDATE_ALBUM_PHOTOS = 'UPDATE_ALBUM_PHOTOS'
 
 
-
 export const SET_COVER_PHOTO_IDS = 'SET_COVER_PHOTO_IDS'
 export const RESET_ALBUM_IMAGE_PREVIEW = 'RESET_ALBUM_IMAGE_PREVIEW'
 export const APPEND_TO_MY_PICTURE_ORDER = 'APPEND_TO_MY_PICTURE_ORDER'
@@ -66,3 +84,8 @@ export const RESET_MY_PROFILE_NAV = 'RESET_MY_PROFILE_NAV'
 // sets the prop for the photoalbum pictures
 export const SYNC_WITH_PHOTO_ALBUM_ORDER = 'SYNC_WITH_PHOTO_ALBUM_ORDER'
 export const SYNC_WITH_SET_RESULT = 'SYNC_WITH_SET_RESULT'
+
+// for setting an album at a certain index on a save
+export const ALBUM_SET_IMAGEURL_AT_INDEX = 'ALBUM_SET_IMAGEURL_AT_INDEX'
+export const REPLACING_IMAGE = 'REPLACING_IMAGE'
+export const VIEWING_ALBUM ='VIEWING_ALBUM'

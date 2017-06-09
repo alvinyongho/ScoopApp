@@ -18,7 +18,7 @@ import { NavigationActions } from 'react-navigation';
 
 import EditPhotoAlbum from './EditPhotoAlbum'
 import PanningRectExample from './PanningRectExample'
-import PhotoAlbum from './PhotoAlbum'
+// import PhotoAlbum from './PhotoAlbum'
 
 import RowDivider from '../Profile/ProfileTableRow/RowDivider'
 import ProfileSlider from '../Profile/ProfileTableRow/ProfileSlider'
@@ -30,27 +30,10 @@ import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
 import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
 
 
-import PhotoAlbumsContainer from './ProfileAlbumsContainer'
-import EditProfileContainer from './EditProfileContainer'
 
-export class EditProfileScrollView extends React.Component {
+export class EditProfileContainer extends React.Component {
   constructor(props){
     super(props)
-    this.acc = 0
-    this.prevImages = this.props.myProfileImages
-    this.state = {
-      isScrollEnabled: true,
-      profileImages: this.props.myProfileImages,
-
-    }
-  }
-
-  changeScrollState = (isEnabled) => {
-    this.setState({isScrollEnabled: isEnabled})
-  }
-
-  componentWillMount(){
-
 
   }
 
@@ -59,27 +42,42 @@ export class EditProfileScrollView extends React.Component {
     // This call also gets activated in View Profile so that call may be removed inside ViewProfileRow
     // at a later time.
 
+    this.props.getMyProfileInfo()
+    this.props.retrieveEduExperience()
+
+
+
   }
-
-
 
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
+    const {
+      myProfile
+    } = this.props;
+
     return (
+      <View>
+        <SectionTitle title="PERSONAL DETAILS" />
+        <ProfileBasicInfo relationshipStatus={myProfile.scoopApiStore.relationship} distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName} name={myProfile.scoopApiStore.firstName} disabledLike={true} />
 
 
-      <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
-
-        <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
-
-        <RowDivider />
-        <ViewProfileRow />
-
-        <EditProfileContainer />
+        <ProfileDetailAccordian userProfile={myProfile} />
 
 
 
-      </ScrollView>
+        <SectionTitle title="LOOKING FOR" />
+        <ProfileSlider lookingForValues={{relationshipType: [0], genderType: [1]}} changeScrollState={this.changeScrollState} />
+
+        <SectionTitle title={'CONNECTED APPS'}/>
+
+        <SectionTitle title={'ABOUT ME'}/>
+        <View style={{backgroundColor: 'white'}}>
+        </View>
+
+        <View style={{height: 50, backgroundColor: '#E6E6E6'}}>
+        </View>
+
+      </View>
     )
   }
 
@@ -87,11 +85,7 @@ export class EditProfileScrollView extends React.Component {
 
 function mapStateToProps(state){
   return {
-    myProfileImages: state.myProfileImages,
-    albumImageState: state.albumImageState,
-    myProfileDetails: state.viewingProfileDetail,
-    scoopUserId: state.scoopUserProfile.scoopId
-
+    myProfile: state.myProfile
   }
 }
 
@@ -102,4 +96,4 @@ function mapDispatchToProps(dispatch) {
 
 // Connects the state variables to the property variables within
 // the home class
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfileScrollView);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfileContainer);

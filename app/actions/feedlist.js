@@ -25,6 +25,25 @@ export function fetchUser(targetId){
 }
 
 
+export function getMyProfileInfo(){
+  return (dispatch, getState) => {
+
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    targetId = scoopUserId
+    performLoadProfileTask(targetId, scoopUserId).then((results) => {
+      const response = results.userInfo
+      console.log('THE RESPONSE IS')
+
+      dispatch(getMyProfile({user_information:response}))
+      // console.log('fetched USER')
+      // console.log(results["z-distance"])
+      // dispatch(viewProfile({user_information:response}))
+      // dispatch(setLoadingUserStatus(false))
+    })
+  }
+}
+
+
 export function reloadMatches(match_attributes){
   return(dispatch, getState) => {
     let lon = getState().currentLocation.lon
@@ -100,6 +119,13 @@ export function setLoadingUserStatus(is_loading){
 export function viewProfile( {user_information} ){
   return {
     type: types.VIEW_PROFILE,
+    user_information
+  }
+}
+
+export function getMyProfile( {user_information} ){
+  return {
+    type: types.GET_MY_PROFILE,
     user_information
   }
 }
