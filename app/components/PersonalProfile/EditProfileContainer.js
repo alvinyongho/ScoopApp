@@ -59,13 +59,9 @@ export class EditProfileContainer extends React.Component {
       <View>
         <SectionTitle title="PERSONAL DETAILS" />
 
-        {myProfile.scoopApiStore &&
         <ProfileBasicInfo relationshipStatus={myProfile.scoopApiStore.relationship} distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName} name={myProfile.scoopApiStore.firstName} disabledLike={true} />
-        }
 
         <ProfileDetailAccordian userProfile={myProfile} />
-
-
 
         <SectionTitle title="LOOKING FOR" />
         <ProfileSlider lookingForValues={{relationshipType: [0], genderType: [1]}} changeScrollState={this.changeScrollState} />
