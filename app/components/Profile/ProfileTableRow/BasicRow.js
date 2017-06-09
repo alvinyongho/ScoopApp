@@ -18,7 +18,7 @@ export default class BasicRow extends Component {
       <View>
         <View style={{padding: 10, paddingTop: 12, paddingLeft: 0, backgroundColor: 'white', flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
           <Text style={{fontSize: 16, fontFamily: 'Avenir-Light', color:'#666666', flex:.3}}> {this.props.rowItemName} </Text>
-          <Text style={{textAlign: 'right', fontSize: 16, fontFamily: 'Avenir-Light', color:'#888888', flex: .7}}> {this.props.rowItemValue}</Text>
+          <Text numberOfLines={1} style={{textAlign: 'right', fontSize: 16, fontFamily: 'Avenir-Light', color:'#888888', flex: .7}}> {this.props.rowItemValue}</Text>
         </View>
 
         {this.props.hasDivider &&

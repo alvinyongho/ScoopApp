@@ -12,9 +12,6 @@ export const LOGOUT = 'LOGOUT'
 export const GET_TOKEN = 'GET_TOKEN'
 
 
-
-
-
 // HOME COMPONENTS
 //  * feedlist
 export const VIEW_PROFILE  = 'VIEW_PROFILE'
@@ -41,6 +38,23 @@ export const CLOSE_ALBUM = 'CLOSE_ALBUM'
 
 // personal profile
 export const GET_MY_PROFILE = 'GET_MY_PROFILE'
+export const GOT_EDU_BACKGROUND = 'GOT_EDU_BACKGROUND'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Photo Album stuff...TODO cleanup unused and concat reducers and remove obsoletes
 
 export const GET_MY_IMAGES = 'GET_MY_IMAGES'
 export const SET_MY_IMAGES = 'SET_MY_IMAGES'
@@ -60,7 +74,6 @@ export const SET_IMAGE_URL_TO_SAVE = 'SET_IMAGE_URL_TO_SAVE'
 export const SET_IMAGE_URL_TO_PREVIEW = 'SET_IMAGE_URL_TO_PREVIEW'
 
 export const UPDATE_ALBUM_PHOTOS = 'UPDATE_ALBUM_PHOTOS'
-
 
 
 export const SET_COVER_PHOTO_IDS = 'SET_COVER_PHOTO_IDS'
