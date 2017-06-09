@@ -72,9 +72,14 @@ export class ProfileAlbumsContainer extends React.Component {
     if(!myProfileImages === {} || !myProfileImages === [])
       return []
 
-    return myProfileImages.map((images, index)=>{
-      return {imagesrc: {uri: images}}
-    })
+    try{
+      return myProfileImages.map((images, index)=>{
+        return {imagesrc: {uri: images}}
+      })
+    } catch(err) {
+      console.log('empty')
+      return []
+    }
 
 
   }
