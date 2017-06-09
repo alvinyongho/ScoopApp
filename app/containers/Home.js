@@ -24,6 +24,10 @@ class Home extends Component{
   componentDidMount(){
     this.props.getScoopUserIdAndToken()
     this.props.getScoopUserImages()
+
+    
+    this.props.getMyProfileInfo()
+    this.props.retrieveEduExperience()
   }
 
   render(){
