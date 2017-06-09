@@ -37,11 +37,11 @@ export class PicturePreviewScreen extends React.Component {
   });
 
   componentWillMount(){
-    const setParamsAction = NavigationActions.setParams({
-      params: { hideTabBar: true },
-      key: "MyProfile",
-    });
-    this.props.navigation.dispatch(setParamsAction);
+    // const setParamsAction = NavigationActions.setParams({
+    //   params: { hideTabBar: true },
+    //   key: "MyProfile",
+    // });
+    // this.props.navigation.dispatch(setParamsAction);
   }
 
   componentDidMount(){
@@ -49,11 +49,11 @@ export class PicturePreviewScreen extends React.Component {
   }
 
   componentWillUnmount(){
-    const setParamsAction = NavigationActions.setParams({
-      params: { hideTabBar: false },
-      key: "MyProfile",
-    });
-    this.props.navigation.dispatch(setParamsAction);
+    // const setParamsAction = NavigationActions.setParams({
+    //   params: { hideTabBar: false },
+    //   key: "MyProfile",
+    // });
+    // this.props.navigation.dispatch(setParamsAction);
     this.props.resetAlbumImagePreview();
 
   }
