@@ -41,6 +41,7 @@ export class EditProfileScrollView extends React.Component {
     this.state = {
       isScrollEnabled: true,
       profileImages: this.props.myProfileImages,
+      scrollToEnd: false
 
     }
   }
@@ -62,20 +63,24 @@ export class EditProfileScrollView extends React.Component {
   }
 
 
+  scrollToBottom = () => {
+    this.refs.scrollView.scrollToEnd()
+  }
+
 
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     return (
 
 
-      <ScrollView bounces={false} scrollEnabled={this.state.isScrollEnabled}>
+      <ScrollView ref="scrollView" bounces={false} scrollEnabled={this.state.isScrollEnabled}>
 
         <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
 
         <RowDivider />
         <ViewProfileRow />
 
-        <EditProfileContainer changeScrollState={this.changeScrollState}/>
+        <EditProfileContainer scrollToBottom={this.scrollToBottom} changeScrollState={this.changeScrollState}/>
 
 
 
