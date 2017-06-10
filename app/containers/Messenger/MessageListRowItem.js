@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 })
 
 
-class AllChatsListRow extends React.Component {
+class MessageListRowItem extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -113,30 +113,41 @@ class AllChatsListRow extends React.Component {
               borderColor: '#AFAFAF',
               borderWidth: 1}} />
         </View>
-        <View style={{ height: this.props.pictureSize,
+
+        <Image source={{uri:this.props.rowData.picURL}}
+                style={{height: this.props.pictureSize,
                        width: this.props.pictureSize,
                        borderRadius:this.props.pictureSize/2,
-                       backgroundColor:'skyblue'}} />
+                       }}
+        />
+
         <View style={styles.nameMessageContainer}>
           <Text style={styles.otherPersonName}>
-            {this.props.rowData}
+            {this.props.rowData.name}
           </Text>
 
           <Text style={styles.mostRecentMessageText}>
-            Most recent message
+            {this.props.rowData.message}
           </Text>
         </View>
         <Text style={styles.dateColumn}>
-          8:10 pm
+          {this.props.rowData.date}
         </Text>
       </View>
       <View style={{height:1, left: -SHIFT_AMOUNT, width: (screenWidth + SHIFT_AMOUNT), backgroundColor:'#FAFAFA'}}/>
     </Animated.View>
   );
 
+  _onCellPress = () => {
+    this.props.setMessageTarget(this.props.rowData.targetId)
+    // Navigate to chat details
+    this.props.goToChatDetail()
+  }
+
+
   renderCellWithHighlight = () => (
     <Swipeout right={swipeoutBtns} backgroundColor={'white'}>
-    <TouchableHighlight onPress={()=>this.props.chatDetail()}>
+    <TouchableHighlight onPress={()=>this._onCellPress()}>
       {this.renderCell()}
     </TouchableHighlight>
     </Swipeout>
@@ -150,9 +161,9 @@ class AllChatsListRow extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  chatDetail: () => dispatch(NavigationActions.navigate({ routeName: 'ChatDetail' })),
-})
+function mapDispatchToProps(dispatch){
+  return bindActionCreators(ActionCreators, dispatch);
+}
 
 function mapStateToProps(state){
   return {
@@ -160,4 +171,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(AllChatsListRow);
+export default connect(mapStateToProps,mapDispatchToProps)(MessageListRowItem);
