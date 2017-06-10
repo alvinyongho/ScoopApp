@@ -1,8 +1,82 @@
 import React, {Component} from 'react'
 import SectionTitle from './SectionTitle'
 import ProfileSlider from './ProfileSlider'
-import {View, Image, Text, StyleSheet} from 'react-native'
+import {View, Image, Text, StyleSheet, Switch} from 'react-native'
 import images from '@assets/images';
+
+
+export class EditableConnectedApps extends Component{
+  constructor(props){
+    super(props)
+    this.state=({
+      colorTrueSwitchIsOn: false,
+      serviceImages: this.props.serviceImages,
+      isEnabled: false
+
+    })
+  }
+  componentWillMount(){
+    if(this.props.isEnabled){
+      this.setState({isEnabled: this.props.isEnabled})
+    }
+  }
+
+
+  render(){
+    return(
+      <View style={{height: 50, flex:1, flexDirection:'row', alignItems:'center'}}>
+
+        {this.state.isEnabled?
+          <Image source={this.state.serviceImages[1]} style={{width: 25, height:25, borderRadius: 25/2, marginRight:10}}/>
+        :
+          <Image source={this.state.serviceImages[0]} style={{width: 25, height:25, borderRadius: 25/2, marginRight:10}}/>
+
+        }
+
+
+        <View style={{flex: .3}}>
+          <Text style={{fontSize: 16, fontFamily:'Avenir-Light'}}>{this.props.rowItemName}</Text>
+        </View>
+
+        {this.props.showSlider &&
+        <View style={{ flex: .4, width: 100, left: 40}}>
+        </View>
+        }
+
+        {this.props.showSlider?
+        <View style={{flex:.3, alignItems:'flex-end', marginRight:20}}>
+          <Text>56&#37;</Text>
+        </View>
+        :
+        <View style={{flex:.3, alignItems:'flex-end', marginRight: 20}}>
+          <Switch
+          onValueChange={(value) => this.setState({colorTrueSwitchIsOn: value})}
+          onTintColor="#54C9EC"
+
+          value={this.state.colorTrueSwitchIsOn} />
+        </View>
+        }
+      </View>
+    )
+  }
+}
+
+
+export class ComingSoonRow extends Component{
+  render(){
+    return(
+      <View style={styles.unavailAppsBox}>
+        <Text style={{fontSize: 16, fontFamily: 'Avenir-Light'}}>Coming Soon:</Text>
+          <Image source={images.instagram_noColor} style={styles.unavailAppsImage}/>
+          <Image source={images.youtube_noColor} style={styles.unavailAppsImage}/>
+          <Image source={images.foursqure_noColor} style={styles.unavailAppsImage}/>
+          <Image source={images.twitter_noColor} style={styles.unavailAppsImage}/>
+          <Image source={images.linkedin_noColor} style={styles.unavailAppsImage}/>
+
+      </View>
+    );
+  }
+}
 
 
 export default class ProfileDetailConnectedApps extends Component{
@@ -48,15 +122,7 @@ export default class ProfileDetailConnectedApps extends Component{
 
           <View style={{height:1, backgroundColor:'#E6E6E6'}} />
 
-          <View style={styles.unavailAppsBox}>
-            <Text style={{fontSize: 16, fontFamily: 'Avenir-Light'}}>Coming Soon:</Text>
-              <Image source={images.instagram_noColor} style={styles.unavailAppsImage}/>
-              <Image source={images.youtube_noColor} style={styles.unavailAppsImage}/>
-              <Image source={images.foursqure_noColor} style={styles.unavailAppsImage}/>
-              <Image source={images.twitter_noColor} style={styles.unavailAppsImage}/>
-              <Image source={images.linkedin_noColor} style={styles.unavailAppsImage}/>
-
-          </View>
+          <ComingSoonRow />
         </View>
       </View>
     )
