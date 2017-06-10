@@ -7,7 +7,10 @@ import {
   ScrollView,
   Dimensions,
   TouchableHighlight,
-  Platform
+  Platform,
+  TextInput,
+  Animated,
+  Keyboard
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
@@ -40,10 +43,71 @@ import images from '@assets/images';
 
 
 
+// KEYBOARD_HEIGHT:
+export class InputKeyboard extends Component{
+
+  constructor(props){
+    super(props)
+    this.keyboardHeight = new Animated.Value(0);
+  }
+
+  componentWillMount () {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',
+      this._keyboardDidShow)
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
+
+  }
+
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+  //
+  _keyboardDidHide = (event) => {
+    // alert('Keyboard shown')
+    this.keyboardHeight.setValue(0)
+    this.props.setKeyboardHeight(0)
+    //
+    // Animated.timing(this.keyboardHeight,{
+    //   toValue: 0,
+    //   duration: event.duration,
+    // }).start();
+
+  }
+
+  _keyboardDidShow = (event) => {
+    // alert('Keyboard hidden')
+
+    this.keyboardHeight.setValue(event.endCoordinates.height)
+    this.props.setKeyboardHeight(event.endCoordinates.height)
+
+    //
+    // Animated.timing(this.keyboardHeight,{
+    //   toValue: event.endCoordinates.height,
+    //   duration: event.duration,
+    // }).start();
+  };
+
+  handleSend = () => {
+    Keyboard.dismiss()
+  }
+
+  render(){
+    return(
+        <TextInput onFocus={()=>this.props.scrollToBottom()} placeholder={'Type message'} multiline={true}
+          style={{height:50}} />
+
+
+    )
+  }
+}
+
+
 export class EditProfileContainer extends React.Component {
   constructor(props){
     super(props)
-
+    this.state = { text: 'Useless Placeholder'};
+    this.keyboardHeight = new Animated.Value(0);
   }
 
   componentWillMount(){
@@ -58,6 +122,11 @@ export class EditProfileContainer extends React.Component {
 
   }
 
+  setKeyboardHeight = (keyboardHeight) => {
+    console.log('setting keyboard height to '+ keyboardHeight)
+    this.keyboardHeight.setValue(keyboardHeight)
+  }
+
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     const {
@@ -65,7 +134,7 @@ export class EditProfileContainer extends React.Component {
     } = this.props;
 
     return (
-      <View>
+      <Animated.View style={{marginBottom: this.keyboardHeight}}>
         <SectionTitle title="PERSONAL DETAILS" />
 
         <ProfileBasicInfo
@@ -115,13 +184,16 @@ export class EditProfileContainer extends React.Component {
 
 
         <SectionTitle title={'ABOUT ME'}/>
-        <View style={{backgroundColor: 'white'}}>
+        <View style={{backgroundColor: 'white', padding: 10}}>
+
+
+        <InputKeyboard setKeyboardHeight={this.setKeyboardHeight} scrollToBottom={this.props.scrollToBottom}/>
+
         </View>
 
-        <View style={{height: 50, backgroundColor: '#E6E6E6'}}>
-        </View>
 
-      </View>
+
+      </Animated.View>
     )
   }
 
