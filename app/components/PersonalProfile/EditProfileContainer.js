@@ -134,7 +134,7 @@ export class EditProfileContainer extends React.Component {
     } = this.props;
 
     return (
-      <Animated.View style={{marginBottom: this.keyboardHeight}}>
+      <Animated.View style={{marginBottom: 275}}>
         <SectionTitle title="PERSONAL DETAILS" />
 
         <ProfileBasicInfo
