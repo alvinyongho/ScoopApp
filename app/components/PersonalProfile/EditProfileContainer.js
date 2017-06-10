@@ -95,7 +95,7 @@ export class InputKeyboard extends Component{
   render(){
     return(
         <TextInput onFocus={()=>this.props.scrollToBottom()} placeholder={'Type message'} multiline={true}
-          style={{height:50}} />
+          style={{height:100}} />
 
 
     )

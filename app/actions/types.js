@@ -30,6 +30,13 @@ export const SET_PREV_FILTERS = 'SET_PREV_FILTERS'
 // Messenger
 export const EDIT_CHATS = 'EDIT_CHATS'
 export const CANCEL_EDIT_CHATS = 'CANCEL_EDIT_CHATS'
+export const SET_UNREAD_COUNT = 'SET_UNREAD_COUNT'
+export const SET_MESSAGE_LIST = 'SET_MESSAGE_LIST'
+export const SET_THREAD_CONTENT = 'SET_THREAD_CONTENT'
+
+// Message Detail Navigation
+export const SET_MESSAGE_TARGET_ID = 'SET_MESSAGE_TARGET_ID'
+
 
 // Photo Album
 export const OPEN_ALBUM = 'OPEN_ALBUM'

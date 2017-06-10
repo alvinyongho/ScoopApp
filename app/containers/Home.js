@@ -28,6 +28,11 @@ class Home extends Component{
 
     this.props.getMyProfileInfo()
     this.props.retrieveEduExperience()
+
+
+    //messenger
+    this.props.getUnreadCount()
+
   }
 
   render(){
