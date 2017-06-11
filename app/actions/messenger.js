@@ -5,12 +5,12 @@ import { NavigationActions } from 'react-navigation';
 
 export function getUnreadCount(){
   return(dispatch, getState) => {
-    console.log("Getting unread count")
+    // Getting unread count
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
 
     performFetchUnreadCountTask(scoopUserId, scoopUserToken).then((result)=>{
-      console.log(result)
+      // result
       dispatch(setUnreadCount(result.unreadCount))
     })
 
