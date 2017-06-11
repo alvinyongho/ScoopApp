@@ -39,6 +39,11 @@ export function getMessageThread(){
     console.log("Getting thread contents")
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
+    let targetId = getState().messenger.threadTargetId
+    performLoadMessageThreadTask(scoopUserId, scoopUserToken, targetId).then((result)=>{
+      console.log(result)
+      dispatch(setMessageThreadContent(result.messages))
+    })
 
 
   }

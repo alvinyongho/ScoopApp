@@ -30,7 +30,6 @@ export const messenger = createReducer({},{
     return update(state, {
       threadTargetId: {$set: action.targetId}
     })
-  }
-
+  },
 
 });
