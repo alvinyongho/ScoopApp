@@ -52,42 +52,61 @@ export class ChatDetail extends Component{
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
-  //
+
+
+  componentDidMount(){
+    this._mapThreadContentStateToMessageBubbles()
+  }
+
+
   _keyboardDidHide = (event) => {
-    // alert('Keyboard shown')
     this.keyboardHeight.setValue(0)
-    //
-    // Animated.timing(this.keyboardHeight,{
-    //   toValue: 0,
-    //   duration: event.duration,
-    // }).start();
 
   }
 
   _keyboardDidShow = (event) => {
-    // alert('Keyboard hidden')
-
     this.keyboardHeight.setValue(event.endCoordinates.height)
-    //
-    // Animated.timing(this.keyboardHeight,{
-    //   toValue: event.endCoordinates.height,
-    //   duration: event.duration,
-    // }).start();
+
   };
 
   handleSend = () => {
     Keyboard.dismiss()
   }
 
+
+  _mapThreadContentStateToMessageBubbles = () =>{
+    return this.props.threadContent.map((message, index)=>{
+      let messageContent = (message.message)
+
+      let senderIdMatchesSelf = (message.senderId === this.props.scoopUserId)
+
+      return (
+
+        <View key={index}>
+          <View style={styles.datetimeContainer}>
+            <Text style={styles.datetimeText}>April 28, 2017  8:10 PM</Text>
+          </View>
+
+
+          <MessageBubble isSelf={senderIdMatchesSelf} text={messageContent}/>
+        </View>
+
+
+      )
+
+    })
+  }
+
+
   render(){
     return(
       <Animated.View style={[styles.container, {paddingBottom: this.keyboardHeight}]}>
           <ScrollView style={styles.container}>
-            <View style={styles.datetimeContainer}>
-              <Text style={styles.datetimeText}>April 28, 2017  8:10 PM</Text>
-            </View>
-            <MessageBubble isSelf={true} text={'This is a very long line lol with a lot of additional other text that will extend to the next line maybe'}/>
-            <MessageBubble isSelf={false} text={'hello'} />
+
+            {this._mapThreadContentStateToMessageBubbles()}
+
+
+
           </ScrollView>
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
@@ -144,6 +163,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state){
   return {
+    threadContent: state.messenger.threadContent,
+    scoopUserId: state.scoopUserProfile.scoopId
   }
 }
 
