@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
 import ReactNative from 'react-native';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { ActionCreators } from '../../actions';
+
+
 import {
   ScrollView,
   Text,
@@ -21,8 +27,9 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 
-// KEYBOARD_HEIGHT:
-export default class ChatDetail extends Component{
+// TODO: rename to ChatDetailContainer
+// uses redux state to populate the chat details based on the currently active "targetId" in messenger
+export class ChatDetail extends Component{
 
   constructor(props){
     super(props)
@@ -30,6 +37,11 @@ export default class ChatDetail extends Component{
   }
 
   componentWillMount () {
+
+    // gets the thread content state
+    this.props.getMessageThread()
+
+
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',
       this._keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
@@ -123,3 +135,16 @@ var styles = StyleSheet.create({
     color: '#888888'
   }
 })
+
+
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
+
+function mapStateToProps(state){
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatDetail);

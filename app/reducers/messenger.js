@@ -25,6 +25,12 @@ export const messenger = createReducer({},{
     return update(state, {
       threadContent: {$set: action.messages}
     })
+  },
+  [types.SET_MESSAGE_TARGET_ID](state, action){
+    return update(state, {
+      threadTargetId: {$set: action.targetId}
+    })
   }
+
 
 });
