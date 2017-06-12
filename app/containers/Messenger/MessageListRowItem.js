@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { NavigationActions } from 'react-navigation';
+import { dateReducer } from '../../lib/dateFormat';
 
 import {
   View,
@@ -131,7 +132,7 @@ class MessageListRowItem extends React.Component {
           </Text>
         </View>
         <Text style={styles.dateColumn}>
-          {this.props.rowData.date}
+          {dateReducer(this.props.rowData.date)}
         </Text>
       </View>
       <View style={{height:1, left: -SHIFT_AMOUNT, width: (screenWidth + SHIFT_AMOUNT), backgroundColor:'#FAFAFA'}}/>

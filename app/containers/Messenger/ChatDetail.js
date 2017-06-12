@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
+import { dateReducer } from '../../lib/dateFormat';
+
 
 import {
   ScrollView,
@@ -54,10 +56,6 @@ export class ChatDetail extends Component{
   }
 
 
-  componentDidMount(){
-    this._mapThreadContentStateToMessageBubbles()
-  }
-
 
   _keyboardDidHide = (event) => {
     this.keyboardHeight.setValue(0)
@@ -75,38 +73,42 @@ export class ChatDetail extends Component{
 
 
   _mapThreadContentStateToMessageBubbles = () =>{
+    let prevDate = -1 // will always be greater on initial date
+
     return this.props.threadContent.map((message, index)=>{
       let messageContent = (message.message)
-
       let senderIdMatchesSelf = (message.senderId === this.props.scoopUserId)
 
+      // Boolean setter whether to display the date. Makes sure that the hours is different. 60 ms * 10000
+      let displayDate = (Date.parse(message.sentDate) > prevDate + 60000) // Boolean
+      if(displayDate)
+        formattedSentDate = dateReducer(message.sentDate)
+
+      prevDate = Date.parse(message.sentDate)
+
       return (
-
-        <View key={index}>
-          <View style={styles.datetimeContainer}>
-            <Text style={styles.datetimeText}>April 28, 2017  8:10 PM</Text>
-          </View>
-
-
+        <View key={index} style={index===(this.props.threadContent.length-1) && {paddingBottom: 50}}>
+          {displayDate &&
+            <View style={styles.datetimeContainer}>
+              <Text style={styles.datetimeText}>{formattedSentDate}</Text>
+            </View>
+          }
           <MessageBubble isSelf={senderIdMatchesSelf} text={messageContent}/>
         </View>
-
-
       )
-
     })
   }
 
+  componentWillUpdate(){
+    this.msgListScrollView.scrollToEnd({animated:true})
+    return false
+  }
 
   render(){
     return(
       <Animated.View style={[styles.container, {paddingBottom: this.keyboardHeight}]}>
-          <ScrollView style={styles.container}>
-
+          <ScrollView ref={(scrollview)=>this.msgListScrollView=scrollview} style={styles.container}>
             {this._mapThreadContentStateToMessageBubbles()}
-
-
-
           </ScrollView>
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
@@ -132,7 +134,7 @@ export class ChatDetail extends Component{
 var styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   inputTextBox:{
     flex: .82,
