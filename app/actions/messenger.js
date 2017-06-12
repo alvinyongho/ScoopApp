@@ -49,6 +49,12 @@ export function getMessageThread(){
   }
 }
 
+export function resetThreadContent(){
+  return(dispatch) =>{
+    dispatch(setMessageThreadContent([]))
+  }
+}
+
 
 export function goToChatDetail(){
   return(dispatch, getState)=> {
