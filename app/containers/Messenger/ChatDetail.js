@@ -133,7 +133,6 @@ export class ChatDetail extends Component{
             style={[styles.container, {marginBottom: 50}]}>
 
 
-            // {this._mapThreadContentStateToMessageBubbles()}
           </ListView>
 
 
