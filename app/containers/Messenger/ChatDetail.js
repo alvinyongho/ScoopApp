@@ -10,6 +10,7 @@ import { dateReducer } from '../../lib/dateFormat';
 
 import {
   ScrollView,
+  ListView,
   Text,
   View,
   Image,
@@ -21,6 +22,9 @@ import {
   Keyboard,
   Animated
 } from 'react-native';
+
+import InvertibleScrollView from 'react-native-invertible-scroll-view'
+
 
 import MessageBubble from './MessageBubble';
 import Button from 'react-native-button'
@@ -36,14 +40,21 @@ export class ChatDetail extends Component{
   constructor(props){
     super(props)
     this.keyboardHeight = new Animated.Value(0);
+
+    this._data = [];
+    this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2,
+      }),
+    }
+
+    this.prevDate = -1
+
   }
 
   componentWillMount () {
-
     // gets the thread content state
     this.props.getMessageThread()
-
-
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',
       this._keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
@@ -72,44 +83,61 @@ export class ChatDetail extends Component{
   }
 
 
-  _mapThreadContentStateToMessageBubbles = () =>{
-    let prevDate = -1 // will always be greater on initial date
-
-    return this.props.threadContent.map((message, index)=>{
-      let messageContent = (message.message)
-      let senderIdMatchesSelf = (message.senderId === this.props.scoopUserId)
-
-      // Boolean setter whether to display the date. Makes sure that the hours is different. 60 ms * 10000
-      let displayDate = (Date.parse(message.sentDate) > prevDate + 60000) // Boolean
-      if(displayDate)
-        formattedSentDate = dateReducer(message.sentDate)
-
-      prevDate = Date.parse(message.sentDate)
-
-      return (
-        <View key={index} style={index===(this.props.threadContent.length-1) && {paddingBottom: 50}}>
-          {displayDate &&
-            <View style={styles.datetimeContainer}>
-              <Text style={styles.datetimeText}>{formattedSentDate}</Text>
-            </View>
-          }
-          <MessageBubble isSelf={senderIdMatchesSelf} text={messageContent}/>
-        </View>
-      )
-    })
+  componentDidMount(){
   }
 
-  componentWillUpdate(){
-    this.msgListScrollView.scrollToEnd({animated:true})
-    return false
+  componentWillReceiveProps(nextProps){
+    if(nextProps.threadContent){
+      this._data = nextProps.threadContent
+      var rows = this._data
+
+      var rowIds = rows.map((row, index) => index).reverse();
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(rows, rowIds),
+      });
+    }
+  }
+
+
+  _renderRow(row){
+    let messageContent = (row.message)
+    let senderIdMatchesSelf = (row.senderId === this.props.scoopUserId)
+
+    // Boolean setter whether to display the date. Makes sure that the hours is different. 60 ms * 10000
+    let displayDate = (Date.parse(row.sentDate) > this.prevDate + 60000) // Boolean
+    if(displayDate)
+      formattedSentDate = dateReducer(row.sentDate)
+
+    this.prevDate = Date.parse(row.sentDate)
+
+    return (
+      <View key={row.sentDate}>
+        {displayDate &&
+          <View style={styles.datetimeContainer}>
+            <Text style={styles.datetimeText}>{formattedSentDate}</Text>
+          </View>
+        }
+        <MessageBubble isSelf={senderIdMatchesSelf} text={messageContent}/>
+      </View>
+    )
   }
 
   render(){
     return(
       <Animated.View style={[styles.container, {paddingBottom: this.keyboardHeight}]}>
-          <ScrollView ref={(scrollview)=>this.msgListScrollView=scrollview} style={styles.container}>
-            {this._mapThreadContentStateToMessageBubbles()}
-          </ScrollView>
+          <ListView
+            enableEmptySections={true}
+            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+            dataSource={this.state.dataSource}
+            renderRow={this._renderRow.bind(this)}
+            style={[styles.container, {marginBottom: 50}]}>
+
+
+            // {this._mapThreadContentStateToMessageBubbles()}
+          </ListView>
+
+
+
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
           <View style={{backgroundColor:"#F0F0F0", flexDirection: 'row'}}>

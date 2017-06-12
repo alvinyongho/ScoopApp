@@ -78,7 +78,6 @@ export const ScoopTabsNavigator = TabNavigator({
   },
   tabBarPosition: 'bottom',
   swipeEnabled: false,
-  lazy: true,
 });
 
 
