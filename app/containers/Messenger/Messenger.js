@@ -49,7 +49,7 @@ export class Messenger extends React.Component {
   render(){
     return (
       <ListView
-      enableEmptySections={true}
+        enableEmptySections={true}
         dataSource={this.state.dataSource}
         renderRow={(rowData) => <MessageListRowItem pictureSize={50} rowData={rowData} />}
       />

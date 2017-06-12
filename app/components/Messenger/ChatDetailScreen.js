@@ -5,6 +5,8 @@ import {
   Text,
   TouchableHighlight } from 'react-native';
 import { bindActionCreators } from 'redux';
+import { ActionCreators } from '../../actions';
+
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import ActionSheet from 'react-native-actionsheet'
@@ -110,6 +112,9 @@ class ChatDetailScreen extends Component{
       key: "Message",
     });
     this.props.navigation.dispatch(setParamsAction);
+
+
+
   }
 
   render() {
@@ -123,8 +128,8 @@ class ChatDetailScreen extends Component{
 const mapStateToProps = state => ({
 });
 
-const mapDispatchToProps = dispatch => ({
-});
-
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(ActionCreators, dispatch);
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatDetailScreen);
