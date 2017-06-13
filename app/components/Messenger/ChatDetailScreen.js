@@ -98,24 +98,24 @@ class ChatDetailScreen extends Component{
     headerTitleStyle: {color: 'white', alignSelf:'center'}
   });
 
-  componentWillMount(){
-    const setParamsAction = NavigationActions.setParams({
-      params: { hideTabBar: true },
-      key: "Message",
-    });
-    this.props.navigation.dispatch(setParamsAction);
-  }
+  // componentWillMount(){
+  //   const setParamsAction = NavigationActions.setParams({
+  //     params: { hideTabBar: true },
+  //     key: "Message",
+  //   });
+  //   this.props.navigation.dispatch(setParamsAction);
+  // }
+  //
+  // componentWillUnmount(){
+  //   const setParamsAction = NavigationActions.setParams({
+  //     params: { hideTabBar: false },
+  //     key: "Message",
+  //   });
+  //   this.props.navigation.dispatch(setParamsAction);
+  //
+  //
 
-  componentWillUnmount(){
-    const setParamsAction = NavigationActions.setParams({
-      params: { hideTabBar: false },
-      key: "Message",
-    });
-    this.props.navigation.dispatch(setParamsAction);
-
-
-
-  }
+  // }
 
   render() {
     return(

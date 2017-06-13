@@ -73,6 +73,9 @@ export class ProfileDetail extends Component {
     return Math.floor(this.props.userDetail.distance)
   }
 
+  sendMessage = () => {
+
+  }
 
 
   render() {
@@ -95,7 +98,7 @@ export class ProfileDetail extends Component {
                 relationshipStatus = {this.props.userDetail.relationship}
           />
           }
-          <SendMessageButton name={this.props.userDetail.firstName}/>
+          <SendMessageButton onPress={()=>this.sendMessage()} name={this.props.userDetail.firstName}/>
 
 
           <View style={{paddingTop: 10, paddingLeft: 15, backgroundColor: 'white'}}>
