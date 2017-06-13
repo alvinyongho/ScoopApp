@@ -74,18 +74,23 @@ class MessageListRowItem extends React.Component {
   getRowStyle = () => {left: this.state.rightTransformAmount}
 
   componentDidMount(){
-    if(this.props.editMessages){
-      Animated.spring(
-        this.state.rightTransformAmount,
-        {
-          toValue: 40,
-        }
-      ).start();
-    }
+    // if(this.props.editMessages === true){
+    //
+    //   console.log("ROLLIN RIGHT")
+    //   Animated.spring(
+    //     this.state.rightTransformAmount,
+    //     {
+    //       toValue: 40,
+    //     }
+    //   ).start();
+    // }
   }
 
-  componentWillUpdate(nextProps, nextState){
-    if(!this.props.editMessages){
+  componentWillReceiveProps(nextProps){
+
+    console.log("RECEIING NEXT STATE YO")
+
+    if(nextProps.editMessages){
       Animated.spring(
         this.state.rightTransformAmount,
         {
