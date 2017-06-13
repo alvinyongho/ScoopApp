@@ -136,9 +136,11 @@ class MessageListRowItem extends React.Component {
             {this.props.rowData.message}
           </Text>
         </View>
-        <Text style={styles.dateColumn}>
-          {dateReducer(this.props.rowData.date)}
-        </Text>
+        {this.props.rowData.length &&
+          <Text style={styles.dateColumn}>
+            {dateReducer(this.props.rowData.date)}
+          </Text>
+        }
       </View>
       <View style={{height:1, left: -SHIFT_AMOUNT, width: (screenWidth + SHIFT_AMOUNT), backgroundColor:'#FAFAFA'}}/>
     </Animated.View>
