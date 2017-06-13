@@ -57,6 +57,7 @@ export class Messenger extends React.Component {
     return (
       <ListView
         enableEmptySections={true}
+        removeClippedSubviews={false} // current workaround about list view not showing up bug
         dataSource={this.state.dataSource}
         renderRow={(rowData) => <MessageListRowItem pictureSize={50} rowData={rowData} />}
       />
