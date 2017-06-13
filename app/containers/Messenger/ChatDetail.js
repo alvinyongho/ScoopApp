@@ -46,6 +46,7 @@ export class ChatDetail extends Component{
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
+      textInput: "",
     }
 
     this.prevDate = -1
@@ -80,6 +81,12 @@ export class ChatDetail extends Component{
 
   handleSend = () => {
     Keyboard.dismiss()
+
+    //TODO: sanitize textinput
+    if(this.state.textInput !== "")
+      this.props.sendMessage(this.state.textInput)
+
+
   }
 
 
@@ -130,20 +137,12 @@ export class ChatDetail extends Component{
             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
             dataSource={this.state.dataSource}
             renderRow={this._renderRow.bind(this)}
-            style={[styles.container, {marginBottom: 50}]}>
-
-
-          </ListView>
-
-
-
+            style={[styles.container, {marginBottom: 50}]}/>
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
           <View style={{backgroundColor:"#F0F0F0", flexDirection: 'row'}}>
-          <TextInput placeholder={'Type message'}
+          <TextInput onChangeText={(output)=>this.setState({textInput: output})} placeholder={'Type message'}
             style={styles.inputTextBox} />
-
-
             <View style={{flex:.18, margin: 7, alignItems: 'center', justifyContent: 'center'}}>
               <Button onPress={this.handleSend}>
                 <Text style={{fontSize: 20, fontFamily: 'Avenir', color:'#A2DDEE', fontWeight:'bold',}}>Send </Text>

@@ -10,7 +10,14 @@ export const editMessages = createReducer(false, {
 });
 
 
-export const messenger = createReducer({},{
+initialMessengerState = {
+  messageList: [],
+  unreadCount: 0,
+  threadContent: [],
+  threadTargetId: 0
+}
+
+export const messenger = createReducer(initialMessengerState,{
   [types.SET_UNREAD_COUNT](state, action){
     return update(state, {
       unreadCount: {$set: action.unreadCount}
