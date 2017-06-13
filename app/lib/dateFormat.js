@@ -3,6 +3,10 @@
 
 export function dateReducer(sentDate){
   // For formatting date string
+  if(sentDate == undefined){
+    console.log("an error happened. sentDate is undefined")
+    return "error"
+  }
   let isToday = false
   let inputDate = new Date(sentDate)
   let todaysDate = new Date()
