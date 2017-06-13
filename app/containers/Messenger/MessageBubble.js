@@ -15,7 +15,7 @@ import {
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const screen_padding = 20
+const screen_padding = 5
 const max_margin_to_screen = 50
 const fontSizeValue = 16
 
@@ -55,11 +55,11 @@ export default class MessageBubble extends Component{
 var styles = StyleSheet.create({
   fontStyle: {
     color: 'white',
-    fontFamily:'Avenir-Light', 
+    fontFamily:'Avenir-Light',
     fontSize: fontSizeValue
   },
   rowSpacing: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     marginTop: 10
   },
   rightBubblePosition: {

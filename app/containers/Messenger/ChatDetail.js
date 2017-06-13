@@ -137,7 +137,11 @@ export class ChatDetail extends Component{
             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
             dataSource={this.state.dataSource}
             renderRow={this._renderRow.bind(this)}
-            style={[styles.container, {marginBottom: 50}]}/>
+            style={[styles.container, {padding: 10}]}
+          />
+
+
+
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
           <View style={{backgroundColor:"#F0F0F0", flexDirection: 'row'}}>
@@ -174,8 +178,7 @@ var styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   datetimeContainer: {
-    height: 30,
-    marginTop: 20,
+    margin: 10,
   },
   datetimeText: {
     textAlign:'center',
