@@ -23,15 +23,18 @@ export function resetAlbumImagePreview(){
 }
 
 
-///TODO
 export function postProfileImages(imageArray){
   return(dispatch, getState) => {
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
 
+
+    // Set in API
     performSaveMyProfileImages(scoopUserId, scoopUserToken, imageArray).then((result) =>{
       dispatch(setUserImages(result.userInfo.images))
+      return result.userInfo.images
     })
+
   }
 }
 

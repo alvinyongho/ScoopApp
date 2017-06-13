@@ -22,27 +22,34 @@ export class Messenger extends React.Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       editMode: false,
-      dataSource: ds.cloneWithRows([])
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2,
+      }),
 
     };
   }
 
   componentWillMount(){
     this.props.getMessageList()
+
   }
 
   componentDidMount(){
-    console.log(this.props.messageList)
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    // console.log(this.props.messageList)
 
-    this.setState({dataSource:ds.cloneWithRows (
-      this.props.messageList.map((item, index)=>{
-        return item
-      })
-    )})
   }
 
-  componentDidReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps){
+    if (nextProps.messageList !== []){
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+      this.setState(
+        {dataSource:ds.cloneWithRows (
+        nextProps.messageList.map((item, index)=>{
+          return item
+        })
+      )})
+    }
   }
 
 
@@ -67,7 +74,9 @@ function mapDispatchToProps(dispatch) {
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    messageList: state.messenger.messageList
+    messageList: state.messenger.messageList,
+
+
   }
 }
 

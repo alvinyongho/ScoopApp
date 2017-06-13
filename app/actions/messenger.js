@@ -1,5 +1,5 @@
 import * as types from './types'
-import { performFetchUnreadCountTask, performLoadMessageListTask, performLoadMessageThreadTask } from '../lib/scoopAPI'
+import { performFetchUnreadCountTask, performLoadMessageListTask, performLoadMessageThreadTask, performSendMessageTask} from '../lib/scoopAPI'
 import { NavigationActions } from 'react-navigation';
 
 
@@ -10,7 +10,6 @@ export function getUnreadCount(){
     let scoopUserToken = getState().scoopUserProfile.scoopToken
 
     performFetchUnreadCountTask(scoopUserId, scoopUserToken).then((result)=>{
-      // result
       dispatch(setUnreadCount(result.unreadCount))
     })
 
@@ -21,31 +20,25 @@ export function getUnreadCount(){
 
 export function getMessageList(){
   return(dispatch, getState) => {
-    console.log("Getting message list")
+    //Getting message list
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
 
     performLoadMessageListTask(scoopUserId, scoopUserToken).then((result)=>{
-      console.log(result)
       dispatch(setMessageList(result.messages))
     })
-
   }
 }
 
-
 export function getMessageThread(){
   return(dispatch, getState) => {
-    console.log("Getting thread contents")
+    //Getting thread contents
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
     let targetId = getState().messenger.threadTargetId
     performLoadMessageThreadTask(scoopUserId, scoopUserToken, targetId).then((result)=>{
-      console.log(result)
       dispatch(setMessageThreadContent(result.messages))
     })
-
-
   }
 }
 
@@ -94,6 +87,31 @@ export function setMessageThreadContent(messages){
   return {
     type: types.SET_THREAD_CONTENT,
     messages
+  }
+}
+
+
+// Send message
+export function sendMessage(messageContent){
+  return(dispatch, getState) => {
+    console.log("Sending a message")
+    // console.log(messageContent)
+    userId = getState().scoopUserProfile.scoopId
+    userToken = getState().scoopUserProfile.scoopToken
+    targetId = getState().messenger.threadTargetId
+    message = messageContent
+    notifyFrom = getState().myProfile.scoopApiStore.firstName
+
+    performSendMessageTask(userId, userToken, targetId, message, notifyFrom).then((result)=>{
+      if(result.status === "99"){
+        // TODO: error handle set profile to public
+        console.log("need to set profile to public")
+      }
+
+
+    })
+
+
   }
 }
 

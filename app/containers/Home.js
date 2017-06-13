@@ -23,16 +23,23 @@ import MatchFeed from './MatchFeed'
 class Home extends Component{
   componentDidMount(){
     this.props.getScoopUserIdAndToken()
-    this.props.getScoopUserImages()
 
+
+
+  }
+
+  componentWillReceiveProps(nextProps){
+    // Retrieve after getScoopUserIdAndToken
+
+    console.log("COMPONENT RECEIVED NEW PROPS IN HOME")
+
+    this.props.getScoopUserImages()
 
     this.props.getMyProfileInfo()
     this.props.retrieveEduExperience()
 
-
-    //messenger
     this.props.getUnreadCount()
-
+    this.props.getMessageList()
   }
 
   render(){

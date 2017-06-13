@@ -84,3 +84,13 @@ export function performLoadMessageListTask(userId, userToken){
 export function performLoadMessageThreadTask(userId, userToken, targetId){
   return performTaskWithParams('loadMessageThread', `targetId=${targetId}&userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}`)
 }
+
+
+export function performSendMessageTask(userId, userToken, targetId, message, notifyFrom){
+  return performTaskWithParams('sendMessage', `targetId=${targetId}&userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&message=${message}&notifyFrom=${notifyFrom}`)
+}
+
+
+export function performSetProfileHiddenTask(userId, userToken, isHidden){
+  return performTaskWithParams('setProfileHidden', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&isHidden=${isHidden}`)
+}
