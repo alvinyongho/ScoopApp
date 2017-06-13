@@ -132,6 +132,10 @@ export class EditProfileContainer extends React.Component {
     const {
       myProfile
     } = this.props;
+    //
+    // if(myProfile.scoopApiStore){
+    //   console.log()
+    // }
 
     return (
       <Animated.View style={{marginBottom: 275}}>

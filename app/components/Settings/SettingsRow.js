@@ -17,21 +17,26 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 
 export default class SettingsRow extends Component {
 
+
+  // Set prop to define state of switch Value in parent
   constructor(props){
     super(props)
+
     this.state = {
-      colorTrueSwitchIsOn: true,
-      colorFalseSwitchIsOn: false,
+      switchValue: this.props.switchValue,
     };
   }
+
 
   rightSideComponent(type){
     if(type==="switch")
       return(
         <View style={{marginRight:10}}><Switch
-        onValueChange={(value) => this.setState({colorTrueSwitchIsOn: value})}
+        onValueChange={(value) => {
+          console.log(value)
+          this.setState({switchValue: value})}}
         onTintColor="#54C9EC"
-        value={this.state.colorTrueSwitchIsOn} /></View>
+        value={this.state.switchValue} /></View>
       );
     else if(type==="navigation")
       return (
@@ -41,9 +46,21 @@ export default class SettingsRow extends Component {
       return null
   }
 
+  handleClick(){
+    if(this.props.rightComponent === "switch"){
+      currStateValue = this.state.switchValue
+      this.setState({switchValue: !currStateValue})
+      this.props.onClick(!currStateValue)
+    }
+    else {
+      this.props.onClick()
+    }
+  }
+
+
   render(){
     return (
-      <TouchableHighlight onPress={()=> this.props.onClick()}>
+      <TouchableHighlight onPress={()=> this.handleClick()}>
         <View style={{alignItems: 'center', paddingLeft: 15, backgroundColor: 'white', flex: 1, flexDirection: 'row'}}>
           <Text style={{paddingTop: 10, paddingBottom: 10, fontSize: 16, fontFamily: 'Avenir-Light', color:'#666666', flex:.5}}>{this.props.title}</Text>
           <View style={{marginRight: 0, alignItems:'center', justifyContent: 'center',  alignItems:'flex-end', flex: .5}}>{this.rightSideComponent(this.props.rightComponent)}</View>

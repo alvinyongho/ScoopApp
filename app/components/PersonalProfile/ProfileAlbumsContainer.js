@@ -69,8 +69,12 @@ export class ProfileAlbumsContainer extends React.Component {
     // console.log("MAPPING IMAGES TO ARRAY")
 
     //TODO: handle init state (need to check what is initial value)
-    if(!myProfileImages === {} || !myProfileImages === [])
+    if((myProfileImages === {}) || (myProfileImages === []))
       return []
+
+
+    // if(myProfileImages.length === undefined)
+    //   return []
 
     return myProfileImages.map((images, index)=>{
       return {imagesrc: {uri: images}}

@@ -1,3 +1,7 @@
+// settings
+
+export const SET_USER_PRIVACY = 'SET_USER_PRIVACY'
+
 // feedlist
 export const SET_SEARCHED_SCOOPS = 'SET_SEARCHED_SCOOPS';
 export const ADD_MATCH = 'ADD_MATCH';

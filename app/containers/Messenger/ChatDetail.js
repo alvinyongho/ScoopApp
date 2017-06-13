@@ -5,9 +5,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
+import { dateReducer } from '../../lib/dateFormat';
+
 
 import {
   ScrollView,
+  ListView,
   Text,
   View,
   Image,
@@ -19,6 +22,9 @@ import {
   Keyboard,
   Animated
 } from 'react-native';
+
+import InvertibleScrollView from 'react-native-invertible-scroll-view'
+
 
 import MessageBubble from './MessageBubble';
 import Button from 'react-native-button'
@@ -34,14 +40,22 @@ export class ChatDetail extends Component{
   constructor(props){
     super(props)
     this.keyboardHeight = new Animated.Value(0);
+
+    this._data = [];
+    this.state = {
+      dataSource: new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2,
+      }),
+      textInput: "",
+    }
+
+    this.prevDate = -1
+
   }
 
   componentWillMount () {
-
     // gets the thread content state
     this.props.getMessageThread()
-
-
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',
       this._keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
@@ -53,10 +67,6 @@ export class ChatDetail extends Component{
     this.keyboardDidHideListener.remove();
   }
 
-
-  componentDidMount(){
-    this._mapThreadContentStateToMessageBubbles()
-  }
 
 
   _keyboardDidHide = (event) => {
@@ -71,50 +81,68 @@ export class ChatDetail extends Component{
 
   handleSend = () => {
     Keyboard.dismiss()
+
+    //TODO: sanitize textinput
+    if(this.state.textInput !== "")
+      this.props.sendMessage(this.state.textInput)
+
+
   }
 
 
-  _mapThreadContentStateToMessageBubbles = () =>{
-    return this.props.threadContent.map((message, index)=>{
-      let messageContent = (message.message)
+  componentDidMount(){
+  }
 
-      let senderIdMatchesSelf = (message.senderId === this.props.scoopUserId)
+  componentWillReceiveProps(nextProps){
+    if(nextProps.threadContent){
+      this._data = nextProps.threadContent
+      var rows = this._data
 
-      return (
+      var rowIds = rows.map((row, index) => index).reverse();
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(rows, rowIds),
+      });
+    }
+  }
 
-        <View key={index}>
+
+  _renderRow(row){
+    let messageContent = (row.message)
+    let senderIdMatchesSelf = (row.senderId === this.props.scoopUserId)
+
+    // Boolean setter whether to display the date. Makes sure that the hours is different. 60 ms * 10000
+    let displayDate = (Date.parse(row.sentDate) > this.prevDate + 60000) // Boolean
+    if(displayDate)
+      formattedSentDate = dateReducer(row.sentDate)
+
+    this.prevDate = Date.parse(row.sentDate)
+
+    return (
+      <View key={row.sentDate}>
+        {displayDate &&
           <View style={styles.datetimeContainer}>
-            <Text style={styles.datetimeText}>April 28, 2017  8:10 PM</Text>
+            <Text style={styles.datetimeText}>{formattedSentDate}</Text>
           </View>
-
-
-          <MessageBubble isSelf={senderIdMatchesSelf} text={messageContent}/>
-        </View>
-
-
-      )
-
-    })
+        }
+        <MessageBubble isSelf={senderIdMatchesSelf} text={messageContent}/>
+      </View>
+    )
   }
-
 
   render(){
     return(
       <Animated.View style={[styles.container, {paddingBottom: this.keyboardHeight}]}>
-          <ScrollView style={styles.container}>
-
-            {this._mapThreadContentStateToMessageBubbles()}
-
-
-
-          </ScrollView>
+          <ListView
+            enableEmptySections={true}
+            renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
+            dataSource={this.state.dataSource}
+            renderRow={this._renderRow.bind(this)}
+            style={[styles.container, {marginBottom: 50}]}/>
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
           <View style={{backgroundColor:"#F0F0F0", flexDirection: 'row'}}>
-          <TextInput placeholder={'Type message'}
+          <TextInput onChangeText={(output)=>this.setState({textInput: output})} placeholder={'Type message'}
             style={styles.inputTextBox} />
-
-
             <View style={{flex:.18, margin: 7, alignItems: 'center', justifyContent: 'center'}}>
               <Button onPress={this.handleSend}>
                 <Text style={{fontSize: 20, fontFamily: 'Avenir', color:'#A2DDEE', fontWeight:'bold',}}>Send </Text>
@@ -132,7 +160,7 @@ export class ChatDetail extends Component{
 var styles = StyleSheet.create({
   container:{
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   inputTextBox:{
     flex: .82,
