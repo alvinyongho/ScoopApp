@@ -7,6 +7,8 @@ import * as PersonalProfileActions from './personalProfile';
 
 import * as SettingsNavActions from  './settingsNavigationActions'
 import * as PersonalDetailsActions from './profilePersonalDetails'
+import * as SettingsActions from './settings'
+
 
 export const ActionCreators = Object.assign({},
   LoginActions,
@@ -16,5 +18,6 @@ export const ActionCreators = Object.assign({},
   SettingsNavActions,
   PhotoAlbumActions,
   PersonalProfileActions,
-  PersonalDetailsActions
+  PersonalDetailsActions,
+  SettingsActions
 );

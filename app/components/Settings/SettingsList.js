@@ -27,6 +27,21 @@ export class SettingsList extends React.Component {
   //   console.log('navigate to destination')
   // }
 
+  constructor(props){
+    super(props)
+    this.state = ({
+      privacyValue: true  // TODO: set to prop
+    })
+  }
+
+
+  updatePrivacyState(value){
+    this.setState({privacyValue: value})
+
+    this.props.updatePrivacyState(value)
+
+  }
+
   render(){
     return(
       <ScrollView style={{backgroundColor: '#E6E6E6'}}>
@@ -36,8 +51,18 @@ export class SettingsList extends React.Component {
         <RowDivider />
         <SettingsRow onClick={() => this.props.facebookLogout()} rightComponent={'navigation'} title="Logout"/>
         <RowDivider />
-        <SettingsRow onClick={()=>console.log('todo')} rightComponent={'switch'} title="Hide Profile"/>
+
+
+
+        <SettingsRow
+          switchValue={this.state.privacyValue}
+          onClick={(switchValue)=>this.updatePrivacyState(switchValue)} rightComponent={'switch'} title="Hide Profile"/>
+
+
         <RowDivider />
+
+
+
         <SettingsRow onClick={()=>this.props.GoToSettingsDeleteAccount} rightComponent={'navigation'} title="Delete Account"/>
         <RowDivider />
 
