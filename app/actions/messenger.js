@@ -91,10 +91,12 @@ export function setMessageThreadContent(messages){
 }
 
 
+
+
 // Send message
 export function sendMessage(messageContent){
   return(dispatch, getState) => {
-    console.log("Sending a message")
+    // console.log("Sending a message")
     // console.log(messageContent)
     userId = getState().scoopUserProfile.scoopId
     userToken = getState().scoopUserProfile.scoopToken
@@ -103,11 +105,24 @@ export function sendMessage(messageContent){
     notifyFrom = getState().myProfile.scoopApiStore.firstName
 
     performSendMessageTask(userId, userToken, targetId, message, notifyFrom).then((result)=>{
+      if(result === undefined){
+        console.log("you got banned lol")
+        return // a dispatch to user_blocked_alert
+      }
       if(result.status === "99"){
         // TODO: error handle set profile to public
         console.log("need to set profile to public")
+        return // a dispatch to user_currently_private_alert
       }
-
+      else {
+        // update the messages
+        messageFormat = {
+          message: messageContent,
+          senderId: userId,
+          // sentDate: "2017-06-13 22:15:09"
+        }
+        dispatch(addMessageToThread(messageFormat))
+      }
 
     })
 
@@ -117,6 +132,26 @@ export function sendMessage(messageContent){
 
 
 
+export function hideMessages(userIdsArr){
+  return(dispatch, getState) => {
+    //TODO:
+    console.log("hide messages")
+
+    // performHideMessagesTask(userId, userToken, userIdsArr).then((result)=>{
+    //
+    //    dispatch setMessageList
+    // })
+  }
+}
+
+
+export function addMessageToThread(message){
+  console.log("adding message to thread")
+  return{
+    type: types.ADD_MESSAGE_TO_THREAD,
+    message
+  }
+}
 
 
 export function editChats(){
