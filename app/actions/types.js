@@ -21,6 +21,8 @@ export const GET_TOKEN = 'GET_TOKEN'
 export const VIEW_PROFILE  = 'VIEW_PROFILE'
 export const LOADING_USER  = 'LOADING_USER'
 
+export const RESET_FEED_ROUTE_STACK = 'RESET_FEED_ROUTE_STACK'
+
 
 //  * filters
 export const UPDATE_FILTER = 'UPDATE_FILTER'
@@ -43,6 +45,9 @@ export const HIDE_MESSAGES = 'HIDE_MESSAGES'
 
 // Message Detail Navigation
 export const SET_MESSAGE_TARGET_ID = 'SET_MESSAGE_TARGET_ID'
+
+export const RESET_MESSENGER_ROUTE_STACK = 'RESET_MESSENGER_ROUTE_STACK'
+
 
 
 // Photo Album

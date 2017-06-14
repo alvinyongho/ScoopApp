@@ -53,13 +53,25 @@ export class Messenger extends React.Component {
   }
 
 
+    addUserIdForDeletion = (rowData) => {
+      console.log("TODO handle add user id for deletion")
+      targetId = rowData.targetid
+    }
+    removeUserIdForDeletion = (rowData) =>{
+      console.log("TODO handle remove user id for deletion")
+      targetId = rowData.targetid
+    }
+
   render(){
     return (
       <ListView
         enableEmptySections={true}
         removeClippedSubviews={false} // current workaround about list view not showing up bug
         dataSource={this.state.dataSource}
-        renderRow={(rowData) => <MessageListRowItem pictureSize={50} rowData={rowData} />}
+        renderRow={(rowData) => {
+          return <MessageListRowItem  cellToggledForDeletion={()=>this.addUserIdForDeletion(rowData)}
+                                      cellCanceledForDeletion={()=>this.removeUserIdForDeletion(rowData)}
+                                      pictureSize={50} rowData={rowData} />}}
       />
     )
   }
