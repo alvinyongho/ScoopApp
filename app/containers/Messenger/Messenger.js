@@ -25,6 +25,7 @@ export class Messenger extends React.Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
+      userIdsMarkedForDeletion: []
 
     };
   }
@@ -53,14 +54,25 @@ export class Messenger extends React.Component {
   }
 
 
-    addUserIdForDeletion = (rowData) => {
-      console.log("TODO handle add user id for deletion")
-      targetId = rowData.targetid
+  addUserIdForDeletion = (rowData) => {
+    // handle add user id for deletion
+    targetId = rowData.targetId
+    userIdsMarkedForDeletion = this.state.userIdsMarkedForDeletion
+    userIdsMarkedForDeletion.push(targetId)
+    this.setState({userIdsMarkedForDeletion})
+    // console.log(userIdsMarkedForDeletion)
+  }
+  removeUserIdForDeletion = (rowData) =>{
+    // handle remove user id for deletion
+    targetId = rowData.targetId
+    userIdsMarkedForDeletion = this.state.userIdsMarkedForDeletion
+    index = userIdsMarkedForDeletion.indexOf(targetId)
+    if(index > -1){
+      userIdsMarkedForDeletion.splice(index,1)
+      this.setState({userIdsMarkedForDeletion})
     }
-    removeUserIdForDeletion = (rowData) =>{
-      console.log("TODO handle remove user id for deletion")
-      targetId = rowData.targetid
-    }
+    // console.log(userIdsMarkedForDeletion)
+  }
 
   render(){
     return (
