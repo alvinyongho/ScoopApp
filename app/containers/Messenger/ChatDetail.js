@@ -81,11 +81,9 @@ export class ChatDetail extends Component{
 
   handleSend = () => {
     Keyboard.dismiss()
-
     //TODO: sanitize textinput
     if(this.state.textInput !== ""){
       this.props.sendMessage(this.state.textInput)
-
       this.setState({textInput: ""})
     }
 

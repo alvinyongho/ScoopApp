@@ -1,7 +1,20 @@
 import * as types from './types'
-import { performFetchUnreadCountTask, performLoadMessageListTask, performLoadMessageThreadTask, performSendMessageTask} from '../lib/scoopAPI'
+import { performFetchUnreadCountTask,
+  performLoadMessageListTask,
+  performLoadMessageThreadTask,
+  performSendMessageTask,
+  performHideMessagesTask} from '../lib/scoopAPI'
 import { NavigationActions } from 'react-navigation';
 
+
+// export function deleteThreadsMarkedForDeletion(){
+//   return(dispatch, getState) =>{
+//     let scoopUserId = getState().scoopUserProfile.scoopId
+//     let scoopUserToken = getState().scoopUserProfile.scoopToken
+//     let userIds =
+//
+//   }
+// }
 
 export function getUnreadCount(){
   return(dispatch, getState) => {
@@ -12,8 +25,6 @@ export function getUnreadCount(){
     performFetchUnreadCountTask(scoopUserId, scoopUserToken).then((result)=>{
       dispatch(setUnreadCount(result.unreadCount))
     })
-
-
   }
 }
 
@@ -101,9 +112,14 @@ export function setMessageThreadContent(messages){
 }
 
 export function resetMessengerRouteStack(){
-  console.log("RESET MESSENGER ROUTE STACK")
   return{
     type: types.RESET_MESSENGER_ROUTE_STACK
+  }
+}
+
+export function resetUserIdsMarkedForDeletion(){
+  return (dispatch) =>{
+    dispatch(resetIdsForDeletion())
   }
 }
 
@@ -142,27 +158,44 @@ export function sendMessage(messageContent){
       }
       else {
         // update the messages
-
-
       }
-
     })
+  }
+}
 
-
+export function setIdsMarkedForDeletion(userIds){
+  return(dispatch, getState) => {
+    console.log("setting ids marked for deletion" + userIds)
+    dispatch(markIdsForDeletion(userIds))
   }
 }
 
 
-
-export function hideMessages(userIdsArr){
+export function hideMessages(){
   return(dispatch, getState) => {
-    //TODO:
-    console.log("hide messages")
+    userIdsArr = getState().messenger.userIdsMarkedForDeletion
+    if(userIdsArr.length === 0 ){
+      //"nothing to delete"
+      return
+    }
+    // modify message list
+    let messageList = getState().messenger.messageList
+    newList = []
+    messageList.map((item, index)=>{
+      if(userIdsArr.indexOf(item.targetId) == -1){
+        newList.push(item)
+      }
+    })
+    dispatch(setMessageList(newList))
 
-    // performHideMessagesTask(userId, userToken, userIdsArr).then((result)=>{
-    //
-    //    dispatch setMessageList
-    // })
+    userId = getState().scoopUserProfile.scoopId
+    userToken = getState().scoopUserProfile.scoopToken
+
+    performHideMessagesTask(userId, userToken, userIdsArr).then((result)=>{
+      // console.log("FINISHED HIDING")
+      // console.log(result)
+      // TODO: Handle finished hiding reuslt
+    })
   }
 }
 
@@ -175,6 +208,18 @@ export function addMessageToThread(message){
   }
 }
 
+export function markIdsForDeletion(userIds){
+  return{
+    type: types.MARK_USER_IDS_FOR_DELETION,
+    userIds
+  }
+}
+
+export function resetIdsForDeletion(){
+  return{
+    type: types.RESET_USER_IDS_FOR_DELETION
+  }
+}
 
 export function editChats(){
   //dispatching edit chats

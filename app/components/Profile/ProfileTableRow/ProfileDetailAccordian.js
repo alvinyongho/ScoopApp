@@ -239,9 +239,11 @@ export default class ProfileDetailAccordian extends Component {
 
 
   mapEduToArray = () => {
+    if(this.props.userProfile.eduBackground == undefined){
+      return []
+    }
     return this.props.userProfile.eduBackground.map((eduObject, index)=>{
       return (eduObject.school.name)
-
     })
   }
 
