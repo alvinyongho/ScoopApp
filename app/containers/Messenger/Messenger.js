@@ -41,7 +41,7 @@ export class Messenger extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if (nextProps.messageList !== []){
+    if (nextProps.messageList !== [] && nextProps.messageList !== undefined){
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
       this.setState(
@@ -53,13 +53,15 @@ export class Messenger extends React.Component {
     }
   }
 
-
   addUserIdForDeletion = (rowData) => {
     // handle add user id for deletion
     targetId = rowData.targetId
     userIdsMarkedForDeletion = this.state.userIdsMarkedForDeletion
     userIdsMarkedForDeletion.push(targetId)
     this.setState({userIdsMarkedForDeletion})
+
+    this.props.setIdsMarkedForDeletion(userIdsMarkedForDeletion)
+
     // console.log(userIdsMarkedForDeletion)
   }
   removeUserIdForDeletion = (rowData) =>{
@@ -71,6 +73,10 @@ export class Messenger extends React.Component {
       userIdsMarkedForDeletion.splice(index,1)
       this.setState({userIdsMarkedForDeletion})
     }
+
+    this.props.setIdsMarkedForDeletion(userIdsMarkedForDeletion)
+
+
     // console.log(userIdsMarkedForDeletion)
   }
 
@@ -100,8 +106,6 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state){
   return {
     messageList: state.messenger.messageList,
-
-
   }
 }
 

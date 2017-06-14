@@ -73,6 +73,16 @@ class MessageListRowItem extends React.Component {
     };
   }
 
+  // stateMarkedForDeletion = () =>{
+  //   // usersMarked = this.props.itemsMarkedForDeletion
+  //   //
+  //   // if (usersMarked.contains(this.props.rowData.userId)){
+  //   //   console.log("YES YES")
+  //   // }
+  //
+  //   return false
+  // }
+
   getRowStyle = () => {left: this.state.rightTransformAmount}
 
   componentDidMount(){
@@ -97,6 +107,12 @@ class MessageListRowItem extends React.Component {
         }
       ).start();
     }
+
+    if(nextProps.itemsMarkedForDeletion.length === 0){
+      this.setState({markedForDeletion: false})
+    }
+
+
   }
 
   toggleDeletion(){
@@ -211,7 +227,8 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state){
   return {
-    editMessages: state.editMessages
+    editMessages: state.editMessages,
+    itemsMarkedForDeletion: state.messenger.userIdsMarkedForDeletion
   }
 }
 

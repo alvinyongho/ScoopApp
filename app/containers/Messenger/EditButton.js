@@ -16,7 +16,10 @@ import Button from 'react-native-button';
 const EditButton = (props) => {
   if(props.editMessages === true){
     return (
-      <Button onPress={() => {props.cancelEditChats()} }>
+      <Button onPress={() => {
+        props.cancelEditChats()
+        props.resetUserIdsMarkedForDeletion()
+      }}>
         <Text style={{marginLeft: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Cancel</Text>
       </Button>
     );

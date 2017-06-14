@@ -29,18 +29,12 @@ export function getUserIdAndToken(facebookId){
 
 
 export function performSaveMyProfileImages(userId, userToken, imageArray){
-  // imageArray = ['https://scoopdatingapp.com/_uploads/579320170526231735.jpeg',
-  //               'https://scoopdatingapp.com/_uploads/579320170526231735.jpeg',]
-
-
   const changesToSaveParam = 'changesToSave%5Bimages%5D%5B%5D='
-
   textImageFieldParamsArray = imageArray.map((image, index)=>{
     return changesToSaveParam+(encodeURIComponent(image))
   })
 
   paramString = textImageFieldParamsArray.join('&')
-
   return performTaskWithParams('saveProfile', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
 
@@ -69,9 +63,7 @@ export function performLoadFeedTask(userId, userToken, lon, lat){
 
 export function performLoadProfileTask(targetId, userId){
   return performTaskWithParams('loadProfile', `targetId=${targetId}&z=${CLIENT_SECRET}&userId=${userId}`)
-
 }
-
 
 export function performFetchUnreadCountTask(userId, userToken){
   return performTaskWithParams('fetchUnreadCount', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}`)
@@ -93,4 +85,15 @@ export function performSendMessageTask(userId, userToken, targetId, message, not
 
 export function performSetProfileHiddenTask(userId, userToken, isHidden){
   return performTaskWithParams('setProfileHidden', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&isHidden=${isHidden}`)
+}
+
+
+export function performHideMessagesTask(userId, userToken, userIds){
+  const changesToSaveParam = 'userIds%5B%5D='
+  textImageFieldParamsArray = userIds.map((userId, index)=>{
+    return changesToSaveParam+(encodeURIComponent(userId))
+  })
+
+  paramString = textImageFieldParamsArray.join('&')
+  return performTaskWithParams('hideMessages', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
