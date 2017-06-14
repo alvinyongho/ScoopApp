@@ -74,7 +74,10 @@ export class ProfileDetail extends Component {
   }
 
   sendMessage = () => {
-
+    this.props.setMessageTarget(this.props.userDetail.userId)
+    // Navigate to chat details
+    this.props.resetMessengerTab()
+    this.props.goToChatDetailFromFeed()
   }
 
 

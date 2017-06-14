@@ -55,9 +55,19 @@ export function goToChatDetail(){
   }
 }
 
+
+
+
 export function setMessageTarget(targetId){
   return(dispatch, getState)=> {
     dispatch(setMessageTargetId(targetId))
+  }
+}
+
+
+export function resetMessengerTab(){
+  return(dispatch) => {
+    dispatch(resetMessengerRouteStack())
   }
 }
 
@@ -90,6 +100,13 @@ export function setMessageThreadContent(messages){
   }
 }
 
+export function resetMessengerRouteStack(){
+  console.log("RESET MESSENGER ROUTE STACK")
+  return{
+    type: types.RESET_MESSENGER_ROUTE_STACK
+  }
+}
+
 
 
 
@@ -104,24 +121,29 @@ export function sendMessage(messageContent){
     message = messageContent
     notifyFrom = getState().myProfile.scoopApiStore.firstName
 
+    messageFormat = {
+      message: messageContent,
+      senderId: userId,
+      // sentDate: "2017-06-13 22:15:09"
+    }
+    dispatch(addMessageToThread(messageFormat))
+
     performSendMessageTask(userId, userToken, targetId, message, notifyFrom).then((result)=>{
       if(result === undefined){
         console.log("you got banned lol")
+        // dispatch(addMessageToThread(messageFormat))
         return // a dispatch to user_blocked_alert
       }
       if(result.status === "99"){
         // TODO: error handle set profile to public
         console.log("need to set profile to public")
+        // dispatch(addMessageToThread(messageFormat))
         return // a dispatch to user_currently_private_alert
       }
       else {
         // update the messages
-        messageFormat = {
-          message: messageContent,
-          senderId: userId,
-          // sentDate: "2017-06-13 22:15:09"
-        }
-        dispatch(addMessageToThread(messageFormat))
+
+
       }
 
     })

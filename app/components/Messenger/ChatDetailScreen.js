@@ -114,7 +114,7 @@ class ChatDetailScreen extends Component{
   //   this.props.navigation.dispatch(setParamsAction);
   //
   //
-
+  //
   // }
 
   render() {
