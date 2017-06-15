@@ -36,13 +36,13 @@ class Home extends Component{
 
     console.log("COMPONENT RECEIVED NEW PROPS IN HOME")
 
-    // this.nextProps.getScoopUserImages()
-    //
-    // this.nextProps.getMyProfileInfo()
-    // this.nextProps.retrieveEduExperience()
-    //
-    // this.nextProps.getUnreadCount()
-    // this.nextProps.getMessageList()
+    this.nextProps.getScoopUserImages()
+
+    this.nextProps.getMyProfileInfo()
+    this.nextProps.retrieveEduExperience()
+
+    this.nextProps.getUnreadCount()
+    this.nextProps.getMessageList()
 
 
 
