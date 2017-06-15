@@ -173,6 +173,9 @@ export function updateMessageListWithSentMessage(message){
     let targetId = getState().messenger.threadTargetId;
     // console.log(targetId);
     let previousList = getState().messenger.messageList;
+    console.log(getState().viewingProfileDetail);
+    let targetProfile = getState().viewingProfileDetail;
+    console.log(targetProfile);
     console.log(previousList)
     let foundMessageThread = false;
     previousList.map((messageObject, index) => {
@@ -184,13 +187,13 @@ export function updateMessageListWithSentMessage(message){
     })
     if(!foundMessageThread){
       previousList.push({
-        date: "Just Now",
+        date: new Date(),
         isUnread: 0,
         message: message,
-        name: "test",
-        picURL: "test",
+        name: targetProfile.firstName,
+        picURL: targetProfile.picURL,
         targetId: targetId,
-        threadId: 0,
+        threadId: -1,
       })
     }
 
