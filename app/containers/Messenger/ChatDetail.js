@@ -84,6 +84,7 @@ export class ChatDetail extends Component{
     //TODO: sanitize textinput
     if(this.state.textInput !== ""){
       this.props.sendMessage(this.state.textInput)
+      this.props.updateMessageListWithSentMessage(this.state.textInput);
       this.setState({textInput: ""})
     }
 
