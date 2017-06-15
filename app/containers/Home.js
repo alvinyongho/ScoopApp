@@ -22,7 +22,10 @@ import MatchFeed from './MatchFeed'
 
 class Home extends Component{
   componentDidMount(){
-    this.props.getScoopUserIdAndToken()
+    this.props.initialLoginRegisterUserTaskCall()
+
+    // this.props.getScoopUserIdAndToken()
+
 
 
 
@@ -33,13 +36,16 @@ class Home extends Component{
 
     console.log("COMPONENT RECEIVED NEW PROPS IN HOME")
 
-    this.props.getScoopUserImages()
+    // this.nextProps.getScoopUserImages()
+    //
+    // this.nextProps.getMyProfileInfo()
+    // this.nextProps.retrieveEduExperience()
+    //
+    // this.nextProps.getUnreadCount()
+    // this.nextProps.getMessageList()
 
-    this.props.getMyProfileInfo()
-    this.props.retrieveEduExperience()
 
-    this.props.getUnreadCount()
-    this.props.getMessageList()
+
   }
 
   render(){
