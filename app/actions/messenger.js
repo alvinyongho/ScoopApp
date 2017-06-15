@@ -163,6 +163,18 @@ export function sendMessage(messageContent){
   }
 }
 
+//newfile.js
+
+
+export function updateMessageListWithSentMessage(message){
+  return(dispatch, getState) => {
+    console.log("updating message list with sent message");
+    console.log(message);
+    let targetId = getState().messenger.threadTargetId;
+    console.log(targetId);
+  }
+}
+
 export function setIdsMarkedForDeletion(userIds){
   return(dispatch, getState) => {
     console.log("setting ids marked for deletion" + userIds)
