@@ -168,10 +168,33 @@ export function sendMessage(messageContent){
 
 export function updateMessageListWithSentMessage(message){
   return(dispatch, getState) => {
-    console.log("updating message list with sent message");
-    console.log(message);
+    console.log("@@@@updating message list with sent message@@@@");
+    // console.log(message);
     let targetId = getState().messenger.threadTargetId;
-    console.log(targetId);
+    // console.log(targetId);
+    let previousList = getState().messenger.messageList;
+    console.log(previousList)
+    let foundMessageThread = false;
+    previousList.map((messageObject, index) => {
+      if (targetId === messageObject.targetId){
+        previousList[index].message = message;
+        // previousList[index].date = "Just Now"; TODO:
+        foundMessageThread = true;
+      }
+    })
+    if(!foundMessageThread){
+      previousList.push({
+        date: "Just Now",
+        isUnread: 0,
+        message: message,
+        name: "test",
+        picURL: "test",
+        targetId: targetId,
+        threadId: 0,
+      })
+    }
+
+    dispatch(setMessageList(previousList));
   }
 }
 
