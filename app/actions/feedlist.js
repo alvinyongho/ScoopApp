@@ -4,6 +4,23 @@ import {
   performLoadProfileTask,
   performLoadFeedWithNoGeo,
   performSaveFilterSettings } from '../lib/scoopAPI'
+import { NavigationActions } from 'react-navigation';
+
+
+
+export function resetFeedRoutes(){
+  return(dispatch)=>
+  {
+    dispatch(resetFeedRouteStack())
+  }
+}
+
+
+export function resetFeedRouteStack(){
+  return{
+    type: types.RESET_FEED_ROUTE_STACK
+  }
+}
 
 
 // Make async call to the web service to retrieve the user specific information
@@ -92,6 +109,13 @@ export function fetchMatches(match_attributes){
   }
 }
 
+
+
+export function goToChatDetailFromFeed(){
+  return(dispatch, getState)=> {
+    dispatch(NavigationActions.navigate({ routeName: 'SendMessageFromFeed' }))
+  }
+}
 
 
 // Set found matches takes in a payload of fetched matches (args) => args.matches_found

@@ -15,7 +15,7 @@ export default class SendMessageButton extends Component {
   render(){
     return(
       <View style={styles.wrapper}>
-        <Button containerStyle={styles.buttonContainer}>
+        <Button onPress={()=>this.props.onPress()} containerStyle={styles.buttonContainer}>
           <Text style={styles.subheader}> Send {this.props.name} a Message </Text>
         </Button>
       </View>
