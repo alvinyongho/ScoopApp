@@ -28,6 +28,40 @@ export function getUserIdAndToken(facebookId){
 }
 
 
+
+//
+export function performLoginRegisterUsingFields(facebookId, accessToken, fields){
+
+  console.log("PERFORMING LOGIN_REGISTER")
+
+  console.log(accessToken)
+  console.log(fields)
+
+  let gender = 1
+  if(fields.gender === "male" || fields.gender === "1"){
+    gender = 1
+  } else {
+    gender = 2
+  }
+
+  additionalFields = [ `aboutMe=${fields.aboutMe}`,
+    `birthday=${fields.birthday}`,
+    `education=${fields.education}`,
+    `firstName=${fields.firstName}`,
+    `gender=${fields.gender}`,
+    `lastName=${fields.lastName}`,
+    `picURL=${fields.picURL}`,
+    `work=${fields.work}`
+  ].join('&')
+
+  return performTaskWithParams('loginRegister', `z=${CLIENT_SECRET}&facebookId=${facebookId}&${additionalFields}`)
+
+
+
+}
+
+
+
 export function performSaveMyProfileImages(userId, userToken, imageArray){
   const changesToSaveParam = 'changesToSave%5Bimages%5D%5B%5D='
   textImageFieldParamsArray = imageArray.map((image, index)=>{
@@ -96,4 +130,11 @@ export function performHideMessagesTask(userId, userToken, userIds){
 
   paramString = textImageFieldParamsArray.join('&')
   return performTaskWithParams('hideMessages', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
+}
+
+
+export function setInitialUserProfileSetting(){
+  // changesToSave%5Brelationship%5D=0&task=saveProfile&userId=1387&userToken=549btocg46&z=scoo
+
+
 }
