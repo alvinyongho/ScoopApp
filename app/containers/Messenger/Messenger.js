@@ -39,8 +39,18 @@ export class Messenger extends React.Component {
     // console.log(this.props.messageList)
 
   }
+  
 
   componentWillReceiveProps(nextProps){
+
+    console.log("@@@@COMPONENT WILL RECEIVE PROPS IN THE MESSENGER COMPONENT")
+    console.log("@@@@COMPONENT WILL RECEIVE PROPS IN THE MESSENGER COMPONENT")
+    console.log("@@@@COMPONENT WILL RECEIVE PROPS IN THE MESSENGER COMPONENT")
+    console.log("@@@@COMPONENT WILL RECEIVE PROPS IN THE MESSENGER COMPONENT")
+    console.log("@@@@COMPONENT WILL RECEIVE PROPS IN THE MESSENGER COMPONENT")
+
+
+
     if (nextProps.messageList !== [] && nextProps.messageList !== undefined){
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
