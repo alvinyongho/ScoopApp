@@ -116,6 +116,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state){
   return {
     messageList: state.messenger.messageList,
+    messenger: state.messenger
   }
 }
 
