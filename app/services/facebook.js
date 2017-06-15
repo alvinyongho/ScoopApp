@@ -197,6 +197,28 @@ export function getUser(userId){
 
 
 
+export function getUserInfoForFirstTimeUser(accessToken){
+  return new Promise((resolve, reject) => {
+    const userRequestCallback = (error, profileInfo) => {
+      if (error) reject(error);
+
+      // console.log(profileInfo)
+      resolve(profileInfo);
+    };
+
+    const userRequest =
+      new GraphRequest(
+        `/me?access_token=${accessToken}&fields=id,first_name,last_name,birthday,gender,relationship_status,education,location,work,about`,
+        null,
+        userRequestCallback
+      );
+
+    new GraphRequestManager().addRequest(userRequest).start();
+  });
+}
+
+
+
 export function getFacebookInfoAPI() {
   return new Promise((resolve, reject) => {
     const profileInfoCallback = (error, profileInfo) => {

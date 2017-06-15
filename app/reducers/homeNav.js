@@ -1,6 +1,7 @@
 import { NavigationActions } from 'react-navigation';
-
 import { HomeNavigator } from '../navigators/HomeNavigator';
+
+
 
 // Start with one route, which is the homefeed. Start with more routess if we
 // want to include an onboarding screen.
@@ -20,6 +21,19 @@ export function homeNav(state = initialNavState, action){
       return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Filter' }), state);
     case 'Feed':
       return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'Feed' }), state);
+    case 'SendMessageFromFeed':
+      return HomeNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'SendMessageFromFeed' }), state);
+    case 'RESET_FEED_ROUTE_STACK':
+    {
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({routeName: 'Feed'})
+        ]
+      })
+      return HomeNavigator.router.getStateForAction(resetAction, state);
+
+    }
     default:
       return HomeNavigator.router.getStateForAction(action, state);
   }

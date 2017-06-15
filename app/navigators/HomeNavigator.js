@@ -5,11 +5,13 @@ import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 import FeedScreen from '../components/HomeScreens/FeedScreen'
 import FilterScreen from '../components/HomeScreens/FilterScreen'
 import ProfileScreen from '../components/HomeScreens/ProfileScreen'
+import ChatDetailScreen from '../components/Messenger/ChatDetailScreen'
 
 export const HomeNavigator = StackNavigator({
-  Feed:    { screen: FeedScreen },
-  Filter:  { screen: FilterScreen },
-  Profile: { screen: ProfileScreen }
+  Feed:       { screen: FeedScreen },
+  Filter:     { screen: FilterScreen },
+  Profile:    { screen: ProfileScreen },
+  SendMessageFromFeed: { screen: ChatDetailScreen },
 });
 
 const HomeWithNavigationState = ({dispatch, homeNav}) => (

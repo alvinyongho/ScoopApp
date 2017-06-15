@@ -1,7 +1,20 @@
 import * as types from './types'
-import { performFetchUnreadCountTask, performLoadMessageListTask, performLoadMessageThreadTask, performSendMessageTask} from '../lib/scoopAPI'
+import { performFetchUnreadCountTask,
+  performLoadMessageListTask,
+  performLoadMessageThreadTask,
+  performSendMessageTask,
+  performHideMessagesTask} from '../lib/scoopAPI'
 import { NavigationActions } from 'react-navigation';
 
+
+// export function deleteThreadsMarkedForDeletion(){
+//   return(dispatch, getState) =>{
+//     let scoopUserId = getState().scoopUserProfile.scoopId
+//     let scoopUserToken = getState().scoopUserProfile.scoopToken
+//     let userIds =
+//
+//   }
+// }
 
 export function getUnreadCount(){
   return(dispatch, getState) => {
@@ -12,8 +25,6 @@ export function getUnreadCount(){
     performFetchUnreadCountTask(scoopUserId, scoopUserToken).then((result)=>{
       dispatch(setUnreadCount(result.unreadCount))
     })
-
-
   }
 }
 
@@ -55,9 +66,19 @@ export function goToChatDetail(){
   }
 }
 
+
+
+
 export function setMessageTarget(targetId){
   return(dispatch, getState)=> {
     dispatch(setMessageTargetId(targetId))
+  }
+}
+
+
+export function resetMessengerTab(){
+  return(dispatch) => {
+    dispatch(resetMessengerRouteStack())
   }
 }
 
@@ -90,11 +111,25 @@ export function setMessageThreadContent(messages){
   }
 }
 
+export function resetMessengerRouteStack(){
+  return{
+    type: types.RESET_MESSENGER_ROUTE_STACK
+  }
+}
+
+export function resetUserIdsMarkedForDeletion(){
+  return (dispatch) =>{
+    dispatch(resetIdsForDeletion())
+  }
+}
+
+
+
 
 // Send message
 export function sendMessage(messageContent){
   return(dispatch, getState) => {
-    console.log("Sending a message")
+    // console.log("Sending a message")
     // console.log(messageContent)
     userId = getState().scoopUserProfile.scoopId
     userToken = getState().scoopUserProfile.scoopToken
@@ -102,22 +137,89 @@ export function sendMessage(messageContent){
     message = messageContent
     notifyFrom = getState().myProfile.scoopApiStore.firstName
 
+    messageFormat = {
+      message: messageContent,
+      senderId: userId,
+      // sentDate: "2017-06-13 22:15:09"
+    }
+    dispatch(addMessageToThread(messageFormat))
+
     performSendMessageTask(userId, userToken, targetId, message, notifyFrom).then((result)=>{
+      if(result === undefined){
+        console.log("you got banned lol")
+        // dispatch(addMessageToThread(messageFormat))
+        return // a dispatch to user_blocked_alert
+      }
       if(result.status === "99"){
         // TODO: error handle set profile to public
         console.log("need to set profile to public")
+        // dispatch(addMessageToThread(messageFormat))
+        return // a dispatch to user_currently_private_alert
       }
-
-
+      else {
+        // update the messages
+      }
     })
+  }
+}
 
-
+export function setIdsMarkedForDeletion(userIds){
+  return(dispatch, getState) => {
+    console.log("setting ids marked for deletion" + userIds)
+    dispatch(markIdsForDeletion(userIds))
   }
 }
 
 
+export function hideMessages(){
+  return(dispatch, getState) => {
+    userIdsArr = getState().messenger.userIdsMarkedForDeletion
+    if(userIdsArr.length === 0 ){
+      //"nothing to delete"
+      return
+    }
+    // modify message list
+    let messageList = getState().messenger.messageList
+    newList = []
+    messageList.map((item, index)=>{
+      if(userIdsArr.indexOf(item.targetId) == -1){
+        newList.push(item)
+      }
+    })
+    dispatch(setMessageList(newList))
+
+    userId = getState().scoopUserProfile.scoopId
+    userToken = getState().scoopUserProfile.scoopToken
+
+    performHideMessagesTask(userId, userToken, userIdsArr).then((result)=>{
+      // console.log("FINISHED HIDING")
+      // console.log(result)
+      // TODO: Handle finished hiding reuslt
+    })
+  }
+}
 
 
+export function addMessageToThread(message){
+  console.log("adding message to thread")
+  return{
+    type: types.ADD_MESSAGE_TO_THREAD,
+    message
+  }
+}
+
+export function markIdsForDeletion(userIds){
+  return{
+    type: types.MARK_USER_IDS_FOR_DELETION,
+    userIds
+  }
+}
+
+export function resetIdsForDeletion(){
+  return{
+    type: types.RESET_USER_IDS_FOR_DELETION
+  }
+}
 
 export function editChats(){
   //dispatching edit chats

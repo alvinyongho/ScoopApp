@@ -1,5 +1,6 @@
 import {
   facebookLoginAPI,
+  getUserInfoForFirstTimeUser,  // Additional params
   getFacebookInfoAPI,
   facebookLogoutAPI,
   callFacebookGraphAPIForUserAlbums,
@@ -9,7 +10,7 @@ import {
   getFBAlbumPicture } from '../services/facebook';
 import * as types from './types'
 
-import { getUserIdAndToken } from '../lib/scoopAPI'
+import { getUserIdAndToken, performLoginRegisterUsingFields } from '../lib/scoopAPI'
 
 
 export function facebookLogin() {
@@ -32,15 +33,74 @@ export function facebookLogin() {
   };
 }
 
-// export function getUserAlbums() {
-//   return (dispatch, getState) =>{
-//     let fbId = getState().userProfile.facebookProfile.id
-//
-//     callFacebookGraphAPIForUserAlbums(fbId).then((result)=>{
-//       dispatch(albumRetrievalSuccess(result.data))
-//     })
-//   }
-// }
+export function getUserAlbums() {
+  return (dispatch, getState) =>{
+    let fbId = getState().userProfile.facebookProfile.id
+
+    callFacebookGraphAPIForUserAlbums(fbId).then((result)=>{
+      dispatch(albumRetrievalSuccess(result.data))
+    })
+  }
+}
+
+
+// This performs initial user profile information
+export function initialLoginRegisterUserTaskCall(){
+  return (dispatch, getState) =>{
+    let fbId = getState().userProfile.facebookProfile.id
+    let accessToken = getState().userProfile.facebookToken
+
+    console.log("THE FACEBOOK ID")
+    console.log(fbId)
+    console.log("THE ACCESS TOKEN")
+    console.log(accessToken)
+
+    userInfoResult = {
+      aboutMe: "",
+      birthday: "0000-00-00 00:00:00",
+      education: "",
+      facebookId: fbId,
+      firstName: "",
+      lastName: "",
+      picURL: "",
+      task: "loginRegister",
+      work: "",
+      z: "scoo"
+    }
+
+    getUserInfoForFirstTimeUser(accessToken).then((result)=>{
+      console.log("HANDLING FIRST TIME USER FUNCTION")
+      if(result.about)
+        userInfoResult.aboutMe    = result.about
+      if(result.first_name)
+        userInfoResult.firstName  = result.first_name
+      if(result.last_name)
+        userInfoResult.lastName   = result.last_name
+      if(result.birthday)
+        userInfoResult.birthday   = result.birthday
+      if(result.gender)
+        userInfoResult.gender     = result.gender
+      if(result.relationship_status)
+        userInfoResult.relationship_status = result.relationship_status
+      if(result.education)
+        userInfoResult.education  = result.education
+      if(result.work)
+        userInfoResult.work       = result.work
+
+      return ({userInfoResult, accessToken})
+    })
+    .then((result)=>{
+      performLoginRegisterUsingFields(fbId, result.accessToken, result.userInfoResult).then((userCredentials)=>{
+        console.log("LOGIN RESULT")
+        console.log(userCredentials)
+        dispatch(getToken(userCredentials.userInfo.userId, userCredentials.userInfo.userToken));
+
+      })
+    })
+
+  }
+}
+
 
 
 export function getAlbumCovers(){
@@ -120,7 +180,7 @@ export function setCoverPhotoIds(albumOrderIndex, albumId, coverPhotoId){
   }
 }
 
-// 
+//
 // export function populateAlbumContents(albumContents){
 //   return {
 //     type: types.POPULATE_ALBUMS,

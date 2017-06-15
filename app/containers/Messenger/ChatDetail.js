@@ -81,11 +81,11 @@ export class ChatDetail extends Component{
 
   handleSend = () => {
     Keyboard.dismiss()
-
     //TODO: sanitize textinput
-    if(this.state.textInput !== "")
+    if(this.state.textInput !== ""){
       this.props.sendMessage(this.state.textInput)
-
+      this.setState({textInput: ""})
+    }
 
   }
 
@@ -137,11 +137,15 @@ export class ChatDetail extends Component{
             renderScrollComponent={props => <InvertibleScrollView {...props} inverted />}
             dataSource={this.state.dataSource}
             renderRow={this._renderRow.bind(this)}
-            style={[styles.container, {marginBottom: 50}]}/>
+            style={[styles.container, {padding: 10}]}
+          />
+
+
+
 
           <View style={{backgroundColor:'#D1D1D1', height: 1}} />
           <View style={{backgroundColor:"#F0F0F0", flexDirection: 'row'}}>
-          <TextInput onChangeText={(output)=>this.setState({textInput: output})} placeholder={'Type message'}
+          <TextInput value={this.state.textInput} onChangeText={(output)=>this.setState({textInput: output})} placeholder={'Type message'}
             style={styles.inputTextBox} />
             <View style={{flex:.18, margin: 7, alignItems: 'center', justifyContent: 'center'}}>
               <Button onPress={this.handleSend}>
@@ -174,8 +178,7 @@ var styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   datetimeContainer: {
-    height: 30,
-    marginTop: 20,
+    margin: 10,
   },
   datetimeText: {
     textAlign:'center',
