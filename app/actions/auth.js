@@ -50,11 +50,6 @@ export function initialLoginRegisterUserTaskCall(){
     let fbId = getState().userProfile.facebookProfile.id
     let accessToken = getState().userProfile.facebookToken
 
-    console.log("THE FACEBOOK ID")
-    console.log(fbId)
-    console.log("THE ACCESS TOKEN")
-    console.log(accessToken)
-
     userInfoResult = {
       aboutMe: "",
       birthday: "0000-00-00 00:00:00",
@@ -97,7 +92,6 @@ export function initialLoginRegisterUserTaskCall(){
 
       })
     })
-
   }
 }
 
@@ -120,7 +114,6 @@ export function getAlbumCovers(){
     })
     .then((raw_ids)=>{
       raw_ids.map((id, index)=>{
-        console.log(id)
         //Get album cover photo by album id
         coverPhotoId = 0
         getFBAlbumPhotos(id).then((result)=>{
@@ -136,11 +129,50 @@ export function getAlbumCovers(){
         })
       })
     })
+  }
+}
+
+
+export function toggleUserLikesTarget(isALike, userId){
+  return(dispatch, getState) => {
+    console.log("toggling target like or dislike")
+    if(isALike){
+      console.log("post with isALike" + " 1")
+    } else {
+      console.log("post with isALike" + " 0")
+    }
+    // immediately dispatch an action to remove the cell from the feedlist
+
+    console.log("gotta find "+ userId)
+
+    dispatch(removeFoundMatch(userId))
+
+    //
+    // prevFoundMatches = getState().foundMatches
+    // // Object.keys(prevFoundMatches).map((matchItem. index)=>{
+    // //   console.log(matchItem)
+    // //
+    // // })
+    // console.log("FOUND???")
+    // console.log(prevFoundMatches[userId])
+    //
+    // // setting it undefined is more efficient than delete
+    // // https://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object
+    //
+    // prevFoundMatches[userId] = undefined
+
 
 
   }
 }
 
+
+export function removeFoundMatch (userId){
+  return {
+    type: types.REMOVE_FOUND_MATCH,
+    userId
+  }
+}
 
 
 export function getImageURLById(imageId){
@@ -149,24 +181,6 @@ export function getImageURLById(imageId){
     })
   }
 }
-//
-//
-// export function populateFacebookAlbums() {
-//   return (dispatch, getState) => {
-//
-//     let albumId = "1588875886507"
-//
-//     getFBAlbumPhotos(albumId).then((result)=>{
-//
-//       // TODO
-//       // console.log('@@@@@@@')
-//       // console.log(result)
-//     })
-//
-//     // dispatch(populateAlbumContents(albumContents))
-//
-//   }
-// }
 
 
 export function setCoverPhotoIds(albumOrderIndex, albumId, coverPhotoId){
@@ -179,14 +193,6 @@ export function setCoverPhotoIds(albumOrderIndex, albumId, coverPhotoId){
     coverPhotoId
   }
 }
-
-//
-// export function populateAlbumContents(albumContents){
-//   return {
-//     type: types.POPULATE_ALBUMS,
-//     albumContents
-//   }
-// }
 
 
 export function addFBAlbumIDs(albumId, albumName, coverURL){
