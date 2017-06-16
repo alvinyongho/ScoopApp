@@ -13,13 +13,12 @@ export const foundMatches = createReducer({}, {
     return newState
   },
   [types.REMOVE_FOUND_MATCH](state, action){
+    // using ES6 computed property names
     var key = action.userId
     return update(state, {
       [key]: {$set: undefined}
     })
   }
-
-
 
 
 });
