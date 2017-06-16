@@ -33,9 +33,6 @@ class Home extends Component{
 
   componentWillReceiveProps(nextProps){
     // Retrieve after getScoopUserIdAndToken
-
-    console.log("COMPONENT RECEIVED NEW PROPS IN HOME")
-
     this.nextProps.getScoopUserImages()
 
     this.nextProps.getMyProfileInfo()

@@ -28,21 +28,12 @@ export function getUserIdAndToken(facebookId){
 }
 
 
-
-//
 export function performLoginRegisterUsingFields(facebookId, accessToken, fields){
-
-  console.log("PERFORMING LOGIN_REGISTER")
-
-  console.log(accessToken)
-  console.log(fields)
-
   let gender = 1
-  if(fields.gender === "male" || fields.gender === "1"){
+  if(fields.gender === "male" || fields.gender === "1")
     gender = 1
-  } else {
+  else
     gender = 2
-  }
 
   additionalFields = [ `aboutMe=${fields.aboutMe}`,
     `birthday=${fields.birthday}`,

@@ -33,6 +33,10 @@ import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
 import PhotoAlbumsContainer from './ProfileAlbumsContainer'
 import EditProfileContainer from './EditProfileContainer'
 
+
+import ImportPhotoContainer from './ImportPhotoContainer'
+
+
 export class EditProfileScrollView extends React.Component {
   constructor(props){
     super(props)
@@ -67,6 +71,11 @@ export class EditProfileScrollView extends React.Component {
     this.refs.scrollView.scrollToEnd()
   }
 
+  handlePress = () =>{
+    console.log("handle press")
+    this.props.GoToImportPicture(0)
+  }
+
 
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
@@ -75,7 +84,13 @@ export class EditProfileScrollView extends React.Component {
 
       <ScrollView ref="scrollView" bounces={false} scrollEnabled={this.state.isScrollEnabled}>
 
-        <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
+
+        {this.props.myProfileImages.length > 0 ?
+          <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
+          :
+          <ImportPhotoContainer handlePress={this.handlePress} />
+        }
+
 
         <RowDivider />
         <ViewProfileRow />
