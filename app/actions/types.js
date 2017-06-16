@@ -22,6 +22,7 @@ export const VIEW_PROFILE  = 'VIEW_PROFILE'
 export const LOADING_USER  = 'LOADING_USER'
 
 export const RESET_FEED_ROUTE_STACK = 'RESET_FEED_ROUTE_STACK'
+export const REMOVE_FOUND_MATCH = 'REMOVE_FOUND_MATCH'
 
 
 //  * filters

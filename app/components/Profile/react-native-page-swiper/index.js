@@ -26,6 +26,7 @@ export default class Swiper extends Component {
     threshold: 25,
     onPageChange: () => {},
     activeDotColor: '#54C9EC',
+    onShortPress: () => {},
   };
 
   constructor(props) {

@@ -15,7 +15,7 @@ import {
   Button,
 } from 'react-native';
 
-import Swiper from 'react-native-page-swiper';
+import Swiper from '../../components/Profile/react-native-page-swiper';
 import images from '@assets/images';
 
 
@@ -39,6 +39,7 @@ class MatchFeed extends Component{
     isRefreshing: false,
     initialPosition: 'unknown',
     lastPosition: 'unknown',
+    isScrollEnabled: true,
   };
 
   _onRefresh = () => {
@@ -133,10 +134,34 @@ class MatchFeed extends Component{
     this.props.profile()
   };
 
+  changeScrollState = (scrollState) =>{
+    this.setState({isScrollEnabled: scrollState})
+  }
+
+  likeDislikeUser = (pageNum, userId) => {
+  // This function uses the pagination index to determine
+  // whether the user swiped interested/not interested.
+  // The 0 page index is a like. The 1 page index is a button that goes
+  // to the user profile so it does not toggle the post action + feedlist state
+  // update. The 2 page index is the not interested post action
+  // The action dispatched should update the feed list.
+    switch(pageNum){
+      case 0:
+        this.props.toggleUserLikesTarget(true, userId)
+        break
+      case 2:
+        this.props.toggleUserLikesTarget(false, userId)
+        break
+      default:
+        break
+    }
+  }
+
   render(){
     return (
       <View>
         <ScrollView
+          scrollEnabled={this.state.isScrollEnabled}
           refreshControl={
           <RefreshControl
             refreshing={this.state.isRefreshing}
@@ -152,12 +177,18 @@ class MatchFeed extends Component{
           <View style={{height: 7}} />
 
           {this.matches().map(match => {
+            if(match == undefined) return
+
             return(
               <View key={match.id}>
 
-              <Swiper style={styles.wrapper} index={1} pager={false}>
+              <Swiper
+                onDragRelease={() => this.changeScrollState(true)}
+                onDragStart={() => this.changeScrollState(false)}
+                onPageChange={(pageNum) => this.likeDislikeUser(pageNum, match.id)}
+                style={styles.wrapper} index={1} pager={false}>
                 <View style={styles.interestedSlide}>
-                  <Image source={images.interested} />
+                  <Image style={{right:20}} source={images.interested} />
                 </View>
 
                 <View style={styles.profileSlide}>
@@ -167,8 +198,12 @@ class MatchFeed extends Component{
                     </TouchableHighlight>
                   </View>
                 </View>
-                <View style={styles.notInterestedSlide}>
-                  <Image source={images.notInterested} />
+                <View
+                  onDragRelease={() => this.changeScrollState(true)}
+                  onDragStart={() => this.changeScrollState(false)}
+                  onPageChange={(pageNum) => this.likeDislikeUser(pageNum, match.id)}
+                  style={styles.notInterestedSlide}>
+                  <Image style={{left:20}} source={images.notInterested} />
                 </View>
               </Swiper>
 

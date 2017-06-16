@@ -1,5 +1,7 @@
 import createReducer from '../lib/createReducer';
 import * as types from '../actions/types';
+import update from 'immutability-helper';
+
 
 // reducer updates the state tree
 export const foundMatches = createReducer({}, {
@@ -9,7 +11,17 @@ export const foundMatches = createReducer({}, {
       newState[match.id] = match
     });
     return newState
+  },
+  [types.REMOVE_FOUND_MATCH](state, action){
+    var key = action.userId
+    return update(state, {
+      [key]: {$set: undefined}
+    })
   }
+
+
+
+
 });
 
 export const currentLocation = createReducer({}, {
