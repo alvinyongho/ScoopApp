@@ -10,7 +10,7 @@ import {
   getFBAlbumPicture } from '../services/facebook';
 import * as types from './types'
 
-import { getUserIdAndToken, performLoginRegisterUsingFields } from '../lib/scoopAPI'
+import { getUserIdAndToken, performLoginRegisterUsingFields, } from '../lib/scoopAPI'
 
 
 export function facebookLogin() {
@@ -133,46 +133,7 @@ export function getAlbumCovers(){
 }
 
 
-export function toggleUserLikesTarget(isALike, userId){
-  return(dispatch, getState) => {
-    console.log("toggling target like or dislike")
-    if(isALike){
-      console.log("post with isALike" + " 1")
-    } else {
-      console.log("post with isALike" + " 0")
-    }
-    // immediately dispatch an action to remove the cell from the feedlist
 
-    console.log("gotta find "+ userId)
-
-    dispatch(removeFoundMatch(userId))
-
-    //
-    // prevFoundMatches = getState().foundMatches
-    // // Object.keys(prevFoundMatches).map((matchItem. index)=>{
-    // //   console.log(matchItem)
-    // //
-    // // })
-    // console.log("FOUND???")
-    // console.log(prevFoundMatches[userId])
-    //
-    // // setting it undefined is more efficient than delete
-    // // https://stackoverflow.com/questions/208105/how-do-i-remove-a-property-from-a-javascript-object
-    //
-    // prevFoundMatches[userId] = undefined
-
-
-
-  }
-}
-
-
-export function removeFoundMatch (userId){
-  return {
-    type: types.REMOVE_FOUND_MATCH,
-    userId
-  }
-}
 
 
 export function getImageURLById(imageId){
