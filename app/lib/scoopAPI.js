@@ -122,3 +122,7 @@ export function performHideMessagesTask(userId, userToken, userIds){
   paramString = textImageFieldParamsArray.join('&')
   return performTaskWithParams('hideMessages', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
+
+export function performLikeDislikeUser(userId, userToken, isALike, notifyFrom, targetId){
+  return performTaskWithParams('isALike', `targetId=${targetId}&userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&isALike=${isALike}&notifyFrom=${notifyFrom}`)
+}
