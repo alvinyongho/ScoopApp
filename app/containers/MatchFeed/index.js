@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 
 import Swiper from 'react-native-page-swiper';
+import images from '@assets/images';
+
 
 const FB_EXPIRED_URL = 'https://scontent.xx.fbcdn.net';
 
@@ -155,7 +157,7 @@ class MatchFeed extends Component{
 
               <Swiper style={styles.wrapper} index={1} pager={false}>
                 <View style={styles.interestedSlide}>
-                  <Text style={styles.text}>Interested</Text>
+                  <Image source={images.interested} />
                 </View>
 
                 <View style={styles.profileSlide}>
@@ -166,7 +168,7 @@ class MatchFeed extends Component{
                   </View>
                 </View>
                 <View style={styles.notInterestedSlide}>
-                  <Text style={styles.text}>Not Interested</Text>
+                  <Image source={images.notInterested} />
                 </View>
               </Swiper>
 
@@ -194,7 +196,7 @@ var styles = StyleSheet.create({
     height: CELL_SIZE,
     justifyContent: 'center',
     alignItems: 'flex-end',
-    backgroundColor: '#9DD6EB',
+    // backgroundColor: '#9DD6EB',
   },
   profileSlide: {
     height: CELL_SIZE,
@@ -205,7 +207,7 @@ var styles = StyleSheet.create({
 
     justifyContent: 'center',
     alignItems: 'flex-start',
-    backgroundColor: '#92BBD9',
+    // backgroundColor: '#92BBD9',
   },
   text: {
     color: '#fff',
