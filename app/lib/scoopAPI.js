@@ -122,10 +122,3 @@ export function performHideMessagesTask(userId, userToken, userIds){
   paramString = textImageFieldParamsArray.join('&')
   return performTaskWithParams('hideMessages', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
 }
-
-
-export function setInitialUserProfileSetting(){
-  // changesToSave%5Brelationship%5D=0&task=saveProfile&userId=1387&userToken=549btocg46&z=scoo
-
-
-}
