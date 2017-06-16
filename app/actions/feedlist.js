@@ -113,21 +113,29 @@ export function fetchMatches(match_attributes){
 
 export function toggleUserLikesTarget(isALike, userId){
   return(dispatch, getState) => {
-    console.log("toggling target like or dislike")
+    let likeBinaryValue = 0
     if(isALike){
-      console.log("post with isALike" + " 1")
+      likeBinaryValue = 1
     } else {
-      console.log("post with isALike" + " 0")
+      likeBinaryValue = 0
     }
-    // immediately dispatch an action to remove the cell from the feedlist
 
-    console.log("gotta find "+ userId)
-
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    let scoopUserToken = getState().scoopUserProfile.scoopToken
+    let notifyFrom = getState().myProfile.scoopApiStore.firstName
+    let targetId = userId
     dispatch(removeFoundMatch(userId))
 
 
-    performLikeDislikeUser(userId, userToken, isALike, notifyFrom, targetId).then((result)=>{
-
+    performLikeDislikeUser(scoopUserId, scoopUserToken, likeBinaryValue, notifyFrom, targetId).then((result)=>{
+      console.log("RESULT")
+      console.log(result)
+      if (result.status && result.status === "98"){
+        console.log("You cannot like a user with 0 Scoops! Tap the Scoops tab to get more!")
+      }
+      if (result.status && result.status === "99"){
+        console.log("You cannot like users while your profile is hidden")
+      }
     })
 
 

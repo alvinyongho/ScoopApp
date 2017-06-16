@@ -124,5 +124,5 @@ export function performHideMessagesTask(userId, userToken, userIds){
 }
 
 export function performLikeDislikeUser(userId, userToken, isALike, notifyFrom, targetId){
-  return performTaskWithParams('isALike', `targetId=${targetId}&userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&isALike=${isALike}&notifyFrom=${notifyFrom}`)
+  return performTaskWithParams('likeUser', `targetId=${targetId}&userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&isALike=${isALike}&notifyFrom=${notifyFrom}`)
 }
