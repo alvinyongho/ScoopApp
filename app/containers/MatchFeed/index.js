@@ -177,6 +177,9 @@ class MatchFeed extends Component{
           <View style={{height: 7}} />
 
           {this.matches().map(match => {
+            // Because we don't delete the matches. we simply set it to
+            // undefined due to performance issue with deleting is an O(n)
+            // problem versus constant time.
             if(match == undefined) return
 
             return(
