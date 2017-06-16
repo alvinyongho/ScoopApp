@@ -3,7 +3,8 @@ import {
   performLoadFeedTask,
   performLoadProfileTask,
   performLoadFeedWithNoGeo,
-  performSaveFilterSettings } from '../lib/scoopAPI'
+  performSaveFilterSettings,
+  performLikeDislikeUser } from '../lib/scoopAPI'
 import { NavigationActions } from 'react-navigation';
 
 
@@ -106,6 +107,38 @@ export function fetchMatches(match_attributes){
       })
       dispatch(setFoundMatches( { matches_found: response, current_location: {lon, lat} } ));
     });
+  }
+}
+
+
+export function toggleUserLikesTarget(isALike, userId){
+  return(dispatch, getState) => {
+    console.log("toggling target like or dislike")
+    if(isALike){
+      console.log("post with isALike" + " 1")
+    } else {
+      console.log("post with isALike" + " 0")
+    }
+    // immediately dispatch an action to remove the cell from the feedlist
+
+    console.log("gotta find "+ userId)
+
+    dispatch(removeFoundMatch(userId))
+
+
+    performLikeDislikeUser(userId, userToken, isALike, notifyFrom, targetId).then((result)=>{
+
+    })
+
+
+  }
+}
+
+
+export function removeFoundMatch (userId){
+  return {
+    type: types.REMOVE_FOUND_MATCH,
+    userId
   }
 }
 
