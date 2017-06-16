@@ -184,32 +184,33 @@ class MatchFeed extends Component{
 
             return(
               <View key={match.id}>
-
-              <Swiper
-                onDragRelease={() => this.changeScrollState(true)}
-                onDragStart={() => this.changeScrollState(false)}
-                onPageChange={(pageNum) => this.likeDislikeUser(pageNum, match.id)}
-                style={styles.wrapper} index={1} pager={false}>
-                <View style={styles.interestedSlide}>
-                  <Image style={{right:20}} source={images.interested} />
-                </View>
-
-                <View style={styles.profileSlide}>
-                  <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
-                    <TouchableHighlight onPress={() => this._onPressProfile(match.id)} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
-                      {this._renderImage(match)}
-                    </TouchableHighlight>
-                  </View>
-                </View>
-                <View
+                <Swiper
                   onDragRelease={() => this.changeScrollState(true)}
                   onDragStart={() => this.changeScrollState(false)}
                   onPageChange={(pageNum) => this.likeDislikeUser(pageNum, match.id)}
-                  style={styles.notInterestedSlide}>
-                  <Image style={{left:20}} source={images.notInterested} />
-                </View>
-              </Swiper>
+                  style={styles.wrapper} index={1} pager={false}>
 
+                  <View style={styles.interestedSlide}>
+                    <Image style={{right:20}} source={images.interested} />
+                  </View>
+
+                  <View style={styles.profileSlide}>
+                    <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
+                      <TouchableHighlight onPress={() => this._onPressProfile(match.id)} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
+                        {this._renderImage(match)}
+                      </TouchableHighlight>
+                    </View>
+                  </View>
+
+                  <View
+                    onDragRelease={() => this.changeScrollState(true)}
+                    onDragStart={() => this.changeScrollState(false)}
+                    onPageChange={(pageNum) => this.likeDislikeUser(pageNum, match.id)}
+                    style={styles.notInterestedSlide}>
+                    <Image style={{left:20}} source={images.notInterested} />
+                  </View>
+
+                </Swiper>
               </View>
             );
             })}
