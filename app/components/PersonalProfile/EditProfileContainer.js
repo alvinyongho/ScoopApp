@@ -62,7 +62,7 @@ export class InputKeyboard extends Component{
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
-  //
+
   _keyboardDidHide = (event) => {
     // alert('Keyboard shown')
     this.keyboardHeight.setValue(0)
@@ -132,10 +132,6 @@ export class EditProfileContainer extends React.Component {
     const {
       myProfile
     } = this.props;
-    //
-    // if(myProfile.scoopApiStore){
-    //   console.log()
-    // }
 
     return (
       <Animated.View style={{marginBottom: 275}}>

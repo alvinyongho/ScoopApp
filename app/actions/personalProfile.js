@@ -7,12 +7,11 @@ import * as types from './types'
 
 export function getScoopUserImages(){
   return (dispatch, getState) => {
+
+    console.log("GET SCOOP USER IMAGES")
     let fbId = getState().userProfile.facebookProfile.id
     // let fbId = 10211414919833392
     getUserIdAndToken(fbId).then((result) => {
-
-      console.log("result.userInfo.images")
-      console.log(result.userInfo.images)
       if(result.userInfo.images == undefined){
         console.log("HANDLE THE UNDEFINED USER IMAGES CASE AND UPDATE A TOGGLE TO CHANGE THE VIEW: EDIT MY PROFILE")
         console.log("EDIT_MY_PROFILE VIEW STATUS SHOULD BE: INFORM USER TO ADD AN IMAGE")
