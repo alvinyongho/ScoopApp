@@ -21,17 +21,34 @@ import MatchFeed from './MatchFeed'
 
 
 class Home extends Component{
+
+  constructor(props){
+    super(props)
+    this.state = {
+      scoopUserId: undefined
+    }
+  }
   componentDidMount(){
+
+
     this.props.initialLoginRegisterUserTaskCall()
 
     // this.props.getScoopUserIdAndToken()
-
-
-
-
   }
 
   componentWillReceiveProps(nextProps){
+
+    console.log("WE'RE TRYING TO RETRIGGER THIS")
+    console.log("WE'RE TRYING TO RETRIGGER THIS")
+    console.log("WE'RE TRYING TO RETRIGGER THIS")
+    console.log("WE'RE TRYING TO RETRIGGER THIS")
+    console.log("WE'RE TRYING TO RETRIGGER THIS")
+    console.log("WE'RE TRYING TO RETRIGGER THIS")
+
+    console.log(nextProps)
+    if(nextProps.scoopUserId != undefined){
+      this.setState({scoopUserId:nextProps.scoopUserId})
+    }
     // Retrieve after getScoopUserIdAndToken
     this.nextProps.getScoopUserImages()
 
@@ -40,13 +57,22 @@ class Home extends Component{
 
     this.nextProps.getUnreadCount()
     this.nextProps.getMessageList()
-
-
-
   }
 
+
+  componentWillUpdate(nextProps, nextState){
+    console.log(nextState)
+    if(nextState.scoopUserId != undefined){
+      console.log("time to handle rerender")
+    }
+  }
+
+
+
+
   render(){
-    if(this.props.scoopUserProfile.scoopId){
+    if(this.state.scoopUserId){
+      console.log("matchfeed getting rendered")
       return (
         <MatchFeed {...this.props}/>
       );
@@ -66,6 +92,8 @@ function mapStateToProps(state){
   return {
     // foundMatches: state.foundMatches,
     scoopUserProfile: state.scoopUserProfile,
+    scoopUserId: state.scoopUserProfile.scoopId,
+    userProfile: state.userProfile
   }
 }
 

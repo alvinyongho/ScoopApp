@@ -95,10 +95,22 @@ class MatchFeed extends Component{
 
     this.props.fetchFilters()
     // this.searchMatches();
+  }
 
+  componentWillReceiveProps(nextProps){
+
+    // console.log("componentWillReceiveProps@@@@")
+    // console.log("componentWillReceiveProps@@@@")
+    // console.log("componentWillReceiveProps@@@@")
+    // console.log(nextProps)
+    // this.nextProps.fetchMatches()
+    // this.nextProps.fetchFilters()
+    //
 
 
   }
+
+
 
   componentWillMount(){
     // this.searchMatches();
