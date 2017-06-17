@@ -37,26 +37,32 @@ class Home extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-
-    console.log("WE'RE TRYING TO RETRIGGER THIS")
-    console.log("WE'RE TRYING TO RETRIGGER THIS")
-    console.log("WE'RE TRYING TO RETRIGGER THIS")
-    console.log("WE'RE TRYING TO RETRIGGER THIS")
-    console.log("WE'RE TRYING TO RETRIGGER THIS")
     console.log("WE'RE TRYING TO RETRIGGER THIS")
 
-    console.log(nextProps)
     if(nextProps.scoopUserId != undefined){
       this.setState({scoopUserId:nextProps.scoopUserId})
     }
     // Retrieve after getScoopUserIdAndToken
-    this.nextProps.getScoopUserImages()
 
-    this.nextProps.getMyProfileInfo()
-    this.nextProps.retrieveEduExperience()
 
-    this.nextProps.getUnreadCount()
-    this.nextProps.getMessageList()
+    // this.nextProps.getScoopUserImages()
+    // this.nextProps.getMyProfileInfo()
+    // this.nextProps.retrieveEduExperience()
+    // this.nextProps.getUnreadCount()
+    // this.nextProps.getMessageList()
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    // If we have the scoop Id
+    if(this.state.scoopUserId){
+      this.props.getScoopUserImages()
+      this.props.getMyProfileInfo()
+      this.props.retrieveEduExperience()
+      this.props.getUnreadCount()
+      this.props.getMessageList()
+    }
+
+
   }
 
 

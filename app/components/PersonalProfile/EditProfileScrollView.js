@@ -56,13 +56,31 @@ export class EditProfileScrollView extends React.Component {
 
   componentWillMount(){
 
-
   }
 
   componentDidMount(){
     // Gets the user information and populates the viewingProfileDetail state.
     // This call also gets activated in View Profile so that call may be removed inside ViewProfileRow
     // at a later time.
+  }
+
+  componentWillReceiveProps(nextProps){
+    console.log("Receiving next props in edit profile scrollview")
+    // this.nextProps.getScoopUserImages()
+
+    // this.setState({myProfileImages: nextProps.myProfileImages})
+  }
+
+
+  componentDidUpdate(prevProps, prevState){
+    console.log("Receiving prev props in edit profile scrollview")
+    console.log("Receiving prev props in edit profile scrollview")
+    console.log("Receiving prev props in edit profile scrollview")
+    console.log("Receiving prev props in edit profile scrollview")
+    console.log("Receiving prev props in edit profile scrollview")
+
+    console.log(prevProps)
+
 
   }
 
@@ -85,7 +103,7 @@ export class EditProfileScrollView extends React.Component {
       <ScrollView ref="scrollView" bounces={false} scrollEnabled={this.state.isScrollEnabled}>
 
 
-        {this.props.myProfileImages.length > 0 ?
+        {this.state.profileImages.length > 0 ?
           <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
           :
           <ImportPhotoContainer handlePress={this.handlePress} />
