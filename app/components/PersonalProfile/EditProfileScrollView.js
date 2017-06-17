@@ -66,22 +66,17 @@ export class EditProfileScrollView extends React.Component {
 
   componentWillReceiveProps(nextProps){
     console.log("Receiving next props in edit profile scrollview")
+    console.log(nextProps)
     // this.nextProps.getScoopUserImages()
+
 
     // this.setState({myProfileImages: nextProps.myProfileImages})
   }
 
-
   componentDidUpdate(prevProps, prevState){
-    console.log("Receiving prev props in edit profile scrollview")
-    console.log("Receiving prev props in edit profile scrollview")
-    console.log("Receiving prev props in edit profile scrollview")
-    console.log("Receiving prev props in edit profile scrollview")
-    console.log("Receiving prev props in edit profile scrollview")
-
-    console.log(prevProps)
-
-
+    if(this.props.myProfileImages !== this.state.profileImages){
+      this.setState({profileImages:this.props.myProfileImages})
+    }
   }
 
 
@@ -114,8 +109,6 @@ export class EditProfileScrollView extends React.Component {
         <ViewProfileRow />
 
         <EditProfileContainer scrollToBottom={this.scrollToBottom} changeScrollState={this.changeScrollState}/>
-
-
 
       </ScrollView>
     )
