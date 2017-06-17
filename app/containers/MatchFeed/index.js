@@ -13,7 +13,8 @@ import {
   RefreshControl,
   StyleSheet,
   Button,
-  Dimensions
+  Dimensions,
+  AppState
 } from 'react-native';
 
 import Swiper from '../../components/Profile/react-native-page-swiper';
@@ -42,6 +43,8 @@ class MatchFeed extends Component{
     initialPosition: 'unknown',
     lastPosition: 'unknown',
     isScrollEnabled: true,
+
+    appState: AppState.currentState
   };
 
   _onRefresh = () => {
@@ -58,6 +61,9 @@ class MatchFeed extends Component{
 
 
   componentWillUnmount() {
+
+    AppState.removeEventListener('change', this._handleAppStateChange);
+
     navigator.geolocation.clearWatch(this.watchID);
   }
 
@@ -80,34 +86,54 @@ class MatchFeed extends Component{
   }
 
   componentDidMount(){
-    navigator.geolocation.getCurrentPosition(
+
+    AppState.addEventListener('change', this._handleAppStateChange);
+
+
+    this.watchID = navigator.geolocation.getCurrentPosition(
       (position) => {
-        // var initialPosition = JSON.stringify(position);
         this.setState({initialPosition: position});
         this.props.fetchMatches(match_attributes=position)
       },
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
+
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      // var lastPosition = JSON.stringify(position);
       this.setState({lastPosition: position});
     });
 
 
     this.props.fetchFilters()
-    // this.searchMatches();
   }
+
+
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!')
+
+
+      this.watchID = navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("THE LAST POSITION")
+          console.log(position)
+          this.setState({lastPosition: position});
+          this.props.fetchMatches(match_attributes=position)
+        },
+        (error) => alert(JSON.stringify(error)),
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      );
+
+      
+
+
+    }
+    this.setState({appState: nextAppState});
+  }
+
 
   componentWillReceiveProps(nextProps){
 
-    // console.log("componentWillReceiveProps@@@@")
-    // console.log("componentWillReceiveProps@@@@")
-    // console.log("componentWillReceiveProps@@@@")
-    // console.log(nextProps)
-    // this.nextProps.fetchMatches()
-    // this.nextProps.fetchFilters()
-    //
 
 
   }

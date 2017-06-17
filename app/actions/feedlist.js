@@ -93,9 +93,11 @@ export function fetchMatches(match_attributes){
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
     performLoadFeedTask(scoopUserId, scoopUserToken, lon, lat).then((results) => {
-
-      // console.log('LOAD FEED RESULTS')
-      // console.log(results)
+      console.log("Performing load feed task")
+      console.log('LOAD FEED RESULTS')
+      console.log("LON : " + lon)
+      console.log("LAT : " + lat)
+      console.log(results)
 
       const response = results.users.map((user, index) => {
         return {
