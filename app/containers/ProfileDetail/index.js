@@ -112,7 +112,7 @@ export class ProfileDetail extends Component {
             <BasicRow rowItemName={'Body Type'} rowItemValue={this._getBodyType()}/>
           </View>
 
-          <LookingForSection disabled={true} lookingForType={this.props.userDetail.lookingForType} lookingForGender={this.props.userDetail.lookingForGender} changeScrollState={this.changeScrollState} />
+          <LookingForSection disabled={true} lookingForType={this.props.userDetail.lookingForType} lookingForGender={this.props.userDetail.lookingForGender} changeScrollState={()=>{}} />
           <ProfileDetailConnectedApps connectedAppInts={this.props.userDetail.connectedAppInts} />
 
           <InterestsSection profileLikes={this.props.userDetail.THEIRfacebookLikes} />
