@@ -131,9 +131,9 @@ export class EditProfileContainer extends React.Component {
 
 
   componentWillReceiveProps(nextProps){
-    console.log("EDIT PROFILE CONTAINER RECEIVED PROPS")
-    console.log("the next props")
-    console.log(nextProps)
+    // console.log("EDIT PROFILE CONTAINER RECEIVED PROPS")
+    // console.log("the next props")
+    // console.log(nextProps)
     if(nextProps.myProfile.scoopApiStore.relationship){
       this.setState({relationship:nextProps.myProfile.scoopApiStore.relationship})
     }
@@ -178,12 +178,14 @@ export class EditProfileContainer extends React.Component {
 
         <ProfileDetailAccordian userProfile={myProfile} />
 
+        {(this.state.lookingForType !== "" && this.state.lookingForGender!="") &&
         <LookingForSection
           disabled={false}
-          lookingForType={this.props.myProfile.scoopApiStore.lookingForType}
-          lookingForGender={this.props.myProfile.scoopApiStore.lookingForGender}
+          lookingForType={this.state.lookingForType}
+          lookingForGender={this.state.lookingForGender}
           changeScrollState={this.props.changeScrollState}
         />
+        }
 
 
         <SectionTitle title={'CONNECTED APPS'}/>

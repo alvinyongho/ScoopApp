@@ -96,7 +96,7 @@ export default class Swiper extends Component {
 
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
-        console.log('we movin')
+        // console.log('we movin')
         this.onReleaseOpenAlbum = false;
 
         let dx = gestureState.dx;
