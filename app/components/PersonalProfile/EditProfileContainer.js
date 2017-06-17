@@ -106,7 +106,14 @@ export class InputKeyboard extends Component{
 export class EditProfileContainer extends React.Component {
   constructor(props){
     super(props)
-    this.state = { text: 'Useless Placeholder'};
+    this.state = {
+      relationship: "",
+      schoolName: "",
+      firstName: "",
+      lookingForType: "",
+      lookingForGender: ""
+
+    };
     this.keyboardHeight = new Animated.Value(0);
   }
 
@@ -115,9 +122,34 @@ export class EditProfileContainer extends React.Component {
     // This call also gets activated in View Profile so that call may be removed inside ViewProfileRow
     // at a later time.
 
-    this.props.getMyProfileInfo()
-    this.props.retrieveEduExperience()
 
+    //
+    // this.props.getMyProfileInfo()
+    // this.props.retrieveEduExperience()
+
+  }
+
+
+  componentWillReceiveProps(nextProps){
+    console.log("EDIT PROFILE CONTAINER RECEIVED PROPS")
+    console.log("the next props")
+    console.log(nextProps)
+    if(nextProps.myProfile.scoopApiStore.relationship){
+      this.setState({relationship:nextProps.myProfile.scoopApiStore.relationship})
+    }
+    if(nextProps.myProfile.scoopApiStore.schoolName){
+      this.setState({schoolName:nextProps.myProfile.scoopApiStore.schoolName})
+    }
+    if(nextProps.myProfile.scoopApiStore.firstName){
+      this.setState({firstName:nextProps.myProfile.scoopApiStore.firstName})
+    }
+
+    if(nextProps.myProfile.scoopApiStore.lookingForType){
+      this.setState({lookingForType:nextProps.myProfile.scoopApiStore.lookingForType})
+    }
+    if(nextProps.myProfile.scoopApiStore.lookingForGender){
+      this.setState({lookingForGender:nextProps.myProfile.scoopApiStore.lookingForGender})
+    }
 
 
   }
@@ -138,19 +170,21 @@ export class EditProfileContainer extends React.Component {
         <SectionTitle title="PERSONAL DETAILS" />
 
         <ProfileBasicInfo
-          relationshipStatus={myProfile.scoopApiStore.relationship}
-          distance={'0m away'} schoolName={myProfile.scoopApiStore.schoolName}
-          name={myProfile.scoopApiStore.firstName} disabledLike={true}
+          relationshipStatus={this.state.relationship}
+          distance={'0m away'} schoolName={this.state.schoolName}
+          name={this.state.firstName} disabledLike={true}
         />
+
 
         <ProfileDetailAccordian userProfile={myProfile} />
 
         <LookingForSection
           disabled={false}
-          lookingForType={myProfile.scoopApiStore.lookingForType}
-          lookingForGender={myProfile.scoopApiStore.lookingForGender}
+          lookingForType={this.props.myProfile.scoopApiStore.lookingForType}
+          lookingForGender={this.props.myProfile.scoopApiStore.lookingForGender}
           changeScrollState={this.props.changeScrollState}
         />
+
 
         <SectionTitle title={'CONNECTED APPS'}/>
         <View style={{paddingLeft: 20, backgroundColor:'white'}}>
