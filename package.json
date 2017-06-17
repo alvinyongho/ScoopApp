@@ -21,6 +21,7 @@
     "react-native-sortable-grid": "^2.0.0",
     "react-native-swipeout": "^2.0.13",
     "react-native-swiper": "^1.5.4",
+    "react-native-text": "0.0.4",
     "react-native-vector-icons": "^4.1.1",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.4",

@@ -111,8 +111,7 @@ export class EditProfileContainer extends React.Component {
       schoolName: "",
       firstName: "",
       lookingForType: "",
-      lookingForGender: ""
-
+      lookingForGender: "",
     };
     this.keyboardHeight = new Animated.Value(0);
   }
@@ -140,6 +139,7 @@ export class EditProfileContainer extends React.Component {
     if(nextProps.myProfile.scoopApiStore.schoolName){
       this.setState({schoolName:nextProps.myProfile.scoopApiStore.schoolName})
     }
+
     if(nextProps.myProfile.scoopApiStore.firstName){
       this.setState({firstName:nextProps.myProfile.scoopApiStore.firstName})
     }
@@ -152,6 +152,7 @@ export class EditProfileContainer extends React.Component {
     }
 
 
+
   }
 
   setKeyboardHeight = (keyboardHeight) => {
@@ -162,8 +163,8 @@ export class EditProfileContainer extends React.Component {
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     const {
-      myProfile
-    } = this.props;
+      myProfile       // NEED TO SET IT after state of properties set.
+    } = this.props;   // maybe redefine as accordian properties
 
     return (
       <Animated.View style={{marginBottom: 275}}>
