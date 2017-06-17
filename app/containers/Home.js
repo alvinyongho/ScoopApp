@@ -60,17 +60,13 @@ class Home extends Component{
   }
 
 
-  componentWillUpdate(nextProps, nextState){
-    console.log(nextState)
-    if(nextState.scoopUserId != undefined){
-      console.log("time to handle rerender")
-    }
-  }
-
-
-
 
   render(){
+    /*
+      By relying on state update we can call the render of the child component
+      which by then should have the necessary information to call from the api
+      to fetch the feed
+    */
     if(this.state.scoopUserId){
       console.log("matchfeed getting rendered")
       return (
