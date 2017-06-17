@@ -30,12 +30,12 @@ export function fetchUser(targetId){
     dispatch(setLoadingUserStatus(true))
 
     let scoopUserId = getState().scoopUserProfile.scoopId
-    console.log('THE SCOOP USER ID IS ' + scoopUserId)
+    // console.log('THE SCOOP USER ID IS ' + scoopUserId)
     performLoadProfileTask(targetId, scoopUserId).then((results) => {
       const response = results.userInfo
 
-      console.log('fetched USER')
-      console.log(results["z-distance"])
+      // console.log('fetched USER')
+      // console.log(results["z-distance"])
       dispatch(viewProfile({user_information:response}))
       dispatch(setLoadingUserStatus(false))
     })
@@ -44,15 +44,15 @@ export function fetchUser(targetId){
 
 
 export function getMyProfileInfo(){
-  console.log("GETTING MY PROFILE INFO")
+  // console.log("GETTING MY PROFILE INFO")
   return (dispatch, getState) => {
 
     let scoopUserId = getState().scoopUserProfile.scoopId
     targetId = scoopUserId
     performLoadProfileTask(targetId, scoopUserId).then((results) => {
       const response = results.userInfo
-      console.log('THE RESPONSE IS')
-      console.log(response)
+      // console.log('THE RESPONSE IS')
+      // console.log(response)
 
       dispatch(getMyProfile({user_information:response}))
       // console.log('fetched USER')
@@ -128,8 +128,8 @@ export function toggleUserLikesTarget(isALike, userId){
 
 
     performLikeDislikeUser(scoopUserId, scoopUserToken, likeBinaryValue, notifyFrom, targetId).then((result)=>{
-      console.log("RESULT")
-      console.log(result)
+      // console.log("RESULT")
+      // console.log(result)
       if (result.status && result.status === "98"){
         console.log("You cannot like a user with 0 Scoops! Tap the Scoops tab to get more!")
       }
