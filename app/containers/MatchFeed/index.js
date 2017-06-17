@@ -13,11 +13,13 @@ import {
   RefreshControl,
   StyleSheet,
   Button,
+  Dimensions
 } from 'react-native';
 
 import Swiper from '../../components/Profile/react-native-page-swiper';
 import images from '@assets/images';
 
+var {height, width} = Dimensions.get('window');
 
 const FB_EXPIRED_URL = 'https://scontent.xx.fbcdn.net';
 
@@ -171,7 +173,7 @@ class MatchFeed extends Component{
 
   render(){
     return (
-      <View>
+      <View style={{height:height-100}}>
         <ScrollView
           scrollEnabled={this.state.isScrollEnabled}
           refreshControl={
