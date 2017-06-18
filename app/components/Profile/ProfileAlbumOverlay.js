@@ -46,8 +46,6 @@ export default class ProfileAlbumOverlay extends Component{
       <View style={{flex: 1, position: 'absolute', backgroundColor: 'black', flex: 1, height: viewHeight, width:viewWidth }}>
       <View style={{flex: 1, position: 'absolute', backgroundColor: 'black', flex: 1, height: viewHeight, width:viewWidth }} >
 
-
-
           <Swiper
             showsButtons={true}
             loop={false}
