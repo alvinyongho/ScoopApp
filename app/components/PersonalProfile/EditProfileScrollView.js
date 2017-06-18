@@ -93,10 +93,7 @@ export class EditProfileScrollView extends React.Component {
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     return (
-
-
       <ScrollView ref="scrollView" bounces={false} scrollEnabled={this.state.isScrollEnabled}>
-
 
         {this.state.profileImages.length > 0 ?
           <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>

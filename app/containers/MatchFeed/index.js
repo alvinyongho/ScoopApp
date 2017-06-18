@@ -48,36 +48,38 @@ class MatchFeed extends Component{
   };
 
   _onRefresh = () => {
+
+    if(this.state.lastPosition === 'unknown'){
+      alert("the current location is unknown")
+      return
+    }
+
     this.setState({isRefreshing: true});
+    this.props.setFeedListStatus("LOADING")
+
+
     setTimeout(() => {
       // prepend 10 items
       this.searchMatches();
-
       this.setState({
         isRefreshing: false,
       });
     }, 3000);
+
   };
 
 
   componentWillUnmount() {
-
     AppState.removeEventListener('change', this._handleAppStateChange);
-
     navigator.geolocation.clearWatch(this.watchID);
   }
 
   searchMatches() {
-    // due to destruct in app container <Home {...this.props} all the actions
-    // from the AppContainer get passed into the Home container
+    // fetch the matches using the last set position
     this.props.fetchMatches(
       match_attributes =
         this.state.lastPosition
     )
-
-
-
-
   }
 
   matches(){
@@ -86,69 +88,39 @@ class MatchFeed extends Component{
   }
 
   componentDidMount(){
-
+    //Handle if app goes to the background/foreground then we get the current location and fetch matches
     AppState.addEventListener('change', this._handleAppStateChange);
+    this.getCurrentLocation()
+    this.props.fetchFilters()
+  }
 
-
+  getCurrentLocation = () => {
     this.watchID = navigator.geolocation.getCurrentPosition(
       (position) => {
-        this.setState({initialPosition: position});
+        this.setState({lastPosition: position});
         this.props.fetchMatches(match_attributes=position)
       },
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
-
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      this.setState({lastPosition: position});
-    });
-
-
-    this.props.fetchFilters()
   }
-
 
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground!')
-
-
-      this.watchID = navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("THE LAST POSITION")
-          console.log(position)
-          this.setState({lastPosition: position});
-          this.props.fetchMatches(match_attributes=position)
-        },
-        (error) => alert(JSON.stringify(error)),
-        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-      );
-
-      
-
-
+      this.getCurrentLocation()
     }
     this.setState({appState: nextAppState});
   }
 
-
   componentWillReceiveProps(nextProps){
-
-
-
   }
 
-
-
   componentWillMount(){
-    // this.searchMatches();
   }
 
 
   _renderImage = (match) => {
     if(match.image && !match.image.includes(FB_EXPIRED_URL)){
-      // console.log(match.image)
-
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
           <Text style={styles.profileName}>{match.name}</Text>

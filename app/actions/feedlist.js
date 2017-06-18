@@ -24,6 +24,25 @@ export function resetFeedRouteStack(){
 }
 
 
+export function setFeedListStatus(status){
+    if(status === "LOADING"){
+      console.log("the feedlist is loading")
+
+      return(dispatch)=>{
+      //   dispatch(setFeedListToLoading())
+      }
+    }
+    if(status === "FINISHED"){
+      console.log("the feedlist is finished loading")
+      return(dispatch)=>{
+      //   dispatch(setFeedListToFinished())
+      }
+    }
+}
+
+
+
+
 // Make async call to the web service to retrieve the user specific information
 export function fetchUser(targetId){
   return (dispatch, getState) => {
