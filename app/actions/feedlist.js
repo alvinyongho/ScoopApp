@@ -196,8 +196,8 @@ export function toggleUserLikesTarget(isALike, userId){
 
 
     performLikeDislikeUser(scoopUserId, scoopUserToken, likeBinaryValue, notifyFrom, targetId).then((result)=>{
-      // console.log("RESULT")
-      // console.log(result)
+      console.log("RESULT")
+      console.log(result)
       if (result.status && result.status === "98"){
         console.log("You cannot like a user with 0 Scoops! Tap the Scoops tab to get more!")
       }
