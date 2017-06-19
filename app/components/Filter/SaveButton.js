@@ -27,6 +27,8 @@ class SaveButton extends Component{
     // this.props.updatePrevFilters()
 
     this.props.reloadMatches()
+
+
     this.props.onSavePressed()
   }
 
