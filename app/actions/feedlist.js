@@ -26,14 +26,14 @@ export function resetFeedRouteStack(){
 
 export function setFeedListStatus(status){
     if(status === "LOADING"){
-      console.log("the feedlist is loading")
+      // console.log("the feedlist is loading")
 
       return(dispatch)=>{
       //   dispatch(setFeedListToLoading())
       }
     }
     if(status === "FINISHED"){
-      console.log("the feedlist is finished loading")
+      // console.log("the feedlist is finished loading")
       return(dispatch)=>{
       //   dispatch(setFeedListToFinished())
       }
@@ -70,14 +70,10 @@ export function getMyProfileInfo(){
     targetId = scoopUserId
     performLoadProfileTask(targetId, scoopUserId).then((results) => {
       const response = results.userInfo
-      // console.log('THE RESPONSE IS')
-      // console.log(response)
+
 
       dispatch(getMyProfile({user_information:response}))
-      // console.log('fetched USER')
-      // console.log(results["z-distance"])
-      // dispatch(viewProfile({user_information:response}))
-      // dispatch(setLoadingUserStatus(false))
+
     })
   }
 }
@@ -196,8 +192,8 @@ export function toggleUserLikesTarget(isALike, userId){
 
 
     performLikeDislikeUser(scoopUserId, scoopUserToken, likeBinaryValue, notifyFrom, targetId).then((result)=>{
-      console.log("RESULT")
-      console.log(result)
+      // console.log("RESULT")
+      // console.log(result)
       if (result.status && result.status === "98"){
         console.log("You cannot like a user with 0 Scoops! Tap the Scoops tab to get more!")
       }

@@ -42,8 +42,6 @@ export default class Swiper extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("COMPONENT WILL RECEIVE")
-    console.log(nextProps)
     if(nextProps.lockToPage){
       this.goToPage(1)
       this.props.handleRemoval()
@@ -124,15 +122,12 @@ export default class Swiper extends Component {
     });
 
     if(this.props.lockToPage){
-
-      console.log("ANIMATION")
       Animated.timing(this.state.scrollValue,{
         toValue: pageNumber,
         duration: 150
       }).start();
     } else {
-
-    Animated.spring(this.state.scrollValue, { toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension }).start();
+      Animated.spring(this.state.scrollValue, { toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension }).start();
     }
 
     this.props.onPageChange(pageNumber);
