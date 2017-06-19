@@ -272,7 +272,12 @@ class MatchFeed extends Component{
             return(
               <View key={match.id}>
 
-                <FeedListRow changeScrollState={this.changeScrollState}
+                <FeedListRow
+                            // remove={false}
+                            // onRemove={()=>{console.log("asdf")}}
+
+
+                            changeScrollState={this.changeScrollState}
                              likeDislikeUser={this.likeDislikeUser}
                              _onPressProfile={this._onPressProfile}
                              _renderImage={this._renderImage}

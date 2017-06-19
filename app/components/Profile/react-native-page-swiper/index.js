@@ -41,6 +41,13 @@ export default class Swiper extends Component {
     this.onReleaseOpenAlbum = false;
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.lockToPage){
+      this.goToPage(1)
+      this.props.handleRemoval()
+    }
+  }
+
   componentWillMount() {
     const release = (e, gestureState) => {
       const relativeGestureDistance = gestureState.dx / this.state.viewWidth;
@@ -114,7 +121,14 @@ export default class Swiper extends Component {
       index: pageNumber
     });
 
-    Animated.spring(this.state.scrollValue, { toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension }).start();
+    if(this.props.lockToPage){
+      Animated.timing(this.state.scrollValue,{
+        toValue: pageNumber,
+        duration: 150
+      }).start();
+    } else {
+      Animated.spring(this.state.scrollValue, { toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension }).start();
+    }
 
     this.props.onPageChange(pageNumber);
   }
