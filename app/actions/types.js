@@ -8,6 +8,11 @@ export const ADD_MATCH = 'ADD_MATCH';
 export const SET_FOUND_MATCHES = 'SET_FOUND_MATCHES';
 export const SET_CURRENT_LOCATION = 'SET_CURRENT_LOCATION';
 
+// feedlist loading matches status types
+export const LOADING_MATCHES     = 'LOADING_MATCHES'
+export const ERROR_LOADING_MATCHES = 'ERROR_LOADING_MATCHES'
+export const SUCCESS_LOADING_MATCHES  ='SUCCESS_LOADING_MATCHES'
+
 
 // auth
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'

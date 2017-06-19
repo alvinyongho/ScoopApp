@@ -42,8 +42,9 @@ class MatchFeed extends Component{
     isRefreshing: false,
     lastPosition: 'unknown',
     isScrollEnabled: true,
-    appState: AppState.currentState,  // FOr handling when the app returns from background
-    locationAccessibility: 'NOT_SET'  // For setting the error feedback if location cannot be accessed
+    appState: AppState.currentState,   // FOr handling when the app returns from background
+    locationAccessibility: 'NOT_SET',  // For setting the error feedback if location cannot be accessed
+    matchFeedLoadingStatus: 'NOT_SET'
   };
 
 
@@ -86,7 +87,10 @@ class MatchFeed extends Component{
   }
 
   _handleAppStateChange = (nextAppState) => {
+
+    console.log(nextAppState)
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log("APP IS NOW ACTIVE AGAIN")
       this.getCurrentLocation()
     }
     this.setState({appState: nextAppState});
@@ -139,17 +143,17 @@ class MatchFeed extends Component{
     locationAccessable = nextState.locationAccessibility === 'AVAILABLE'
     canLoadFeed = (currLatSet && currLonSet && locationAccessable)
 
-    console.log("COMPUTING SHOULD COMPONENT UPDATE")
     if(this.props.currentLocation !== nextProps.currentLocation){
+      console.log("location updated")
       if (canLoadFeed){
-        console.log("CAN DO SHIT")
         this.retrieveMatches();
-
-      } else {
-        console.log("WE CANNOT DO SHIT")
       }
-      // return true
     }
+
+    if(this.props.feedListStatus !== nextProps.feedListStatus){
+      this.setState({matchFeedLoadingStatus: nextProps.feedListStatus.matchLoadingStatus})
+    }
+
     return true
   }
 
@@ -210,12 +214,22 @@ class MatchFeed extends Component{
   }
 
   render(){
-    if(this.state.locationAccessibility !== "AVAILABLE"){
+    showLocationError = (this.state.locationAccessibility === 'PERMISSION_NEEDED' ||
+                         this.state.locationAccessibility === 'LOCATION_UNAVAILABLE')
+    showLoadingBar    = (this.state.matchFeedLoadingStatus === 'LOADING' ||
+                         this.state.matchFeedLoadingStatus === 'NOT_SET')
+    if(showLocationError){
       return(
         <View><Text>{this.state.locationAccessibility}</Text></View>
       )
     }
 
+    if(showLoadingBar){
+      console.log("SHOW LOADING INDICATOR")
+      return(
+        <View><Text>LOADING INDICATOR HERE</Text></View>
+      )
+    }
 
     return (
       <View style={{height:height-100}}>
@@ -334,7 +348,8 @@ var styles = StyleSheet.create({
 function mapStateToProps(state){
   return {
     foundMatches: state.foundMatches,
-    currentLocation: state.currentLocation
+    currentLocation: state.currentLocation,
+    feedListStatus: state.feedListStatus
   }
 }
 

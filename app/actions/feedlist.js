@@ -119,8 +119,11 @@ export function updateCurrentLocation(currentLocation){
 
 // Make async call to the web service to get the list of matches that
 // fit in the criterias defined by match attributes
-export function fetchMatches(match_attributes){
+export function fetchMatches(){
   return(dispatch, getState) => {
+
+    dispatch(loadingMatches())
+
     let lon = getState().currentLocation.lon
     let lat = getState().currentLocation.lat
     let scoopUserId = getState().scoopUserProfile.scoopId
@@ -134,10 +137,38 @@ export function fetchMatches(match_attributes){
           jobTitle: user.jobTitle
         }
       })
+
+      if(results==="ERROR"){
+        console.log("got an error while fetching matches")
+        dispatch(loadedMatchesWithError())
+        return
+      }
+      dispatch(loadedMatchesWithSuccess())
+
       dispatch(setFoundMatches( { matches_found: response, current_location: {lon, lat} } ));
     });
   }
 }
+
+export function loadingMatches(){
+  return {
+    type: types.LOADING_MATCHES
+  }
+}
+
+export function loadedMatchesWithError(errorType){
+  return {
+    type: types.ERROR_LOADING_MATCHES,
+    errorType
+  }
+}
+
+export function loadedMatchesWithSuccess(){
+  return{
+    type: types.SUCCESS_LOADING_MATCHES
+  }
+}
+
 
 export function setCurrentLocation(current_location){
   console.log("SETTING THE CURRENT LOCATION")
