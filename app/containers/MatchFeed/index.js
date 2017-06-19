@@ -207,6 +207,9 @@ class MatchFeed extends Component{
   // update. The 2 page index is the not interested post action
   // The action dispatched should update the feed list.
   likeDislikeUser = (pageNum, userId) => {
+    console.log("HANDLE LIKE DISLIKE")
+    console.log(pageNum)
+    console.log(userId)
     switch(pageNum){
       case 0:
         this.props.toggleUserLikesTarget(true, userId)
@@ -272,7 +275,12 @@ class MatchFeed extends Component{
             return(
               <View key={match.id}>
 
-                <FeedListRow changeScrollState={this.changeScrollState}
+                <FeedListRow
+                            // remove={false}
+                            // onRemove={()=>{console.log("asdf")}}
+
+
+                            changeScrollState={this.changeScrollState}
                              likeDislikeUser={this.likeDislikeUser}
                              _onPressProfile={this._onPressProfile}
                              _renderImage={this._renderImage}
