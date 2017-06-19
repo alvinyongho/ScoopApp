@@ -43,18 +43,11 @@ export function myProfileNav(state = initialNavState, action){
       if (action.type === 'Navigation/NAVIGATE') {
               const { routes, index } = state;
               const { routeName, params } = action;
-
-
-              // const currentTab = routes[index];
               currentTab = routes
-              // console.log
-              console.log("THE CURRENT TAB")
-              console.log(currentTab)
-              // const lastScene = currentTab.routes[currentTab.length - 1];
               const lastScene = currentTab[currentTab.length - 1];
 
               // Check for duplication
-              if (lastScene.routeName === routeName && (lastScene.params ===params)) {
+              if (lastScene.routeName === routeName && (lastScene.params == params)) {
                   return state;
               }
           }

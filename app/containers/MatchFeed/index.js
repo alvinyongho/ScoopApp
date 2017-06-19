@@ -40,27 +40,24 @@ class MatchFeed extends Component{
 
   state = {
     isRefreshing: false,
-    initialPosition: 'unknown',
     lastPosition: 'unknown',
     isScrollEnabled: true,
-
-    appState: AppState.currentState
+    appState: AppState.currentState,  // FOr handling when the app returns from background
+    locationAccessibility: 'NOT_SET'  // For setting the error feedback if location cannot be accessed
   };
 
-  _onRefresh = () => {
 
+  _onRefresh = () => {
     if(this.state.lastPosition === 'unknown'){
       alert("the current location is unknown")
       return
     }
 
     this.setState({isRefreshing: true});
-    this.props.setFeedListStatus("LOADING")
-
+    // this.props.setFeedListStatus("LOADING")
 
     setTimeout(() => {
-      // prepend 10 items
-      this.searchMatches();
+      this.retrieveMatches();
       this.setState({
         isRefreshing: false,
       });
@@ -68,18 +65,14 @@ class MatchFeed extends Component{
 
   };
 
-
-  componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange);
-    navigator.geolocation.clearWatch(this.watchID);
+  componentWillMount(){
+    this.getCurrentLocation()
   }
 
-  searchMatches() {
-    // fetch the matches using the last set position
-    this.props.fetchMatches(
-      match_attributes =
-        this.state.lastPosition
-    )
+  retrieveMatches() {
+    if(this.state.locationAccessibility === 'AVAILABLE'){
+      this.props.fetchMatches()
+    }
   }
 
   matches(){
@@ -90,19 +83,6 @@ class MatchFeed extends Component{
   componentDidMount(){
     //Handle if app goes to the background/foreground then we get the current location and fetch matches
     AppState.addEventListener('change', this._handleAppStateChange);
-    this.getCurrentLocation()
-    this.props.fetchFilters()
-  }
-
-  getCurrentLocation = () => {
-    this.watchID = navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({lastPosition: position});
-        this.props.fetchMatches(match_attributes=position)
-      },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -112,10 +92,71 @@ class MatchFeed extends Component{
     this.setState({appState: nextAppState});
   }
 
-  componentWillReceiveProps(nextProps){
+
+  getCurrentLocation = () => {
+    // Gets the current location using the navigator api and sets the state
+    this.watchID = navigator.geolocation.watchPosition(
+      (position) => {
+
+        console.log("GETTING THE CURRENT LOCATION")
+        console.log(`longitude: ${position.coords.longitude}`)
+        console.log(`latitude:  ${position.coords.latitude}`)
+
+
+        this.setState({lastPosition: position.coords});
+        this.setState({locationAccessibility: "AVAILABLE"})
+        // Dispatch an action to set the current location
+        this._setUserLocation(position.coords)
+      },
+      (error) => {
+        switch(error.code){
+          case 1:
+            this.setState({locationAccessibility: "PERMISSION_NEEDED"})
+            break
+          case 2:
+            this.setState({locationAccessibility: "LOCATION_UNAVAILABLE"})
+            break
+          case 3:
+            this.setState({locationAccessibility: "LOCATION_UNAVAILABLE"})
+            break
+        }
+        alert(JSON.stringify(error))
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
 
-  componentWillMount(){
+  _setUserLocation(position){
+    // Calls the action to update the state of the user's location
+    this.props.updateCurrentLocation(position)
+  }
+
+
+  // Should we retrieve the matches?
+  shouldComponentUpdate(nextProps, nextState){
+    currLatSet = typeof nextProps.currentLocation.lat != undefined
+    currLonSet = typeof nextProps.currentLocation.lon != undefined
+    locationAccessable = nextState.locationAccessibility === 'AVAILABLE'
+    canLoadFeed = (currLatSet && currLonSet && locationAccessable)
+
+    console.log("COMPUTING SHOULD COMPONENT UPDATE")
+    if(this.props.currentLocation !== nextProps.currentLocation){
+      if (canLoadFeed){
+        console.log("CAN DO SHIT")
+        this.retrieveMatches();
+
+      } else {
+        console.log("WE CANNOT DO SHIT")
+      }
+      // return true
+    }
+    return true
+  }
+
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
 
@@ -137,7 +178,6 @@ class MatchFeed extends Component{
     );
   }
 
-
   _onPressProfile = (matchId) => {
     // fire an action to perform the get user task of selected and set the state tree accordingly
     // populate the profile detail
@@ -150,13 +190,13 @@ class MatchFeed extends Component{
     this.setState({isScrollEnabled: scrollState})
   }
 
-  likeDislikeUser = (pageNum, userId) => {
   // This function uses the pagination index to determine
   // whether the user swiped interested/not interested.
   // The 0 page index is a like. The 1 page index is a button that goes
   // to the user profile so it does not toggle the post action + feedlist state
   // update. The 2 page index is the not interested post action
   // The action dispatched should update the feed list.
+  likeDislikeUser = (pageNum, userId) => {
     switch(pageNum){
       case 0:
         this.props.toggleUserLikesTarget(true, userId)
@@ -170,6 +210,13 @@ class MatchFeed extends Component{
   }
 
   render(){
+    if(this.state.locationAccessibility !== "AVAILABLE"){
+      return(
+        <View><Text>{this.state.locationAccessibility}</Text></View>
+      )
+    }
+
+
     return (
       <View style={{height:height-100}}>
         <ScrollView
@@ -237,7 +284,6 @@ class MatchFeed extends Component{
   }
 }
 
-
 const CELL_SIZE = 270
 
 var styles = StyleSheet.create({
@@ -287,7 +333,8 @@ var styles = StyleSheet.create({
 // Match state to props which allows us to access actions
 function mapStateToProps(state){
   return {
-    foundMatches: state.foundMatches
+    foundMatches: state.foundMatches,
+    currentLocation: state.currentLocation
   }
 }
 

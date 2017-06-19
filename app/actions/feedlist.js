@@ -98,8 +98,22 @@ export function reloadMatches(match_attributes){
           jobTitle: user.jobTitle
         }
       })
-      dispatch(setFoundMatches( { matches_found: response, current_location: {lon, lat} } ));
+      dispatch(setFoundMatches( { matches_found: response } ));
     });
+  }
+}
+
+
+export function updateCurrentLocation(currentLocation){
+// This function sould be called when the feedlist gets loaded initially,
+// when it becomes active in foreground, when refreshed, and when the user goes
+// to the feedlist tab.
+  return(dispatch) => {
+    dispatch( setCurrentLocation({
+                lon: currentLocation.longitude,
+                lat: currentLocation.latitude
+              })
+    )
   }
 }
 
@@ -107,17 +121,11 @@ export function reloadMatches(match_attributes){
 // fit in the criterias defined by match attributes
 export function fetchMatches(match_attributes){
   return(dispatch, getState) => {
-    let lon = match_attributes.coords.longitude
-    let lat = match_attributes.coords.latitude
+    let lon = getState().currentLocation.lon
+    let lat = getState().currentLocation.lat
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
     performLoadFeedTask(scoopUserId, scoopUserToken, lon, lat).then((results) => {
-      console.log("Performing load feed task")
-      console.log('LOAD FEED RESULTS')
-      console.log("LON : " + lon)
-      console.log("LAT : " + lat)
-      console.log(results)
-
       const response = results.users.map((user, index) => {
         return {
           id: user.userId,
@@ -128,6 +136,14 @@ export function fetchMatches(match_attributes){
       })
       dispatch(setFoundMatches( { matches_found: response, current_location: {lon, lat} } ));
     });
+  }
+}
+
+export function setCurrentLocation(current_location){
+  console.log("SETTING THE CURRENT LOCATION")
+  return{
+    type: types.SET_CURRENT_LOCATION,
+    current_location
   }
 }
 
@@ -183,11 +199,11 @@ export function goToChatDetailFromFeed(){
 // Set found matches takes in a payload of fetched matches (args) => args.matches_found
 // input: matches found
 // output: state with the type
-export function setFoundMatches( { matches_found, current_location } ){
+export function setFoundMatches( { matches_found } ){
   return {
     type: types.SET_FOUND_MATCHES,
     matches_found,
-    current_location
+    // current_location
   }
 }
 

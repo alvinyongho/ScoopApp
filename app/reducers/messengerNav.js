@@ -21,6 +21,20 @@ export function messengerNav(state = initialNavState, action){
       }
 
     default:
+      if (action.type === 'Navigation/NAVIGATE') {
+          const { routes, index } = state;
+          const { routeName, params } = action;
+          currentTab = routes
+          const lastScene = currentTab[currentTab.length - 1];
+
+          // Check for duplication
+          if (lastScene.routeName === routeName && (lastScene.params == params)) {
+              return state;
+          }
+      }
+
+
+
       return MessengerNavigator.router.getStateForAction(action, state);
   }
 }

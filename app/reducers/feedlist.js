@@ -24,9 +24,11 @@ export const foundMatches = createReducer({}, {
 });
 
 export const currentLocation = createReducer({}, {
-  [types.SET_FOUND_MATCHES](state, action){
-    return action.current_location;
+  [types.SET_CURRENT_LOCATION](state, action){
+    return action.current_location
   }
+
+
 })
 
 // Updates the counter for number of matches based on action
