@@ -19,6 +19,8 @@ import {
 
 import Swiper from '../../components/Profile/react-native-page-swiper';
 import images from '@assets/images';
+import ProgressiveImage from 'react-native-progressive-image'
+
 
 var {height, width} = Dimensions.get('window');
 
@@ -93,16 +95,14 @@ class MatchFeed extends Component{
     // Gets the current location using the navigator api and sets the state
     this.watchID = navigator.geolocation.watchPosition(
       (position) => {
-
-        console.log("GETTING THE CURRENT LOCATION")
-        console.log(`longitude: ${position.coords.longitude}`)
-        console.log(`latitude:  ${position.coords.latitude}`)
-        //
-
-        this.setState({lastPosition: position.coords});
-        this.setState({locationAccessibility: "AVAILABLE"})
-        // Dispatch an action to set the current location
-        this._setUserLocation(position.coords)
+        if(position.coords.latitude !== this.state.lastPosition.latitude &&
+           position.coords.longitude !== this.state.lastPosition.longitude
+          ){
+          this.setState({lastPosition: position.coords});
+          this.setState({locationAccessibility: "AVAILABLE"})
+          // Dispatch an action to set the current location
+          this._setUserLocation(position.coords)
+        }
       },
       (error) => {
         switch(error.code){
@@ -110,15 +110,15 @@ class MatchFeed extends Component{
             this.setState({locationAccessibility: "PERMISSION_NEEDED"})
             break
           case 2:
-            this.setState({locationAccessibility: "LOCATION_UNAVAILABLE"})
+            this.setState({locationAccessibility: "LOCATION_TIMEOUT"})
             break
           case 3:
             this.setState({locationAccessibility: "LOCATION_UNAVAILABLE"})
             break
         }
-        alert(JSON.stringify(error))
+        // alert(JSON.stringify(error))
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 500}
+      {enableHighAccuracy: false, timeout: 50000, maximumAge: 1000, distanceFilter: 1000}
     );
   }
 
@@ -127,11 +127,8 @@ class MatchFeed extends Component{
     this.props.updateCurrentLocation(position)
   }
 
-
   // Should we retrieve the matches?
-
   componentWillReceiveProps(nextProps){
-    console.log("COMPONENT WILL RECEIVE PROPS")
     if(nextProps.feedListStatus.matchLoadingStatus === "SUCCESS"){
       this.setState({isRefreshing: false})
     }
@@ -139,27 +136,10 @@ class MatchFeed extends Component{
 
   shouldComponentUpdate(nextProps, nextState){
 
-    // console.log(nextState)
-    // if(nextState.isRefreshing === true){
-    //   //check if match feed retrieved
-    //
-    //   console.log(nextState.matchFeedLoadingStatus)
-    //   if (nextState.matchFeedLoadingStatus === "SUCCESS"){
-    //     this.setState({isRefreshing: false})
-    //   }
-    // }
-
     currLatSet = typeof nextProps.currentLocation.lat != undefined
     currLonSet = typeof nextProps.currentLocation.lon != undefined
     locationAccessable = nextState.locationAccessibility === 'AVAILABLE'
     canLoadFeed = (currLatSet && currLonSet && locationAccessable)
-
-    // console.log("did the location update")
-    // didLocationLonUpdate = (this.state.lastPosition.longitude !== nextProps.currentLocation.lon)
-    // didLocationLatUpdate = (this.state.lastPosition.latitude !== nextProps.currentLocation.lat)
-    // console.log(nextProps.currentLocation.lon)
-    // console.log(didLocationLonUpdate && didLocationLatUpdate)
-    //
 
     currLoc = this.props.currentLocation
     nextLoc = nextProps.currentLocation
@@ -168,20 +148,36 @@ class MatchFeed extends Component{
       console.log("location updated")
       if (canLoadFeed){
         this.retrieveMatches();
-
       }
 
-      // console.log("SETTING THE STATE")
-      // console.log({lastPosition:{longitude:nextProps.currentLocation.lon, latitude: nextProps.currentLocation.lat}})
-      // this.setState({lastPosition:{longitude:nextProps.currentLocation.lon, latitude: nextProps.currentLocation.lat}})
     }
 
+    // Syncronize the view state of the match feed with the feedList status
     if(this.state.matchFeedLoadingStatus !== nextProps.feedListStatus){
       this.setState({matchFeedLoadingStatus: nextProps.feedListStatus.matchLoadingStatus})
     }
 
     return true
   }
+
+  // componentDidUpdate(prevProps, prevState){
+  //   // console.log("COMPONENT DID UPDATE")
+  //   // console.log("PREV STATE")
+  //   // console.log(prevState)
+  //   // console.log("CURRENT STATE")
+  //   // console.log(this.state)
+  //   // console.log("PREV PROP")
+  //   // console.log(prevProps.feedListStatus)
+  //   // console.log("PREV current prop")
+  //   // console.log(this.props.feedListStatus)
+  //   //
+  //   // if(this.props.feedListStatus != prevProps.feedListStatus){
+  //   //   this.setState({matchFeedLoadingStatus: prevProps.feedListStatus.matchLoadingStatus})
+  //   // }
+  //   // console.log(prevProps.feedListStatus.matchLoadingStatus)
+  //
+  //
+  // }
 
 
   componentWillUnmount() {
@@ -241,7 +237,8 @@ class MatchFeed extends Component{
 
   render(){
     showLocationError = (this.state.locationAccessibility === 'PERMISSION_NEEDED' ||
-                         this.state.locationAccessibility === 'LOCATION_UNAVAILABLE')
+                         this.state.locationAccessibility === 'LOCATION_UNAVAILABLE' ||
+                         this.state.locationAccessibility === 'LOCATION_TIMEOUT')
     showLoadingBar    = (this.state.matchFeedLoadingStatus !== 'SUCCESS')
 
     if(showLocationError){
@@ -256,8 +253,10 @@ class MatchFeed extends Component{
       )
     }
 
+
+    if(this.state.matchFeedLoadingStatus === 'SUCCESS' && this.state.locationAccessibility === 'AVAILABLE'){
     return (
-      <View>
+      <View style={{height: height-100}}>
         <ScrollView
           scrollEnabled={this.state.isScrollEnabled}
           refreshControl={
@@ -273,6 +272,10 @@ class MatchFeed extends Component{
         }>
           {/* Header */}
           <View style={{height: 7}} />
+
+          {this.matches().length === 0 &&
+            <View><Text>Could not find any matches</Text></View>
+          }
 
           {this.matches().map(match => {
             // Because we don't delete the matches. we simply set it to
@@ -320,6 +323,7 @@ class MatchFeed extends Component{
       </View>
 
     );
+    }
   }
 }
 
