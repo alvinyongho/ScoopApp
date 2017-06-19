@@ -19,9 +19,28 @@ export const foundMatches = createReducer({}, {
       [key]: {$set: undefined}
     })
   }
-
-
 });
+
+
+export const feedListStatus = createReducer({matchLoadingStatus: null}, {
+  [types.LOADING_MATCHES](state, action){
+    return update(state, {
+      matchLoadingStatus: {$set: "LOADING"}
+    })
+  },
+  [types.ERROR_LOADING_MATCHES](state, action){
+    return update(state, {
+      matchLoadingStatus: {$set: "ERROR"}
+    })
+  },
+  [types.SUCCESS_LOADING_MATCHES](state, action){
+    return update(state, {
+      matchLoadingStatus: {$set: "SUCCESS"}
+    })
+  },
+
+})
+
 
 export const currentLocation = createReducer({}, {
   [types.SET_CURRENT_LOCATION](state, action){

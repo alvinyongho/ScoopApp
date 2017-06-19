@@ -12,7 +12,7 @@ export async function performTaskWithParams(task, params){
     let responseJson = await response.json()
     return responseJson.results
   } catch(error){
-    console.log('error')
+    return "ERROR"
   }
 }
 
