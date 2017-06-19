@@ -55,14 +55,7 @@ class MatchFeed extends Component{
     }
 
     this.setState({isRefreshing: true});
-    // this.props.setFeedListStatus("LOADING")
-
-    setTimeout(() => {
-      this.retrieveMatches();
-      this.setState({
-        isRefreshing: false,
-      });
-    }, 3000);
+    this.retrieveMatches();
 
   };
 
@@ -136,7 +129,26 @@ class MatchFeed extends Component{
 
 
   // Should we retrieve the matches?
+
+  componentWillReceiveProps(nextProps){
+    console.log("COMPONENT WILL RECEIVE PROPS")
+    if(nextProps.feedListStatus.matchLoadingStatus === "SUCCESS"){
+      this.setState({isRefreshing: false})
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState){
+
+    // console.log(nextState)
+    // if(nextState.isRefreshing === true){
+    //   //check if match feed retrieved
+    //
+    //   console.log(nextState.matchFeedLoadingStatus)
+    //   if (nextState.matchFeedLoadingStatus === "SUCCESS"){
+    //     this.setState({isRefreshing: false})
+    //   }
+    // }
+
     currLatSet = typeof nextProps.currentLocation.lat != undefined
     currLonSet = typeof nextProps.currentLocation.lon != undefined
     locationAccessable = nextState.locationAccessibility === 'AVAILABLE'
