@@ -7,6 +7,9 @@
   * LOCATION_UNAVAILABLE // Todo: Error Feedback
 
 
+###### AppState
+  * Reloads the feed
+  * Todo: Reload the unread messages list
 
 ##### Action Creator
 app/actions/feedlist
