@@ -14,7 +14,7 @@ import {
   StyleSheet,
   Button,
   Dimensions,
-  AppState
+  // AppState
 } from 'react-native';
 
 import Swiper from '../../components/Profile/react-native-page-swiper';
@@ -42,7 +42,7 @@ class MatchFeed extends Component{
     isRefreshing: false,
     lastPosition: 'unknown',
     isScrollEnabled: true,
-    appState: AppState.currentState,   // FOr handling when the app returns from background
+    // appState: AppState.currentState,   // FOr handling when the app returns from background
     locationAccessibility: 'NOT_SET',  // For setting the error feedback if location cannot be accessed
     matchFeedLoadingStatus: 'NOT_SET'
   };
@@ -83,18 +83,22 @@ class MatchFeed extends Component{
 
   componentDidMount(){
     //Handle if app goes to the background/foreground then we get the current location and fetch matches
-    AppState.addEventListener('change', this._handleAppStateChange);
+    // AppState.addEventListener('change', this._handleAppStateChange);
   }
 
-
-  _handleAppStateChange = (nextAppState) => {
-    console.log(nextAppState)
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log("APP IS NOW ACTIVE AGAIN")
-      this.getCurrentLocation()
-    }
-    this.setState({appState: nextAppState});
-  }
+  //
+  // _handleAppStateChange = (nextAppState) => {
+  //   console.log("INSIDE HANDLE APP STATE CHANGE")
+  //   console.log("INSIDE HANDLE APP STATE CHANGE")
+  //
+  //   console.log(nextAppState)
+  //
+  //   if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+  //     console.log("APP IS NOW ACTIVE AGAIN")
+  //     this.getCurrentLocation()
+  //   }
+  //   this.setState({appState: nextAppState});
+  // }
 
 
   getCurrentLocation = () => {
@@ -232,7 +236,7 @@ class MatchFeed extends Component{
     }
 
     return (
-      <View style={{height:height-100}}>
+      <View>
         <ScrollView
           scrollEnabled={this.state.isScrollEnabled}
           refreshControl={
