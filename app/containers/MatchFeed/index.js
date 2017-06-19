@@ -101,16 +101,12 @@ class MatchFeed extends Component{
     this.watchID = navigator.geolocation.watchPosition(
       (position) => {
 
-        // console.log("GETTING THE CURRENT LOCATION")
-        // console.log(`longitude: ${position.coords.longitude}`)
-        // console.log(`latitude:  ${position.coords.latitude}`)
+        console.log("GETTING THE CURRENT LOCATION")
+        console.log(`longitude: ${position.coords.longitude}`)
+        console.log(`latitude:  ${position.coords.latitude}`)
         //
 
         this.setState({lastPosition: position.coords});
-
-        console.log("SETTING LAST POSITION")
-        console.log(position.coords)
-
         this.setState({locationAccessibility: "AVAILABLE"})
         // Dispatch an action to set the current location
         this._setUserLocation(position.coords)
@@ -129,7 +125,7 @@ class MatchFeed extends Component{
         }
         alert(JSON.stringify(error))
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 500}
     );
   }
 
@@ -146,20 +142,26 @@ class MatchFeed extends Component{
     locationAccessable = nextState.locationAccessibility === 'AVAILABLE'
     canLoadFeed = (currLatSet && currLonSet && locationAccessable)
 
-    console.log("did the location update")
-    didLocationLonUpdate = (this.state.lastPosition.longitude !== nextProps.currentLocation.lon)
-    didLocationLatUpdate = (this.state.lastPosition.latitude !== nextProps.currentLocation.lat)
-    console.log(nextProps.currentLocation.lon)
-    console.log(didLocationLonUpdate && didLocationLatUpdate)
+    // console.log("did the location update")
+    // didLocationLonUpdate = (this.state.lastPosition.longitude !== nextProps.currentLocation.lon)
+    // didLocationLatUpdate = (this.state.lastPosition.latitude !== nextProps.currentLocation.lat)
+    // console.log(nextProps.currentLocation.lon)
+    // console.log(didLocationLonUpdate && didLocationLatUpdate)
+    //
 
+    currLoc = this.props.currentLocation
+    nextLoc = nextProps.currentLocation
 
-    if(this.props.currentLocation !== nextProps.currentLocation){
+    if((currLoc) !== (nextLoc)){
       console.log("location updated")
       if (canLoadFeed){
         this.retrieveMatches();
 
       }
-      this.setState({lastPosition:{longitude:nextProps.currentLocation.lon, latitude: nextProps.currentLocation.lat}})
+
+      // console.log("SETTING THE STATE")
+      // console.log({lastPosition:{longitude:nextProps.currentLocation.lon, latitude: nextProps.currentLocation.lat}})
+      // this.setState({lastPosition:{longitude:nextProps.currentLocation.lon, latitude: nextProps.currentLocation.lat}})
     }
 
     if(this.state.matchFeedLoadingStatus !== nextProps.feedListStatus){
@@ -228,9 +230,8 @@ class MatchFeed extends Component{
   render(){
     showLocationError = (this.state.locationAccessibility === 'PERMISSION_NEEDED' ||
                          this.state.locationAccessibility === 'LOCATION_UNAVAILABLE')
-    showLoadingBar    = (this.state.matchFeedLoadingStatus === 'LOADING' ||
-                         this.state.matchFeedLoadingStatus === 'NOT_SET') ||
-                         this.state.locationAccessibility !== 'AVAILABLE'
+    showLoadingBar    = (this.state.matchFeedLoadingStatus !== 'SUCCESS')
+
     if(showLocationError){
       return(
         <View><Text>{this.state.locationAccessibility}</Text></View>
@@ -238,7 +239,6 @@ class MatchFeed extends Component{
     }
 
     if(showLoadingBar){
-      console.log("SHOW LOADING INDICATOR")
       return(
         <View><Text>LOADING INDICATOR HERE</Text></View>
       )
