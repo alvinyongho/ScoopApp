@@ -17,10 +17,10 @@ import {
   AppState
 } from 'react-native';
 
-import Swiper from '../../components/Profile/react-native-page-swiper';
 import images from '@assets/images';
-import ProgressiveImage from 'react-native-progressive-image'
+import Spinner from 'react-native-spinkit';
 
+import FeedListRow from './FeedListRow'
 
 var {height, width} = Dimensions.get('window');
 
@@ -85,6 +85,7 @@ class MatchFeed extends Component{
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
       // this.getCurrentLocation()
+      this.retrieveMatches()
       // If the current location is changed then we will update the component by retrieving matches
     }
     this.setState({appState: nextAppState});
@@ -132,22 +133,23 @@ class MatchFeed extends Component{
     if(nextProps.feedListStatus.matchLoadingStatus === "SUCCESS"){
       this.setState({isRefreshing: false})
     }
-  }
 
-  shouldComponentUpdate(nextProps, nextState){
 
     currLatSet = typeof nextProps.currentLocation.lat != undefined
     currLonSet = typeof nextProps.currentLocation.lon != undefined
-    locationAccessable = nextState.locationAccessibility === 'AVAILABLE'
+    locationAccessable = this.state.locationAccessibility === 'AVAILABLE'
     canLoadFeed = (currLatSet && currLonSet && locationAccessable)
 
     currLoc = this.props.currentLocation
     nextLoc = nextProps.currentLocation
 
+
     if((currLoc) !== (nextLoc)){
       console.log("location updated")
       if (canLoadFeed){
         this.retrieveMatches();
+      } else {
+        return false
       }
 
     }
@@ -157,27 +159,9 @@ class MatchFeed extends Component{
       this.setState({matchFeedLoadingStatus: nextProps.feedListStatus.matchLoadingStatus})
     }
 
-    return true
-  }
 
-  // componentDidUpdate(prevProps, prevState){
-  //   // console.log("COMPONENT DID UPDATE")
-  //   // console.log("PREV STATE")
-  //   // console.log(prevState)
-  //   // console.log("CURRENT STATE")
-  //   // console.log(this.state)
-  //   // console.log("PREV PROP")
-  //   // console.log(prevProps.feedListStatus)
-  //   // console.log("PREV current prop")
-  //   // console.log(this.props.feedListStatus)
-  //   //
-  //   // if(this.props.feedListStatus != prevProps.feedListStatus){
-  //   //   this.setState({matchFeedLoadingStatus: prevProps.feedListStatus.matchLoadingStatus})
-  //   // }
-  //   // console.log(prevProps.feedListStatus.matchLoadingStatus)
-  //
-  //
-  // }
+
+  }
 
 
   componentWillUnmount() {
@@ -235,28 +219,30 @@ class MatchFeed extends Component{
     }
   }
 
+  _renderSpinner = () =>{return (<View style={{flex: 1,
+              alignItems:'center',
+              justifyContent: 'center'}}>
+              <Spinner type={'Arc'} color="skyblue"/>
+          </View>);}
+
   render(){
     showLocationError = (this.state.locationAccessibility === 'PERMISSION_NEEDED' ||
                          this.state.locationAccessibility === 'LOCATION_UNAVAILABLE' ||
                          this.state.locationAccessibility === 'LOCATION_TIMEOUT')
     showLoadingBar    = (this.state.matchFeedLoadingStatus !== 'SUCCESS')
 
-    if(showLocationError){
-      return(
-        <View><Text>{this.state.locationAccessibility}</Text></View>
-      )
-    }
+    loc_timeout = (this.state.locationAccessibility === 'LOCATION_TIMEOUT')
 
-    if(showLoadingBar){
-      return(
-        <View><Text>LOADING INDICATOR HERE</Text></View>
-      )
-    }
+    if(loc_timeout)
+      return this._renderSpinner()
+    if(showLocationError)
+      return <View><Text>{this.state.locationAccessibility}</Text></View>
+    if(showLoadingBar)
+      return this._renderSpinner()
 
-
-    if(this.state.matchFeedLoadingStatus === 'SUCCESS' && this.state.locationAccessibility === 'AVAILABLE'){
+    // if(this.state.matchFeedLoadingStatus === 'SUCCESS')
     return (
-      <View style={{height: height-100}}>
+      <View style={{flex: 1, height: height-100}}>
         <ScrollView
           scrollEnabled={this.state.isScrollEnabled}
           refreshControl={
@@ -285,33 +271,14 @@ class MatchFeed extends Component{
 
             return(
               <View key={match.id}>
-                <Swiper
-                  onDragRelease={() => this.changeScrollState(true)}
-                  onDragStart={() => this.changeScrollState(false)}
-                  onPageChange={(pageNum) => this.likeDislikeUser(pageNum, match.id)}
-                  style={styles.wrapper} index={1} pager={false}>
 
-                  <View style={styles.interestedSlide}>
-                    <Image style={{right:20}} source={images.interested} />
-                  </View>
+                <FeedListRow changeScrollState={this.changeScrollState}
+                             likeDislikeUser={this.likeDislikeUser}
+                             _onPressProfile={this._onPressProfile}
+                             _renderImage={this._renderImage}
+                             match={match}
+                             />
 
-                  <View style={styles.profileSlide}>
-                    <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
-                      <TouchableHighlight onPress={() => this._onPressProfile(match.id)} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
-                        {this._renderImage(match)}
-                      </TouchableHighlight>
-                    </View>
-                  </View>
-
-                  <View
-                    onDragRelease={() => this.changeScrollState(true)}
-                    onDragStart={() => this.changeScrollState(false)}
-                    onPageChange={(pageNum) => this.likeDislikeUser(pageNum, match.id)}
-                    style={styles.notInterestedSlide}>
-                    <Image style={{left:20}} source={images.notInterested} />
-                  </View>
-
-                </Swiper>
               </View>
             );
             })}
@@ -321,9 +288,9 @@ class MatchFeed extends Component{
 
         </ScrollView>
       </View>
-
     );
-    }
+
+    // return <View><Text>An unknown error occured.</Text></View>
   }
 }
 
