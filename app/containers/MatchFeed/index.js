@@ -14,7 +14,7 @@ import {
   StyleSheet,
   Button,
   Dimensions,
-  // AppState
+  AppState
 } from 'react-native';
 
 import Swiper from '../../components/Profile/react-native-page-swiper';
@@ -42,7 +42,7 @@ class MatchFeed extends Component{
     isRefreshing: false,
     lastPosition: 'unknown',
     isScrollEnabled: true,
-    // appState: AppState.currentState,   // FOr handling when the app returns from background
+    appState: AppState.currentState,
     locationAccessibility: 'NOT_SET',  // For setting the error feedback if location cannot be accessed
     matchFeedLoadingStatus: 'NOT_SET'
   };
@@ -83,22 +83,17 @@ class MatchFeed extends Component{
 
   componentDidMount(){
     //Handle if app goes to the background/foreground then we get the current location and fetch matches
-    // AppState.addEventListener('change', this._handleAppStateChange);
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
 
-  //
-  // _handleAppStateChange = (nextAppState) => {
-  //   console.log("INSIDE HANDLE APP STATE CHANGE")
-  //   console.log("INSIDE HANDLE APP STATE CHANGE")
-  //
-  //   console.log(nextAppState)
-  //
-  //   if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-  //     console.log("APP IS NOW ACTIVE AGAIN")
-  //     this.getCurrentLocation()
-  //   }
-  //   this.setState({appState: nextAppState});
-  // }
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!')
+      // this.getCurrentLocation()
+      // If the current location is changed then we will update the component by retrieving matches
+    }
+    this.setState({appState: nextAppState});
+  }
 
 
   getCurrentLocation = () => {
@@ -106,12 +101,16 @@ class MatchFeed extends Component{
     this.watchID = navigator.geolocation.watchPosition(
       (position) => {
 
-        console.log("GETTING THE CURRENT LOCATION")
-        console.log(`longitude: ${position.coords.longitude}`)
-        console.log(`latitude:  ${position.coords.latitude}`)
-
+        // console.log("GETTING THE CURRENT LOCATION")
+        // console.log(`longitude: ${position.coords.longitude}`)
+        // console.log(`latitude:  ${position.coords.latitude}`)
+        //
 
         this.setState({lastPosition: position.coords});
+
+        console.log("SETTING LAST POSITION")
+        console.log(position.coords)
+
         this.setState({locationAccessibility: "AVAILABLE"})
         // Dispatch an action to set the current location
         this._setUserLocation(position.coords)
@@ -147,11 +146,20 @@ class MatchFeed extends Component{
     locationAccessable = nextState.locationAccessibility === 'AVAILABLE'
     canLoadFeed = (currLatSet && currLonSet && locationAccessable)
 
+    console.log("did the location update")
+    didLocationLonUpdate = (this.state.lastPosition.longitude !== nextProps.currentLocation.lon)
+    didLocationLatUpdate = (this.state.lastPosition.latitude !== nextProps.currentLocation.lat)
+    console.log(nextProps.currentLocation.lon)
+    console.log(didLocationLonUpdate && didLocationLatUpdate)
+
+
     if(this.props.currentLocation !== nextProps.currentLocation){
       console.log("location updated")
       if (canLoadFeed){
         this.retrieveMatches();
+
       }
+      this.setState({lastPosition:{longitude:nextProps.currentLocation.lon, latitude: nextProps.currentLocation.lat}})
     }
 
     if(this.state.matchFeedLoadingStatus !== nextProps.feedListStatus){
@@ -221,7 +229,8 @@ class MatchFeed extends Component{
     showLocationError = (this.state.locationAccessibility === 'PERMISSION_NEEDED' ||
                          this.state.locationAccessibility === 'LOCATION_UNAVAILABLE')
     showLoadingBar    = (this.state.matchFeedLoadingStatus === 'LOADING' ||
-                         this.state.matchFeedLoadingStatus === 'NOT_SET')
+                         this.state.matchFeedLoadingStatus === 'NOT_SET') ||
+                         this.state.locationAccessibility !== 'AVAILABLE'
     if(showLocationError){
       return(
         <View><Text>{this.state.locationAccessibility}</Text></View>
