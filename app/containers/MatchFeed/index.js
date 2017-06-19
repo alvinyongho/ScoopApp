@@ -86,8 +86,8 @@ class MatchFeed extends Component{
     AppState.addEventListener('change', this._handleAppStateChange);
   }
 
-  _handleAppStateChange = (nextAppState) => {
 
+  _handleAppStateChange = (nextAppState) => {
     console.log(nextAppState)
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log("APP IS NOW ACTIVE AGAIN")
@@ -150,7 +150,7 @@ class MatchFeed extends Component{
       }
     }
 
-    if(this.props.feedListStatus !== nextProps.feedListStatus){
+    if(this.state.matchFeedLoadingStatus !== nextProps.feedListStatus){
       this.setState({matchFeedLoadingStatus: nextProps.feedListStatus.matchLoadingStatus})
     }
 
