@@ -149,6 +149,8 @@ export default class FilterItem extends Component{
             sliderColor={this.props.sliderColor}
             hasSteps={this.props.hasSteps}
             numSteps={this.props.numSteps}
+            sliderColorIsGradient={false}
+            thumbColor={'orange'}
         />
 
 

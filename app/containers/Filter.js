@@ -178,6 +178,8 @@ export class Filter extends Component {
             containsSliderLabels={false}
             thumbPositions={[this.props.prevSliderValues.SEARCH_RADIUS[0]]}
             sliderColor={'#ECA45C'}
+            sliderColorIsGradient={false}
+            thumbColor={'orange'}
 
 
             initialValue={`${Math.floor(this.props.prevSliderValues.SEARCH_RADIUS[0]*200)} miles`}
