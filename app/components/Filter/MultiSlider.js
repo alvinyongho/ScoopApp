@@ -11,6 +11,7 @@ import {
   Animated,
   PropTypes
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 
@@ -42,23 +43,27 @@ export default class MultiSlider extends Component{
     sliderHeight: React.PropTypes.number,             // sets the height of the slider
     thumbs:    React.PropTypes.array,
     sliderColor: React.PropTypes.string,
+    sliderColorIsGradient: React.PropTypes.bool,      // checks if slider should be color gradient
+    sliderColorGradientArray: React.PropTypes.array,  // array of colors for gradient
   }
 
   static defaultProps = {
     hasSteps: false,
     numSteps: 3,
     debug: false,
-    thumbSize: 22,
+    thumbSize: 25,
     thumbBorderRadiusWidth: 4,
-    thumbColor: 'orange',
+    thumbColor: '#55c9ec',
     sliderColor: 'orange',
     sliderLeftRightMargin: 25,
-    sliderHeight: 5,
+    sliderHeight: 4,
     disabled: false,
     thumbs: [
               { initialPosition: 0, },
               { initialPosition: 1, },
-            ]
+            ],
+    sliderColorIsGradient: true,
+    sliderColorGradientArray: ['#ECA45C', '#956eb6']
   }
 
   computeReleasedPositions = () => {
@@ -218,13 +223,34 @@ export default class MultiSlider extends Component{
   render() {
     return(
       <View style={{flex:1, marginLeft:this.props.sliderLeftRightMargin, marginRight: this.props.sliderLeftRightMargin, justifyContent: 'center'}}>
-        <View onLayout={this._setSliderWidth}
-                 style={[styles.sliderContainer,
-                        {backgroundColor: this.props.sliderColor,
-                         height: this.props.sliderHeight,
-                         borderRadius: this.props.sliderHeight/2}
-                       ]}
-        />
+        {this.props.sliderColorIsGradient ? 
+          <LinearGradient onLayout={this._setSliderWidth}
+            colors={this.props.sliderColorGradientArray}
+            start={{x: 0.0, y: 0.0}}
+            end={{x: 1, y: 0}}
+            style={[styles.sliderContainer,
+              {height: this.props.sliderHeight,
+              borderRadius: this.props.sliderHeight/2,
+              justifyContent: 'center',
+              alignItems: 'center',
+              },
+            ]}>
+              <View style={{
+                width: 4,
+                height: 4,
+                position: 'absolute',
+                backgroundColor: 'white',
+              }} />
+            </LinearGradient>
+          :
+          <View onLayout={this._setSliderWidth}
+                   style={[styles.sliderContainer,
+                          {backgroundColor: this.props.sliderColor,
+                           height: this.props.sliderHeight,
+                           borderRadius: this.props.sliderHeight/2}
+                         ]}
+          />
+        }
           {this.state.sliderWidth && this._renderThumbs()}
       </View>
     );
