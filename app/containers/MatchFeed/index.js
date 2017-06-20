@@ -19,6 +19,7 @@ import {
 
 import images from '@assets/images';
 import Spinner from 'react-native-spinkit';
+import LinearGradient from 'react-native-linear-gradient';
 
 import FeedListRow from './FeedListRow'
 
@@ -174,6 +175,8 @@ class MatchFeed extends Component{
     if(match.image && !match.image.includes(FB_EXPIRED_URL)){
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
+
+          <LinearGradient start={{x:.35, y:.35}} colors={['rgba(0,0,0,0)', '#000000']} style={{flex:.5, opacity:.8}} />
           <Text style={styles.profileName}>{match.name}</Text>
           <Text style={styles.profileDescription}>{match.jobTitle}</Text>
         </Image>
@@ -273,10 +276,6 @@ class MatchFeed extends Component{
               <View key={match.id}>
 
                 <FeedListRow
-                            // remove={false}
-                            // onRemove={()=>{console.log("asdf")}}
-
-
                             changeScrollState={this.changeScrollState}
                              likeDislikeUser={this.likeDislikeUser}
                              _onPressProfile={this._onPressProfile}
@@ -333,6 +332,7 @@ var styles = StyleSheet.create({
     position: 'absolute',
     bottom: 27,
     left: 10,
+    backgroundColor: 'transparent'
   },
   profileDescription: {
     color: '#fff',
@@ -341,6 +341,8 @@ var styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     left: 10,
+    backgroundColor: 'transparent'
+
   }
 
 })

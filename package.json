@@ -15,6 +15,7 @@
     "react-native-collapsible": "^0.8.0",
     "react-native-fbsdk": "^0.5.0",
     "react-native-invertible-scroll-view": "^1.0.0",
+    "react-native-linear-gradient": "^2.0.0",
     "react-native-nav": "^1.2.0",
     "react-native-page-swiper": "^0.3.0",
     "react-native-slider": "^0.9.1",
