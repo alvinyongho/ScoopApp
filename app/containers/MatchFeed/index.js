@@ -332,6 +332,7 @@ var styles = StyleSheet.create({
     position: 'absolute',
     bottom: 27,
     left: 10,
+    backgroundColor: 'transparent'
   },
   profileDescription: {
     color: '#fff',
@@ -340,6 +341,8 @@ var styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     left: 10,
+    backgroundColor: 'transparent'
+
   }
 
 })
