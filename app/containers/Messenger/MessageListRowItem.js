@@ -25,6 +25,10 @@ var swipeoutBtns = [
   {
     component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
     backgroundColor: 'red',
+    onPress: (props) => {
+        console.log('pressing delete button')
+        console.log(this.props)
+      }
   }
 ]
 

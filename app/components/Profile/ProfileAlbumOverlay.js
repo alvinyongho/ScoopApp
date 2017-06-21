@@ -41,6 +41,10 @@ export default class ProfileAlbumOverlay extends Component{
   render(){
     viewWidth =  Dimensions.get('window').width
     viewHeight = Dimensions.get('window').height
+    circle_size = 25
+    border_width = 3.0
+    line_width = border_width
+    circle_pad = 10
 
     return(
       <View style={{flex: 1, position: 'absolute', backgroundColor: 'black', flex: 1, height: viewHeight, width:viewWidth }}>
@@ -59,7 +63,9 @@ export default class ProfileAlbumOverlay extends Component{
       </View>
 
       <TouchableHighlight onPress={()=>this.closeAlbum()}>
-        <View style={{position: 'absolute', width:28, height:28, top:33, left:10, backgroundColor: 'white', borderRadius: 14, zIndex:1}}>
+        <View style={{position: 'absolute', justifyContent: 'center', alignItems: 'center', width:28, height:28, top:33, left:10, backgroundColor: 'transparent', borderRadius: 14, borderWidth: 3, borderColor: 'white', zIndex:1}}>
+          <View style={{position: 'absolute', height: line_width, width: circle_size-circle_pad, backgroundColor: 'white', transform: [{rotate: '45deg'}] }}/>
+          <View style={{position: 'absolute', height: circle_size-circle_pad, width: line_width, backgroundColor: 'white', transform: [{rotate: '45deg'}] }}/>
         </View>
       </TouchableHighlight>
       </View>
