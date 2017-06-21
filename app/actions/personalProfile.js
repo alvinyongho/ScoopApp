@@ -4,6 +4,7 @@ import {  getFBAlbumPhotos, getPictureUrlByPictureId
 } from '../services/facebook'
 import * as types from './types'
 
+import {resetFeedRoutes} from './feedlist'
 
 export function getScoopUserImages(){
   return (dispatch, getState) => {
@@ -128,6 +129,10 @@ export function getAlbumDetailImageURLs(){
 export function PreviewProfile(){
   return(dispatch, getState) => {
     dispatch(NavigationActions.navigate({ routeName: 'PreviewProfile' }))
+
+
+    // Reset the feedlist view
+    dispatch(resetFeedRoutes())
   }
 }
 
