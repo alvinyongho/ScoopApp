@@ -23,7 +23,7 @@ import Button from 'react-native-button';
 
 var swipeoutBtns = (deleteItem) => [
   {
-    component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
+    component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
     backgroundColor: 'red',
     onPress: () => {
       // console.log(`clicked on ${cellId}`)
@@ -72,7 +72,11 @@ class MessageListRowItem extends React.Component {
     super(props)
     this.state = {
       rightTransformAmount: new Animated.Value(0),
-      markedForDeletion: false
+      markedForDeletion: false,
+      animatableHeight: new Animated.Value(70),
+      isAnimatedHeight: true,
+      removing: false,
+      finishedRemoving: false
     };
   }
 
@@ -118,6 +122,16 @@ class MessageListRowItem extends React.Component {
 
   }
 
+  componentWillUpdate(nextProps, nextState){
+    if(nextState.removing == true){
+      console.log("received state of removing")
+      this.onRemove(() => {})
+      this.setState({
+        removing: false
+      })
+    }
+  }
+
   toggleDeletion(){
 
     isMarkedForDeletion = !this.state.markedForDeletion
@@ -133,10 +147,32 @@ class MessageListRowItem extends React.Component {
     }
 
   }
+  
+  onRemove(callback){
+    Animated.timing(this.state.animatableHeight, {
+      toValue: 0,
+      duration: 200
+    }).start(callback);
+  }
 
+  resetHeight(){
+    Animated.timing(this.state.animatableHeight, {
+      toValue: 70,
+      duration: 0
+    }).start()
+  }
+
+  handleRemoval = () => {
+    console.log("handling removal")
+    this.setState({removing: true})
+  }
 
   renderCell = () => (
-    <Animated.View style={{...this.props.style, left: this.state.rightTransformAmount}}>
+    <Animated.View style={
+      [{...this.props.style, left: this.state.rightTransformAmount}, 
+        this.state.isAnimatedHeight && 
+        {height: this.state.animatableHeight}
+      ]}>
       <View style={styles.container}>
         <View style={{margin: 15, alignItems:'center', justifyContent: 'center'}}>
 
@@ -211,12 +247,13 @@ class MessageListRowItem extends React.Component {
   _deleteItem = (targetId) => {
     console.log('deleting ' + targetId)
     this.props.setIdsMarkedForDeletion([targetId])
-    this.props.hideMessages()
+    // this.props.hideMessages()
+    this.handleRemoval()
   }
 
 
   renderCellWithHighlight = () => (
-    <Swipeout scroll={(isEnabled) => this.props.changeScrollState(isEnabled)} right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'} autoClose={true}>
+    <Swipeout scroll={(isEnabled) => this.props.changeScrollState(isEnabled)} right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'}>
     <TouchableHighlight onPress={()=>this._onCellPress()}>
       {this.renderCell()}
     </TouchableHighlight>
