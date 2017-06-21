@@ -125,7 +125,13 @@ class MessageListRowItem extends React.Component {
   componentWillUpdate(nextProps, nextState){
     if(nextState.removing == true){
       console.log("received state of removing")
-      this.onRemove(() => {})
+      // this.onRemove(() => {
+      //   setTimeout(() => {
+      //     this.props.hideMessages()
+      //   }, 1000);
+        // this.resetHeight();
+      // })
+
       this.setState({
         removing: false
       })
@@ -247,8 +253,8 @@ class MessageListRowItem extends React.Component {
   _deleteItem = (targetId) => {
     console.log('deleting ' + targetId)
     this.props.setIdsMarkedForDeletion([targetId])
-    // this.props.hideMessages()
     this.handleRemoval()
+    this.props.hideMessages()
   }
 
 
