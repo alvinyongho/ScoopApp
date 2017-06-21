@@ -13,7 +13,7 @@ export default class LookingForSection extends Component{
       <View>
         <SectionTitle title={'LOOKING FOR'}/>
       <ProfileSlider
-        numSteps={5}
+        numSteps={3}
         hasSteps={true}
         disabled={this.props.disabled}
         leftLabel={'Relationship'}
