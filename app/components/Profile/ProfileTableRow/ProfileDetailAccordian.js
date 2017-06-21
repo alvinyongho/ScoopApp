@@ -169,6 +169,20 @@ export default class ProfileDetailAccordian extends Component {
     )
   }
 
+
+  componentWillReceiveProps(nextProps){
+    console.log("PROFILE DESCRIPTION COMPONENT DID RECEIVE PROPS")
+    console.log(nextProps)
+
+    newJobTitle = nextProps.userProfile.scoopApiStore.jobTitle
+
+    console.log(newJobTitle)
+    if(newJobTitle && (newJobTitle !== this.state.jobTitleValue)){
+      this.setState({jobTitleValue: newJobTitle})
+    }
+  }
+
+
   componentDidMount(){
     this.setState({eduBackground: this.mapEduToArray()})
   }
@@ -188,7 +202,7 @@ export default class ProfileDetailAccordian extends Component {
         },
         {
           rowItemName: 'Job Title',
-          rowItemValue: 'Ask Me!',
+          rowItemValue: this.state.jobTitleValue,
         },
         {
           rowItemName: 'Height',
