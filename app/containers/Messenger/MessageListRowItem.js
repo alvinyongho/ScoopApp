@@ -216,7 +216,7 @@ class MessageListRowItem extends React.Component {
 
 
   renderCellWithHighlight = () => (
-    <Swipeout right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'} autoClose={true}>
+    <Swipeout scroll={(isEnabled) => this.props.changeScrollState(isEnabled)} right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'} autoClose={true}>
     <TouchableHighlight onPress={()=>this._onCellPress()}>
       {this.renderCell()}
     </TouchableHighlight>
