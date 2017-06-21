@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { bindActionCreators } from 'redux';
 
+import { resetMyProfileNav } from '../../actions/personalProfile'
+
 import {
   ScrollView,
   Text,
@@ -348,7 +350,9 @@ function mapStateToProps(state){
 
 
 const mapDispatchToProps = dispatch => ({
-  profile: () => dispatch(NavigationActions.navigate({ routeName: 'Profile' })),
+  profile: () => {dispatch(NavigationActions.navigate({ routeName: 'Profile' }))
+                  dispatch(resetMyProfileNav())
+                  },
 });
 
 

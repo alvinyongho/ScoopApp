@@ -9,16 +9,16 @@ export function messengerNav(state = initialNavState, action){
     case 'ChatDetail':
       return MessengerNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ChatDetail' }), state);
 
-      case 'RESET_MESSENGER_ROUTE_STACK':
-      {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({routeName: 'Messenger'})
-          ]
-        })
-        return MessengerNavigator.router.getStateForAction(resetAction, state);
-      }
+    case 'RESET_MESSENGER_ROUTE_STACK':
+    {
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({routeName: 'Messenger'})
+        ]
+      })
+      return MessengerNavigator.router.getStateForAction(resetAction, state);
+    }
 
     default:
       if (action.type === 'Navigation/NAVIGATE') {
