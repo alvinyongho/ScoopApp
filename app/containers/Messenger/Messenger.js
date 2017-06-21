@@ -25,9 +25,16 @@ export class Messenger extends React.Component {
       dataSource: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
-      userIdsMarkedForDeletion: []
+      userIdsMarkedForDeletion: [],
+      isScrollEnabled: true
 
     };
+  }
+
+  changeScrollState = (isEnabled) => {
+    this.setState({
+      isScrollEnabled: isEnabled
+    })
   }
 
   componentWillMount(){
@@ -84,13 +91,15 @@ export class Messenger extends React.Component {
   render(){
     return (
       <ListView
+        scrollEnabled={this.state.isScrollEnabled}
         enableEmptySections={true}
         removeClippedSubviews={false} // current workaround about list view not showing up bug
         dataSource={this.state.dataSource}
         renderRow={(rowData) => {
           return <MessageListRowItem  cellToggledForDeletion={()=>this.addUserIdForDeletion(rowData)}
                                       cellCanceledForDeletion={()=>this.removeUserIdForDeletion(rowData)}
-                                      pictureSize={50} rowData={rowData} />}}
+                                      pictureSize={50} rowData={rowData} 
+                                      changeScrollState={this.changeScrollState}/>}}
       />
     )
   }
