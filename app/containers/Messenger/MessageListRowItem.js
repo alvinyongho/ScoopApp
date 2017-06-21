@@ -21,10 +21,14 @@ import Swipeout from 'react-native-swipeout'
 import Button from 'react-native-button';
 
 
-var swipeoutBtns = [
+var swipeoutBtns = (deleteItem) => [
   {
     component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
     backgroundColor: 'red',
+    onPress: () => {
+      // console.log(`clicked on ${cellId}`)
+      deleteItem()
+    }
   }
 ]
 
@@ -69,7 +73,6 @@ class MessageListRowItem extends React.Component {
     this.state = {
       rightTransformAmount: new Animated.Value(0),
       markedForDeletion: false
-
     };
   }
 
@@ -205,8 +208,15 @@ class MessageListRowItem extends React.Component {
   }
 
 
+  _deleteItem = (targetId) => {
+    console.log('deleting ' + targetId)
+    this.props.setIdsMarkedForDeletion([targetId])
+    this.props.hideMessages()
+  }
+
+
   renderCellWithHighlight = () => (
-    <Swipeout right={swipeoutBtns} backgroundColor={'white'}>
+    <Swipeout right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'} autoClose={true}>
     <TouchableHighlight onPress={()=>this._onCellPress()}>
       {this.renderCell()}
     </TouchableHighlight>
