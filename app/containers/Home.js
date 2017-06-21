@@ -37,8 +37,6 @@ class Home extends Component{
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("WE'RE TRYING TO RETRIGGER THIS")
-
     if(nextProps.scoopUserId != undefined){
       this.setState({scoopUserId:nextProps.scoopUserId})
     }

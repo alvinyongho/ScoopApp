@@ -57,6 +57,7 @@ class MatchFeed extends Component{
       return
     }
 
+    this.getCurrentLocation()
     this.setState({isRefreshing: true});
     this.retrieveMatches();
 
@@ -86,7 +87,7 @@ class MatchFeed extends Component{
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
       // this.getCurrentLocation()
-      this.retrieveMatches()
+      // this.retrieveMatches()
       // If the current location is changed then we will update the component by retrieving matches
     }
     this.setState({appState: nextAppState});
@@ -95,16 +96,14 @@ class MatchFeed extends Component{
 
   getCurrentLocation = () => {
     // Gets the current location using the navigator api and sets the state
-    this.watchID = navigator.geolocation.watchPosition(
+    this.watchID = navigator.geolocation.getCurrentPosition(
       (position) => {
-        if(position.coords.latitude !== this.state.lastPosition.latitude &&
-           position.coords.longitude !== this.state.lastPosition.longitude
-          ){
+
           this.setState({lastPosition: position.coords});
           this.setState({locationAccessibility: "AVAILABLE"})
           // Dispatch an action to set the current location
           this._setUserLocation(position.coords)
-        }
+
       },
       (error) => {
         switch(error.code){
@@ -120,7 +119,7 @@ class MatchFeed extends Component{
         }
         // alert(JSON.stringify(error))
       },
-      {enableHighAccuracy: false, timeout: 50000, maximumAge: 1000, distanceFilter: 1000}
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 1000}
     );
   }
 
@@ -135,7 +134,6 @@ class MatchFeed extends Component{
       this.setState({isRefreshing: false})
     }
 
-
     currLatSet = typeof nextProps.currentLocation.lat != undefined
     currLonSet = typeof nextProps.currentLocation.lon != undefined
     locationAccessable = this.state.locationAccessibility === 'AVAILABLE'
@@ -144,24 +142,16 @@ class MatchFeed extends Component{
     currLoc = this.props.currentLocation
     nextLoc = nextProps.currentLocation
 
-
     if((currLoc) !== (nextLoc)){
-      console.log("location updated")
       if (canLoadFeed){
         this.retrieveMatches();
-      } else {
-        return false
       }
-
     }
 
     // Syncronize the view state of the match feed with the feedList status
     if(this.state.matchFeedLoadingStatus !== nextProps.feedListStatus){
       this.setState({matchFeedLoadingStatus: nextProps.feedListStatus.matchLoadingStatus})
     }
-
-
-
   }
 
 
