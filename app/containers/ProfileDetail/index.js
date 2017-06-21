@@ -115,8 +115,13 @@ export class ProfileDetail extends Component {
           <LookingForSection disabled={true} lookingForType={this.props.userDetail.lookingForType} lookingForGender={this.props.userDetail.lookingForGender} changeScrollState={()=>{}} />
           <ProfileDetailConnectedApps connectedAppInts={this.props.userDetail.connectedAppInts} />
 
-          <InterestsSection profileLikes={this.props.userDetail.THEIRfacebookLikes} />
 
+          {/* TODO:// add type facebook/spotify + MAP + Join the facebook spotify likes together here*/}
+          {this.props.userDetail.THEIRfacebookLikes ?
+          <InterestsSection profileLikes={this.props.userDetail.THEIRfacebookLikes} />
+          :
+          <InterestsSection profileLikes={this.props.userDetail.facebookLikes} />
+          }
 
           <SectionTitle title={'ABOUT ME'}/>
           <View style={{padding: 5, backgroundColor: 'white'}}>

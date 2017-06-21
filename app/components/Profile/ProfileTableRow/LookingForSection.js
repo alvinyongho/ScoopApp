@@ -12,25 +12,25 @@ export default class LookingForSection extends Component{
     return(
       <View>
         <SectionTitle title={'LOOKING FOR'}/>
-      <ProfileSlider
-        numSteps={3}
-        hasSteps={true}
-        disabled={this.props.disabled}
-        leftLabel={'Relationship'}
-        rightLabel={'Friendship'}
-        thumbLocation={this.computeThumbLocation(5, this.props.lookingForType-1)}
-        changeScrollState={this.props.changeScrollState} />
+        <ProfileSlider
+          numSteps={3}
+          hasSteps={true}
+          disabled={this.props.disabled}
+          leftLabel={'Relationship'}
+          rightLabel={'Friendship'}
+          thumbLocation={this.computeThumbLocation(5, this.props.lookingForType-1)}
+          changeScrollState={this.props.changeScrollState} />
 
-      <View style={{height:1, backgroundColor:'gray'}}/>
-      <ProfileSlider
-        numSteps={3}
-        disabled={this.props.disabled}
-        hasSteps={true}
-        leftLabel={'Men'}
-        middleLabel={'Both'}
-        rightLabel={'Women'}
-        thumbLocation={this.computeThumbLocation(3, this.props.lookingForGender-1)}
-        changeScrollState={this.props.changeScrollState} />
+        <View style={{height:1, backgroundColor:'gray'}}/>
+        <ProfileSlider
+          numSteps={3}
+          disabled={this.props.disabled}
+          hasSteps={true}
+          leftLabel={'Men'}
+          middleLabel={'Both'}
+          rightLabel={'Women'}
+          thumbLocation={this.computeThumbLocation(3, this.props.lookingForGender-1)}
+          changeScrollState={this.props.changeScrollState} />
       </View>
     )
   }

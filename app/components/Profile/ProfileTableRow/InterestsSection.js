@@ -14,7 +14,12 @@ export default class InterestsSection extends Component{
 
 
   _renderInterests(){
+
+    console.log("GETTING PROFILE LIKES")
+
     profileLikes = this.props.profileLikes
+
+    console.log(profileLikes)
 
     if(profileLikes){
     return interests = profileLikes.map((item, key)=>{
