@@ -217,8 +217,10 @@ export function hideMessage(targetId){
     userToken = getState().scoopUserProfile.scoopToken
 
     performHideMessagesTask(userId, userToken, targetIdArr).then((result)=>{
-      console.log("Performed hide messages task")
-      console.log(result)
+      // console.log("Performed hide messages task")
+      // console.log(result)
+      // TODO: update the state with remove
+
     })
 
   }
