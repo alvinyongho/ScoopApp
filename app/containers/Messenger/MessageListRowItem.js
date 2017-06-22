@@ -17,8 +17,7 @@ import {
 } from 'react-native';
 
 import Swipeout from 'react-native-swipeout'
-
-import Button from 'react-native-button';
+import Button from 'react-native-button'
 
 
 var swipeoutBtns = (deleteItem) => [
@@ -125,12 +124,10 @@ class MessageListRowItem extends React.Component {
   componentWillUpdate(nextProps, nextState){
     if(nextState.removing == true){
       console.log("received state of removing")
-      // this.onRemove(() => {
-      //   setTimeout(() => {
-      //     this.props.hideMessages()
-      //   }, 1000);
-        // this.resetHeight();
-      // })
+      this.onRemove(() => {
+        this.props.hideMessage(this.props.rowData.targetId)
+      })
+
 
       this.setState({
         removing: false
@@ -153,7 +150,7 @@ class MessageListRowItem extends React.Component {
     }
 
   }
-  
+
   onRemove(callback){
     Animated.timing(this.state.animatableHeight, {
       toValue: 0,
@@ -175,8 +172,8 @@ class MessageListRowItem extends React.Component {
 
   renderCell = () => (
     <Animated.View style={
-      [{...this.props.style, left: this.state.rightTransformAmount}, 
-        this.state.isAnimatedHeight && 
+      [{...this.props.style, left: this.state.rightTransformAmount},
+        this.state.isAnimatedHeight &&
         {height: this.state.animatableHeight}
       ]}>
       <View style={styles.container}>
@@ -254,7 +251,7 @@ class MessageListRowItem extends React.Component {
     console.log('deleting ' + targetId)
     this.props.setIdsMarkedForDeletion([targetId])
     this.handleRemoval()
-    this.props.hideMessages()
+    // this.props.hideMessages()
   }
 
 
