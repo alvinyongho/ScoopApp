@@ -208,6 +208,22 @@ export function setIdsMarkedForDeletion(userIds){
   }
 }
 
+export function hideMessage(targetId){
+  return(dispatch, getState) =>{
+
+    targetIdArr = [targetId]
+
+    userId = getState().scoopUserProfile.scoopId
+    userToken = getState().scoopUserProfile.scoopToken
+
+    performHideMessagesTask(userId, userToken, targetIdArr).then((result)=>{
+      console.log("Performed hide messages task")
+      console.log(result)
+    })
+
+  }
+}
+
 
 export function hideMessages(){
   return(dispatch, getState) => {
@@ -220,6 +236,7 @@ export function hideMessages(){
     let messageList = getState().messenger.messageList
     newList = []
     messageList.map((item, index)=>{
+      // if id is not found
       if(userIdsArr.indexOf(item.targetId) == -1){
         newList.push(item)
       }
