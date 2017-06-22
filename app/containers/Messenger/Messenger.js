@@ -8,6 +8,7 @@ import {
   Text,
   ListView,
   Image,
+  RefreshControl,
 } from 'react-native';
 
 import MessageListRowItem from './MessageListRowItem';
@@ -26,7 +27,8 @@ export class Messenger extends React.Component {
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
       userIdsMarkedForDeletion: [],
-      isScrollEnabled: true
+      isScrollEnabled: true,
+      refreshing: false
 
     };
   }
@@ -88,9 +90,20 @@ export class Messenger extends React.Component {
     // console.log(userIdsMarkedForDeletion)
   }
 
+  _onRefresh(){
+    // this.setState({ refreshing: true });
+    // this.setState({ refreshing: false });
+  }
+
   render(){
     return (
       <ListView
+        refreshControl={
+          <RefreshControl 
+            refreshing={this.state.refreshing}
+            onRefresh={() => this._onRefresh()}
+          />
+        }
         scrollEnabled={this.state.isScrollEnabled}
         enableEmptySections={true}
         removeClippedSubviews={false} // current workaround about list view not showing up bug
