@@ -54,12 +54,26 @@ export class Messenger extends React.Component {
     if (nextProps.messageList !== [] && nextProps.messageList !== undefined){
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+
+
+      console.log("WHAT IS THE RESULT OF DELETING???")
+      console.log(ds.cloneWithRows (
+        nextProps.messageList.map((item, index)=>{
+          return item
+        })
+      ))
+
+
+
       this.setState(
         {dataSource:ds.cloneWithRows (
         nextProps.messageList.map((item, index)=>{
           return item
         })
       )})
+    }
+    if (nextProps.messengerRefreshing === true){
+      this.setState({refreshing: false})
     }
   }
 
@@ -91,9 +105,11 @@ export class Messenger extends React.Component {
   }
 
   _onRefresh(){
-    // this.setState({ refreshing: true });
+    this.setState({ refreshing: true });
+    this.props.refreshMessengerList();
     // this.setState({ refreshing: false });
   }
+
 
   render(){
     return (
@@ -109,7 +125,8 @@ export class Messenger extends React.Component {
         removeClippedSubviews={false} // current workaround about list view not showing up bug
         dataSource={this.state.dataSource}
         renderRow={(rowData) => {
-          return <MessageListRowItem  cellToggledForDeletion={()=>this.addUserIdForDeletion(rowData)}
+          return <MessageListRowItem  
+                                      cellToggledForDeletion={()=>this.addUserIdForDeletion(rowData)}
                                       cellCanceledForDeletion={()=>this.removeUserIdForDeletion(rowData)}
                                       pictureSize={50} rowData={rowData} 
                                       changeScrollState={this.changeScrollState}/>}}
@@ -129,7 +146,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state){
   return {
     messageList: state.messenger.messageList,
-    messenger: state.messenger
+    messenger: state.messenger,
+    messengerRefreshing: state.messenger.messengerRefreshing
   }
 }
 

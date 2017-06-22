@@ -75,7 +75,8 @@ class MessageListRowItem extends React.Component {
       animatableHeight: new Animated.Value(70),
       isAnimatedHeight: true,
       removing: false,
-      finishedRemoving: false
+      isRemoved: false,
+      rowData: this.props.rowData
     };
   }
 
@@ -116,8 +117,33 @@ class MessageListRowItem extends React.Component {
 
     if(nextProps.itemsMarkedForDeletion.length === 0){
       this.setState({markedForDeletion: false})
+
+      // this.resetHeight()
     }
 
+
+    if(this.state.rowData.targetId !== nextProps.rowData.targetId){
+      console.log("THE ROW DATA HAS CHANGED")
+
+
+      isFullSizeCell = false
+      // Taking the updated message list after we removed the item
+      nextProps.messageList.map((messageItem, index)=>{
+
+        // for each item in message list that we computed from removing the item
+        // if the row data exists then it must be fully sized
+        if (messageItem.targetId === nextProps.rowData.targetId){
+          isFullSizeCell = true
+        }
+      })
+
+      if(isFullSizeCell){
+        this.resetHeight()
+      }
+
+
+
+    }
 
   }
 
@@ -125,7 +151,16 @@ class MessageListRowItem extends React.Component {
     if(nextState.removing == true){
       console.log("received state of removing")
       this.onRemove(() => {
-        this.props.hideMessage(this.props.rowData.targetId)
+        
+
+        setTimeout(()=>{
+          this.props.hideMessages()
+
+        }, 1000)
+        
+
+
+
       })
 
 
@@ -133,6 +168,7 @@ class MessageListRowItem extends React.Component {
         removing: false
       })
     }
+
   }
 
   toggleDeletion(){
@@ -278,7 +314,8 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state){
   return {
     editMessages: state.editMessages,
-    itemsMarkedForDeletion: state.messenger.userIdsMarkedForDeletion
+    itemsMarkedForDeletion: state.messenger.userIdsMarkedForDeletion,
+    messageList: state.messenger.messageList
   }
 }
 
