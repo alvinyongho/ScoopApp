@@ -33,7 +33,6 @@ app/reducers/feedlist
 
 
 
-
 #### Lifecycle
   * componentWillMount()
     * get the current location

@@ -53,6 +53,11 @@ export const messenger = createReducer(initialMessengerState,{
     return update(state, {
       userIdsMarkedForDeletion: {$set: []}
     })
+  },
+  [types.MESSAGE_LIST_REFRESHING](state, action){
+    return update(state, {
+      messengerRefreshing: {$set: action.isRefreshing}
+    })
   }
 
 });

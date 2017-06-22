@@ -29,6 +29,38 @@ export function getUnreadCount(){
 }
 
 
+
+export function refreshMessengerList(){
+  return(dispatch, getState) => {
+    dispatch(setMessageListIsRefreshing(true))
+
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    let scoopUserToken = getState().scoopUserProfile.scoopToken
+
+    performLoadMessageListTask(scoopUserId, scoopUserToken).then((result)=>{
+      dispatch(setMessageList(result.messages))
+      dispatch(setMessageListIsRefreshing(false))
+    })
+  }
+}
+
+
+export function setMessageListIsRefreshing(isRefreshing){
+  if(isRefreshing){
+    return {
+      type: types.MESSAGE_LIST_REFRESHING,
+      isRefreshing
+    }
+  } else {
+    return {
+      type: types.MESSAGE_LIST_REFRESHING,
+      isRefreshing
+    }
+
+  }
+}
+
+
 export function getMessageList(){
   return(dispatch, getState) => {
     //Getting message list
