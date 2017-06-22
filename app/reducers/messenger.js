@@ -15,7 +15,8 @@ initialMessengerState = {
   unreadCount: 0,
   threadContent: [],
   threadTargetId: 0,
-  userIdsMarkedForDeletion: []
+  userIdsMarkedForDeletion: [],
+  messengerRefreshing: false,
 }
 
 export const messenger = createReducer(initialMessengerState,{
@@ -52,6 +53,11 @@ export const messenger = createReducer(initialMessengerState,{
   [types.RESET_USER_IDS_FOR_DELETION](state, action){
     return update(state, {
       userIdsMarkedForDeletion: {$set: []}
+    })
+  },
+  [types.MESSAGE_LIST_REFRESHING](state, action){
+    return update(state, {
+      messengerRefreshing: {$set: action.isRefreshing}
     })
   }
 

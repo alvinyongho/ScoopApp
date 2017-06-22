@@ -29,6 +29,38 @@ export function getUnreadCount(){
 }
 
 
+
+export function refreshMessengerList(){
+  return(dispatch, getState) => {
+    dispatch(setMessageListIsRefreshing(true))
+
+    let scoopUserId = getState().scoopUserProfile.scoopId
+    let scoopUserToken = getState().scoopUserProfile.scoopToken
+
+    performLoadMessageListTask(scoopUserId, scoopUserToken).then((result)=>{
+      dispatch(setMessageList(result.messages))
+      dispatch(setMessageListIsRefreshing(false))
+    })
+  }
+}
+
+
+export function setMessageListIsRefreshing(isRefreshing){
+  if(isRefreshing){
+    return {
+      type: types.MESSAGE_LIST_REFRESHING,
+      isRefreshing
+    }
+  } else {
+    return {
+      type: types.MESSAGE_LIST_REFRESHING,
+      isRefreshing
+    }
+
+  }
+}
+
+
 export function getMessageList(){
   return(dispatch, getState) => {
     //Getting message list
@@ -208,6 +240,24 @@ export function setIdsMarkedForDeletion(userIds){
   }
 }
 
+// export function hideMessage(targetId){
+//   return(dispatch, getState) =>{
+
+//     targetIdArr = [targetId]
+
+//     userId = getState().scoopUserProfile.scoopId
+//     userToken = getState().scoopUserProfile.scoopToken
+
+//     performHideMessagesTask(userId, userToken, targetIdArr).then((result)=>{
+//       // console.log("Performed hide messages task")
+//       // console.log(result)
+//       // TODO: update the state with remove
+
+//     })
+
+//   }
+// }
+
 
 export function hideMessages(){
   return(dispatch, getState) => {
@@ -220,6 +270,9 @@ export function hideMessages(){
     let messageList = getState().messenger.messageList
     newList = []
     messageList.map((item, index)=>{
+      // if id was not part of the array of ids marked for deletion
+      // then we push it into the new list of messages
+
       if(userIdsArr.indexOf(item.targetId) == -1){
         newList.push(item)
       }
