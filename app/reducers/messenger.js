@@ -15,7 +15,8 @@ initialMessengerState = {
   unreadCount: 0,
   threadContent: [],
   threadTargetId: 0,
-  userIdsMarkedForDeletion: []
+  userIdsMarkedForDeletion: [],
+  messengerRefreshing: false,
 }
 
 export const messenger = createReducer(initialMessengerState,{
