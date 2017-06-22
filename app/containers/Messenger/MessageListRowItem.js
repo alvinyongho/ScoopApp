@@ -17,14 +17,17 @@ import {
 } from 'react-native';
 
 import Swipeout from 'react-native-swipeout'
+import Button from 'react-native-button'
 
-import Button from 'react-native-button';
 
-
-var swipeoutBtns = [
+var swipeoutBtns = (deleteItem) => [
   {
-    component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
+    component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
     backgroundColor: 'red',
+    onPress: () => {
+      // console.log(`clicked on ${cellId}`)
+      deleteItem()
+    }
   }
 ]
 
@@ -68,8 +71,12 @@ class MessageListRowItem extends React.Component {
     super(props)
     this.state = {
       rightTransformAmount: new Animated.Value(0),
-      markedForDeletion: false
-
+      markedForDeletion: false,
+      animatableHeight: new Animated.Value(70),
+      isAnimatedHeight: true,
+      removing: false,
+      isRemoved: false,
+      rowData: this.props.rowData
     };
   }
 
@@ -110,8 +117,57 @@ class MessageListRowItem extends React.Component {
 
     if(nextProps.itemsMarkedForDeletion.length === 0){
       this.setState({markedForDeletion: false})
+
+      // this.resetHeight()
     }
 
+
+    if(this.state.rowData.targetId !== nextProps.rowData.targetId){
+      console.log("THE ROW DATA HAS CHANGED")
+
+
+      isFullSizeCell = false
+      // Taking the updated message list after we removed the item
+      nextProps.messageList.map((messageItem, index)=>{
+
+        // for each item in message list that we computed from removing the item
+        // if the row data exists then it must be fully sized
+        if (messageItem.targetId === nextProps.rowData.targetId){
+          isFullSizeCell = true
+        }
+      })
+
+      if(isFullSizeCell){
+        this.resetHeight()
+      }
+
+
+
+    }
+
+  }
+
+  componentWillUpdate(nextProps, nextState){
+    if(nextState.removing == true){
+      console.log("received state of removing")
+      this.onRemove(() => {
+        
+
+        setTimeout(()=>{
+          this.props.hideMessages()
+
+        }, 1000)
+        
+
+
+
+      })
+
+
+      this.setState({
+        removing: false
+      })
+    }
 
   }
 
@@ -131,9 +187,31 @@ class MessageListRowItem extends React.Component {
 
   }
 
+  onRemove(callback){
+    Animated.timing(this.state.animatableHeight, {
+      toValue: 0,
+      duration: 200
+    }).start(callback);
+  }
+
+  resetHeight(){
+    Animated.timing(this.state.animatableHeight, {
+      toValue: 70,
+      duration: 0
+    }).start()
+  }
+
+  handleRemoval = () => {
+    console.log("handling removal")
+    this.setState({removing: true})
+  }
 
   renderCell = () => (
-    <Animated.View style={{...this.props.style, left: this.state.rightTransformAmount}}>
+    <Animated.View style={
+      [{...this.props.style, left: this.state.rightTransformAmount},
+        this.state.isAnimatedHeight &&
+        {height: this.state.animatableHeight}
+      ]}>
       <View style={styles.container}>
         <View style={{margin: 15, alignItems:'center', justifyContent: 'center'}}>
 
@@ -205,8 +283,16 @@ class MessageListRowItem extends React.Component {
   }
 
 
+  _deleteItem = (targetId) => {
+    console.log('deleting ' + targetId)
+    this.props.setIdsMarkedForDeletion([targetId])
+    this.handleRemoval()
+    // this.props.hideMessages()
+  }
+
+
   renderCellWithHighlight = () => (
-    <Swipeout right={swipeoutBtns} backgroundColor={'white'}>
+    <Swipeout scroll={(isEnabled) => this.props.changeScrollState(isEnabled)} right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'}>
     <TouchableHighlight onPress={()=>this._onCellPress()}>
       {this.renderCell()}
     </TouchableHighlight>
@@ -228,7 +314,8 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state){
   return {
     editMessages: state.editMessages,
-    itemsMarkedForDeletion: state.messenger.userIdsMarkedForDeletion
+    itemsMarkedForDeletion: state.messenger.userIdsMarkedForDeletion,
+    messageList: state.messenger.messageList
   }
 }
 
