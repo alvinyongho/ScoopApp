@@ -167,15 +167,14 @@ export default class ProfileDetailAccordian extends Component {
 
 
   componentWillReceiveProps(nextProps){
-    console.log("PROFILE DESCRIPTION COMPONENT DID RECEIVE PROPS")
-    console.log(nextProps)
+    retrievedFromAPIJobTitle = nextProps.userProfile.scoopApiStore.jobTitle
 
-    newJobTitle = nextProps.userProfile.scoopApiStore.jobTitle
-
-    console.log(newJobTitle)
-    if(newJobTitle && (newJobTitle !== this.state.jobTitleValue)){
-      this.setState({jobTitleValue: newJobTitle})
+    if(retrievedFromAPIJobTitle && (retrievedFromAPIJobTitle !== this.state.jobTitleValue)){
+      this.setState({jobTitleSelected: retrievedFromAPIJobTitle})
     }
+
+
+    
   }
 
 
