@@ -84,9 +84,15 @@ export class EditProfileScrollView extends React.Component {
     this.refs.scrollView.scrollToEnd()
   }
 
-  handlePress = () =>{
-    console.log("handle press")
-    this.props.GoToImportPicture(0)
+  handleInitialImportPress = () =>{
+    console.log("handle initial import press")
+
+    initialSlot = {
+      elementKey:0,
+      order:0,
+    }
+    this.props.GoToImportPicture(initialSlot)
+
   }
 
 
@@ -98,7 +104,7 @@ export class EditProfileScrollView extends React.Component {
         {this.state.profileImages.length > 0 ?
           <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
           :
-          <ImportPhotoContainer handlePress={this.handlePress} />
+          <ImportPhotoContainer handlePress={this.handleInitialImportPress} />
         }
 
 
