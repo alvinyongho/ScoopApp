@@ -110,6 +110,7 @@ export class EditProfileContainer extends React.Component {
       relationship: "",
       schoolName: "",
       firstName: "",
+      jobTitle: "",
       lookingForType: "",
       lookingForGender: "",
     };
@@ -163,7 +164,8 @@ export class EditProfileContainer extends React.Component {
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     const {
-      myProfile       // NEED TO SET IT after state of properties set.
+      myProfile,       // NEED TO SET IT after state of properties set.
+      // tabNav,
     } = this.props;   // maybe redefine as accordian properties
 
     return (
@@ -171,13 +173,14 @@ export class EditProfileContainer extends React.Component {
         <SectionTitle title="PERSONAL DETAILS" />
 
         <ProfileBasicInfo
+          distance={'0m away'}
           relationshipStatus={this.state.relationship}
-          distance={'0m away'} schoolName={this.state.schoolName}
-          name={this.state.firstName} disabledLike={true}
+          schoolName={this.state.schoolName}
+          name={this.state.firstName}
+          disabledLike={true}
         />
 
-
-        <ProfileDetailAccordian userProfile={myProfile} />
+        <ProfileDetailAccordian userProfile={myProfile} saveSetting={this.props.setProfileSettingToSave}/>
 
         {(this.state.lookingForType !== "" && this.state.lookingForGender!="") &&
         <LookingForSection
@@ -238,7 +241,8 @@ export class EditProfileContainer extends React.Component {
 
 function mapStateToProps(state){
   return {
-    myProfile: state.myProfile
+    myProfile: state.myProfile,
+    tabNav: state.tabNav
   }
 }
 

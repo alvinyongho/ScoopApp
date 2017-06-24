@@ -6,11 +6,11 @@ import {getEduExperience
 
 export function retrieveEduExperience() {
 	return (dispatch,getState) => {
-		console.log('retrieving edu')
+		// console.log('retrieving edu')
     fbId = getState().userProfile.facebookProfile.id
     getEduExperience(fbId).then((result)=>{
-      console.log("GOT USER")
-      console.log(result)
+      // console.log("GOT USER")
+      // console.log(result)
       eduBackground = result.education
       dispatch(gotEduBackground(eduBackground))
     })
@@ -24,4 +24,14 @@ export function gotEduBackground(eduBackground){
     type: types.GOT_EDU_BACKGROUND,
     eduBackground
   }
+}
+
+
+
+export function setProfileSettingToSave(setting){
+	return (dispatch, getState) => {
+		console.log("setting profile setting to save")
+		console.log(setting)
+
+	}
 }
