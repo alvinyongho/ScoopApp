@@ -152,9 +152,19 @@ export default class ProfileDetailAccordian extends Component {
     })
   }
 
+  // computeHeightFromAPIStore(){
+  //   height_inches = this.props.userProfile.scoopApiStore.heightInches
+  //   ft = Math.floor(height_inches/12)
+  //   inches = height_inches-(ft*12)
+  //   return(
+  //     {
+  //         feet: ft,
+  //         inches: inches
+  //     }
+  //   )
+  // }
 
-  computeHeightFromAPIStore(){
-    height_inches = this.props.userProfile.scoopApiStore.heightInches
+  convertHeightToStoreFormat(height_inches){
     ft = Math.floor(height_inches/12)
     inches = height_inches-(ft*12)
     return(
@@ -165,16 +175,69 @@ export default class ProfileDetailAccordian extends Component {
     )
   }
 
+  offspringToStore(offspring_val){
+    switch(offspring_val){
+      case "0":
+        return "Ask me!"
+      case "1":
+        return "I have kids"
+      case "2":
+        return "I do not have kids"
+      default:
+        return "undefined"
+    }
+  }
+
+  bodytypeToStore(bodytype_val){
+    switch(bodytype_val){
+      case "0":
+        return "Ask me!"
+      case "1":
+        return "Slender"
+      case "2":
+        return "Athletic"
+      case "3":
+        return "Average"
+      case "4":
+        return "Full Figured"
+      case "5":
+        return "More to Love"
+      default:
+        return "undefined"
+    }
+  }
 
   componentWillReceiveProps(nextProps){
+    // School name
+    retrievedFromAPISchoolName = nextProps.userProfile.scoopApiStore.schoolName
+    if(retrievedFromAPISchoolName && (retrievedFromAPISchoolName !== this.state.eduSelected)){
+      this.setState({eduSelected: retrievedFromAPISchoolName})
+    }
+    // Job Title
     retrievedFromAPIJobTitle = nextProps.userProfile.scoopApiStore.jobTitle
-
     if(retrievedFromAPIJobTitle && (retrievedFromAPIJobTitle !== this.state.jobTitleValue)){
       this.setState({jobTitleSelected: retrievedFromAPIJobTitle})
     }
+    // Height
+    retrievedFromAPIHeight = nextProps.userProfile.scoopApiStore.heightInches
+    heightStoreFormat = this.convertHeightToStoreFormat(retrievedFromAPIHeight)
+    if(heightStoreFormat && (heightStoreFormat != this.state.height)){
+      this.setState({height: heightStoreFormat})
+    }
+    // Offspring
+    offspringFromAPI = nextProps.userProfile.scoopApiStore.offspring
+    offspringStoreFormat = this.offspringToStore(offspringFromAPI)
+    if(offspringStoreFormat && (offspringStoreFormat != this.state.offSpringSelected)){
+      this.setState({offSpringSelected: offspringStoreFormat})
+    }
+    // Body Type
+    bodytypeFromAPI = nextProps.userProfile.scoopApiStore.bodyType
+    bodytypeStoreFormat = this.bodytypeToStore(bodytypeFromAPI)
+    if(bodytypeStoreFormat && (bodytypeStoreFormat != this.state.bodyTypeSelected)){
+      this.setState({bodyTypeSelected: bodytypeStoreFormat})
+    }
 
 
-    
   }
 
 
@@ -197,7 +260,7 @@ export default class ProfileDetailAccordian extends Component {
         },
         {
           rowItemName: 'Job Title',
-          jobTitlesArr: ["test", "test2"],
+          jobTitlesArr: [],
           rowItemValue: this.state.jobTitleSelected,
           updateSelected: (jobTitleSelected) => {
             console.log("jobTitleSelected")
@@ -279,11 +342,7 @@ export default class ProfileDetailAccordian extends Component {
     }
 
 
-    return (
-      <View>
-        <Text>TODO</Text>
-      </View>
-    );
+    return null
   }
 
 
