@@ -151,13 +151,13 @@ class MessageListRowItem extends React.Component {
     if(nextState.removing == true){
       console.log("received state of removing")
       this.onRemove(() => {
-        
+
 
         setTimeout(()=>{
           this.props.hideMessages()
 
         }, 1000)
-        
+
 
 
 
@@ -206,6 +206,11 @@ class MessageListRowItem extends React.Component {
     this.setState({removing: true})
   }
 
+  componentWillUnmount(){
+    this.setState({rowData: null})
+
+  }
+
   renderCell = () => (
     <Animated.View style={
       [{...this.props.style, left: this.state.rightTransformAmount},
@@ -243,18 +248,22 @@ class MessageListRowItem extends React.Component {
 
           }
           </TouchableHighlight>
-
-
-
-
         </View>
-
+        {this.props.rowData.picURL != "" ?
         <Image source={{uri:this.props.rowData.picURL}}
                 style={{height: this.props.pictureSize,
                        width: this.props.pictureSize,
                        borderRadius:this.props.pictureSize/2,
                        }}
         />
+        :
+        <View
+                style={{height: this.props.pictureSize,
+                       width: this.props.pictureSize,
+                       borderRadius:this.props.pictureSize/2, backgroundColor:'gray'
+                       }}
+        />
+        }
 
         <View style={styles.nameMessageContainer}>
           <Text style={styles.otherPersonName}>
@@ -292,7 +301,7 @@ class MessageListRowItem extends React.Component {
 
 
   renderCellWithHighlight = () => (
-    <Swipeout scroll={(isEnabled) => this.props.changeScrollState(isEnabled)} right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'}>
+    <Swipeout scroll={(isEnabled) => this.props.changeScrollState(isEnabled)} right={swipeoutBtns( ()=> this._deleteItem(this.props.rowData.targetId))} backgroundColor={'white'} autoClose={true}>
     <TouchableHighlight onPress={()=>this._onCellPress()}>
       {this.renderCell()}
     </TouchableHighlight>
