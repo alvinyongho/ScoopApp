@@ -152,18 +152,6 @@ export default class ProfileDetailAccordian extends Component {
     })
   }
 
-  // computeHeightFromAPIStore(){
-  //   height_inches = this.props.userProfile.scoopApiStore.heightInches
-  //   ft = Math.floor(height_inches/12)
-  //   inches = height_inches-(ft*12)
-  //   return(
-  //     {
-  //         feet: ft,
-  //         inches: inches
-  //     }
-  //   )
-  // }
-
   convertHeightToStoreFormat(height_inches){
     ft = Math.floor(height_inches/12)
     inches = height_inches-(ft*12)
@@ -178,7 +166,7 @@ export default class ProfileDetailAccordian extends Component {
   offspringToStore(offspring_val){
     switch(offspring_val){
       case "0":
-        return "Ask me!"
+        return "Do not share"
       case "1":
         return "I have kids"
       case "2":
@@ -236,8 +224,6 @@ export default class ProfileDetailAccordian extends Component {
     if(bodytypeStoreFormat && (bodytypeStoreFormat != this.state.bodyTypeSelected)){
       this.setState({bodyTypeSelected: bodytypeStoreFormat})
     }
-
-
   }
 
 
@@ -246,6 +232,15 @@ export default class ProfileDetailAccordian extends Component {
   }
 
   genSections = () => {
+    const offspringChoices = ["I have kids", "I do not have kids", "Do not share"]
+    const bodyTypeChoices = ["Slender", "Athletic", "Average", "Full Figured", "More to Love", "Do not share"]
+
+    getApiIndexOfChoiceSelected = (choices, selected) => {
+      if(selected=== "Do not share")
+        return 0
+      return choices.indexOf(selected)+1
+    }
+
     return (
       [{
           rowItemName: 'School Name',
@@ -253,9 +248,8 @@ export default class ProfileDetailAccordian extends Component {
           eduSelected: this.state.eduSelected,
           rowItemValue: this.state.eduSelected,
           updateSelected: (eduSelected) => {
+            this.props.saveSetting({'education': eduSelected.entryTitle})
             this.setState({eduSelected:(eduSelected.entryTitle)})
-
-            // TODO: dispatch an update to the personal detail school name
           }
         },
         {
@@ -273,26 +267,32 @@ export default class ProfileDetailAccordian extends Component {
           height: this.state.height,
           rowItemValue: `${this.state.height.feet}' ${this.state.height.inches}"`,
           updateSelected: (heightSelected) => {
-            this.setState({height: {
-                                      feet: heightSelected.feet,
-                                      inches: heightSelected.inches
-                                    }
-                          })
+            this.props.saveSetting({'heightInches': heightSelected.feet*12+heightSelected.inches})
+            this.setState({
+              height: {
+                feet: heightSelected.feet,
+                inches: heightSelected.inches
+              }
+            })
           }
         },
         {
           rowItemName: 'Offspring',
-          offspringArr: ["I have kids", "I do not have kids", "Do not share"],
+          offspringArr: offspringChoices,
           rowItemValue: this.state.offSpringSelected,
           updateSelected: (offspringSelected) => {
+            indexSelected = getApiIndexOfChoiceSelected(offspringChoices, offspringSelected.entryTitle)
+            this.props.saveSetting({'offspring': indexSelected})
             this.setState({offSpringSelected:(offspringSelected.entryTitle)})
           }
         },
         {
           rowItemName: 'Body Type',
-          values: ["Slender", "Athletic", "Average", "Full Figured", "More to Love", "Do not share"],
+          values: bodyTypeChoices,
           rowItemValue: this.state.bodyTypeSelected,
           updateSelected: (bodyTypeSelected) => {
+            indexSelected = getApiIndexOfChoiceSelected(bodyTypeChoices, bodyTypeSelected.entryTitle)
+            this.props.saveSetting({'bodyType': indexSelected})
             this.setState({bodyTypeSelected:(bodyTypeSelected.entryTitle)})
           }
         }]
@@ -340,11 +340,8 @@ export default class ProfileDetailAccordian extends Component {
         }
       }
     }
-
-
     return null
   }
-
 
   render(){
     return (
@@ -353,7 +350,6 @@ export default class ProfileDetailAccordian extends Component {
           renderHeader={this._renderHeader}
           renderContent={this._renderContent}
         />
-
     );
   }
 
