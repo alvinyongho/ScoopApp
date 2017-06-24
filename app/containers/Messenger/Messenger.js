@@ -41,30 +41,15 @@ export class Messenger extends React.Component {
 
   componentWillMount(){
     this.props.getMessageList()
-
   }
 
   componentDidMount(){
     // console.log(this.props.messageList)
-
   }
-
 
   componentWillReceiveProps(nextProps){
     if (nextProps.messageList !== [] && nextProps.messageList !== undefined){
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-
-
-      console.log("WHAT IS THE RESULT OF DELETING???")
-      console.log(ds.cloneWithRows (
-        nextProps.messageList.map((item, index)=>{
-          return item
-        })
-      ))
-
-
-
       this.setState(
         {dataSource:ds.cloneWithRows (
         nextProps.messageList.map((item, index)=>{
@@ -74,6 +59,11 @@ export class Messenger extends React.Component {
     }
     if (nextProps.messengerRefreshing === true){
       this.setState({refreshing: false})
+    }
+    if(this.props.tabNav.index !== nextProps.tabNav.index){
+      if (nextProps.tabNav.index === 1){
+        nextProps.getMessageList()
+      }
     }
   }
 
@@ -115,7 +105,7 @@ export class Messenger extends React.Component {
     return (
       <ListView
         refreshControl={
-          <RefreshControl 
+          <RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={() => this._onRefresh()}
           />
@@ -125,10 +115,10 @@ export class Messenger extends React.Component {
         removeClippedSubviews={false} // current workaround about list view not showing up bug
         dataSource={this.state.dataSource}
         renderRow={(rowData) => {
-          return <MessageListRowItem  
+          return <MessageListRowItem
                                       cellToggledForDeletion={()=>this.addUserIdForDeletion(rowData)}
                                       cellCanceledForDeletion={()=>this.removeUserIdForDeletion(rowData)}
-                                      pictureSize={50} rowData={rowData} 
+                                      pictureSize={50} rowData={rowData}
                                       changeScrollState={this.changeScrollState}/>}}
       />
     )
@@ -147,7 +137,8 @@ function mapStateToProps(state){
   return {
     messageList: state.messenger.messageList,
     messenger: state.messenger,
-    messengerRefreshing: state.messenger.messengerRefreshing
+    messengerRefreshing: state.messenger.messengerRefreshing,
+    tabNav: state.tabNav
   }
 }
 

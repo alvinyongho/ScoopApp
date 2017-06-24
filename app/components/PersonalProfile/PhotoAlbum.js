@@ -608,6 +608,12 @@ class PictureBlock extends Component {
 
 
   deleteButton = () => {
+    circle_size = DELETE_BUTTON_WIDTH
+    border_width = 1
+    line_width = border_width
+    circle_pad = 15
+    circle_color = 'red'
+
     if(this.props.identifier !== this.props.currentBig){
       return (
         <Button onPress={this.props.removeBlock}>
@@ -618,12 +624,19 @@ class PictureBlock extends Component {
                       backgroundColor: 'white',
                       borderWidth:1,
                       borderColor: BORDER_COLOR,
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       borderRadius:DELETE_BUTTON_WIDTH/2}
                     , Platform.OS === 'ios' && {
                           position: 'absolute',
                           top: -smallBoxHeight+7,
                           left: smallBoxWidth-37,}
                     ]}>
+
+
+                    <View style={{transform:[{'rotate': '45deg'}], position: 'absolute', height: line_width, width: circle_size-circle_pad, backgroundColor: circle_color}}/>
+                    <View style={{transform:[{'rotate': '45deg'}], position: 'absolute', height: circle_size-circle_pad, width: line_width, backgroundColor: circle_color}}/>
+
           </View>
         </Button>
       )
