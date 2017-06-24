@@ -41,14 +41,11 @@ export class Messenger extends React.Component {
 
   componentWillMount(){
     this.props.getMessageList()
-
   }
 
   componentDidMount(){
     // console.log(this.props.messageList)
-
   }
-
 
   componentWillReceiveProps(nextProps){
     if (nextProps.messageList !== [] && nextProps.messageList !== undefined){
@@ -63,13 +60,11 @@ export class Messenger extends React.Component {
     if (nextProps.messengerRefreshing === true){
       this.setState({refreshing: false})
     }
-
     if(this.props.tabNav.index !== nextProps.tabNav.index){
       if (nextProps.tabNav.index === 1){
         nextProps.getMessageList()
       }
     }
-
   }
 
   addUserIdForDeletion = (rowData) => {
