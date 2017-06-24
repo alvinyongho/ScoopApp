@@ -110,6 +110,7 @@ export class EditProfileContainer extends React.Component {
       relationship: "",
       schoolName: "",
       firstName: "",
+      jobTitle: "",
       lookingForType: "",
       lookingForGender: "",
     };
@@ -171,9 +172,12 @@ export class EditProfileContainer extends React.Component {
         <SectionTitle title="PERSONAL DETAILS" />
 
         <ProfileBasicInfo
+          distance={'0m away'}
           relationshipStatus={this.state.relationship}
-          distance={'0m away'} schoolName={this.state.schoolName}
-          name={this.state.firstName} disabledLike={true}
+          schoolName={this.state.schoolName}
+          name={this.state.firstName}
+          disabledLike={true}
+          
         />
 
 
