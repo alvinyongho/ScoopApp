@@ -16,11 +16,11 @@ export default class ProfileBasicInfo extends Component {
     this.state = ({
       showLikeButton: true,
       buttonStatus: null,
+      schoolName: this.props.schoolName
     })
   }
 
   renderLikeButton(buttonStatus){
-
     if(!this.state.showLikeButton){
       return <View />
     }
@@ -33,6 +33,17 @@ export default class ProfileBasicInfo extends Component {
     return (
       <Image source={images.heart} style={{ width:60, height: 60, borderRadius:30}}/>
     );
+
+  }
+
+
+  componentWillReceiveProps(nextProps){
+
+    console.log("component received next props in profile basic info")
+    console.log(nextProps)
+    if(nextProps.schoolName != this.state.schoolName){
+      this.setState({schoolName: nextProps.schoolName})
+    }
 
   }
 
@@ -51,12 +62,16 @@ export default class ProfileBasicInfo extends Component {
     }
   }
 
+  schoolNameLabel = (schoolName) =>{
+    return (<Text style={styles.subheader}>{schoolName}</Text>)
+  }
+
   computeSchoolName = (schoolName) =>{
     switch(schoolName){
       case "Do not share":
-        return ""
+        return null
       default:
-        return schoolName
+        return this.schoolNameLabel(schoolName)
     }
   }
 
@@ -66,11 +81,9 @@ export default class ProfileBasicInfo extends Component {
         <View style={{flex:.8}}>
           <Text style={styles.mainheader}>{this.props.name}</Text>
           <Text style={styles.subheader}>{this.props.distance}</Text>
+          {this.computeSchoolName(this.state.schoolName)}
           <Text style={styles.subheader}>
-            {this.computeSchoolName(this.props.schoolName)}
-          </Text>
-          <Text style={styles.subheader}>
-            {this.computeRelationshipStatus(this.props.relationshipStatus)}
+          {this.computeRelationshipStatus(this.props.relationshipStatus)}
           </Text>
         </View>
 
