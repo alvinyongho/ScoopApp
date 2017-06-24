@@ -15,7 +15,6 @@ import RowDivider from './RowDivider'
 import BasicRow from './BasicRow'
 
 
-
 export class HeightPicker extends Component{
   constructor(props){
     super(props)
@@ -24,7 +23,6 @@ export class HeightPicker extends Component{
       selectedHeightInches: this.props.height.inches
     })
   }
-
   componentDidMount(){
     // this.setState({selectedHeightFeet: this.props.height.feet,
     //   selectedHeightInches: this.props.height.inches
@@ -36,7 +34,6 @@ export class HeightPicker extends Component{
   }
 
   updateSelected(feet, inches){
-
     this.props.updateSelected({feet, inches})
   }
 
@@ -46,8 +43,9 @@ export class HeightPicker extends Component{
         <Picker style={{flex:.5}}
           selectedValue={this.state.selectedHeightFeet}
           onValueChange={(itemValue, itemIndex) => {
-                                      this.setState({selectedHeightFeet: itemValue}, this.updateSelected(itemValue, this.state.selectedHeightInches))
-                                      }}>
+                          this.setState({selectedHeightFeet: itemValue},
+                            this.updateSelected(itemValue, this.state.selectedHeightInches))
+                        }}>
           <Picker.Item label="1'" value={1} />
           <Picker.Item label="2'" value={2} />
           <Picker.Item label="3'" value={3} />
@@ -100,7 +98,6 @@ export class SelectableList extends Component {
   }
 
   _renderListItems(){
-    console.log(this.state.dataSource)
     return this.state.dataSource.map((entryTitle, index)=>{
       return (
         <TouchableHighlight key={index} onPress={()=>this.selectItem(entryTitle)}>
@@ -119,13 +116,9 @@ export class SelectableList extends Component {
               </View>
               </View>
             }
-
-
             <View style={{height:1, backgroundColor:'gray'}}/>
           </View>
         </TouchableHighlight>
-
-
       );
     })
 
@@ -144,15 +137,18 @@ export class SelectableList extends Component {
 
 export default class ProfileDetailAccordian extends Component {
 
-
   constructor(props){
     super(props)
     this.state = ({
       eduBackground: null,
-      eduSelected: this.props.userProfile.scoopApiStore.schoolName,
-      height: this.computeHeightFromAPIStore(),
-      offSpringSelected: "TODO: Ask me",
-      bodyTypeSelected: "TODO: Ask me"
+      eduSelected: "",
+      height: {
+                  feet: 0,
+                  inches: 0
+              },
+      offSpringSelected: "",
+      bodyTypeSelected: "",
+      jobTitleSelected: "",
     })
   }
 
@@ -202,15 +198,19 @@ export default class ProfileDetailAccordian extends Component {
         },
         {
           rowItemName: 'Job Title',
-          rowItemValue: this.state.jobTitleValue,
+          jobTitlesArr: ["test", "test2"],
+          rowItemValue: this.state.jobTitleSelected,
+          updateSelected: (jobTitleSelected) => {
+            console.log("jobTitleSelected")
+            console.log(jobTitleSelected)
+            this.setState({jobTitleSelected:(jobTitleSelected.entryTitle)})
+          }
         },
         {
           rowItemName: 'Height',
           height: this.state.height,
           rowItemValue: `${this.state.height.feet}' ${this.state.height.inches}"`,
           updateSelected: (heightSelected) => {
-            console.log("THE HEIGHT SELECTED")
-            console.log(heightSelected)
             this.setState({height: {
                                       feet: heightSelected.feet,
                                       inches: heightSelected.inches
@@ -225,7 +225,6 @@ export default class ProfileDetailAccordian extends Component {
           updateSelected: (offspringSelected) => {
             this.setState({offSpringSelected:(offspringSelected.entryTitle)})
           }
-
         },
         {
           rowItemName: 'Body Type',
@@ -236,11 +235,7 @@ export default class ProfileDetailAccordian extends Component {
           }
         }]
     );
-
   }
-
-
-
 
   _renderHeader(section) {
     return (
@@ -265,12 +260,15 @@ export default class ProfileDetailAccordian extends Component {
     if(isActive === true){
       switch(section.rowItemName){
         case ("School Name"): {
-            return (<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.eduBackgroundArr}/>)
+          return (<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.eduBackgroundArr}/>)
+        }
+        case("Job Title"): {
+          return(<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.jobTitlesArr}/>)
         }
         case("Height"): {
-            return (
-              <HeightPicker updateSelected={section.updateSelected} height={section.height}/>
-            )
+          return (
+            <HeightPicker updateSelected={section.updateSelected} height={section.height}/>
+          )
         }
         case("Offspring"): {
           return(<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.offspringArr}/>)
@@ -278,8 +276,6 @@ export default class ProfileDetailAccordian extends Component {
         case("Body Type"): {
           return(<SelectableList updateSelected={section.updateSelected} selected={section.selected} listItems={section.values}/>)
         }
-
-
       }
     }
 

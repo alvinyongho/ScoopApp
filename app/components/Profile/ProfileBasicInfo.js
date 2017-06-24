@@ -63,13 +63,10 @@ export default class ProfileBasicInfo extends Component {
   }
 
   schoolNameLabel = (schoolName) =>{
-    // console.log("returning schoolName Label")
     return (<Text style={styles.subheader}>{schoolName}</Text>)
   }
 
   computeSchoolName = (schoolName) =>{
-    console.log("computing school name")
-    console.log(schoolName)
     switch(schoolName){
       case "Do not share":
         return null
@@ -84,11 +81,9 @@ export default class ProfileBasicInfo extends Component {
         <View style={{flex:.8}}>
           <Text style={styles.mainheader}>{this.props.name}</Text>
           <Text style={styles.subheader}>{this.props.distance}</Text>
-
           {this.computeSchoolName(this.state.schoolName)}
           <Text style={styles.subheader}>
           {this.computeRelationshipStatus(this.props.relationshipStatus)}
-
           </Text>
         </View>
 

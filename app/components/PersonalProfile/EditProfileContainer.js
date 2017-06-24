@@ -177,9 +177,7 @@ export class EditProfileContainer extends React.Component {
           schoolName={this.state.schoolName}
           name={this.state.firstName}
           disabledLike={true}
-          
         />
-
 
         <ProfileDetailAccordian userProfile={myProfile} />
 
