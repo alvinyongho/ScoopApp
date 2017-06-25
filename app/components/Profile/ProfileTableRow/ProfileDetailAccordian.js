@@ -71,7 +71,6 @@ export class HeightPicker extends Component{
           onValueChange={(itemValue, itemIndex) => {
                                     this.setState({selectedHeightInches: itemValue}, this.updateSelected(this.state.selectedHeightFeet, itemValue))
                                     }}>
-
           <Picker.Item label="0&#34;" value={0} />
           <Picker.Item label="1&#34;" value={1} />
           <Picker.Item label="2&#34;" value={2} />
@@ -275,7 +274,7 @@ export default class ProfileDetailAccordian extends Component {
           eduSelected: this.state.eduSelected,
           rowItemValue: this.state.eduSelected,
           updateSelected: (eduSelected) => {
-            this.props.saveSetting({'education': eduSelected.entryTitle})
+            this.props.saveSetting({'schoolName': eduSelected.entryTitle})
             this.setState({eduSelected:(eduSelected.entryTitle)})
 
             this.setState({performedChanges: true})
@@ -290,7 +289,6 @@ export default class ProfileDetailAccordian extends Component {
             // console.log(jobTitleSelected)
             // TODO: add dropdown and handling if multiple job titles (?)
             this.setState({jobTitleSelected:(jobTitleSelected.entryTitle)})
-
             this.setState({performedChanges: true})
 
           }

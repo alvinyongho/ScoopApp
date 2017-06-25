@@ -152,6 +152,8 @@ export class EditProfileContainer extends React.Component {
         console.log("permit save")
         // TODO:
         // save pending profile changes
+        nextProps.saveChangesToAPI()
+
 
         // reset pending profile changes after save
 
