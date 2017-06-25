@@ -72,6 +72,7 @@ export class HeightPicker extends Component{
                                     this.setState({selectedHeightInches: itemValue}, this.updateSelected(this.state.selectedHeightFeet, itemValue))
                                     }}>
 
+          <Picker.Item label="0&#34;" value={0} />
           <Picker.Item label="1&#34;" value={1} />
           <Picker.Item label="2&#34;" value={2} />
           <Picker.Item label="3&#34;" value={3} />
