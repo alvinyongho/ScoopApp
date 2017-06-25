@@ -131,20 +131,15 @@ export class EditProfileContainer extends React.Component {
 
 
   componentWillReceiveProps(nextProps){
-    // console.log("EDIT PROFILE CONTAINER RECEIVED PROPS")
-    // console.log("the next props")
-    // console.log(nextProps)
     if(nextProps.myProfile.scoopApiStore.relationship){
       this.setState({relationship:nextProps.myProfile.scoopApiStore.relationship})
     }
     if(nextProps.myProfile.scoopApiStore.schoolName){
       this.setState({schoolName:nextProps.myProfile.scoopApiStore.schoolName})
     }
-
     if(nextProps.myProfile.scoopApiStore.firstName){
       this.setState({firstName:nextProps.myProfile.scoopApiStore.firstName})
     }
-
     if(nextProps.myProfile.scoopApiStore.lookingForType){
       this.setState({lookingForType:nextProps.myProfile.scoopApiStore.lookingForType})
     }
@@ -152,7 +147,17 @@ export class EditProfileContainer extends React.Component {
       this.setState({lookingForGender:nextProps.myProfile.scoopApiStore.lookingForGender})
     }
 
+    if(this.props.tabNav.index !== nextProps.tabNav.index){
+      if (this.props.tabNav.index === 2){
+        console.log("permit save")
+        // TODO:
+        // save pending profile changes
 
+        // reset pending profile changes after save
+
+
+      }
+    }
 
   }
 
