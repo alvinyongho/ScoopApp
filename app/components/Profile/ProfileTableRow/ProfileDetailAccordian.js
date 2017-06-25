@@ -191,7 +191,7 @@ export default class ProfileDetailAccordian extends Component {
   bodytypeToStore(bodytype_val){
     switch(bodytype_val){
       case "0":
-        return "Ask me!"
+        return "Do not share"
       case "1":
         return "Slender"
       case "2":
