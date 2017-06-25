@@ -32,6 +32,14 @@ export function setProfileSettingToSave(setting){
 	return (dispatch, getState) => {
 		console.log("setting profile setting to save")
 		console.log(setting)
+		dispatch(setPendingProfileChanges(setting))
+	}
+}
 
+
+export function setPendingProfileChanges(setting){
+	return {
+		type: types.SET_PENDING_PROFILE_CHANGES,
+		setting
 	}
 }
