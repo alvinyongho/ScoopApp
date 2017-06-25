@@ -8,7 +8,8 @@ initialMyProfileStates = {
 		scoopApiStore: {
 			relationship: ""
 		},
-		eduBackground: []
+		eduBackground: [],
+		pendingChanges: [],
 }
 
 export const myProfile = createReducer(initialMyProfileStates, {
@@ -20,7 +21,12 @@ export const myProfile = createReducer(initialMyProfileStates, {
 	[types.GOT_EDU_BACKGROUND](state, action) {
 		return update(state,
 			{eduBackground: {$set: action.eduBackground}}
-	)}
+	)},
+
+	[types.SET_PENDING_PROFILE_CHANGES](state, action) {
+		return update(state,
+			{pendingChanges: {$push: [action.setting]}}
+	)},
 
 })
 
@@ -51,24 +57,19 @@ export const myAlbumPicturesOrder = createReducer({}, {
 	[types.GET_MY_IMAGES](state, action) {
 		return action.images
 	},
-	// TODO: APPEND
 	[types.APPEND_TO_MY_PICTURE_ORDER](state, action) {
 		return update(state,
 			{$push: [action.imageURL]}
 		)
 	},
-
 	[types.SYNC_WITH_PHOTO_ALBUM_ORDER](state, action){
 		return action.images
 	},
-
 	[types.ALBUM_SET_IMAGEURL_AT_INDEX](state, action){
 		return update(state, {
 			[action.index]: {$set: action.imageURL}
 		})
 	}
-
-
 })
 
 
