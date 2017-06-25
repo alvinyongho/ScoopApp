@@ -47,8 +47,6 @@ export function performLoginRegisterUsingFields(facebookId, accessToken, fields)
 
   return performTaskWithParams('loginRegister', `z=${CLIENT_SECRET}&facebookId=${facebookId}&${additionalFields}`)
 
-
-
 }
 
 
@@ -61,6 +59,19 @@ export function performSaveMyProfileImages(userId, userToken, imageArray){
 
   paramString = textImageFieldParamsArray.join('&')
   return performTaskWithParams('saveProfile', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
+}
+
+
+export function performSaveMyProfileAccordianSettings(userId, userToken, settings){
+  changesParamsArray = Object.keys(settings).map(key =>{
+    let encoded_setting_value = encodeURI(settings[key])
+    return `changesToSave%5B${key}%5D=${encoded_setting_value}`
+  })
+
+  paramString = changesParamsArray.join('&')
+  return performTaskWithParams('saveProfile', `userId=${userId}&userToken=${userToken}&z=${CLIENT_SECRET}&${paramString}`)
+
+
 }
 
 

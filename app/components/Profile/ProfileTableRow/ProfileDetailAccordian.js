@@ -23,6 +23,16 @@ export class HeightPicker extends Component{
       selectedHeightInches: this.props.height.inches
     })
   }
+
+  // componentWillReceiveProps(nextProps){
+  //   if(nextProps.height.feet != this.state.selectedHeightFeet){
+  //     this.setState({selectedHeightFeet: nextProps.height.feet})
+  //   }
+  //   if(nextProps.height.inches != this.state.selectedHeightInches){
+  //     this.setState({selectedHeightInches: nextProps.height.inches})
+  //   }
+  // }
+
   componentDidMount(){
     // this.setState({selectedHeightFeet: this.props.height.feet,
     //   selectedHeightInches: this.props.height.inches
@@ -61,7 +71,7 @@ export class HeightPicker extends Component{
           onValueChange={(itemValue, itemIndex) => {
                                     this.setState({selectedHeightInches: itemValue}, this.updateSelected(this.state.selectedHeightFeet, itemValue))
                                     }}>
-
+          <Picker.Item label="0&#34;" value={0} />
           <Picker.Item label="1&#34;" value={1} />
           <Picker.Item label="2&#34;" value={2} />
           <Picker.Item label="3&#34;" value={3} />
@@ -149,6 +159,8 @@ export default class ProfileDetailAccordian extends Component {
       offSpringSelected: "",
       bodyTypeSelected: "",
       jobTitleSelected: "",
+      performedChanges: false,
+
     })
   }
 
@@ -196,33 +208,47 @@ export default class ProfileDetailAccordian extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    // School name
-    retrievedFromAPISchoolName = nextProps.userProfile.scoopApiStore.schoolName
-    if(retrievedFromAPISchoolName && (retrievedFromAPISchoolName !== this.state.eduSelected)){
-      this.setState({eduSelected: retrievedFromAPISchoolName})
-    }
-    // Job Title
-    retrievedFromAPIJobTitle = nextProps.userProfile.scoopApiStore.jobTitle
-    if(retrievedFromAPIJobTitle && (retrievedFromAPIJobTitle !== this.state.jobTitleValue)){
-      this.setState({jobTitleSelected: retrievedFromAPIJobTitle})
-    }
-    // Height
-    retrievedFromAPIHeight = nextProps.userProfile.scoopApiStore.heightInches
-    heightStoreFormat = this.convertHeightToStoreFormat(retrievedFromAPIHeight)
-    if(heightStoreFormat && (heightStoreFormat != this.state.height)){
-      this.setState({height: heightStoreFormat})
-    }
-    // Offspring
-    offspringFromAPI = nextProps.userProfile.scoopApiStore.offspring
-    offspringStoreFormat = this.offspringToStore(offspringFromAPI)
-    if(offspringStoreFormat && (offspringStoreFormat != this.state.offSpringSelected)){
-      this.setState({offSpringSelected: offspringStoreFormat})
-    }
-    // Body Type
-    bodytypeFromAPI = nextProps.userProfile.scoopApiStore.bodyType
-    bodytypeStoreFormat = this.bodytypeToStore(bodytypeFromAPI)
-    if(bodytypeStoreFormat && (bodytypeStoreFormat != this.state.bodyTypeSelected)){
-      this.setState({bodyTypeSelected: bodytypeStoreFormat})
+
+    if(!this.state.performedChanges){
+      // School name
+      retrievedFromAPISchoolName = nextProps.userProfile.scoopApiStore.schoolName
+      if(retrievedFromAPISchoolName && (retrievedFromAPISchoolName !== this.state.eduSelected)){
+        this.setState({eduSelected: retrievedFromAPISchoolName})
+      }
+      // School arr
+
+      if(nextProps.userProfile.eduBackground != undefined && nextProps.userProfile.eduBackground.length){
+        arr = nextProps.userProfile.eduBackground.map((eduObject, index)=>{
+          return (eduObject.school.name)
+        })
+        this.setState({eduBackground: arr})
+      }
+
+
+      // Job Title
+      retrievedFromAPIJobTitle = nextProps.userProfile.scoopApiStore.jobTitle
+      if(retrievedFromAPIJobTitle && (retrievedFromAPIJobTitle !== this.state.jobTitleValue)){
+        this.setState({jobTitleSelected: retrievedFromAPIJobTitle})
+      }
+      // Height
+      retrievedFromAPIHeight = nextProps.userProfile.scoopApiStore.heightInches
+      heightStoreFormat = this.convertHeightToStoreFormat(retrievedFromAPIHeight)
+      if(heightStoreFormat && (heightStoreFormat != this.state.height)){
+        console.log(heightStoreFormat)
+        this.setState({height: heightStoreFormat})
+      }
+      // Offspring
+      offspringFromAPI = nextProps.userProfile.scoopApiStore.offspring
+      offspringStoreFormat = this.offspringToStore(offspringFromAPI)
+      if(offspringStoreFormat && (offspringStoreFormat != this.state.offSpringSelected)){
+        this.setState({offSpringSelected: offspringStoreFormat})
+      }
+      // Body Type
+      bodytypeFromAPI = nextProps.userProfile.scoopApiStore.bodyType
+      bodytypeStoreFormat = this.bodytypeToStore(bodytypeFromAPI)
+      if(bodytypeStoreFormat && (bodytypeStoreFormat != this.state.bodyTypeSelected)){
+        this.setState({bodyTypeSelected: bodytypeStoreFormat})
+      }
     }
   }
 
@@ -248,8 +274,10 @@ export default class ProfileDetailAccordian extends Component {
           eduSelected: this.state.eduSelected,
           rowItemValue: this.state.eduSelected,
           updateSelected: (eduSelected) => {
-            this.props.saveSetting({'education': eduSelected.entryTitle})
+            this.props.saveSetting({'schoolName': eduSelected.entryTitle})
             this.setState({eduSelected:(eduSelected.entryTitle)})
+
+            this.setState({performedChanges: true})
           }
         },
         {
@@ -257,9 +285,12 @@ export default class ProfileDetailAccordian extends Component {
           jobTitlesArr: [],
           rowItemValue: this.state.jobTitleSelected,
           updateSelected: (jobTitleSelected) => {
-            console.log("jobTitleSelected")
-            console.log(jobTitleSelected)
+            // console.log("jobTitleSelected")
+            // console.log(jobTitleSelected)
+            // TODO: add dropdown and handling if multiple job titles (?)
             this.setState({jobTitleSelected:(jobTitleSelected.entryTitle)})
+            this.setState({performedChanges: true})
+
           }
         },
         {
@@ -268,12 +299,16 @@ export default class ProfileDetailAccordian extends Component {
           rowItemValue: `${this.state.height.feet}' ${this.state.height.inches}"`,
           updateSelected: (heightSelected) => {
             this.props.saveSetting({'heightInches': heightSelected.feet*12+heightSelected.inches})
+            // console.log(heightSelected)
             this.setState({
               height: {
                 feet: heightSelected.feet,
                 inches: heightSelected.inches
               }
             })
+
+            this.setState({performedChanges: true})
+
           }
         },
         {
@@ -294,6 +329,9 @@ export default class ProfileDetailAccordian extends Component {
             indexSelected = getApiIndexOfChoiceSelected(bodyTypeChoices, bodyTypeSelected.entryTitle)
             this.props.saveSetting({'bodyType': indexSelected})
             this.setState({bodyTypeSelected:(bodyTypeSelected.entryTitle)})
+
+            this.setState({performedChanges: true})
+
           }
         }]
     );
