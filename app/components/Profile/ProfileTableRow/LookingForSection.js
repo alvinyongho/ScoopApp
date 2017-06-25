@@ -18,7 +18,7 @@ export default class LookingForSection extends Component{
           disabled={this.props.disabled}
           leftLabel={'Relationship'}
           rightLabel={'Friendship'}
-          thumbLocation={this.computeThumbLocation(5, this.props.lookingForType-1)}
+          thumbLocation={this.computeThumbLocation(3, this.props.lookingForType-1)}
           changeScrollState={this.props.changeScrollState} />
 
         <View style={{height:1, backgroundColor:'gray'}}/>
