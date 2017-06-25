@@ -215,6 +215,16 @@ export default class ProfileDetailAccordian extends Component {
       if(retrievedFromAPISchoolName && (retrievedFromAPISchoolName !== this.state.eduSelected)){
         this.setState({eduSelected: retrievedFromAPISchoolName})
       }
+      // School arr
+
+      if(nextProps.userProfile.eduBackground != undefined && nextProps.userProfile.eduBackground.length){
+        arr = nextProps.userProfile.eduBackground.map((eduObject, index)=>{
+          return (eduObject.school.name)
+        })
+        this.setState({eduBackground: arr})
+      }
+
+
       // Job Title
       retrievedFromAPIJobTitle = nextProps.userProfile.scoopApiStore.jobTitle
       if(retrievedFromAPIJobTitle && (retrievedFromAPIJobTitle !== this.state.jobTitleValue)){
@@ -290,8 +300,6 @@ export default class ProfileDetailAccordian extends Component {
           rowItemValue: `${this.state.height.feet}' ${this.state.height.inches}"`,
           updateSelected: (heightSelected) => {
             this.props.saveSetting({'heightInches': heightSelected.feet*12+heightSelected.inches})
-            console.log("SAVING")
-            console.log(heightSelected.feet*12+heightSelected.inches)
             // console.log(heightSelected)
             this.setState({
               height: {
