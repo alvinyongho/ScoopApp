@@ -24,6 +24,9 @@ export const myProfile = createReducer(initialMyProfileStates, {
 	)},
 
 	[types.SET_PENDING_PROFILE_CHANGES](state, action) {
+		console.log(action.setting)
+
+		prev_state = state
 		return update(state,
 			{pendingChanges: {$merge: action.setting}}
 	)},
