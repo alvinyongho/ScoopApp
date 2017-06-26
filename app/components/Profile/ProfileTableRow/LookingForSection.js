@@ -8,18 +8,17 @@ export default class LookingForSection extends Component{
     return (thumbPosition/(numSteps-1))
   }
 
-
   static propTypes = {
-    updateSection: PropTypes.func
+    updatedSection: PropTypes.func
   }
 
   static defaultProps = {
-    updateSection: () => {console.log("unimplemented update Section")},
+    updatedSection: () => {console.log("unimplemented update Section. Takes in 3 parameters. SectionTitle, SectionValue, NumSteps")},
   }
 
-  handleRelease = (sectionTitle, sectionValue) =>{
+  handleRelease = (sectionTitle, sectionValue, numSteps) =>{
     if (!this.props.disabled){
-      this.props.updateSection(sectionTitle, sectionValue)
+      this.props.updatedSection(sectionTitle, sectionValue, numSteps)
     }
   }
 
@@ -36,7 +35,7 @@ export default class LookingForSection extends Component{
           disabled={this.props.disabled}
           leftLabel={'Relationship'}
           rightLabel={'Friendship'}
-          onRelease={(released_pos)=>{this.handleRelease(LOOKING_FOR_SECTION_0, released_pos)}}
+          onRelease={(released_pos)=>{this.handleRelease(LOOKING_FOR_SECTION_0, released_pos, 3)}}
           thumbLocation={this.computeThumbLocation(3, this.props.lookingForType-1)}
           changeScrollState={this.props.changeScrollState} />
 
@@ -48,7 +47,7 @@ export default class LookingForSection extends Component{
           leftLabel={'Men'}
           middleLabel={'Both'}
           rightLabel={'Women'}
-          onRelease={(released_pos)=>{this.handleRelease(LOOKING_FOR_SECTION_1, released_pos)}}
+          onRelease={(released_pos)=>{this.handleRelease(LOOKING_FOR_SECTION_1, released_pos, 3)}}
           thumbLocation={this.computeThumbLocation(3, this.props.lookingForGender-1)}
           changeScrollState={this.props.changeScrollState} />
       </View>
