@@ -195,6 +195,15 @@ export class EditProfileContainer extends React.Component {
           lookingForType={this.state.lookingForType}
           lookingForGender={this.state.lookingForGender}
           changeScrollState={this.props.changeScrollState}
+          updatedSection={(sectionTitle, sectionValue, numSteps)=>{
+            // handle title update: ${sectionTitle} and value: ${sectionValue} and numSteps ${numSteps}
+            let changesToSaveStepValue = sectionValue*(numSteps-1) + 1
+            let setting = {}
+            let title = sectionTitle
+            setting[title] = changesToSaveStepValue
+            console.log(this.props)
+            this.props.setProfileSettingToSave(setting)
+          }}
         />
         }
 
