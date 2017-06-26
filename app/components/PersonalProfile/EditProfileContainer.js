@@ -94,8 +94,8 @@ export class InputKeyboard extends Component{
 
   render(){
     return(
-        <TextInput onFocus={()=>this.props.scrollToBottom()} placeholder={'Type message'} multiline={true}
-          style={{height:100}} />
+        <TextInput onFocus={()=>this.props.onSelect()} placeholder={'Type message'} multiline={true}
+          style={{height:100, fontFamily: 'Avenir-Light', fontSize: 18}} />
 
 
     )
@@ -113,6 +113,7 @@ export class EditProfileContainer extends React.Component {
       jobTitle: "",
       lookingForType: "",
       lookingForGender: "",
+      animatedMarginValue: new Animated.Value(0)
     };
     this.keyboardHeight = new Animated.Value(0);
   }
@@ -193,9 +194,31 @@ export class EditProfileContainer extends React.Component {
 
   }
 
+  updateMargin= () =>{
+    if(this.keyboardHeight._value > 0){
+      Animated.timing(this.state.animatedMarginValue,{
+        toValue: 275,
+        duration: 200,
+      }).start();
+    } else {
+      Animated.timing(this.state.animatedMarginValue,{
+        toValue: 0,
+        duration: 200,
+      }).start();
+    }
+  }
+
   setKeyboardHeight = (keyboardHeight) => {
     console.log('setting keyboard height to '+ keyboardHeight)
     this.keyboardHeight.setValue(keyboardHeight)
+
+    if(keyboardHeight === 0){
+      Animated.spring(this.state.animatedMarginValue,{
+        toValue: 0,
+        duration: 50,
+      }).start();
+    }
+
   }
 
   // TODO: item order needs to be saved to database corresponding to authenticated user
@@ -206,7 +229,7 @@ export class EditProfileContainer extends React.Component {
     } = this.props;   // maybe redefine as accordian properties
 
     return (
-      <Animated.View style={{marginBottom: 275}}>
+      <Animated.View style={{paddingBottom: 20, marginBottom: this.state.animatedMarginValue}}>
         <SectionTitle title="PERSONAL DETAILS" />
 
         <ProfileBasicInfo
@@ -272,8 +295,13 @@ export class EditProfileContainer extends React.Component {
         <SectionTitle title={'ABOUT ME'}/>
         <View style={{backgroundColor: 'white', padding: 10}}>
 
+        <InputKeyboard setKeyboardHeight={this.setKeyboardHeight} onSelect={()=>{
+            Animated.timing(this.state.animatedMarginValue,{
+              toValue: 275,
+              duration: 50,
+            }).start(()=>this.props.scrollToBottom());
 
-        <InputKeyboard setKeyboardHeight={this.setKeyboardHeight} scrollToBottom={this.props.scrollToBottom}/>
+        }}/>
 
         </View>
 

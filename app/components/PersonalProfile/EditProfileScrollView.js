@@ -81,6 +81,7 @@ export class EditProfileScrollView extends React.Component {
 
 
   scrollToBottom = () => {
+    console.log("scrolling to bottom")
     this.refs.scrollView.scrollToEnd()
   }
 
@@ -99,7 +100,7 @@ export class EditProfileScrollView extends React.Component {
   // TODO: item order needs to be saved to database corresponding to authenticated user
   render(){
     return (
-      <ScrollView ref="scrollView" bounces={false} scrollEnabled={this.state.isScrollEnabled}>
+      <ScrollView ref="scrollView" scrollEnabled={this.state.isScrollEnabled}>
 
         {this.state.profileImages.length > 0 ?
           <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
