@@ -18,29 +18,13 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { NavigationActions } from 'react-navigation';
 
-
-import EditPhotoAlbum from './EditPhotoAlbum'
-import PanningRectExample from './PanningRectExample'
-// import PhotoAlbum from './PhotoAlbum'
-
-import RowDivider from '../Profile/ProfileTableRow/RowDivider'
-import ProfileSlider from '../Profile/ProfileTableRow/ProfileSlider'
-import ProfileDetailAccordian from '../Profile/ProfileTableRow/ProfileDetailAccordian'
-import BasicRow from '../Profile/ProfileTableRow/BasicRow'
-import ViewProfileRow from '../Profile/ProfileTableRow/ViewProfileRow'
-import SectionTitle from '../Profile/ProfileTableRow/SectionTitle'
-import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
-import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
-
-import {ComingSoonRow,EditableConnectedApps} from '../Profile/ProfileTableRow/ProfileDetailConnectedApps'
-
-import LookingForSection from '../Profile/ProfileTableRow/LookingForSection'
-
+import ProfileDetailAccordian from '../../components/Profile/ProfileTableRow/ProfileDetailAccordian'
+import SectionTitle from '../../components/Profile/ProfileTableRow/SectionTitle'
+import ProfileBasicInfo from '../../components/Profile/ProfileBasicInfo'
+import {ComingSoonRow,EditableConnectedApps} from '../../components/Profile/ProfileTableRow/ProfileDetailConnectedApps'
+import LookingForSection from '../../components/Profile/ProfileTableRow/LookingForSection'
 
 import images from '@assets/images';
-
-
-
 
 
 // KEYBOARD_HEIGHT:
