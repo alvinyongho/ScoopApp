@@ -15,25 +15,11 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { NavigationActions } from 'react-navigation';
 
-
-import EditPhotoAlbum from './EditPhotoAlbum'
-import PanningRectExample from './PanningRectExample'
-import PhotoAlbum from './PhotoAlbum'
-
-import RowDivider from '../Profile/ProfileTableRow/RowDivider'
-import ProfileSlider from '../Profile/ProfileTableRow/ProfileSlider'
-import ProfileDetailAccordian from '../Profile/ProfileTableRow/ProfileDetailAccordian'
-import BasicRow from '../Profile/ProfileTableRow/BasicRow'
-import ViewProfileRow from '../Profile/ProfileTableRow/ViewProfileRow'
-import SectionTitle from '../Profile/ProfileTableRow/SectionTitle'
-import ProfileBasicInfo from '../Profile/ProfileBasicInfo'
-import ConnectedAppsRow from '../Profile/ProfileTableRow/ConnectedAppsRow'
-
+import RowDivider from '../../components/Profile/ProfileTableRow/RowDivider'
+import ViewProfileRow from '../../components/Profile/ProfileTableRow/ViewProfileRow'
 
 import PhotoAlbumsContainer from './ProfileAlbumsContainer'
 import EditProfileContainer from './EditProfileContainer'
-
-
 import ImportPhotoContainer from './ImportPhotoContainer'
 
 
