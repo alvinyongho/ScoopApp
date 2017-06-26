@@ -131,35 +131,65 @@ export class EditProfileContainer extends React.Component {
 
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.myProfile.scoopApiStore.relationship){
+
+    let apiRelationship = nextProps.myProfile.scoopApiStore.relationship
+    let apiSchoolName = nextProps.myProfile.scoopApiStore.schoolName
+    let apiFirstName = nextProps.myProfile.scoopApiStore.firstName
+    let apiLookingForType = nextProps.myProfile.scoopApiStore.lookingForType
+    let apiLookingForGender = nextProps.myProfile.scoopApiStore.lookingForGender
+
+
+    if(apiRelationship !== this.state.relationship){
       this.setState({relationship:nextProps.myProfile.scoopApiStore.relationship})
     }
-    if(nextProps.myProfile.scoopApiStore.schoolName){
-      this.setState({schoolName:nextProps.myProfile.scoopApiStore.schoolName})
+
+    if(nextProps.myProfile.pendingChanges.schoolName){
+      this.setState({schoolName: nextProps.myProfile.pendingChanges.schoolName})
+    } else {
+      if(apiSchoolName !== this.state.schoolName)
+        this.setState({schoolName:nextProps.myProfile.scoopApiStore.schoolName})
     }
-    if(nextProps.myProfile.scoopApiStore.firstName){
+
+    if(apiFirstName !== this.state.firstName){
       this.setState({firstName:nextProps.myProfile.scoopApiStore.firstName})
     }
-    if(nextProps.myProfile.scoopApiStore.lookingForType){
-      this.setState({lookingForType:nextProps.myProfile.scoopApiStore.lookingForType})
-    }
-    if(nextProps.myProfile.scoopApiStore.lookingForGender){
-      this.setState({lookingForGender:nextProps.myProfile.scoopApiStore.lookingForGender})
-    }
 
-    if(this.props.tabNav.index !== nextProps.tabNav.index){
-      if (this.props.tabNav.index === 2){
-        console.log("permit save")
-        // TODO:
-        // save pending profile changes
-        nextProps.saveChangesToAPI()
-
-
-        // reset pending profile changes after save
-
-
+    if(nextProps.myProfile.pendingChanges.lookingForType){
+      this.setState({lookingForType: nextProps.myProfile.pendingChanges.lookingForType})
+    } else {
+      if(apiLookingForType != this.state.lookingForType){
+        this.setState({lookingForType:nextProps.myProfile.scoopApiStore.lookingForType})
       }
     }
+
+
+    if(nextProps.myProfile.pendingChanges.lookingForGender){
+      this.setState({lookingForGender: nextProps.myProfile.pendingChanges.lookingForGender})
+    } else {
+      if(apiLookingForGender != this.state.lookingForGender){
+        this.setState({lookingForGender:nextProps.myProfile.scoopApiStore.lookingForGender})
+      }
+    }
+
+    //
+    // if(this.props.myProfile.pendingChanges.education !== nextProps.myProfile.pendingChanges.education ){
+    //   console.log("updating school name")
+    //   this.setState({schoolName:nextProps.myProfile.pendingChanges.education})
+    // }
+    //
+
+    // if(this.props.tabNav.index !== nextProps.tabNav.index){
+    //   if (this.props.tabNav.index === 2){
+    //     console.log("permit save")
+    //     // TODO:
+    //     // save pending profile changes
+    //     nextProps.saveChangesToAPI()
+    //     // reset pending profile changes after save
+    //   }
+    // }
+    // if(this.props.myProfileNav.index === 0 && nextProps.myProfileNav.index > 0){
+    //   nextProps.saveChangesToAPI()
+    // }
 
   }
 
@@ -187,7 +217,7 @@ export class EditProfileContainer extends React.Component {
           disabledLike={true}
         />
 
-        <ProfileDetailAccordian userProfile={myProfile} saveSetting={this.props.setProfileSettingToSave}/>
+        <ProfileDetailAccordian userProfile={myProfile} saveChangesToAPI={this.props.saveChangesToAPI} saveSetting={this.props.setProfileSettingToSave}/>
 
         {(this.state.lookingForType !== "" && this.state.lookingForGender!="") &&
         <LookingForSection
@@ -203,10 +233,10 @@ export class EditProfileContainer extends React.Component {
             setting[title] = changesToSaveStepValue
             console.log(this.props)
             this.props.setProfileSettingToSave(setting)
+            this.props.saveChangesToAPI()
           }}
         />
         }
-
 
         <SectionTitle title={'CONNECTED APPS'}/>
         <View style={{paddingLeft: 20, backgroundColor:'white'}}>
@@ -258,7 +288,8 @@ export class EditProfileContainer extends React.Component {
 function mapStateToProps(state){
   return {
     myProfile: state.myProfile,
-    tabNav: state.tabNav
+    tabNav: state.tabNav,
+    myProfileNav: state.myProfileNav
   }
 }
 

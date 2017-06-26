@@ -9,7 +9,7 @@ initialMyProfileStates = {
 			relationship: ""
 		},
 		eduBackground: [],
-		pendingChanges: [],
+		pendingChanges: {},
 }
 
 export const myProfile = createReducer(initialMyProfileStates, {
