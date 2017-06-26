@@ -132,11 +132,11 @@ export class EditProfileContainer extends React.Component {
 
   componentWillReceiveProps(nextProps){
 
-    let apiRelationship = nextProps.myProfile.scoopApiStore.relationship
-    let apiSchoolName = nextProps.myProfile.scoopApiStore.schoolName
-    let apiFirstName = nextProps.myProfile.scoopApiStore.firstName
-    let apiLookingForType = nextProps.myProfile.scoopApiStore.lookingForType
-    let apiLookingForGender = nextProps.myProfile.scoopApiStore.lookingForGender
+    const apiRelationship = nextProps.myProfile.scoopApiStore.relationship
+    const apiSchoolName = nextProps.myProfile.scoopApiStore.schoolName
+    const apiFirstName = nextProps.myProfile.scoopApiStore.firstName
+    const apiLookingForType = nextProps.myProfile.scoopApiStore.lookingForType
+    const apiLookingForGender = nextProps.myProfile.scoopApiStore.lookingForGender
 
 
     if(apiRelationship !== this.state.relationship){
