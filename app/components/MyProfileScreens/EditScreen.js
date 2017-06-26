@@ -13,7 +13,7 @@ import {ActionCreators} from '../../actions'
 import Button from 'react-native-button';
 import images from '@assets/images';
 
-import EditProfileScrollView from '../PersonalProfile/EditProfileScrollView'
+import EditProfileScrollView from '../../containers/EditProfile/EditProfileScrollView'
 
 
 export class EditScreen extends React.Component {

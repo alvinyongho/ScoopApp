@@ -16,8 +16,8 @@ import { ActionCreators } from '../../actions';
 import { NavigationActions } from 'react-navigation';
 
 
-import EditPhotoAlbum from './EditPhotoAlbum'
-import PhotoAlbum from './PhotoAlbum'
+import EditPhotoAlbum from '../../components/PersonalProfile/EditPhotoAlbum'
+import PhotoAlbum from '../../components/PersonalProfile/PhotoAlbum'
 
 
 // This handles reloading the photo albums component. The logic is that
