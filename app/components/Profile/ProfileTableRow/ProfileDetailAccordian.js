@@ -149,6 +149,7 @@ export default class ProfileDetailAccordian extends Component {
 
   constructor(props){
     super(props)
+    this.performedChanges = false
     this.state = ({
       eduBackground: null,
       eduSelected: "",
@@ -159,7 +160,6 @@ export default class ProfileDetailAccordian extends Component {
       offSpringSelected: "",
       bodyTypeSelected: "",
       jobTitleSelected: "",
-      performedChanges: false,
 
     })
   }
@@ -191,7 +191,7 @@ export default class ProfileDetailAccordian extends Component {
   bodytypeToStore(bodytype_val){
     switch(bodytype_val){
       case "0":
-        return "Ask me!"
+        return "Do not share"
       case "1":
         return "Slender"
       case "2":
@@ -209,7 +209,7 @@ export default class ProfileDetailAccordian extends Component {
 
   componentWillReceiveProps(nextProps){
 
-    if(!this.state.performedChanges){
+    if(!this.performedChanges){
       // School name
       retrievedFromAPISchoolName = nextProps.userProfile.scoopApiStore.schoolName
       if(retrievedFromAPISchoolName && (retrievedFromAPISchoolName !== this.state.eduSelected)){
@@ -274,10 +274,11 @@ export default class ProfileDetailAccordian extends Component {
           eduSelected: this.state.eduSelected,
           rowItemValue: this.state.eduSelected,
           updateSelected: (eduSelected) => {
+            this.performedChanges = true
             this.props.saveSetting({'schoolName': eduSelected.entryTitle})
+            this.props.saveChangesToAPI()
             this.setState({eduSelected:(eduSelected.entryTitle)})
 
-            this.setState({performedChanges: true})
           }
         },
         {
@@ -285,11 +286,13 @@ export default class ProfileDetailAccordian extends Component {
           jobTitlesArr: [],
           rowItemValue: this.state.jobTitleSelected,
           updateSelected: (jobTitleSelected) => {
+            this.performedChanges = true
+
+            // this.setState({performedChanges: true})
             // console.log("jobTitleSelected")
             // console.log(jobTitleSelected)
             // TODO: add dropdown and handling if multiple job titles (?)
             this.setState({jobTitleSelected:(jobTitleSelected.entryTitle)})
-            this.setState({performedChanges: true})
 
           }
         },
@@ -298,17 +301,15 @@ export default class ProfileDetailAccordian extends Component {
           height: this.state.height,
           rowItemValue: `${this.state.height.feet}' ${this.state.height.inches}"`,
           updateSelected: (heightSelected) => {
+            this.performedChanges = true
             this.props.saveSetting({'heightInches': heightSelected.feet*12+heightSelected.inches})
-            // console.log(heightSelected)
+            this.props.saveChangesToAPI()
             this.setState({
               height: {
                 feet: heightSelected.feet,
                 inches: heightSelected.inches
               }
             })
-
-            this.setState({performedChanges: true})
-
           }
         },
         {
@@ -316,8 +317,10 @@ export default class ProfileDetailAccordian extends Component {
           offspringArr: offspringChoices,
           rowItemValue: this.state.offSpringSelected,
           updateSelected: (offspringSelected) => {
+            this.performedChanges = true
             indexSelected = getApiIndexOfChoiceSelected(offspringChoices, offspringSelected.entryTitle)
             this.props.saveSetting({'offspring': indexSelected})
+            this.props.saveChangesToAPI()
             this.setState({offSpringSelected:(offspringSelected.entryTitle)})
           }
         },
@@ -326,12 +329,11 @@ export default class ProfileDetailAccordian extends Component {
           values: bodyTypeChoices,
           rowItemValue: this.state.bodyTypeSelected,
           updateSelected: (bodyTypeSelected) => {
+            this.performedChanges = true
             indexSelected = getApiIndexOfChoiceSelected(bodyTypeChoices, bodyTypeSelected.entryTitle)
             this.props.saveSetting({'bodyType': indexSelected})
+            this.props.saveChangesToAPI()
             this.setState({bodyTypeSelected:(bodyTypeSelected.entryTitle)})
-
-            this.setState({performedChanges: true})
-
           }
         }]
     );

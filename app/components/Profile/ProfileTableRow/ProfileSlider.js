@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   View,
   Text,
@@ -23,13 +23,22 @@ export default class ProfileSlider extends Component {
     })
   }
 
+  static propTypes = {
+    onRelease: PropTypes.func
+  }
+
+  static defaultProps = {
+    onRelease: () => {},
+  }
+
+
   render(){
     return (
       <View style={{flex: 1, flexDirection: 'column', backgroundColor: 'white'}}>
         <View style={styles.sliderContainer}>
           <MultiSlider changeScrollState={this.props.changeScrollState}
            onThumbMove={()=>{}}
-           onRelease={()=>{}}
+           onRelease={(released_pos)=>{this.props.onRelease(released_pos)}}
            disabled={this.props.disabled}
            numSteps={this.props.numSteps}
            hasSteps={this.props.hasSteps}
