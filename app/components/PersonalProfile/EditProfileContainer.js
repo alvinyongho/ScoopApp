@@ -48,8 +48,16 @@ export class InputKeyboard extends Component{
 
   constructor(props){
     super(props)
+    this.state = {textInputValue: ""}
     this.keyboardHeight = new Animated.Value(0);
   }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.textInputValue !== this.state.textInputValue){
+      this.setState({textInputValue: nextProps.textInputValue})
+    }
+  }
+
 
   componentWillMount () {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow',
@@ -94,10 +102,16 @@ export class InputKeyboard extends Component{
 
   render(){
     return(
-        <TextInput onFocus={()=>this.props.onSelect()} placeholder={'Type message'} multiline={true}
-          style={{height:100, fontFamily: 'Avenir-Light', fontSize: 18}} />
-
-
+        <TextInput onFocus={()=>this.props.onSelect()}
+          value={this.state.textInputValue}
+          placeholder={'Type message'} multiline={true}
+          onChangeText={(text)=>{
+              this.setState({textInputValue: text})
+              // this.props.setProfileSettingToSave({aboutMe: encodeURI(text)})
+            }
+          }
+          onEndEditing={()=>{ this.props.finishedEditing(this.state.textInputValue)}}
+          style={{height:100, fontFamily: 'Avenir-Light', fontSize: 16}} />
     )
   }
 }
@@ -113,6 +127,7 @@ export class EditProfileContainer extends React.Component {
       jobTitle: "",
       lookingForType: "",
       lookingForGender: "",
+      aboutMe: "",
       animatedMarginValue: new Animated.Value(0)
     };
     this.keyboardHeight = new Animated.Value(0);
@@ -138,10 +153,23 @@ export class EditProfileContainer extends React.Component {
     const apiFirstName = nextProps.myProfile.scoopApiStore.firstName
     const apiLookingForType = nextProps.myProfile.scoopApiStore.lookingForType
     const apiLookingForGender = nextProps.myProfile.scoopApiStore.lookingForGender
+    const apiAboutMe = nextProps.myProfile.scoopApiStore.aboutMe
 
 
     if(apiRelationship !== this.state.relationship){
       this.setState({relationship:nextProps.myProfile.scoopApiStore.relationship})
+    }
+
+    if(apiFirstName !== this.state.firstName){
+      this.setState({firstName:nextProps.myProfile.scoopApiStore.firstName})
+    }
+
+
+    if(nextProps.myProfile.pendingChanges.aboutMe){
+      this.setState({aboutMe: nextProps.myProfile.pendingChanges.aboutMe})
+    } else {
+      if(apiAboutMe !== this.state.aboutMe)
+      this.setState({aboutMe:nextProps.myProfile.scoopApiStore.aboutMe})
     }
 
     if(nextProps.myProfile.pendingChanges.schoolName){
@@ -149,10 +177,6 @@ export class EditProfileContainer extends React.Component {
     } else {
       if(apiSchoolName !== this.state.schoolName)
         this.setState({schoolName:nextProps.myProfile.scoopApiStore.schoolName})
-    }
-
-    if(apiFirstName !== this.state.firstName){
-      this.setState({firstName:nextProps.myProfile.scoopApiStore.firstName})
     }
 
     if(nextProps.myProfile.pendingChanges.lookingForType){
@@ -163,7 +187,6 @@ export class EditProfileContainer extends React.Component {
       }
     }
 
-
     if(nextProps.myProfile.pendingChanges.lookingForGender){
       this.setState({lookingForGender: nextProps.myProfile.pendingChanges.lookingForGender})
     } else {
@@ -171,26 +194,6 @@ export class EditProfileContainer extends React.Component {
         this.setState({lookingForGender:nextProps.myProfile.scoopApiStore.lookingForGender})
       }
     }
-
-    //
-    // if(this.props.myProfile.pendingChanges.education !== nextProps.myProfile.pendingChanges.education ){
-    //   console.log("updating school name")
-    //   this.setState({schoolName:nextProps.myProfile.pendingChanges.education})
-    // }
-    //
-
-    // if(this.props.tabNav.index !== nextProps.tabNav.index){
-    //   if (this.props.tabNav.index === 2){
-    //     console.log("permit save")
-    //     // TODO:
-    //     // save pending profile changes
-    //     nextProps.saveChangesToAPI()
-    //     // reset pending profile changes after save
-    //   }
-    // }
-    // if(this.props.myProfileNav.index === 0 && nextProps.myProfileNav.index > 0){
-    //   nextProps.saveChangesToAPI()
-    // }
 
   }
 
@@ -219,6 +222,13 @@ export class EditProfileContainer extends React.Component {
       }).start();
     }
 
+  }
+
+  finishedEditing = (textInputResult) => {
+    // adds the setting to the pending changes state
+    this.props.setProfileSettingToSave({aboutMe:textInputResult})
+    // calls the api to process the pending changes
+    this.props.saveChangesToAPI()
   }
 
   // TODO: item order needs to be saved to database corresponding to authenticated user
@@ -295,9 +305,13 @@ export class EditProfileContainer extends React.Component {
         <SectionTitle title={'ABOUT ME'}/>
         <View style={{backgroundColor: 'white', padding: 10}}>
 
-        <InputKeyboard setKeyboardHeight={this.setKeyboardHeight} onSelect={()=>{
+        <InputKeyboard
+          textInputValue={this.state.aboutMe}
+          setProfileSettingToSave={this.props.setProfileSettingToSave}
+          finishedEditing={this.finishedEditing}
+          setKeyboardHeight={this.setKeyboardHeight} onSelect={()=>{
             Animated.timing(this.state.animatedMarginValue,{
-              toValue: 275,
+              toValue: this.keyboardHeight,
               duration: 50,
             }).start(()=>this.props.scrollToBottom());
 
