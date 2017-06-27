@@ -20,6 +20,8 @@ import Swipeout from 'react-native-swipeout'
 import Button from 'react-native-button'
 
 
+
+
 var swipeoutBtns = (deleteItem) => [
   {
     component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
@@ -212,6 +214,10 @@ class MessageListRowItem extends React.Component {
 
   handlePreviewUser = () => {
     console.log("previwing user!")
+    this.props.fetchUser(this.props.rowData.targetId);
+    this.props.goToMessengerPreviewProfile();
+    this.props.resetFeedRoutes();
+    this.props.resetProfileTabRouterAC();
   }
 
   _renderRowDataPicture = () => {

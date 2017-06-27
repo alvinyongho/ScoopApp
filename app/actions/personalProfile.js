@@ -167,6 +167,11 @@ export function setViewingAlbumState(){
   }
 }
 
+export function resetProfileTabRouterAC(){
+  return (dispatch, getState) => {
+    dispatch(resetMyProfileNav());
+  }
+}
 
 export function setImageURLToSave(url){
   return{
