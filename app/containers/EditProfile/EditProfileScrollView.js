@@ -74,7 +74,7 @@ export class EditProfileScrollView extends React.Component {
   handleInitialImportPress = () =>{
     console.log("handle initial import press")
 
-    initialSlot = {
+    let initialSlot = {
       elementKey:0,
       order:0,
     }

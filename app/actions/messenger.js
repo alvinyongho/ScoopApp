@@ -99,6 +99,12 @@ export function goToChatDetail(){
 }
 
 
+export function goToMessengerPreviewProfile(){
+  return(dispatch, getState) => {
+    dispatch(NavigationActions.navigate({ routeName: 'MessengerPreviewProfile'}))
+  }
+}
+
 
 
 export function setMessageTarget(targetId){
