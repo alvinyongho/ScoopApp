@@ -208,7 +208,33 @@ class MessageListRowItem extends React.Component {
 
   componentWillUnmount(){
     this.setState({rowData: null})
+  }
 
+  handlePreviewUser = () => {
+    console.log("previwing user!")
+  }
+
+  _renderRowDataPicture = () => {
+    return( 
+      <TouchableHighlight onPress={() => this.handlePreviewUser()} underlayColor="transparent">
+      <View>
+
+      <View style={{ position: 'absolute', height: this.props.pictureSize,
+                       width: this.props.pictureSize,
+                       borderRadius:this.props.pictureSize/2, backgroundColor: '#EFEFEF'
+                       }} />
+
+      {this.props.rowData.picURL != "" &&
+        <Image source={{uri:this.props.rowData.picURL}}
+                style={{height: this.props.pictureSize,
+                       width: this.props.pictureSize,
+                       borderRadius:this.props.pictureSize/2,
+                       }}
+        />
+      }
+      </View> 
+      </TouchableHighlight>
+      )
   }
 
   renderCell = () => (
@@ -249,21 +275,10 @@ class MessageListRowItem extends React.Component {
           }
           </TouchableHighlight>
         </View>
-        {this.props.rowData.picURL != "" ?
-        <Image source={{uri:this.props.rowData.picURL}}
-                style={{height: this.props.pictureSize,
-                       width: this.props.pictureSize,
-                       borderRadius:this.props.pictureSize/2,
-                       }}
-        />
-        :
-        <View
-                style={{height: this.props.pictureSize,
-                       width: this.props.pictureSize,
-                       borderRadius:this.props.pictureSize/2, backgroundColor:'gray'
-                       }}
-        />
-        }
+
+
+
+        {this._renderRowDataPicture()}
 
         <View style={styles.nameMessageContainer}>
           <Text style={styles.otherPersonName}>
