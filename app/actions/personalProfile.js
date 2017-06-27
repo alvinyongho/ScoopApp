@@ -75,18 +75,36 @@ export function saveMyPictureToPhotoAlbum(){
       myProfileImagesArray  = getState().myProfileImages
       slotIndexToImportInto = getState().importPictureIntoSlot
 
-      if(getState().importPictureIntoSlot.elementKey === undefined){
+
+      isInitialImage = getState().myProfileImages.length === 0
+
+      if(isInitialImage){
+
+        console.log('handle initial image')
+        console.log(imageURL)
+        console.log(myProfileImagesArray)
+        console.log(slotIndexToImportInto)
         dispatch(appendToMyPictureOrder(imageURL))
         dispatch(setUserImages(getState().myAlbumPicturesOrder))
+        dispatch(resetMyProfileNav())
+
+
 
       } else {
-        // console.log("handle replace case")
-        dispatch(setAlbumImageAtIndex(getState().importPictureIntoSlot.elementKey, imageURL))
-        dispatch(setUserImages(getState().myAlbumPicturesOrder))
-        dispatch(replacingImage())
 
+        if(getState().importPictureIntoSlot.elementKey === undefined){
+          dispatch(appendToMyPictureOrder(imageURL))
+          dispatch(setUserImages(getState().myAlbumPicturesOrder))
+
+        } else {
+          // console.log("handle replace case")
+          dispatch(setAlbumImageAtIndex(getState().importPictureIntoSlot.elementKey, imageURL))
+          dispatch(setUserImages(getState().myAlbumPicturesOrder))
+          dispatch(replacingImage())
+
+        }
+        dispatch(resetMyProfileNav())
       }
-      dispatch(resetMyProfileNav())
   }
 }
 
@@ -149,7 +167,6 @@ export function GoToImportPicture(key){
     console.log("Going to import picture at key")
     console.log(key)
     dispatch(importPicture(key))
-
     dispatch(NavigationActions.navigate({ routeName:'ImportPicture' }))
   }
 }

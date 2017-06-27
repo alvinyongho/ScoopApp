@@ -56,7 +56,7 @@ export const myFacebookAlbums = createReducer({},{
 })
 
 
-export const myAlbumPicturesOrder = createReducer({}, {
+export const myAlbumPicturesOrder = createReducer([], {
 	[types.GET_MY_IMAGES](state, action) {
 		return action.images
 	},
