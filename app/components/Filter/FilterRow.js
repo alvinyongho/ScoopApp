@@ -119,12 +119,12 @@ export default class FilterItem extends Component{
   renderFooter(){
     if(this.props.containsSliderLabels){
       return (
-        <View style={{height:1, marginTop: leftRightMargin-10, backgroundColor: 'gray'}} />
+        <View style={{height:1, marginTop: leftRightMargin-10, backgroundColor: '#EFEFEF'}} />
       )
     }
 
     return (
-      <View style={{height:1, marginTop: leftRightMargin+10, marginBottom: 0, backgroundColor: 'gray'}} />
+      <View style={{height:1, marginTop: leftRightMargin+10, marginBottom: 0, backgroundColor: '#EFEFEF'}} />
     )
   }
 
