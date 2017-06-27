@@ -33,16 +33,12 @@ export default class MessageBubble extends Component{
       return(
         <View style={styles.rightBubblePosition}>
           <View style={styles.rowSpacing}>
-
-          <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-
-            <View style={styles.rightBubble}>
-              <Text style={[styles.fontStyle, {color: 'white'}]}>{this.props.text}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+              <View style={styles.rightBubble}>
+                <Text style={[styles.fontStyle, {color: 'white'}]}>{this.props.text}</Text>
+              </View>
+              <Image source={images.msgBubbleTail_self} style={{width: 9, height: 10, bottom: 8}}/>
             </View>
-
-            <Image source={images.msgBubbleTail_self} style={{width: 9, height: 10, bottom: 8}}/>
-          </View>
-
           </View>
         </View>
       )
@@ -51,18 +47,11 @@ export default class MessageBubble extends Component{
     return (
       <View style={styles.leftBubblePosition}>
         <View style={styles.rowSpacing}>
-
         <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
-
-
           <Image source={images.msgBubbleTail_other} style={{width: 9, height: 10, bottom: 8}}/>
-
-
           <View style={styles.leftBubble}>
             <Text style={[styles.fontStyle, {color: 'black'}]}>{this.props.text}</Text>
           </View>
-
-
         </View>
         </View>
       </View>
