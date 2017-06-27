@@ -59,6 +59,10 @@ export class EditProfileScrollView extends React.Component {
 
 
   componentWillReceiveProps(nextProps){
+    // This handles the initial case where the first image is added and there weren't any album images
+    // prior. Otherwise the profile images will keep changing when the child prop gets re-mounted
+    // which should be resolved at some later time.
+
     if(nextProps.myProfileImages !== this.state.profileImages && this.state.profileImages.length === 0){
       this.props.postProfileImages(this.convertItemOrderToImageArray((nextProps.myAlbumPicturesOrder)))
     }
@@ -73,10 +77,10 @@ export class EditProfileScrollView extends React.Component {
 
 
   scrollToBottom = () => {
-    console.log("scrolling to bottom")
+    // This is called from a callback in the child component for KeyboardInput
+    // which is used to enter information in the about me section.
     this.refs.scrollView.scrollToEnd()
   }
-
 
 
   handleInitialImportPress = () =>{
