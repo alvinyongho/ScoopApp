@@ -29,6 +29,7 @@ export default class LookingForSection extends Component{
     return(
       <View>
         <SectionTitle title={'LOOKING FOR'}/>
+        <View style={{height: 15, backgroundColor: 'white'}}/>
         <ProfileSlider
           numSteps={3}
           hasSteps={true}
@@ -39,7 +40,8 @@ export default class LookingForSection extends Component{
           thumbLocation={this.computeThumbLocation(3, this.props.lookingForType-1)}
           changeScrollState={this.props.changeScrollState} />
 
-        <View style={{height:1, backgroundColor:'gray'}}/>
+        <View style={{height:1, backgroundColor:'#EFEFEF'}}/>
+        <View style={{height: 15, backgroundColor: 'white'}}/>
         <ProfileSlider
           numSteps={3}
           disabled={this.props.disabled}
