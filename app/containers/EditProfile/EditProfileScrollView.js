@@ -50,9 +50,18 @@ export class EditProfileScrollView extends React.Component {
     // at a later time.
   }
 
+
+  convertItemOrderToImageArray(itemOrder){
+    return itemOrder.map((item, index)=>{
+      return item
+    })
+  }
+
+
   componentWillReceiveProps(nextProps){
-    // if(nextProps.myProfileImages !== this.state.profileImages){
-    // }
+    if(nextProps.myProfileImages !== this.state.profileImages && this.state.profileImages.length === 0){
+      this.props.postProfileImages(this.convertItemOrderToImageArray((nextProps.myAlbumPicturesOrder)))
+    }
 
   }
 
@@ -104,7 +113,8 @@ function mapStateToProps(state){
     myProfileImages: state.myProfileImages,
     albumImageState: state.albumImageState,
     myProfileDetails: state.viewingProfileDetail,
-    scoopUserId: state.scoopUserProfile.scoopId
+    scoopUserId: state.scoopUserProfile.scoopId,
+    myAlbumPicturesOrder: state.myAlbumPicturesOrder
 
   }
 }
