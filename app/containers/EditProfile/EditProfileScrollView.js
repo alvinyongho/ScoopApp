@@ -51,12 +51,9 @@ export class EditProfileScrollView extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("Receiving next props in edit profile scrollview")
-    console.log(nextProps)
-    // this.nextProps.getScoopUserImages()
+    // if(nextProps.myProfileImages !== this.state.profileImages){
+    // }
 
-
-    // this.setState({myProfileImages: nextProps.myProfileImages})
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -71,15 +68,14 @@ export class EditProfileScrollView extends React.Component {
     this.refs.scrollView.scrollToEnd()
   }
 
-  handleInitialImportPress = () =>{
-    console.log("handle initial import press")
 
+
+  handleInitialImportPress = () =>{
     let initialSlot = {
       elementKey:0,
       order:0,
     }
     this.props.GoToImportPicture(initialSlot)
-
   }
 
 
@@ -87,17 +83,14 @@ export class EditProfileScrollView extends React.Component {
   render(){
     return (
       <ScrollView ref="scrollView" scrollEnabled={this.state.isScrollEnabled}>
-
         {this.state.profileImages.length > 0 ?
           <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
           :
           <ImportPhotoContainer handlePress={this.handleInitialImportPress} />
         }
 
-
         <RowDivider />
         <ViewProfileRow />
-
         <EditProfileContainer scrollToBottom={this.scrollToBottom} changeScrollState={this.changeScrollState}/>
 
       </ScrollView>
