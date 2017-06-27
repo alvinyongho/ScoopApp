@@ -263,25 +263,25 @@ export class EditProfileContainer extends React.Component {
             serviceImages={[images.facebook_noColor, images.facebook_withColor]}
             rowItemName={'Facebook'}
           />
-          <View style={{height:1, backgroundColor:'gray'}}/>
+          <View style={{height:1, backgroundColor:'#EFEFEF'}}/>
           <EditableConnectedApps
             showSlider={false}
             serviceImages={[images.fitbit_noColor, images.fitbit_withColor]}
             rowItemName={'FitBit'}
           />
-          <View style={{height:1, backgroundColor:'gray'}}/>
+          <View style={{height:1, backgroundColor:'#EFEFEF'}}/>
           <EditableConnectedApps
             showSlider={false}
             serviceImages={[images.pinterest_noColor, images.pinterest_withColor]}
             rowItemName={'Pinterest'}
           />
-          <View style={{height:1, backgroundColor:'gray'}}/>
+          <View style={{height:1, backgroundColor:'#EFEFEF'}}/>
           <EditableConnectedApps
             showSlider={false}
             serviceImages={[images.spotify_noColor, images.spotify_withColor]}
             rowItemName={'Spotify'}
           />
-          <View style={{height:1, backgroundColor:'gray'}}/>
+          <View style={{height:1, backgroundColor:'#EFEFEF'}}/>
           <ComingSoonRow />
         </View>
 

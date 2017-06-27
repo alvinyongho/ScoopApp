@@ -33,6 +33,9 @@ const images = {
 	heart_plus:						require('./img/ProfileDetail/Heart-Plus@3x.png'),
 	heart:								require('./img/ProfileDetail/heart@3x.png'),
 
+	msgBubbleTail_self:   require('./img/Messenger/chatbubbleTail_self.png'),
+	msgBubbleTail_other:  require('./img/Messenger/chatbubbleTail_other.png'),
+
 	placeholder_album1: require('./img/MyProfile/placeholders/album1.png'),
 	placeholder_album2: require('./img/MyProfile/placeholders/album2.png'),
 	placeholder_album3: require('./img/MyProfile/placeholders/album3.png'),

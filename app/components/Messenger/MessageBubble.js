@@ -19,6 +19,8 @@ const screen_padding = 5
 const max_margin_to_screen = 50
 const fontSizeValue = 16
 
+import images from '@assets/images';
+
 
 export default class MessageBubble extends Component{
 
@@ -31,8 +33,11 @@ export default class MessageBubble extends Component{
       return(
         <View style={styles.rightBubblePosition}>
           <View style={styles.rowSpacing}>
-            <View style={styles.rightBubble}>
-              <Text style={styles.fontStyle}>{this.props.text}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+              <View style={styles.rightBubble}>
+                <Text style={[styles.fontStyle, {color: 'white'}]}>{this.props.text}</Text>
+              </View>
+              <Image source={images.msgBubbleTail_self} style={{width: 9, height: 10, bottom: 8}}/>
             </View>
           </View>
         </View>
@@ -42,9 +47,12 @@ export default class MessageBubble extends Component{
     return (
       <View style={styles.leftBubblePosition}>
         <View style={styles.rowSpacing}>
+        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Image source={images.msgBubbleTail_other} style={{width: 9, height: 10, bottom: 8}}/>
           <View style={styles.leftBubble}>
-            <Text style={styles.fontStyle}>{this.props.text}</Text>
+            <Text style={[styles.fontStyle, {color: 'black'}]}>{this.props.text}</Text>
           </View>
+        </View>
         </View>
       </View>
     );
@@ -54,7 +62,6 @@ export default class MessageBubble extends Component{
 
 var styles = StyleSheet.create({
   fontStyle: {
-    color: 'white',
     fontFamily:'Avenir-Light',
     fontSize: fontSizeValue
   },
@@ -69,8 +76,8 @@ var styles = StyleSheet.create({
   rightBubble: {
       flex: -1,
       marginLeft: max_margin_to_screen,
-      marginRight: screen_padding,
-      backgroundColor: 'skyblue',
+      marginRight: 0,
+      backgroundColor: '#54C9EC',
       borderRadius: 10,
       padding: 5,
       paddingLeft: 8,
@@ -82,9 +89,9 @@ var styles = StyleSheet.create({
     },
     leftBubble: {
       flex: -1,
-      marginLeft: screen_padding,
+      // marginLeft: screen_padding,
       marginRight: max_margin_to_screen,
-      backgroundColor: 'pink',
+      backgroundColor: '#EFEFEF',
       borderRadius: 10,
       padding: 5,
       paddingLeft: 8,

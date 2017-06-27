@@ -26,7 +26,7 @@ import {
 import InvertibleScrollView from 'react-native-invertible-scroll-view'
 
 
-import MessageBubble from './MessageBubble';
+import MessageBubble from '../../components/Messenger/MessageBubble';
 import Button from 'react-native-button'
 
 const screenWidth = Dimensions.get('window').width;
