@@ -221,24 +221,30 @@ class MessageListRowItem extends React.Component {
   }
 
   _renderRowDataPicture = () => {
-    return( 
+    return(
       <TouchableHighlight onPress={() => this.handlePreviewUser()} underlayColor="transparent">
       <View>
 
-      <View style={{ position: 'absolute', height: this.props.pictureSize,
+      <View style={{ position: 'absolute',
+                      height: this.props.pictureSize,
                        width: this.props.pictureSize,
                        borderRadius:this.props.pictureSize/2, backgroundColor: '#EFEFEF'
                        }} />
 
-      {this.props.rowData.picURL != "" &&
+      {this.props.rowData.picURL != "" ?
         <Image source={{uri:this.props.rowData.picURL}}
                 style={{height: this.props.pictureSize,
                        width: this.props.pictureSize,
                        borderRadius:this.props.pictureSize/2,
                        }}
         />
+        :
+        <View style={{ height: this.props.pictureSize,
+                         width: this.props.pictureSize,
+                         borderRadius:this.props.pictureSize/2, backgroundColor: '#EFEFEF'
+                         }} />
       }
-      </View> 
+      </View>
       </TouchableHighlight>
       )
   }

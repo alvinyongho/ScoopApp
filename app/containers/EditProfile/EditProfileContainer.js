@@ -109,8 +109,8 @@ export class EditProfileContainer extends React.Component {
       schoolName: "",
       firstName: "",
       jobTitle: "",
-      lookingForType: "",
-      lookingForGender: "",
+      lookingForType: null,
+      lookingForGender: null,
       aboutMe: "",
       animatedMarginValue: new Animated.Value(0)
     };
@@ -236,7 +236,7 @@ export class EditProfileContainer extends React.Component {
 
         <ProfileDetailAccordian userProfile={myProfile} saveChangesToAPI={this.props.saveChangesToAPI} saveSetting={this.props.setProfileSettingToSave}/>
 
-        {(this.state.lookingForType !== "" && this.state.lookingForGender!="") &&
+        {(this.state.lookingForType != null && this.state.lookingForGender!= null) &&
         <LookingForSection
           disabled={false}
           lookingForType={this.state.lookingForType}
