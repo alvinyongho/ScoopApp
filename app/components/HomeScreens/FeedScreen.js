@@ -30,7 +30,8 @@ class FeedScreen extends Component{
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
       <Image
           source={images.scoopLogo}
-          style={{height: 20, width: 100}}/>
+          resizeMode='contain'
+          style={{height: 20, width: 125}}/>
       </View>
     ),
     headerRight: <Button onPress={() => navigation.navigate('Filter')}>
