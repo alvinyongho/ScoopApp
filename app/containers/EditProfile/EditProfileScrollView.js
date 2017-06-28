@@ -50,13 +50,23 @@ export class EditProfileScrollView extends React.Component {
     // at a later time.
   }
 
+
+  convertItemOrderToImageArray(itemOrder){
+    return itemOrder.map((item, index)=>{
+      return item
+    })
+  }
+
+
   componentWillReceiveProps(nextProps){
-    console.log("Receiving next props in edit profile scrollview")
-    console.log(nextProps)
-    // this.nextProps.getScoopUserImages()
+    // This handles the initial case where the first image is added and there weren't any album images
+    // prior. Otherwise the profile images will keep changing when the child prop gets re-mounted
+    // which should be resolved at some later time.
 
+    if(nextProps.myProfileImages !== this.state.profileImages && this.state.profileImages.length === 0){
+      this.props.postProfileImages(this.convertItemOrderToImageArray((nextProps.myAlbumPicturesOrder)))
+    }
 
-    // this.setState({myProfileImages: nextProps.myProfileImages})
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -67,19 +77,18 @@ export class EditProfileScrollView extends React.Component {
 
 
   scrollToBottom = () => {
-    console.log("scrolling to bottom")
+    // This is called from a callback in the child component for KeyboardInput
+    // which is used to enter information in the about me section.
     this.refs.scrollView.scrollToEnd()
   }
 
-  handleInitialImportPress = () =>{
-    console.log("handle initial import press")
 
-    initialSlot = {
+  handleInitialImportPress = () =>{
+    let initialSlot = {
       elementKey:0,
       order:0,
     }
     this.props.GoToImportPicture(initialSlot)
-
   }
 
 
@@ -87,17 +96,14 @@ export class EditProfileScrollView extends React.Component {
   render(){
     return (
       <ScrollView ref="scrollView" scrollEnabled={this.state.isScrollEnabled}>
-
         {this.state.profileImages.length > 0 ?
           <PhotoAlbumsContainer changeScrollState={this.changeScrollState}/>
           :
           <ImportPhotoContainer handlePress={this.handleInitialImportPress} />
         }
 
-
         <RowDivider />
         <ViewProfileRow />
-
         <EditProfileContainer scrollToBottom={this.scrollToBottom} changeScrollState={this.changeScrollState}/>
 
       </ScrollView>
@@ -111,7 +117,8 @@ function mapStateToProps(state){
     myProfileImages: state.myProfileImages,
     albumImageState: state.albumImageState,
     myProfileDetails: state.viewingProfileDetail,
-    scoopUserId: state.scoopUserProfile.scoopId
+    scoopUserId: state.scoopUserProfile.scoopId,
+    myAlbumPicturesOrder: state.myAlbumPicturesOrder
 
   }
 }

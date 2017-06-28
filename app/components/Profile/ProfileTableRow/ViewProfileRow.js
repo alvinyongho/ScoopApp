@@ -25,7 +25,9 @@ export class ViewProfileRow extends Component {
     return (
       <TouchableHighlight onPress={()=>{
         this.props.fetchUser(this.props.scoopUserId)
-        this.props.PreviewProfile()}}
+        this.props.PreviewProfile()
+        this.props.resetMessengerTab()
+      }}
       >
         <View style={{padding: 10, paddingTop: 12, backgroundColor: 'white', flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{fontSize: 18, fontFamily: 'Avenir-Light', color:'#666666', flex:.5}}> View Profile </Text>

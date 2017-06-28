@@ -20,6 +20,8 @@ import Swipeout from 'react-native-swipeout'
 import Button from 'react-native-button'
 
 
+
+
 var swipeoutBtns = (deleteItem) => [
   {
     component: <View style={{flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'red'}}><Text style={{fontSize: 14, fontFamily: 'Avenir-Light', color: 'white'}}>Delete</Text></View>,
@@ -208,7 +210,43 @@ class MessageListRowItem extends React.Component {
 
   componentWillUnmount(){
     this.setState({rowData: null})
+  }
 
+  handlePreviewUser = () => {
+    console.log("previwing user!")
+    this.props.fetchUser(this.props.rowData.targetId);
+    this.props.goToMessengerPreviewProfile();
+    this.props.resetFeedRoutes();
+    this.props.resetProfileTabRouterAC();
+  }
+
+  _renderRowDataPicture = () => {
+    return(
+      <TouchableHighlight onPress={() => this.handlePreviewUser()} underlayColor="transparent">
+      <View>
+
+      <View style={{ position: 'absolute',
+                      height: this.props.pictureSize,
+                       width: this.props.pictureSize,
+                       borderRadius:this.props.pictureSize/2, backgroundColor: '#EFEFEF'
+                       }} />
+
+      {this.props.rowData.picURL != "" ?
+        <Image source={{uri:this.props.rowData.picURL}}
+                style={{height: this.props.pictureSize,
+                       width: this.props.pictureSize,
+                       borderRadius:this.props.pictureSize/2,
+                       }}
+        />
+        :
+        <View style={{ height: this.props.pictureSize,
+                         width: this.props.pictureSize,
+                         borderRadius:this.props.pictureSize/2, backgroundColor: '#EFEFEF'
+                         }} />
+      }
+      </View>
+      </TouchableHighlight>
+      )
   }
 
   renderCell = () => (
@@ -249,21 +287,10 @@ class MessageListRowItem extends React.Component {
           }
           </TouchableHighlight>
         </View>
-        {this.props.rowData.picURL != "" ?
-        <Image source={{uri:this.props.rowData.picURL}}
-                style={{height: this.props.pictureSize,
-                       width: this.props.pictureSize,
-                       borderRadius:this.props.pictureSize/2,
-                       }}
-        />
-        :
-        <View
-                style={{height: this.props.pictureSize,
-                       width: this.props.pictureSize,
-                       borderRadius:this.props.pictureSize/2, backgroundColor:'gray'
-                       }}
-        />
-        }
+
+
+
+        {this._renderRowDataPicture()}
 
         <View style={styles.nameMessageContainer}>
           <Text style={styles.otherPersonName}>

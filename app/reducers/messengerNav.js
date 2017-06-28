@@ -8,6 +8,9 @@ export function messengerNav(state = initialNavState, action){
   switch (action.type) {
     case 'ChatDetail':
       return MessengerNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'ChatDetail' }), state);
+    case 'MessengerPreviewProfile':
+      return MessengerNavigator.router.getStateForAction(NavigationActions.navigate({ routeName: 'MessengerPreviewProfile'}), state);
+
 
     case 'RESET_MESSENGER_ROUTE_STACK':
     {
