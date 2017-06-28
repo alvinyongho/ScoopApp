@@ -78,7 +78,8 @@ class MessageListRowItem extends React.Component {
       isAnimatedHeight: true,
       removing: false,
       isRemoved: false,
-      rowData: this.props.rowData
+      rowData: this.props.rowData,
+      unread: this.props.rowData.isUnread,
     };
   }
 
@@ -287,18 +288,37 @@ class MessageListRowItem extends React.Component {
         {this._renderRowDataPicture()}
 
         <View style={styles.nameMessageContainer}>
-          <Text style={styles.otherPersonName}>
-            {this.props.rowData.name}
-          </Text>
-
+          {this.state.isUnread ? 
+            <View>
+              <Text style={[styles.otherPersonName, {fontWeight: 'bold'}]}>
+                {this.props.rowData.name}
+              </Text>
+              <Text style={[styles.mostRecentMessageText, {fontWeight: 'bold'}]}>
+                {this.props.rowData.message}
+              </Text>
+            </View>
+            :
+            <View>
+              <Text style={styles.otherPersonName}>
+                {this.props.rowData.name}
+              </Text>
+              <Text style={styles.mostRecentMessageText}>
+                {this.props.rowData.message}
+              </Text>
+            </View>
+        }
+          
+        {/*}
           <Text style={styles.mostRecentMessageText}>
             {this.props.rowData.message}
           </Text>
+        {*/}
         </View>
         {this.props.rowData.length &&
           <Text style={styles.dateColumn}>
             {dateReducer(this.props.rowData.date)}
           </Text>
+
         }
       </View>
       <View style={{height:1, left: -SHIFT_AMOUNT, width: (screenWidth + SHIFT_AMOUNT), backgroundColor:'#FAFAFA'}}/>
