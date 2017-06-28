@@ -26,11 +26,12 @@ const styles = StyleSheet.create({
 
 class FeedScreen extends Component{
   static navigationOptions = ({navigation}) => ({
-    title: (
+    headerTitle: (
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
       <Image
           source={images.scoopLogo}
           style={{height: 20, width: 100}}/>
-      
+      </View>
     ),
     headerRight: <Button onPress={() => navigation.navigate('Filter')}>
                          <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
