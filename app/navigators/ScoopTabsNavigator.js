@@ -4,7 +4,7 @@ import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 
-import {StyleSheet, Image} from 'react-native'
+import {StyleSheet, Image, View} from 'react-native'
 
 import HomeWithNavigationState from './HomeNavigator';
 import MyProfileWithNavigationState from './MyProfileNavigator';
@@ -16,12 +16,21 @@ import images from '@assets/images';
 class HomeTabNavigator extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Home',
-    tabBarIcon: ({tintColor}) => (
-      <Image
-        source={images.tabBar_homeIcon}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),
+    tabBarIcon: ({tintColor, focused}) => {
+      var barColor = 'transparent';
+      if(focused) {
+        barColor = tintColor;
+      }
+      return (
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Image
+            source={images.tabBar_homeIcon}
+            style={[styles.icon, {tintColor: tintColor, marginTop: 5}]}
+          />
+          <View style={{marginTop: 10, width: 25, height: 1, backgroundColor: barColor}}/>
+        </View>
+      )
+    },
   };
   render() {
     return (
@@ -41,14 +50,23 @@ class MessageTabNavigator extends React.Component {
     // }
 
     return ({
-    tabBarLabel: 'Message',
+    tabBarLabel: 'Messages',
     tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true,
-    tabBarIcon: ({tintColor}) => (
-      <Image
-        source={images.tabBar_inboxIcon}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),
+    tabBarIcon: ({tintColor, focused}) => {
+      var barColor = 'transparent';
+      if (focused) {
+        barColor = tintColor;
+      }
+      return (
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Image
+            source={images.tabBar_inboxIcon}
+            style={[styles.icon, {tintColor: tintColor, marginTop: 5}]}
+          />
+          <View style={{marginTop: 10, width: 25, height: 1, backgroundColor: barColor}}/>
+        </View>
+      )
+    },
   })}
 
   render() {
@@ -67,12 +85,21 @@ class MyProfileTabNavigator extends React.Component {
     return ({
     tabBarLabel: 'Profile',
     tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true,
-    tabBarIcon: ({tintColor}) => (
-      <Image
-        source={images.tabBar_profileIcon}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),
+    tabBarIcon: ({tintColor, focused}) => {
+      var barColor = 'transparent';
+      if(focused) {
+        barColor = tintColor;
+      }
+      return (
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Image
+            source={images.tabBar_profileIcon}
+            style={[styles.icon, {tintColor: tintColor, marginTop: 5}]}
+          />
+          <View style={{marginTop: 10, width: 25, height: 1, backgroundColor: barColor}}/>
+        </View>
+      )
+    },
   })}
   render() {
     return (
@@ -96,6 +123,7 @@ export const ScoopTabsNavigator = TabNavigator({
   tabBarOptions: {
     activeTintColor: '#54C9EC',
     inactiveTintColor: 'gray',
+    showLabel: false,
   },
   tabBarPosition: 'bottom',
   swipeEnabled: false,
