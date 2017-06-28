@@ -4,16 +4,24 @@ import { addNavigationHelpers, TabNavigator } from 'react-navigation';
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../actions';
 
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Image} from 'react-native'
 
 import HomeWithNavigationState from './HomeNavigator';
 import MyProfileWithNavigationState from './MyProfileNavigator';
 import MessengerWithNavigationState from './MessengerNavigator';
 
+import images from '@assets/images';
+
 
 class HomeTabNavigator extends React.Component {
   static navigationOptions = {
     tabBarLabel: 'Home',
+    tabBarIcon: ({tintColor}) => (
+      <Image
+        source={images.tabBar_homeIcon}
+        style={[styles.icon, {tintColor: tintColor}]}
+      />
+    ),
   };
   render() {
     return (
@@ -34,7 +42,13 @@ class MessageTabNavigator extends React.Component {
 
     return ({
     tabBarLabel: 'Message',
-    tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true
+    tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true,
+    tabBarIcon: ({tintColor}) => (
+      <Image
+        source={images.tabBar_inboxIcon}
+        style={[styles.icon, {tintColor: tintColor}]}
+      />
+    ),
   })}
 
   render() {
@@ -52,7 +66,13 @@ class MyProfileTabNavigator extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => {
     return ({
     tabBarLabel: 'Profile',
-    tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true
+    tabBarVisible: navigation.state.params != undefined? !navigation.state.params.hideTabBar : true,
+    tabBarIcon: ({tintColor}) => (
+      <Image
+        source={images.tabBar_profileIcon}
+        style={[styles.icon, {tintColor: tintColor}]}
+      />
+    ),
   })}
   render() {
     return (
@@ -63,8 +83,8 @@ class MyProfileTabNavigator extends React.Component {
 
 const styles = StyleSheet.create({
   icon: {
-    width: 26,
-    height: 26,
+    width: 20,
+    height: 20,
   },
 });
 
@@ -74,7 +94,8 @@ export const ScoopTabsNavigator = TabNavigator({
   MyProfile: { screen: MyProfileTabNavigator, },
 }, {
   tabBarOptions: {
-    activeTintColor: '#e91e63',
+    activeTintColor: '#54C9EC',
+    inactiveTintColor: 'gray',
   },
   tabBarPosition: 'bottom',
   swipeEnabled: false,
