@@ -8,6 +8,7 @@ import ProfileDetail from '../../containers/ProfileDetail';
 
 import { bindActionCreators } from 'redux';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 const styles = StyleSheet.create({
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
 
 export class ProfileScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'ScoopLogoHere',
+    headerTitle: <NavBarLogo />,
     headerLeft: <Button onPress={() => navigation.goBack()}
                            style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}>
 

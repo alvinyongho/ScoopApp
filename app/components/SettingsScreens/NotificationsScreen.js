@@ -14,11 +14,12 @@ import images from '@assets/images';
 import NotificationsList from '../Settings/NotificationsList'
 import Icon from 'react-native-vector-icons/EvilIcons';
 
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 export class NotificationsScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: <NavBarLogo />,
     // TODO: Add Settings page
     headerLeft: <Button onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={50} color="white" />
