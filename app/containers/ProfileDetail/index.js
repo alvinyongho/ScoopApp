@@ -56,17 +56,35 @@ export class ProfileDetail extends Component {
   }
 
   _getOffSpring = () => {
-    if(this.props.userDetail.offspring === "0"){
-      return(<Text>Ask me!</Text>)
+    switch(this.props.userDetail.offspring){
+      case "0":
+        return <Text>Ask Me!</Text>
+      case "1":
+        return <Text>I have kids</Text>
+      case "2":
+        return <Text>I do not have kids</Text>
+      default:
+        return <Text>""</Text>
     }
-    return(<Text>TODO!</Text>)
   }
 
   _getBodyType = () => {
-    if(this.props.userDetail.offspring === "0"){
-      return(<Text>Ask me!</Text>)
+    switch(this.props.userDetail.bodyType){
+      case "0":
+        return <Text>Do not share</Text>
+      case "1":
+        return <Text>Slender</Text>
+      case "2":
+        return <Text>Athletic</Text>
+      case "3":
+        return <Text>Average</Text>
+      case "4":
+        return <Text>Full Figured</Text>
+      case "5":
+        return <Text>More to Love</Text>
+      default:
+        return <Text>""</Text>
     }
-    return(<Text>TODO!</Text>)
   }
 
   _getDistanceInMiles = () => {
