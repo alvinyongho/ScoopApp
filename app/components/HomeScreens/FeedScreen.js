@@ -11,6 +11,7 @@ import Home from '../../containers/Home';
 
 import { bindActionCreators } from 'redux';
 
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 
@@ -27,12 +28,7 @@ const styles = StyleSheet.create({
 class FeedScreen extends Component{
   static navigationOptions = ({navigation}) => ({
     headerTitle: (
-      <View style={{alignItems: 'center', justifyContent: 'center'}}>
-      <Image
-          source={images.scoopLogo}
-          resizeMode='contain'
-          style={{height: 20, width: 125}}/>
-      </View>
+      <NavBarLogo />
     ),
     headerRight: <Button onPress={() => navigation.navigate('Filter')}>
                          <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>

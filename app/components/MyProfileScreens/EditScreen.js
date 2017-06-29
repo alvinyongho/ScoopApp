@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-  View, Text
+  View, Text, Image
 } from 'react-native';
 
 
@@ -14,11 +14,14 @@ import Button from 'react-native-button';
 import images from '@assets/images';
 
 import EditProfileScrollView from '../../containers/EditProfile/EditProfileScrollView'
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 export class EditScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: (
+      <NavBarLogo />
+    ),
     // TODO: Add Settings page
     headerRight: <Button onPress={() => navigation.navigate('Settings')}>
                          <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Settings</Text>
