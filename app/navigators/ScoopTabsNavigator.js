@@ -27,7 +27,7 @@ class HomeTabNavigator extends React.Component {
             source={images.tabBar_homeIcon}
             style={[styles.icon, {tintColor: tintColor, marginTop: 5}]}
           />
-          <View style={{marginTop: 10, width: 25, height: 1, backgroundColor: barColor}}/>
+          <View style={[styles.iconBar, {backgroundColor: barColor}]}/>
         </View>
       )
     },
@@ -63,7 +63,7 @@ class MessageTabNavigator extends React.Component {
             source={images.tabBar_inboxIcon}
             style={[styles.icon, {tintColor: tintColor, marginTop: 5}]}
           />
-          <View style={{marginTop: 10, width: 25, height: 1, backgroundColor: barColor}}/>
+          <View style={[styles.iconBar, {backgroundColor: barColor}]}/>
         </View>
       )
     },
@@ -96,7 +96,7 @@ class MyProfileTabNavigator extends React.Component {
             source={images.tabBar_profileIcon}
             style={[styles.icon, {tintColor: tintColor, marginTop: 5}]}
           />
-          <View style={{marginTop: 10, width: 25, height: 1, backgroundColor: barColor}}/>
+          <View style={[styles.iconBar, {backgroundColor: barColor}]}/>
         </View>
       )
     },
@@ -113,6 +113,11 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  iconBar: {
+    marginTop: 7,
+    width: 25,
+    height: 1,
+  }
 });
 
 export const ScoopTabsNavigator = TabNavigator({

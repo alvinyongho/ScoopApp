@@ -215,6 +215,12 @@ export function removeFoundMatch (userId){
 }
 
 
+export function goToFilters(){
+  return(dispatch, getState)=>{
+    dispatch(NavigationActions.navigate({ routeName: 'Filter' }))
+  }
+}
+
 
 export function goToChatDetailFromFeed(){
   return(dispatch, getState)=> {

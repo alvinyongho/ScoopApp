@@ -3,8 +3,6 @@ import {
   View, Text, WebView
 } from 'react-native';
 
-
-
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { bindActionCreators } from 'redux';
@@ -15,7 +13,6 @@ import images from '@assets/images';
 import SettingsList from '../Settings/SettingsList'
 import Icon from 'react-native-vector-icons/EvilIcons';
 import NavBarLogo from '../NavigationBar/NavBarLogo'
-
 
 
 export class TOSScreen extends React.Component {
