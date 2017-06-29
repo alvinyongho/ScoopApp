@@ -1,18 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-
 import Button from 'react-native-button';
 import images from '@assets/images';
-
 import Home from '../../containers/Home';
-
 import { bindActionCreators } from 'redux';
-
 import NavBarLogo from '../NavigationBar/NavBarLogo'
-
 
 
 const styles = StyleSheet.create({
