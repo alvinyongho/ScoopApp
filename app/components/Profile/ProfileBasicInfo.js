@@ -47,6 +47,8 @@ export default class ProfileBasicInfo extends Component {
 
   }
 
+
+
   computeRelationshipStatus = (statusId) =>{
     switch(statusId) {
       case "0":
@@ -57,8 +59,26 @@ export default class ProfileBasicInfo extends Component {
           return "In a Relationship"
       case "3":
           return "Married"
+      case "4":
+          return "Engaged"
+      case "6":
+          return "Not specified"
+      case "7":
+          return "In a Civil Union"
+      case "8":
+          return "In a Domestic Partnership"
+      case "9":
+          return "In an Open Relationship"
+      case "10":
+          return "It's Complicated"
+      case "11":
+          return "Separated"
+      case "12":
+          return "Divorced"
+      case "13":
+          return "Widowed"
       default:
-          return "TODO"
+          return "Ask Me!"
     }
   }
 
