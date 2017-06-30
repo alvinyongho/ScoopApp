@@ -8,6 +8,7 @@ import Filter from '../../containers/Filter';
 
 import { bindActionCreators } from 'redux';
 import { ActionCreators } from '../../actions';   // Retrieves all the action creators
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 import SaveButton from '../Filter/SaveButton'
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
 
 export class FilterScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'ScoopLogoHere',
+    headerTitle: <NavBarLogo />,
     headerLeft: <Button onPress={() => navigation.goBack()}
                            style={{fontSize: 20, color: 'white', fontFamily:'Avenir-Light'}}>
                          <Text style={{marginLeft: 20,

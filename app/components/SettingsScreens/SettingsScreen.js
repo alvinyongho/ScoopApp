@@ -13,11 +13,12 @@ import images from '@assets/images';
 
 import SettingsList from '../Settings/SettingsList'
 import Icon from 'react-native-vector-icons/EvilIcons';
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 export class SettingsScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: <NavBarLogo />,
     // TODO: Add Settings page
     headerLeft: <Button onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={50} color="white" />

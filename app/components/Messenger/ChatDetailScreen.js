@@ -16,6 +16,7 @@ import images from '@assets/images';
 import ChatDetail from '../../containers/Messenger/ChatDetail';
 
 import Icon from 'react-native-vector-icons/EvilIcons';
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 
@@ -83,7 +84,7 @@ class ChatDetailScreen extends Component{
 
 
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: <NavBarLogo />,
     headerLeft: <Button onPress={() => navigation.goBack()}>
                       <Icon name="chevron-left" size={50} color="white" />
                       <Text style={{

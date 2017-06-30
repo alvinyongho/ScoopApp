@@ -16,11 +16,12 @@ import Button from 'react-native-button';
 import images from '@assets/images';
 
 // import SettingsList from '../Settings/SettingsList'
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 export class ImportAlbumScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: <NavBarLogo />,
     // TODO: Add Settings page
     headerLeft: <Button onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={50} color="white" />

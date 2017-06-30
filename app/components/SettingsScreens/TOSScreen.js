@@ -3,8 +3,6 @@ import {
   View, Text, WebView
 } from 'react-native';
 
-
-
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { bindActionCreators } from 'redux';
@@ -14,12 +12,12 @@ import images from '@assets/images';
 
 import SettingsList from '../Settings/SettingsList'
 import Icon from 'react-native-vector-icons/EvilIcons';
-
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 export class TOSScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Terms of Service',
+    headerTitle: <NavBarLogo />,
     // TODO: Add Settings page
     headerLeft: <Button onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={50} color="white" />
