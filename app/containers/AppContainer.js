@@ -15,6 +15,7 @@ import { NativeRouter, Route, Link, Redirect } from 'react-router-native';
 // Views
 import Home from './Home';
 import WelcomePages from '../components/WelcomePages';
+import ServiceSelection from '../components/ServiceSelection/ServiceSelection';
 // import Filter from './Filter';
 
 import ProfileAlbumOverlay from '../components/Profile/ProfileAlbumOverlay'
@@ -31,8 +32,10 @@ class AppContainer extends Component {
   render() {
     const welcomePagesRoute = () => (<WelcomePages {...this.props}/>)
     const authenticatedRoute = () => (<ScoopTabs {...this.props}/>)
+    const serviceSelectionRoute = () => (<ServiceSelection />)
     // Set the route depending on login state
-    const ResultRoute = this.props.isAuthenticated ? (authenticatedRoute) : welcomePagesRoute;
+    // const ResultRoute = this.props.isAuthenticated ? (authenticatedRoute) : welcomePagesRoute;
+    const ResultRoute = serviceSelectionRoute;
 
     return(
       <NativeRouter>
