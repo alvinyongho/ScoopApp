@@ -255,7 +255,25 @@ class MatchFeed extends Component{
           <View style={{height: 7}} />
 
           {this.matches().length === 0 &&
-            <View><Text>Could not find any matches</Text></View>
+            <View style={{margin: 50}}>
+              <View style={{alignItems:'center'}}>
+                <Text style={{fontFamily: 'Avenir-Light', fontSize: 16, textAlign:'center'}}>{`No users found for Filters`}</Text>
+                <TouchableHighlight underlayColor='transparent' onPress={()=>this.props.goToFilter()}>
+                  <View style={{alignItems: 'center', justifyContent: 'center', height: 35, width: 260, marginTop: 10, marginBottom: 10, borderRadius: 3, backgroundColor: '#54C9EC'}}>
+                    <Text style={{fontFamily: 'Avenir-Light', fontSize: 16, color: 'white'}}> Change Filters </Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+
+              <View style={{alignItems:'center', marginTop: 20}}>
+                <Text style={{fontFamily: 'Avenir-Light', fontSize: 16, textAlign:'center'}}>{`We're new, help us grow by sharing Scoop with your friends!`}</Text>
+                <TouchableHighlight underlayColor='transparent' onPress={()=>console.log('TODO')}>
+                <View style={{alignItems: 'center', justifyContent: 'center', height: 35, width: 260, marginTop: 10, marginBottom: 10, borderRadius: 3, backgroundColor: '#54C9EC'}}>
+                <Text style={{fontFamily: 'Avenir-Light', fontSize: 16, color: 'white'}}> Share Scoop </Text>
+                </View>
+                </TouchableHighlight>
+              </View>
+            </View>
           }
 
           {this.matches().map(match => {
@@ -353,6 +371,7 @@ const mapDispatchToProps = dispatch => ({
   profile: () => {dispatch(NavigationActions.navigate({ routeName: 'Profile' }))
                   dispatch(resetMyProfileNav())
                   },
+  goToFilter: () => { dispatch(NavigationActions.navigate({routeName: 'Filter'}))},
 });
 
 

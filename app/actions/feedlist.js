@@ -190,10 +190,8 @@ export function toggleUserLikesTarget(isALike, userId){
     let targetId = userId
     dispatch(removeFoundMatch(userId))
 
-
+    // Uncomment in deployment
     performLikeDislikeUser(scoopUserId, scoopUserToken, likeBinaryValue, notifyFrom, targetId).then((result)=>{
-      // console.log("RESULT")
-      // console.log(result)
       if (result.status && result.status === "98"){
         console.log("You cannot like a user with 0 Scoops! Tap the Scoops tab to get more!")
       }
@@ -214,6 +212,12 @@ export function removeFoundMatch (userId){
   }
 }
 
+
+export function goToFilters(){
+  return(dispatch, getState)=>{
+    dispatch(NavigationActions.navigate({ routeName: 'Filter' }))
+  }
+}
 
 
 export function goToChatDetailFromFeed(){

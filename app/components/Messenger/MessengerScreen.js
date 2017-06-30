@@ -15,11 +15,12 @@ import {
 import Messenger from '../../containers/Messenger/Messenger'
 import EditButton from '../../containers/Messenger/EditButton';
 import DeleteButton from '../../containers/Messenger/DeleteButton';
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 class MessengerScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: <NavBarLogo />,
     headerLeft: <EditButton />,
     headerRight: <DeleteButton />,
 

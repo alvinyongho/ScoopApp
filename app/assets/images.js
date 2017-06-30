@@ -43,6 +43,16 @@ const images = {
 	placeholder_album5: require('./img/MyProfile/placeholders/album5.png'),
 	placeholder_album6: require('./img/MyProfile/placeholders/album6.png'),
 	placeholder_mainalbum: require('./img/MyProfile/placeholders/mainalbum.png'),
+
+	tabBar_homeIcon_selected: 		require('./img/TabBar/tab-bar-home-icon-selected@3x.png'),
+	tabBar_homeIcon: 							require('./img/TabBar/tab-bar-home-icon@3x.png'),
+	tabBar_inboxIcon_pink: 				require('./img/TabBar/tab-bar-inbox-icon-pink@3x.png'),
+	tabBar_inboxIcon_selected: 		require('./img/TabBar/tab-bar-inbox-icon-selected@3x.png'),
+	tabBar_inboxIcon: 						require('./img/TabBar/tab-bar-inbox-icon@3x.png'),
+	tabBar_profileIcon_selected: 	require('./img/TabBar/tab-bar-profile-icon-selected@3x.png'),
+	tabBar_profileIcon: 					require('./img/TabBar/tab-bar-profile-icon@3x.png'),
+
+
 };
 
 export default images;

@@ -13,12 +13,12 @@ import images from '@assets/images';
 
 import PrivacyPolicyWebView from '../Settings/PrivacyPolicyWebView'
 import Icon from 'react-native-vector-icons/EvilIcons';
-
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 export class PrivacyPolicyScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Privacy Policy',
+    headerTitle: <NavBarLogo />,
     // TODO: Add Settings page
     headerLeft: <Button onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={50} color="white" />

@@ -14,13 +14,14 @@ import ImportableGalleryCollectionView from '../PersonalProfile/ImportableGaller
 
 import Button from 'react-native-button';
 import images from '@assets/images';
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 // import SettingsList from '../Settings/SettingsList'
 
 
 export class ImportFromGalleryScreen extends React.Component {
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: <NavBarLogo />,
     // TODO: Add Settings page
     headerLeft: <Button onPress={() => navigation.goBack()}>
                     <Icon name="chevron-left" size={50} color="white" />

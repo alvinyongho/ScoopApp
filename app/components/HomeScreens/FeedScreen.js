@@ -1,16 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-
 import Button from 'react-native-button';
 import images from '@assets/images';
-
 import Home from '../../containers/Home';
-
 import { bindActionCreators } from 'redux';
-
+import NavBarLogo from '../NavigationBar/NavBarLogo'
 
 
 const styles = StyleSheet.create({
@@ -25,7 +21,9 @@ const styles = StyleSheet.create({
 
 class FeedScreen extends Component{
   static navigationOptions = ({navigation}) => ({
-    title: 'Scoop',
+    headerTitle: (
+      <NavBarLogo />
+    ),
     headerRight: <Button onPress={() => navigation.navigate('Filter')}>
                          <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
                  </Button>,
