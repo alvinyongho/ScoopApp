@@ -1,0 +1,183 @@
+{
+	"service": [
+                {
+                "name": "Youtube",
+                "description": "",
+                "isactive": "false",
+                "image": "youtube",
+                "background": "YOUTUBE"
+                },
+                {
+                "name": "Airbnb",
+                "description": "",
+                "isactive": "false",
+                "image": "airbnb",
+                "background": "AIRBNB"
+
+                },
+                {
+                "name": "Audible",
+                "description": "",
+                "isactive": "false",
+                "image": "Audible",
+                "background": "AUDIBLE"
+
+                },
+                {
+                "name": "Bible",
+                "description": "",
+                "isactive": "false",
+                "image": "Bible",
+                "background": "BIBLE"
+
+                },
+                {
+                "name": "Buzzfeed",
+                "description": "",
+                "isactive": "false",
+                "image": "buzzfeed",
+                "background": "BUZZFEED"
+
+                },
+                {
+                "name": "ClashRoyale",
+                "description": "",
+                "isactive": "false",
+                "image": "ClashRoyale",
+                "background": "CLASHROYALE"
+
+                },
+                {
+                "name": "Duolingo",
+                "description": "",
+                "isactive": "false",
+                "image": "Duolingo",
+                "background": "DUOLINGO"
+
+                },
+                {
+                "name": "HeadsUp",
+                "description": "",
+                "isactive": "false",
+                "image": "HeadsUp",
+                "background": "HEADSUP"
+
+                },
+                {
+                "name": "Hulu",
+                "description": "",
+                "isactive": "false",
+                "image": "Hulu",
+                "background": "HULU"
+
+                },
+                {
+                "name": "Instagram",
+                "description": "",
+                "isactive": "false",
+                "image": "instagram",
+                "background": "INSTAGRAM"
+
+                },
+                {
+                "name": "Lumosity",
+                "description": "",
+                "isactive": "false",
+                "image": "Lumosity",
+                "background": "LUMOSITY"
+
+                },
+                {
+                "name": "MyFitnessPal",
+                "description": "",
+                "isactive": "false",
+                "image": "MyFitnessPal",
+                "background": "FITNESSPAL"
+
+                },
+                {
+                "name": "Netflix",
+                "description": "",
+                "isactive": "false",
+                "image": "Netflix",
+                "background": "NETFLIX"
+
+                },
+                {
+                "name": "Pandora",
+                "description": "",
+                "isactive": "false",
+                "image": "Pandora",
+                "background": "PANDORA"
+
+                },
+                {
+                "name": "Reddit",
+                "description": "",
+                "isactive": "false",
+                "image": "reddit_logo",
+                "background": "REDDIT"
+
+                },
+                {
+                "name": "Smule",
+                "description": "",
+                "isactive": "false",
+                "image": "Smule",
+                "background": "SMULE"
+
+                },
+                {
+                "name": "Snapchat",
+                "description": "",
+                "isactive": "false",
+                "image": "Snapchat",
+                "background": "SNAPCHAT"
+
+                },
+                
+                {
+                "name": "Stubhub",
+                "description": "",
+                "isactive": "false",
+                "image": "Stubhub",
+                "background": "STUBHUB"
+
+                
+                },
+                
+                {
+                "name": "Super Mario",
+                "description": "",
+                "isactive": "false",
+                "image": "SuperMarioRun",
+                "background": "MARIORUN"
+
+                },
+                {
+                "name": "Twitter",
+                "description": "abc",
+                "isactive": "false",
+                "image": "Twitter",
+                "background": "TWITTER"
+
+                },
+                {
+                "name": "ESPN",
+                "description": "",
+                "isactive": "false",
+                "image": "WatchESPN",
+                "background": "WATCHESPN"
+
+                },
+                {
+                "name": "Yelp",
+                "description": "",
+                "isactive": "false",
+                "image": "Yelp",
+                "background": "YELP"
+
+                },
+        
+    ]
+}

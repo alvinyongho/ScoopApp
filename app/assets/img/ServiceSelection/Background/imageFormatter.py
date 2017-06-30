@@ -31,5 +31,36 @@ def get_filepaths(directory):
 
 	return file_paths  # Self-explanatory.
 
-full_file_paths = get_filepaths("/Users/allenfang/work/ScoopApp/app/assets/img/ServiceSelection/Background")
-print "\n".join(full_file_paths)
+# full_file_paths = get_filepaths("/Users/allenfang/work/ScoopApp/app/assets/img/ServiceSelection/Background")
+# print "\n".join(full_file_paths)
+
+def get_imageFormat_json(directory):
+	formattedImages = []  # List which will store all of the full filepaths.
+
+    # Walk the tree.
+	for root, directories, files in os.walk(directory):
+		for filename in files:
+			# Join the two strings in order to form the full filepath.
+			filename, file_extension = os.path.splitext(filename)
+			# print filename
+			# print file_extension
+
+
+			# airbnb_bgLogo: require('./img/ServiceSelection/Background/AIRBNB.png'),
+
+			if file_extension == '.png':
+				filename_lower = filename.lower()
+				print (filename_lower)
+
+				result = filename_lower
+				# parsed_result = ("{}_bgLogo: require('./img/ServiceSelection/Background/{}.png'),".format(filename_lower, filename))
+				formattedImages.append(result)
+
+
+			# filepath = os.path.join(root, filename)
+			# file_paths.append(filepath)  # Add it to the list.
+
+	return formattedImages  # Self-explanatory.
+
+full_file_paths = get_imageFormat_json("/Users/allenfang/work/ScoopApp/app/assets/img/ServiceSelection/Background")
+

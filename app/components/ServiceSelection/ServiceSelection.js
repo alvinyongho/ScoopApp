@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import images from '@assets/images';
+var servicesData = require('./services.json');
 
 export default class ServiceSelection extends Component {
 	constructor() {
@@ -18,7 +19,7 @@ export default class ServiceSelection extends Component {
 
 
 		const row1 = {
-			imgUrl: images.airbnb_bgLogo
+			imgUrl: images['airbnb_bgLogo']
 		}
 		const row2 = {
 			imgUrl: images.audible_bgLogo
@@ -29,6 +30,21 @@ export default class ServiceSelection extends Component {
 			dataSource: ds.cloneWithRows([row1, row2]),
 		};
 	}
+
+	componentWillMount() {
+		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		var imgUrls = servicesData['service'].map((service) => {
+			var serviceLower = service.background.toLowerCase();
+			var url = `${serviceLower}_bgLogo`
+			return { imgUrl: images[`${url}`] }
+		})
+		console.log(imgUrls)
+		this.setState({
+			dataSource: ds.cloneWithRows(imgUrls)
+		})
+	}
+
+
 	render() {
 		const width = Dimensions.get('window').width;
 		const height = 140
