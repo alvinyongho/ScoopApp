@@ -16,7 +16,7 @@ import {
   Animated
 } from 'react-native';
 
-import Swiper from '../../components/Profile/react-native-page-swiper';
+import Swiper from '../../components/FeedList/react-native-page-swiper';
 import images from '@assets/images';
 
 const CELL_SIZE = 270
@@ -75,6 +75,7 @@ export default class FeedListRow extends Component{
       <View>
 
       <Swiper
+        threshold={500}
         onDragRelease={() => this.props.changeScrollState(true)}
         onDragStart={() => this.props.changeScrollState(false)}
         lockToPage={this.state.lockToPage}
