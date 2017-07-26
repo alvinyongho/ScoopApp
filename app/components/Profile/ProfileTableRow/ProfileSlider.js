@@ -49,17 +49,17 @@ export default class ProfileSlider extends Component {
 
          <View style={styles.labelsContainer}>
           <View style={styles.labelBox}>
-            <Text>{this.props.leftLabel}</Text>
+            <Text style={styles.sliderLabelText}>{this.props.leftLabel}</Text>
           </View>
 
           {this.props.middleLabel &&
             <View style={[styles.labelBox, {alignItems: 'center'}]}>
-              <Text>{this.props.middleLabel}</Text>
+              <Text style={styles.sliderLabelText}>{this.props.middleLabel}</Text>
             </View>
           }
 
           <View style={[styles.labelBox, {alignItems: 'flex-end'}]}>
-            <Text>{this.props.rightLabel}</Text>
+            <Text style={styles.sliderLabelText}>{this.props.rightLabel}</Text>
           </View>
 
          </View>
@@ -80,11 +80,15 @@ var styles = StyleSheet.create({
     flex:.5,
     margin: 20,
     marginTop: 0,
+
   },
   labelsContainer:{
     flex: 1,
     flexDirection: 'row',
 
+  },
+  sliderLabelText:{
+    fontFamily: 'Avenir-Light',
   },
   sliderContainer:{height: 40, backgroundColor: 'white'},
   sliderLeftValueText: {

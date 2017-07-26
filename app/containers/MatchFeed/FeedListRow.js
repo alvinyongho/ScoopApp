@@ -142,21 +142,6 @@ var styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: '100',
   },
-  profileName: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: '500',
-    position: 'absolute',
-    bottom: 27,
-    left: 10,
-  },
-  profileDescription: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '300',
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-  }
+  
 
 })
