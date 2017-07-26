@@ -33,12 +33,12 @@ export default class FilterItem extends Component{
 
   topLabels = () => {
     return(
-      <View style={{flex:1, marginTop: leftRightMargin-2, marginBottom: leftRightMargin-2,  margin: leftRightMargin+3, flexDirection: 'row'}}>
+      <View style={styles.topLabels}>
         <View style={{flex:.5}}>
           <Text style={{textAlign: 'left', fontFamily:'Avenir-Light', fontSize:16}}>{this.props.topLeftTitle}</Text>
         </View>
         <View style={{flex:.5}}>
-          <Text style={{textAlign:'right'}}>{this.state.sliderResult}</Text>
+          <Text style={{textAlign:'right', fontFamily:'Avenir-Light', fontSize:16}}>{this.state.sliderResult}</Text>
         </View>
       </View>
     )
@@ -51,14 +51,14 @@ export default class FilterItem extends Component{
         if(key === 0){
           return(
             <View key={'sliderLabel'+key} style={{flex:1}}>
-              <Text style={{textAlign: 'left'}}>{value}</Text>
+              <Text style={{textAlign: 'left', fontFamily:'Avenir-Light', fontSize:16}}>{value}</Text>
             </View>
           )
         }
         if(key === labels.length-1){
           return(
             <View key={'sliderLabel'+key} style={{flex:1}}>
-              <Text style={{textAlign: 'right'}}>{value}</Text>
+              <Text style={{textAlign: 'right', fontFamily:'Avenir-Light', fontSize:16}}>{value}</Text>
             </View>
           )
         }
@@ -70,20 +70,20 @@ export default class FilterItem extends Component{
         if(key === 0){
           return(
             <View key={'sliderLabel'+key} style={{flex:1}}>
-              <Text style={{textAlign: 'left'}}>{value}</Text>
+              <Text style={{textAlign: 'left', fontFamily:'Avenir-Light'}}>{value}</Text>
             </View>
           )
         }
         if(key === labels.length-1){
           return(
             <View key={'sliderLabel'+key} style={{flex:1}}>
-              <Text style={{textAlign: 'right'}}>{value}</Text>
+              <Text style={{textAlign: 'right', fontFamily:'Avenir-Light'}}>{value}</Text>
             </View>
           )
         }
         return(
           <View key={'sliderLabel'+key} style={{flex:1}}>
-            <Text style={{textAlign: 'center'}}>{value}</Text>
+            <Text style={{textAlign: 'center', fontFamily:'Avenir-Light'}}>{value}</Text>
           </View>
         )
       })
@@ -167,5 +167,10 @@ export default class FilterItem extends Component{
 
 
 var styles = StyleSheet.create({
-
+  topLabels: {
+    flex:1,
+    marginTop: leftRightMargin-2,
+    marginBottom: leftRightMargin-2,
+    margin: leftRightMargin+3, flexDirection: 'row'
+  },
 });

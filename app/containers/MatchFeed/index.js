@@ -163,22 +163,30 @@ class MatchFeed extends Component{
   }
 
 
+  _renderDescription = (match) => {
+    return (
+      <View style={styles.profileTextBox}>
+        <Text style={styles.profileName}>{match.name}</Text>
+        <Text style={styles.profileDescription}>{match.jobTitle}</Text>
+      </View>
+    )
+  }
+
+
   _renderImage = (match) => {
     if(match.image && !match.image.includes(FB_EXPIRED_URL)){
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
 
           <LinearGradient start={{x:.35, y:.35}} colors={['rgba(0,0,0,0)', '#000000']} style={{flex:.5, opacity:.8}} />
-          <Text style={styles.profileName}>{match.name}</Text>
-          <Text style={styles.profileDescription}>{match.jobTitle}</Text>
+          { this._renderDescription(match) }
         </Image>
       );
     }
     // Return a gray view image is missing
     return(
       <View style={{flex:1, backgroundColor:'gray'}}>
-        <Text style={styles.profileName}>{match.name}</Text>
-        <Text style={styles.profileDescription}>{match.description}</Text>
+        { this._renderDescription(match) }
       </View>
     );
   }
@@ -339,20 +347,18 @@ var styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: '500',
-    position: 'absolute',
-    bottom: 27,
-    left: 10,
     backgroundColor: 'transparent'
   },
   profileDescription: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '300',
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
     backgroundColor: 'transparent'
-
+  },
+  profileTextBox: {
+    position:'absolute',
+    bottom: 10,
+    margin: 10,
   }
 
 })
