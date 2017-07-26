@@ -77,7 +77,13 @@ export default class FeedListRow extends Component{
     return(
       <View>
 
-        <SwipeView />
+        <SwipeView
+          onDragRelease={() => this.props.changeScrollState(true)}
+          onDragStart={() => this.props.changeScrollState(false)}
+        />
+
+
+
         <Swiper
           threshold={500}
           onDragRelease={() => this.props.changeScrollState(true)}

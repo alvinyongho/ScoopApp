@@ -5,15 +5,22 @@ import {
   Text,
   PanResponder,
   StyleSheet,
-  Animated
+  Animated,
+  Dimensions
 } from 'react-native'
 
 export default class SwipeView extends Component{
+
+  constructor(props){
+    super(props)
+  }
 
   componentWillMount(){
     this.animatedValue = new Animated.ValueXY();
     this._value = {x: 0, y: 0}
     this.animatedValue.addListener((value) => this._value = value);
+
+    this.dragDisabled = false
 
     this._panResponder = PanResponder.create({
       // Ask to be the responder:
@@ -23,10 +30,6 @@ export default class SwipeView extends Component{
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
       onPanResponderGrant: (evt, gestureState) => {
-        // console.log('granted')
-        // The gesture has started. Show visual feedback so the user knows
-        // what is happening!
-
         this.animatedValue.setOffset({
           x: this._value.x,
           y: this._value.y,
@@ -34,26 +37,30 @@ export default class SwipeView extends Component{
 
         this.animatedValue.setValue({ x: 0, y: 0})
 
-        // gestureState.d{x,y} will be set to zero now
       },
-      onPanResponderMove: Animated.event([
-        null, { dx: this.animatedValue.x, dy: 0}
-      ]),
+      onPanResponderMove: (e, gestureState) => {
+
+        if(Math.abs(this._value.x)>10 && !this.dragDisabled){
+          this.props.onDragStart()
+          this.dragDisabled = true
+        }
+
+        Animated.event([
+          null, { dx: this.animatedValue.x, dy: 0}
+        ])(e, gestureState)
+      },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (e, gestureState) => {
-
-
+        this.props.onDragRelease()
+        this.dragDisabled = false
 
         this.animatedValue.flattenOffset();
         // console.log(this._value)
-
         if(this._value.x < -170){
           console.log( "swiped right")
         } else if(this._value.x > 170) {
           console.log( "swiped left")
         }
-
-
 
         Animated.spring(this.animatedValue,
           {toValue:{x:0,y:0}}
@@ -101,9 +108,10 @@ const styles = StyleSheet.create({
   },
 
   draggableCard: {
-    width: 150,
-    height: 150,
-    backgroundColor: 'red',
+    width: Dimensions.get('window').width-30,
+    borderRadius: 5,
+    height: 230,
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   }
