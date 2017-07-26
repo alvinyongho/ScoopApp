@@ -191,14 +191,14 @@ export function toggleUserLikesTarget(isALike, userId){
     dispatch(removeFoundMatch(userId))
 
     // Uncomment in deployment
-    performLikeDislikeUser(scoopUserId, scoopUserToken, likeBinaryValue, notifyFrom, targetId).then((result)=>{
-      if (result.status && result.status === "98"){
-        console.log("You cannot like a user with 0 Scoops! Tap the Scoops tab to get more!")
-      }
-      if (result.status && result.status === "99"){
-        console.log("You cannot like users while your profile is hidden")
-      }
-    })
+    // performLikeDislikeUser(scoopUserId, scoopUserToken, likeBinaryValue, notifyFrom, targetId).then((result)=>{
+    //   if (result.status && result.status === "98"){
+    //     console.log("You cannot like a user with 0 Scoops! Tap the Scoops tab to get more!")
+    //   }
+    //   if (result.status && result.status === "99"){
+    //     console.log("You cannot like users while your profile is hidden")
+    //   }
+    // })
 
 
   }

@@ -19,6 +19,9 @@ import {
 import Swiper from '../../components/FeedList/react-native-page-swiper';
 import images from '@assets/images';
 
+import SwipeView from '../../components/FeedList/SwipeView';
+
+
 const CELL_SIZE = 270
 const TRANSITION_LENGTH = 800
 
@@ -74,40 +77,35 @@ export default class FeedListRow extends Component{
     return(
       <View>
 
-      <Swiper
-        threshold={500}
-        onDragRelease={() => this.props.changeScrollState(true)}
-        onDragStart={() => this.props.changeScrollState(false)}
-        lockToPage={this.state.lockToPage}
-        handleRemoval={this.handleRemoval}
-        onPageChange={(pageNum) =>{
+        <SwipeView />
+        <Swiper
+          threshold={500}
+          onDragRelease={() => this.props.changeScrollState(true)}
+          onDragStart={() => this.props.changeScrollState(false)}
+          lockToPage={this.state.lockToPage}
+          handleRemoval={this.handleRemoval}
+          onPageChange={(pageNum) =>{
+            if(pageNum===0 || pageNum===2 )this.setState({pageNum: pageNum, lockToPage: true})
+          }}
+          style={styles.wrapper} index={1} pager={false}>
 
-          // console.log(pageNum)
-          if(pageNum===0 || pageNum===2 )this.setState({pageNum: pageNum, lockToPage: true})
-          // this.props.likeDislikeUser(pageNum, this.props.match.id)
-        }
-          // this.setState({removing: true})
-        //  this.props.likeDislikeUser(pageNum, this.props.match.id)
-        }
-        style={styles.wrapper} index={1} pager={false}>
+          <Animated.View style={[styles.interestedSlide, {height:this.state._rowHeight}]}>
+            <Image style={{right:20}} source={images.interested} />
+          </Animated.View>
 
-        <Animated.View style={[styles.interestedSlide, {height:this.state._rowHeight}]}>
-          <Image style={{right:20}} source={images.interested} />
-        </Animated.View>
+          <Animated.View style={[styles.profileSlide, {height:this.state._rowHeight}]}>
+            <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
+              <TouchableHighlight onPress={() => this.props._onPressProfile(this.props.match.id)} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
+                {this.props._renderImage(this.props.match)}
+              </TouchableHighlight>
+            </View>
+          </Animated.View>
 
-        <Animated.View style={[styles.profileSlide, {height:this.state._rowHeight}]}>
-          <View style={{flex:1, marginTop: 7, marginBottom: 7, marginLeft:14, marginRight:14, backgroundColor: 'white', borderRadius: 5}}>
-            <TouchableHighlight onPress={() => this.props._onPressProfile(this.props.match.id)} style={{flex:1, margin: 15, justifyContent:'flex-end'}}>
-              {this.props._renderImage(this.props.match)}
-            </TouchableHighlight>
-          </View>
-        </Animated.View>
+          <Animated.View style={[styles.notInterestedSlide, {height:this.state._rowHeight}]}>
+            <Image style={{left:20}} source={images.notInterested} />
+          </Animated.View>
 
-        <Animated.View style={[styles.notInterestedSlide, {height:this.state._rowHeight}]}>
-          <Image style={{left:20}} source={images.notInterested} />
-        </Animated.View>
-
-      </Swiper>
+        </Swiper>
       </View>
     )
   }
@@ -142,6 +140,6 @@ var styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: '100',
   },
-  
+
 
 })
