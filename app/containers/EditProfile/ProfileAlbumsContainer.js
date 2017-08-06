@@ -88,7 +88,7 @@ export class ProfileAlbumsContainer extends React.Component {
     // console.log("RENDERING HAPPENING")
     if(Platform.OS === 'ios'){
       return (
-        <View key={acc} style={{height: 480, backgroundColor: 'white'}}>
+        <View key={acc} style={{height: 500, backgroundColor: 'white'}}>
         <PhotoAlbum
             changeScrollState={this.props.changeScrollState}
             onFinishedDrag={(itemOrder)=>{

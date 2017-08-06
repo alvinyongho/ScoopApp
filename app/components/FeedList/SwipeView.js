@@ -6,8 +6,16 @@ import {
   PanResponder,
   StyleSheet,
   Animated,
-  Dimensions
+  Dimensions,
+  TouchableHighlight,
+  Image,
 } from 'react-native'
+
+import images from '@assets/images';
+
+paddingAmount = 30
+cardHeight = 255
+
 
 export default class SwipeView extends Component{
 
@@ -25,7 +33,9 @@ export default class SwipeView extends Component{
     this._panResponder = PanResponder.create({
       // Ask to be the responder:
       onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      // Don’t use the capture phase, you will rarely ever use it much like the web. Stick to the function calls without capture.
+      // The deepest element gets focus if set to false.
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
@@ -58,8 +68,13 @@ export default class SwipeView extends Component{
         // console.log(this._value)
         if(this._value.x < -170){
           console.log( "swiped right")
+
+          this.props.handleRemoval()
+
         } else if(this._value.x > 170) {
           console.log( "swiped left")
+          this.props.handleRemoval()
+
         }
 
         Animated.spring(this.animatedValue,
@@ -83,20 +98,27 @@ export default class SwipeView extends Component{
     });
   }
 
-
-
   render(){
     const animatedStyle = {
       transform: this.animatedValue.getTranslateTransform()
     }
     return(
       <View style={styles.container}>
-        <View style={{position: 'absolute', height: 150, width: 150, backgroundColor: 'blue'}} />
-        <Animated.View {...this._panResponder.panHandlers} style={[styles.draggableCard, animatedStyle]}><Text>Test</Text></Animated.View>
+        <View style={{position: 'absolute', padding: 50, height: cardHeight-paddingAmount,
+          width: Dimensions.get('window').width}}>
+          <Image style={{position: 'absolute', left: 15, top: 60}} source={images.interested} />
+          <Image style={{position: 'absolute', right: 15, top: 73}} source={images.notInterested} />
+        </View>
+
+        <Animated.View {...this._panResponder.panHandlers} style={[styles.draggableCard, animatedStyle]}>
+          <TouchableHighlight onPress={()=>this.props.onPressProfile()}>
+            <View style={{height: cardHeight-paddingAmount, width: Dimensions.get('window').width-paddingAmount*2, backgroundColor: 'gray'}}>
+              {this.props.renderImage}
+            </View>
+          </TouchableHighlight>
+        </Animated.View>
       </View>
     )
-
-
   }
 }
 
@@ -104,13 +126,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    // marginTop: 5,
+    marginBottom: 7,
   },
 
   draggableCard: {
     width: Dimensions.get('window').width-30,
     borderRadius: 5,
-    height: 230,
+    height: cardHeight,
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
