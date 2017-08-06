@@ -24,6 +24,10 @@ class FeedScreen extends Component{
     headerTitle: (
       <NavBarLogo />
     ),
+    headerLeft: <Button onPress={() => navigation.navigate('History')}>
+                         <Text style={{marginLeft: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>History</Text>
+                 </Button>,
+
     headerRight: <Button onPress={() => navigation.navigate('Filter')}>
                          <Text style={{marginRight: 20, fontFamily:'Avenir-Light', fontSize: 18, color:'white'}}>Filters</Text>
                  </Button>,

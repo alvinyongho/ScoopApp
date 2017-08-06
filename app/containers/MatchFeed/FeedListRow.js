@@ -77,11 +77,19 @@ export default class FeedListRow extends Component{
     return(
       <View>
 
+
+{/*
         <SwipeView
           onDragRelease={() => this.props.changeScrollState(true)}
           onDragStart={() => this.props.changeScrollState(false)}
+          onPressProfile={() => this.props._onPressProfile(this.props.match.id)}
+          renderImage={this.props._renderImage(this.props.match)}
+          onSwipeRight={() => console.log('swipe right')}
+          onSwipeLe={() => console.log('swipe right')}
+          handleRemoval={this.handleRemoval}
         />
 
+*/}
 
 
         <Swiper
@@ -111,7 +119,9 @@ export default class FeedListRow extends Component{
             <Image style={{left:20}} source={images.notInterested} />
           </Animated.View>
 
-        </Swiper>
+        </Swiper> 
+
+
       </View>
     )
   }
