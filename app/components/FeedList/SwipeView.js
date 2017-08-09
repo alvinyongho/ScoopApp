@@ -64,14 +64,15 @@ export default class SwipeView extends Component{
       },
       onPanResponderMove: (e, gestureState) => {
 
-        if(this._value.x < -5){
+        // console.log(gestureState.dx)
+        if(gestureState.dx< -5){
           this.setOpacity('not_interestedOpacity', 1)
           this.setOpacity('interestedOpacity', 0)
 
           // this.setOpacity('int', 1)
         }
 
-        if(this._value.x > 5){
+        if(gestureState.dx > 5){
           this.setOpacity('interestedOpacity', 1)
           this.setOpacity('not_interestedOpacity', 0)
           // this.setOpacity('int', 1)
@@ -80,7 +81,7 @@ export default class SwipeView extends Component{
 
 
 
-        if(Math.abs(this._value.x)>10 && !this.dragDisabled){
+        if(Math.abs(gestureState.dx) && !this.dragDisabled){
           this.props.onDragStart()
           this.dragDisabled = true
         }
@@ -137,7 +138,7 @@ export default class SwipeView extends Component{
 
     return(
       <Animated.View style={[
-        {height: this.props.cellSize, opacity: this.props.cellSize}]
+        {height: this.props.cellSize},{opacity: this.props.rowOpacity}]
       }>
 
         <View style={[styles.container]}>

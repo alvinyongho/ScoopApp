@@ -23,7 +23,7 @@ import SwipeView from '../../components/FeedList/SwipeView';
 
 
 const CELL_SIZE = 255+7
-const TRANSITION_LENGTH = 200
+const TRANSITION_LENGTH = 400
 const ROW_OPACITY = 1
 
 export default class FeedListRow extends Component{
@@ -32,7 +32,7 @@ export default class FeedListRow extends Component{
     super(props)
     this.state = {
       _rowHeight: new Animated.Value(CELL_SIZE),
-      _rowOpacity : new Animated.Value(1),
+      _rowOpacity: new Animated.Value(1),
       removing: false,
       lockToPage: false,
       pageNum: null,
@@ -57,18 +57,22 @@ export default class FeedListRow extends Component{
 
 
   onRemove(callback){
-    Animated.timing(this.state._rowHeight,{
-      toValue: 0,
-      duration: TRANSITION_LENGTH
-    }).start(callback);
 
-    Animated.timing(
-      this.state._rowOpacity,
-      {
+    Animated.sequence([
+      Animated.timing(this.state._rowOpacity,{
+          toValue: 0,
+          duration: TRANSITION_LENGTH
+      }),
+      Animated.timing(this.state._rowHeight,{
         toValue: 0,
         duration: TRANSITION_LENGTH
-      }
-    )
+      }),
+
+
+    ]).start(callback);
+
+
+
 
     console.log(this.state._rowOpacity)
 
@@ -89,7 +93,7 @@ export default class FeedListRow extends Component{
 
 
   handleRemoval = () => {
-    console.log("Handling removal")
+    // console.log("Handling removal")
     this.setState({removing: true})
   }
 
