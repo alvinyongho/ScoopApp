@@ -177,14 +177,44 @@ class MatchFeed extends Component{
     if(match.image && !match.image.includes(FB_EXPIRED_URL)){
       return(
         <Image style={{flex:1}} source={{uri:match.image}}>
-
           <LinearGradient start={{x:.35, y:.35}} colors={['rgba(0,0,0,0)', '#000000']} style={{flex:.5, opacity:.8}} />
           { this._renderDescription(match) }
         </Image>
       );
     }
     // Return a gray view image is missing
+
+
+    if(match.image.includes("fbcdn")){
+      return(
+          <Image resizeMode='contain' source={images.male_placeholder} style={{backgroundColor:'#A5A5A5', width: Dimensions.get('window').width-60, height: 225}}>
+            { this._renderDescription(match) }
+          </Image>
+        );
+    }
+
+
+
+    // if(match.gender==="MALE"){
+    //   return(
+    //     <Image resizeMode='contain' source={images.male_placeholder} style={{backgroundColor:'#A5A5A5', width: 318, height: 225}}>
+    //       { this._renderDescription(match) }
+    //     </Image>
+    //   );
+    // }
+    // if(match.gender==="FEMALE"){
+    //   return(
+    //     <Image resizeMode='contain' source={images.female_placeholder} style={{backgroundColor:'#A5A5A5', width: 318, height: 225}}>
+    //       { this._renderDescription(match) }
+    //     </Image>
+    //   );
+    // }
+
+
+
     return(
+
+
       <View style={{flex:1, backgroundColor:'gray'}}>
         { this._renderDescription(match) }
       </View>
