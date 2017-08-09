@@ -101,6 +101,7 @@ export default class FeedListRow extends Component{
     return(
       <View>
         <SwipeView
+          feedListScrollViewDisabled={this.props.feedListScrollViewDisabled}
           onDragRelease={() => this.props.changeScrollState(true)}
           onDragStart={() => this.props.changeScrollState(false)}
           onPressProfile={() => this.props._onPressProfile(this.props.match.id)}
