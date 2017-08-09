@@ -52,6 +52,16 @@ const images = {
 	tabBar_profileIcon_selected: 	require('./img/TabBar/tab-bar-profile-icon-selected@3x.png'),
 	tabBar_profileIcon: 					require('./img/TabBar/tab-bar-profile-icon@3x.png'),
 
+	male_placeholder: require('./img/HomeFeed/male.png'),
+	female_placeholder: require('./img/HomeFeed/female.png'),
+
+	historyPlaceholder1: require('./img/History/historyPlaceholder1.png'),
+	historyPlaceholder2: require('./img/History/historyPlaceholder2.png'),
+	historyPlaceholder3: require('./img/History/historyPlaceholder3.png'),
+	historyPlaceholder4: require('./img/History/historyPlaceholder4.png'),
+	historyPlaceholder5: require('./img/History/historyPlaceholder5.png'),
+	historyPlaceholder6: require('./img/History/historyPlaceholder6.png'),
+
 
 };
 

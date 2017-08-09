@@ -22,8 +22,9 @@ import images from '@assets/images';
 import SwipeView from '../../components/FeedList/SwipeView';
 
 
-const CELL_SIZE = 270
-const TRANSITION_LENGTH = 800
+const CELL_SIZE = 255+7
+const TRANSITION_LENGTH = 200
+const ROW_OPACITY = 1
 
 export default class FeedListRow extends Component{
 
@@ -31,10 +32,11 @@ export default class FeedListRow extends Component{
     super(props)
     this.state = {
       _rowHeight: new Animated.Value(CELL_SIZE),
-      _rowOpacity : new Animated.Value(0), // TODO,
+      _rowOpacity : new Animated.Value(1),
       removing: false,
       lockToPage: false,
       pageNum: null,
+      likeDislike: null,
       finishedRemoving: false
     }
   }
@@ -42,11 +44,12 @@ export default class FeedListRow extends Component{
   componentWillUpdate(nextProps, nextState){
     if(nextState.removing == true){
       this.onRemove(()=>{
-        if(this.pageNum !== null && !this.state.finishedRemoving){
-          setTimeout(() => {
-            this.props.likeDislikeUser(this.state.pageNum, this.props.match.id)
-          }, 1000);
-        }
+        console.log("HANDLE REMOVAL")
+        // if(this.pageNum !== null && !this.state.finishedRemoving){
+        //   setTimeout(() => {
+        this.props.likeDislikeUser(this.state.likeDislike, this.props.match.id)
+          // }, 1000);
+        // }
       })
       this.setState({removing: false,lockToPage: false})
     }
@@ -58,6 +61,17 @@ export default class FeedListRow extends Component{
       toValue: 0,
       duration: TRANSITION_LENGTH
     }).start(callback);
+
+    Animated.timing(
+      this.state._rowOpacity,
+      {
+        toValue: 0,
+        duration: TRANSITION_LENGTH
+      }
+    )
+
+    console.log(this.state._rowOpacity)
+
   }
 
   resetHeight(){
@@ -65,6 +79,12 @@ export default class FeedListRow extends Component{
       toValue: CELL_SIZE,
       duration: 0
     }).start()
+    //
+    // Animated.timing(this.state._rowOpacity,{
+    //   toValue: 1,
+    //   duration: TRANSITION_LENGTH
+    // })
+
   }
 
 
@@ -76,22 +96,23 @@ export default class FeedListRow extends Component{
   render(){
     return(
       <View>
-
-
-{/*
         <SwipeView
           onDragRelease={() => this.props.changeScrollState(true)}
           onDragStart={() => this.props.changeScrollState(false)}
           onPressProfile={() => this.props._onPressProfile(this.props.match.id)}
           renderImage={this.props._renderImage(this.props.match)}
-          onSwipeRight={() => console.log('swipe right')}
-          onSwipeLe={() => console.log('swipe right')}
+          onSwipeRight={() => {
+            this.setState({likeDislikeUser: 0})}}
+          onSwipeLeft={() => {
+            this.setState({likeDislikeUser: 2})}}
           handleRemoval={this.handleRemoval}
+          cellSize={this.state._rowHeight}
+          rowOpacity={this.state._rowOpacity}
         />
 
-*/}
 
 
+{/*
         <Swiper
           threshold={500}
           onDragRelease={() => this.props.changeScrollState(true)}
@@ -119,7 +140,7 @@ export default class FeedListRow extends Component{
             <Image style={{left:20}} source={images.notInterested} />
           </Animated.View>
 
-        </Swiper> 
+        </Swiper>  */}
 
 
       </View>
