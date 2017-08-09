@@ -117,15 +117,15 @@ export function updateCurrentLocation(currentLocation){
 // fit in the criterias defined by match attributes
 export function fetchMatches(){
   return(dispatch, getState) => {
-
     dispatch(loadingMatches())
 
     let lon = getState().currentLocation.lon
     let lat = getState().currentLocation.lat
     let scoopUserId = getState().scoopUserProfile.scoopId
     let scoopUserToken = getState().scoopUserProfile.scoopToken
-    performLoadFeedTask(scoopUserId, scoopUserToken, lon, lat).then((results) => {
-      const response = results.users.map((user, index) => {
+    performLoadFeedTask(scoopUserId, scoopUserToken, lon, lat)
+    .then((results) => {
+      return response = results.users.map((user, index) => {
         return {
           id: user.userId,
           name: user.name,
@@ -137,12 +137,23 @@ export function fetchMatches(){
       if(results==="ERROR"){
         console.log("got an error while fetching matches")
         dispatch(loadedMatchesWithError())
-        return
+        return null
       }
-      dispatch(loadedMatchesWithSuccess())
-
-      dispatch(setFoundMatches( { matches_found: response, current_location: {lon, lat} } ));
-    });
+    })
+    .then((response) => {
+      if(response){
+        // response.forEach((user, index) =>{
+          // performLoadProfileTask(user.id, scoopUserId).then((results) => {
+          //   if(results.userInfo.gender == 1)
+          //     response[index].gender = "MALE"
+          //   if(results.userInfo.gender == 2)
+          //     response[index].gender = "FEMALE"
+            dispatch(loadedMatchesWithSuccess())
+            dispatch(setFoundMatches( { matches_found: response, current_location: {lon, lat} } ));
+          // })
+        // })
+      }
+    })
   }
 }
 

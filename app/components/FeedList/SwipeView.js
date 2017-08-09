@@ -23,6 +23,20 @@ export default class SwipeView extends Component{
     super(props)
   }
 
+
+  setOpacity(element, opacityValue){
+    if(element ==="not_interestedOpacity"){
+      // console.log('setitng not interested opacity')
+      this._notInterestedOpacity.setNativeProps({style: {opacity: opacityValue}});
+    }
+
+    if(element === "interestedOpacity"){
+      this._interestedOpacity.setNativeProps({style: {opacity: opacityValue}});
+    }
+
+  }
+
+
   componentWillMount(){
     this.animatedValue = new Animated.ValueXY();
     this._value = {x: 0, y: 0}
@@ -50,6 +64,22 @@ export default class SwipeView extends Component{
       },
       onPanResponderMove: (e, gestureState) => {
 
+        if(this._value.x < -5){
+          this.setOpacity('not_interestedOpacity', 1)
+          this.setOpacity('interestedOpacity', 0)
+
+          // this.setOpacity('int', 1)
+        }
+
+        if(this._value.x > 5){
+          this.setOpacity('interestedOpacity', 1)
+          this.setOpacity('not_interestedOpacity', 0)
+          // this.setOpacity('int', 1)
+        }
+
+
+
+
         if(Math.abs(this._value.x)>10 && !this.dragDisabled){
           this.props.onDragStart()
           this.dragDisabled = true
@@ -67,18 +97,20 @@ export default class SwipeView extends Component{
         this.animatedValue.flattenOffset();
         // console.log(this._value)
         if(this._value.x < -170){
-          console.log( "swiped right")
-
           this.props.handleRemoval()
+          this.props.onSwipeLeft()
 
         } else if(this._value.x > 170) {
-          console.log( "swiped left")
           this.props.handleRemoval()
+          this.props.onSwipeRight()
 
         }
 
-        Animated.spring(this.animatedValue,
-          {toValue:{x:0,y:0}}
+
+        Animated.timing(this.animatedValue,
+          {toValue:{x:0,y:0},
+          duration: 10
+        }
         ).start();
       },
       onPanResponderTerminate: (evt, gestureState) => {
@@ -86,8 +118,8 @@ export default class SwipeView extends Component{
         // should be cancelled
 
         this.animatedValue.flattenOffset();
-        Animated.spring(this.animatedValue,
-          {toValue:{x:0,y:0}}
+        Animated.timing(this.animatedValue,
+          {toValue:{x:0,y:0}, duration: 10}
         ).start();
       },
       onShouldBlockNativeResponder: (evt, gestureState) => {
@@ -102,22 +134,34 @@ export default class SwipeView extends Component{
     const animatedStyle = {
       transform: this.animatedValue.getTranslateTransform()
     }
+
     return(
-      <View style={styles.container}>
+      <Animated.View style={[
+        {height: this.props.cellSize, opacity: this.props.cellSize}]
+      }>
+
+        <View style={[styles.container]}>
+
         <View style={{position: 'absolute', padding: 50, height: cardHeight-paddingAmount,
           width: Dimensions.get('window').width}}>
-          <Image style={{position: 'absolute', left: 15, top: 60}} source={images.interested} />
-          <Image style={{position: 'absolute', right: 15, top: 73}} source={images.notInterested} />
+          <Image  ref={component => this._interestedOpacity = component}
+            style={{position: 'absolute', left: 15, top: 60, opacity: 0}} source={images.interested} />
+          <Image  ref={component => this._notInterestedOpacity = component}
+            style={{position: 'absolute', right: 15, top: 73, opacity: 0}} source={images.notInterested} />
         </View>
 
-        <Animated.View {...this._panResponder.panHandlers} style={[styles.draggableCard, animatedStyle]}>
+        <Animated.View {...this._panResponder.panHandlers} style={[styles.draggableCard, animatedStyle ]}>
           <TouchableHighlight onPress={()=>this.props.onPressProfile()}>
             <View style={{height: cardHeight-paddingAmount, width: Dimensions.get('window').width-paddingAmount*2, backgroundColor: 'gray'}}>
               {this.props.renderImage}
             </View>
           </TouchableHighlight>
         </Animated.View>
+
+
       </View>
+      </Animated.View>
+
     )
   }
 }

@@ -7,11 +7,17 @@ import FilterScreen from '../components/HomeScreens/FilterScreen'
 import ProfileScreen from '../components/HomeScreens/ProfileScreen'
 import ChatDetailScreen from '../components/Messenger/ChatDetailScreen'
 
+import HistoryScreen from '../components/HomeScreens/HistoryScreen'
+
 export const HomeNavigator = StackNavigator({
   Feed:       { screen: FeedScreen },
   Filter:     { screen: FilterScreen },
   Profile:    { screen: ProfileScreen },
   SendMessageFromFeed: { screen: ChatDetailScreen },
+
+
+  History:    { screen: HistoryScreen },
+
 });
 
 const HomeWithNavigationState = ({dispatch, homeNav}) => (
