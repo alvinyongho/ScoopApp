@@ -84,7 +84,7 @@ export default class HistoryCollection extends Component{
 var styles = StyleSheet.create({
   collectionContainer: {
     backgroundColor: 'white',
-    height: 300,
+    height: 340,
   },
   headerContainer: {
     // backgroundColor: '#F2F2F2',
@@ -117,6 +117,7 @@ var styles = StyleSheet.create({
     height: 140,
     flexDirection: 'row',
     marginTop: 20,
+    padding: 10,
     // justifyContent: 'center',
     // alignItems: 'center',
     marginBottom: 0
