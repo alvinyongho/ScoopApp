@@ -21,6 +21,10 @@ export default class SwipeView extends Component{
 
   constructor(props){
     super(props)
+
+    this.state = {
+      disabled: false
+    }
   }
 
 
@@ -41,7 +45,6 @@ export default class SwipeView extends Component{
     this.animatedValue = new Animated.ValueXY();
     this._value = {x: 0, y: 0}
     this.animatedValue.addListener((value) => this._value = value);
-
     this.dragDisabled = false
 
     this._panResponder = PanResponder.create({
@@ -52,7 +55,6 @@ export default class SwipeView extends Component{
       onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
       onPanResponderGrant: (evt, gestureState) => {
         this.animatedValue.setOffset({
           x: this._value.x,
@@ -63,8 +65,6 @@ export default class SwipeView extends Component{
 
       },
       onPanResponderMove: (e, gestureState) => {
-
-        // console.log(gestureState.dx)
         if(gestureState.dx< -5){
           this.setOpacity('not_interestedOpacity', 1)
           this.setOpacity('interestedOpacity', 0)
@@ -79,18 +79,23 @@ export default class SwipeView extends Component{
         }
 
 
-
-
         if(Math.abs(gestureState.dx) && !this.dragDisabled){
           this.props.onDragStart()
           this.dragDisabled = true
         }
 
-        Animated.event([
-          null, { dx: this.animatedValue.x, dy: 0}
-        ])(e, gestureState)
+        // if(!this.state.disabled){
+          Animated.event([
+            null, { dx: this.animatedValue.x, dy: 0}
+          ])(e, gestureState)
+        // }
+
+
       },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
+      onPanResponderTerminationRequest: (evt, gestureState) => {
+        console.log('term request')
+
+        return false},
       onPanResponderRelease: (e, gestureState) => {
         this.props.onDragRelease()
         this.dragDisabled = false
@@ -107,7 +112,6 @@ export default class SwipeView extends Component{
 
         }
 
-
         Animated.timing(this.animatedValue,
           {toValue:{x:0,y:0},
           duration: 10
@@ -117,7 +121,6 @@ export default class SwipeView extends Component{
       onPanResponderTerminate: (evt, gestureState) => {
         // Another component has become the responder, so this gesture
         // should be cancelled
-
         this.animatedValue.flattenOffset();
         Animated.timing(this.animatedValue,
           {toValue:{x:0,y:0}, duration: 10}
@@ -137,30 +140,23 @@ export default class SwipeView extends Component{
     }
 
     return(
-      <Animated.View style={[
-        {height: this.props.cellSize},{opacity: this.props.rowOpacity}]
-      }>
-
+      <Animated.View style={[{height: this.props.cellSize},{opacity: this.props.rowOpacity}]}>
         <View style={[styles.container]}>
-
-        <View style={{position: 'absolute', padding: 50, height: cardHeight-paddingAmount,
-          width: Dimensions.get('window').width}}>
-          <Image  ref={component => this._interestedOpacity = component}
-            style={{position: 'absolute', left: 15, top: 60, opacity: 0}} source={images.interested} />
-          <Image  ref={component => this._notInterestedOpacity = component}
-            style={{position: 'absolute', right: 15, top: 73, opacity: 0}} source={images.notInterested} />
+          <View style={{position: 'absolute', padding: 50, height: cardHeight-paddingAmount,
+            width: Dimensions.get('window').width}}>
+            <Image  ref={component => this._interestedOpacity = component}
+              style={{position: 'absolute', left: 15, top: 60, opacity: 0}} source={images.interested} />
+            <Image  ref={component => this._notInterestedOpacity = component}
+              style={{position: 'absolute', right: 15, top: 73, opacity: 0}} source={images.notInterested} />
+          </View>
+          <Animated.View {...this._panResponder.panHandlers} style={[styles.draggableCard, animatedStyle ]}>
+            <TouchableHighlight onPress={()=>this.props.onPressProfile()}>
+              <View style={{height: cardHeight-paddingAmount, width: Dimensions.get('window').width-paddingAmount*2, backgroundColor: 'gray'}}>
+                {this.props.renderImage}
+              </View>
+            </TouchableHighlight>
+          </Animated.View>
         </View>
-
-        <Animated.View {...this._panResponder.panHandlers} style={[styles.draggableCard, animatedStyle ]}>
-          <TouchableHighlight onPress={()=>this.props.onPressProfile()}>
-            <View style={{height: cardHeight-paddingAmount, width: Dimensions.get('window').width-paddingAmount*2, backgroundColor: 'gray'}}>
-              {this.props.renderImage}
-            </View>
-          </TouchableHighlight>
-        </Animated.View>
-
-
-      </View>
       </Animated.View>
 
     )

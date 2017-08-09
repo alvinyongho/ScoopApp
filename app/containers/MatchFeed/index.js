@@ -49,7 +49,9 @@ class MatchFeed extends Component{
     isScrollEnabled: true,
     appState: AppState.currentState,
     locationAccessibility: 'NOT_SET',  // For setting the error feedback if location cannot be accessed
-    matchFeedLoadingStatus: 'NOT_SET'
+    matchFeedLoadingStatus: 'NOT_SET',
+    disableFeedSwipe: false,
+
   };
 
 
@@ -258,6 +260,12 @@ class MatchFeed extends Component{
               <Spinner type={'Arc'} color="skyblue"/>
           </View>);}
 
+  handleScroll = (e:Object) =>{
+    console.log('handling scroll')
+    console.log(e.nativeEvent.contentOffset.y)
+    this.setState({lastScrollYPosition: e.nativeEvent.contentOffset.y})
+  }
+
   render(){
     showLocationError = (this.state.locationAccessibility === 'PERMISSION_NEEDED' ||
                          this.state.locationAccessibility === 'LOCATION_UNAVAILABLE' ||
@@ -278,6 +286,8 @@ class MatchFeed extends Component{
       <View style={{flex: 1, height: height-100}}>
         <ScrollView
           scrollEnabled={this.state.isScrollEnabled}
+          onScrollBeginDrag={()=>this.setState({disableFeedSwipe: true})}
+          onScrollEndDrag={()=>this.setState({disableFeedSwipe: false})}
           refreshControl={
           <RefreshControl
             refreshing={this.state.isRefreshing}
@@ -329,6 +339,8 @@ class MatchFeed extends Component{
                              _onPressProfile={this._onPressProfile}
                              _renderImage={this._renderImage}
                              match={match}
+                             feedListScrollViewDisabled={this.state.disableFeedSwipe}
+
                              />
 
               </View>
