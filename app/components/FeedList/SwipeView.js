@@ -92,10 +92,7 @@ export default class SwipeView extends Component{
 
 
       },
-      onPanResponderTerminationRequest: (evt, gestureState) => {
-        console.log('term request')
-
-        return false},
+      onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderRelease: (e, gestureState) => {
         this.props.onDragRelease()
         this.dragDisabled = false
