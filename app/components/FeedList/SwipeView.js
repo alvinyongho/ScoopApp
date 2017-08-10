@@ -69,7 +69,7 @@ class SwipeView extends Component{
         // if(!this.isScrolling){
         this.props.setScrollEnabled(false);
 
-        console.log('moving')
+        // console.log('moving')
         const { dx, dy } = gestureState;
     		const absDx = Math.abs(dx);
     		const absDy = Math.abs(dy);
@@ -84,13 +84,13 @@ class SwipeView extends Component{
 
           if (absDy > absDx && !this.horizontalSwipeGestureBegan) {
 				    // user is moving vertically, do nothing, listView will handle
-            console.log('user moving vertically do nothing')
+            // console.log('user moving vertically do nothing')
     				return;
     			}
 
           // user is moving horizontally
     			if (this.isScrolling) {
-            console.log('is scrolling should disable scrolling in listview parent')
+            // console.log('is scrolling should disable scrolling in listview parent')
     				// disable scrolling on the listView parent
     				this.isScrolling = false;
     				this.props.setScrollEnabled(false);
