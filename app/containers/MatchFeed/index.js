@@ -43,14 +43,23 @@ var leftBtns = [
 
 class MatchFeed extends Component{
 
-  state = {
-    isRefreshing: false,
-    lastPosition: 'unknown',
-    isScrollEnabled: true,
-    appState: AppState.currentState,
-    locationAccessibility: 'NOT_SET',  // For setting the error feedback if location cannot be accessed
-    matchFeedLoadingStatus: 'NOT_SET'
-  };
+  constructor(props){
+    super(props)
+
+    this.isScrollEnabled = true
+    this.state = {
+      isRefreshing: false,
+      lastPosition: 'unknown',
+      isScrollEnabled: true,
+      appState: AppState.currentState,
+      locationAccessibility: 'NOT_SET',  // For setting the error feedback if location cannot be accessed
+      matchFeedLoadingStatus: 'NOT_SET',
+      disableFeedSwipe: false,
+
+    };
+
+  }
+
 
 
   _onRefresh = () => {
@@ -231,6 +240,7 @@ class MatchFeed extends Component{
 
   changeScrollState = (scrollState) =>{
     this.setState({isScrollEnabled: scrollState})
+    this.isScrollEnabled = scrollState
   }
 
   // This function uses the pagination index to determine
@@ -258,6 +268,21 @@ class MatchFeed extends Component{
               <Spinner type={'Arc'} color="skyblue"/>
           </View>);}
 
+  handleScroll = (e:Object) =>{
+    console.log('handling scroll')
+    console.log(e.nativeEvent.contentOffset.y)
+    this.setState({lastScrollYPosition: e.nativeEvent.contentOffset.y})
+  }
+
+  setScrollEnabled(enable) {
+    this._listView.setNativeProps({scrollEnabled: enable});
+  }
+
+  setRefs(ref) {
+      this._listView = ref;
+  // this.props.listViewRef && this.props.listViewRef(ref);
+  }
+
   render(){
     showLocationError = (this.state.locationAccessibility === 'PERMISSION_NEEDED' ||
                          this.state.locationAccessibility === 'LOCATION_UNAVAILABLE' ||
@@ -273,11 +298,17 @@ class MatchFeed extends Component{
     if(showLoadingBar)
       return this._renderSpinner()
 
+
+
+
     // if(this.state.matchFeedLoadingStatus === 'SUCCESS')
     return (
       <View style={{flex: 1, height: height-100}}>
         <ScrollView
-          scrollEnabled={this.state.isScrollEnabled}
+          ref={ c => this.setRefs(c) }
+          // scrollEnabled={this.state.isScrollEnabled}
+          onScrollBeginDrag={()=>this.setState({disableFeedSwipe: true})}
+          onScrollEndDrag={()=>this.setState({disableFeedSwipe: false})}
           refreshControl={
           <RefreshControl
             refreshing={this.state.isRefreshing}
@@ -329,6 +360,11 @@ class MatchFeed extends Component{
                              _onPressProfile={this._onPressProfile}
                              _renderImage={this._renderImage}
                              match={match}
+                             feedListScrollViewDisabled={this.state.disableFeedSwipe}
+
+                             setScrollEnabled={ (enable) => this.setScrollEnabled(enable) }
+
+
                              />
 
               </View>
