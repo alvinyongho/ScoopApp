@@ -17,16 +17,15 @@ paddingAmount = 30
 cardHeight = 255
 
 
-export default class SwipeView extends Component{
+
+
+class SwipeView extends Component{
 
   constructor(props){
     super(props)
-
-    this.state = {
-      disabled: false
-    }
+    this.horizontalSwipeGestureBegan = false;
+    this.isScrolling = true
   }
-
 
   setOpacity(element, opacityValue){
     if(element ==="not_interestedOpacity"){
@@ -37,24 +36,27 @@ export default class SwipeView extends Component{
     if(element === "interestedOpacity"){
       this._interestedOpacity.setNativeProps({style: {opacity: opacityValue}});
     }
-
   }
-
 
   componentWillMount(){
     this.animatedValue = new Animated.ValueXY();
     this._value = {x: 0, y: 0}
     this.animatedValue.addListener((value) => this._value = value);
-    this.dragDisabled = false
+    this.inDragMode = false
+
 
     this._panResponder = PanResponder.create({
       // Ask to be the responder:
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      // onStartShouldSetPanResponder: (evt, gestureState) => true,
       // Don’t use the capture phase, you will rarely ever use it much like the web. Stick to the function calls without capture.
       // The deepest element gets focus if set to false.
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+      // onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
+      onMoveShouldSetPanResponder: (evt, gestureState) => {
+          const { dx } = gestureState;
+          // console.log('should it set pan responder')
+		      return Math.abs(dx) > this.props.directionalDistanceChangeThreshold;
+      },
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
       onPanResponderGrant: (evt, gestureState) => {
         this.animatedValue.setOffset({
           x: this._value.x,
@@ -62,53 +64,80 @@ export default class SwipeView extends Component{
         })
 
         this.animatedValue.setValue({ x: 0, y: 0})
-
       },
       onPanResponderMove: (e, gestureState) => {
-        if(gestureState.dx< -5){
-          this.setOpacity('not_interestedOpacity', 1)
-          this.setOpacity('interestedOpacity', 0)
+        // if(!this.isScrolling){
+        this.props.setScrollEnabled(false);
 
-          // this.setOpacity('int', 1)
-        }
+        console.log('moving')
+        const { dx, dy } = gestureState;
+    		const absDx = Math.abs(dx);
+    		const absDy = Math.abs(dy);
+        if (absDx > this.props.directionalDistanceChangeThreshold || absDy > this.props.directionalDistanceChangeThreshold) {
 
-        if(gestureState.dx > 5){
-          this.setOpacity('interestedOpacity', 1)
-          this.setOpacity('not_interestedOpacity', 0)
-          // this.setOpacity('int', 1)
-        }
+          // if(absDx && this.isScrolling){
+          //   this.props.setScrollEnabled(false);
+          //   this.isScrolling = false;
+          //   console.log('we need some way to prevent')
+          // }
 
 
-        if(Math.abs(gestureState.dx) && !this.dragDisabled){
-          this.props.onDragStart()
-          this.dragDisabled = true
-        }
+          if (absDy > absDx && !this.horizontalSwipeGestureBegan) {
+				    // user is moving vertically, do nothing, listView will handle
+            console.log('user moving vertically do nothing')
+    				return;
+    			}
 
-        // if(!this.state.disabled){
+          // user is moving horizontally
+    			if (this.isScrolling) {
+            console.log('is scrolling should disable scrolling in listview parent')
+    				// disable scrolling on the listView parent
+    				this.isScrolling = false;
+    				this.props.setScrollEnabled(false);
+    			}
+
+          if (!this.horizontalSwipeGestureBegan) {
+    				this.horizontalSwipeGestureBegan = true;
+    				// this.props.swipeGestureBegan && this.props.swipeGestureBegan();
+    			}
+
+
+          if(gestureState.dx< -5){
+            this.setOpacity('not_interestedOpacity', 1)
+            this.setOpacity('interestedOpacity', 0)
+          }
+
+          if(gestureState.dx > 5){
+            this.setOpacity('interestedOpacity', 1)
+            this.setOpacity('not_interestedOpacity', 0)
+          }
+
           Animated.event([
             null, { dx: this.animatedValue.x, dy: 0}
           ])(e, gestureState)
-        // }
 
-
-      },
-      onPanResponderTerminationRequest: (evt, gestureState) => false,
-      onPanResponderRelease: (e, gestureState) => {
-        this.props.onDragRelease()
-        this.dragDisabled = false
-
-        this.animatedValue.flattenOffset();
-        // console.log(this._value)
-        if(this._value.x < -170){
-          this.props.handleRemoval()
-          this.props.onSwipeLeft()
-
-        } else if(this._value.x > 170) {
-          this.props.handleRemoval()
-          this.props.onSwipeRight()
 
         }
+      },
+      onPanResponderTerminationRequest: (evt, gestureState) => {
+        return false
+      },
+      onPanResponderRelease: (e, gestureState) => {
 
+        if (!this.isScrolling) {
+    			this.isScrolling = true;
+    			this.props.setScrollEnabled(true);
+    		}
+
+
+        this.animatedValue.flattenOffset();
+        if(this._value.x < -180){
+          this.props.handleRemoval()
+          this.props.onSwipeLeft()
+        } else if(this._value.x > 180) {
+          this.props.handleRemoval()
+          this.props.onSwipeRight()
+        }
         Animated.timing(this.animatedValue,
           {toValue:{x:0,y:0},
           duration: 10
@@ -118,17 +147,48 @@ export default class SwipeView extends Component{
       onPanResponderTerminate: (evt, gestureState) => {
         // Another component has become the responder, so this gesture
         // should be cancelled
+
+        if (!this.isScrolling) {
+    			this.isScrolling = true;
+    			this.props.setScrollEnabled(true);
+    		}
+
+
         this.animatedValue.flattenOffset();
+        if(this._value.x < -180){
+          this.props.handleRemoval()
+          this.props.onSwipeLeft()
+        } else if(this._value.x > 180) {
+          this.props.handleRemoval()
+          this.props.onSwipeRight()
+        }
         Animated.timing(this.animatedValue,
-          {toValue:{x:0,y:0}, duration: 10}
+          {toValue:{x:0,y:0},
+          duration: 10
+        }
         ).start();
       },
       onShouldBlockNativeResponder: (evt, gestureState) => {
         // Returns whether this component should block native components from becoming the JS
         // responder. Returns true by default. Is currently only supported on android.
-        return true;
+        return false;
       },
     });
+  }
+
+
+  componentWillReceiveProps(nextProps){
+    // console.log(nextProps)
+    if(nextProps.feedListScrollViewDisabled !== this.isScrolling){
+      // console.log('setting this diabled')
+      this.isScrolling = nextProps.feedListScrollViewDisabled
+      // if(this.isScrolling){
+      //   // console.log('is scrolling')
+      // } else {
+      //   // console.log('not scrolling')
+      // }
+
+    }
   }
 
   render(){
@@ -179,3 +239,9 @@ const styles = StyleSheet.create({
   }
 
 })
+
+SwipeView.defaultProps = {
+  directionalDistanceChangeThreshold: 2,
+}
+
+export default SwipeView
